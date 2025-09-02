@@ -1,3 +1,4 @@
+export const metadata = { title: "Profile" };
 export default function Profile() {
   return (
     <div className="min-h-screen bg-[#0B0F14] text-white">

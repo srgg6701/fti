@@ -1,3 +1,4 @@
+export const metadata = { title: "Frame256" };
 export default function Frame256() {
   // мок-данные из макета — одинаковые карточки
   const items = Array.from({ length: 16 }, () => ({

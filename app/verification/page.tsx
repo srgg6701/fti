@@ -1,3 +1,4 @@
+export const metadata = { title: "Verification" };
 export default function Verification() {
   return (
     <div className="flex w-full flex-col">

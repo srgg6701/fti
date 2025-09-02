@@ -1,3 +1,4 @@
+export const metadata = { title: "Update" };
 export default function Update() {
   return (
     <div className="w-full">
