@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Form } from '@heroui/form';
+import Form from '@/components/form';
 import { Input } from '@heroui/input';
 import { InputOtp } from '@heroui/input-otp';
 import { Button } from '@heroui/button';
@@ -31,7 +31,9 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.push('/home');
+      // TODO: Uncomment as the app is ready to work in such a regime
+      // router.push('/home');
+      console.log('User is authenticated');
     }
   }, [isAuthenticated, router]);
 
@@ -69,15 +71,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="user-form-wrapper">
-      <h1 className="mb-6 text-3xl font-bold text-gray-900 dark:text-gray-100">Login</h1>
-      <Form
-        className="flex w-full max-w-sm flex-col gap-4 rounded-lg bg-white p-8 shadow-md dark:bg-gray-800"
-        onSubmit={handleSubmit}
-      >
+      <Form onSubmit={handleSubmit}>
+        <h1 className="mb-6 text-3xl font-bold text-gray-900 dark:text-gray-100">Login</h1>
         <Input
           isInvalid={!!error && email !== memberEmail && email !== partnerEmail}
-          label="Email"
           placeholder="Enter your email"
           type="email"
           value={email}
@@ -85,7 +82,6 @@ export default function LoginPage() {
         />
         <Input
           isInvalid={!!error && password !== memberPass && password !== partnerPass}
-          label="Password"
           placeholder="Enter your password"
           type="password"
           value={password}
@@ -93,7 +89,6 @@ export default function LoginPage() {
         />
         <InputOtp
           isInvalid={!!error && otp !== memberOtp && otp !== partnerOtp}
-          label="OTP"
           length={6}
           value={otp}
           onValueChange={setOtp}
@@ -103,6 +98,5 @@ export default function LoginPage() {
           {isLoading ? 'Logging In...' : 'Log In'}
         </Button>
       </Form>
-    </div>
   );
 }

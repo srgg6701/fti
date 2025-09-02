@@ -18,15 +18,15 @@ export const Navbar = () => {
   // TODO: Check if it makes sense to leave it here:
   const { isAuthenticated } = useUserStore();
   const pathname = usePathname();
-  if (pathname === '/') return null;
-  
   const urlFirstSegment = `/${pathname.split('/')[1]}`;
-  const items = siteConfig.navItems.filter((item) => {
+  console.log('urlFirstSegment', urlFirstSegment);
+  if (urlFirstSegment === '/' || urlFirstSegment === '/create-account' || urlFirstSegment === '/login' || urlFirstSegment === '/logout') return null;
+
+  const items = siteConfig.navItems/* .filter((item) => {
     if (item.protected && !isAuthenticated) return false;
     if (item.label === 'Logout' && !isAuthenticated) return false;
-
     return true;
-  });
+  }) */;
 
   const menuList = () => (
     <>
@@ -39,8 +39,9 @@ export const Navbar = () => {
               className={`menu-item flex items-center gap-3 ${urlFirstSegment === item.href ? '' : 'opacity-60 hover:opacity-100'}`}
               href={item.href}
             >
-              {Icon({ ...menuIcons[iconName], 
-                color: 'white' // TODO: make color self-customizing
+              {Icon({
+                ...menuIcons[iconName],
+                color: 'white', // TODO: make color self-customizing
               })}
               <span>{item.label}</span>
             </Link>

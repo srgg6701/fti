@@ -1,6 +1,7 @@
 'use client';
 import { useState, FormEvent } from 'react';
 import Image from 'next/image';
+import { Form } from '@heroui/form';
 import { Input } from '@heroui/input';
 import { Button } from '@heroui/button';
 
@@ -8,12 +9,11 @@ export default function CreateAnAccount() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-  async function onSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!email) return;
     try {
       setStatus('loading');
-      // TODO: сюда вставишь реальный вызов BE (SWR mutation / fetch)
       await new Promise((r) => setTimeout(r, 600));
       setStatus('success');
     } catch {
@@ -24,16 +24,20 @@ export default function CreateAnAccount() {
   }
 
   return (
-    <section className="w-full max-w-md rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-      <header className="space-y-1">
-        <h1 className="text-2xl font-semibold text-white">Create an account</h1>
-        <p className="text-sm text-white/60">Enter your gmail to send the confirmation code</p>
-      </header>
+    <section className="m-auto flex h-full w-full max-w-[328px] items-center text-white text-center">
+      <Form className="max-h-[531px]" onSubmit={handleSubmit}>
+        <header className="mb-[30px]">
+          <h1 className="text-2xl font-semibold text-white font-formular-black mb-[15px]">Create an account</h1>
+          <p className="text-sm">
+            <span>Please provide your phone number so that we can send you a confirmation code</span>
+            {/* <span>Enter your gmail to send the confirmation code</span>
+            <span>Come up with a strong password</span>
+            <span>Please enter your account details</span> */}
+          </p>
+        </header>
 
-      <form className="mt-6 grid gap-4" onSubmit={onSubmit}>
         <Input
           isRequired
-          label="Email"
           placeholder="account@gmail.com"
           type="email"
           value={email}
@@ -66,7 +70,7 @@ export default function CreateAnAccount() {
             Something went wrong. Try again.
           </p>
         )}
-      </form>
+      </Form>
     </section>
   );
 }
