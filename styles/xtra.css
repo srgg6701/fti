@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 h1 {
   @apply text-[2rem] font-bold;
@@ -7,20 +7,44 @@ h2 {
   @apply mb-4 text-2xl font-bold;
 }
 header ul.navbar-justify-around {
-  @apply justify-around
+  @apply justify-around;
 }
 #main-wrapper > nav {
-  @apply block relative;
+  @apply relative block;
 }
 nav > header {
   @apply px-0;
 }
+.bg-translusent-light {
+  background-color: rgba(244, 249, 255, 0.1);
+}
+.outline-color-15 {
+  outline-color:rgba(244,249,255,0.15)
+}
+.btn-rounded {
+  /* border-radius: 40px; */
+  @apply rounded-[40px];
+}
+.input-rounded {
+  @apply rounded-[15px];
+}
+.form-h-45 {
+  @apply h-[45px];
+}
+.phone-number input[data-slot="input"]{
+  @apply h-[38px];
+}
+
+.color-secondary {
+  color: #f4f9ff;
+}
+.color-ultra-violet {
+  color: #ff33a6;
+}
 .menu-item {
   @apply text-[14px];
 }
-.color-ultra-violet {
-  color: #FF33A6;
-}
+
 .user-form-wrapper {
   @apply flex flex-col items-center justify-center;
 }

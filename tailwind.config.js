@@ -23,15 +23,18 @@ const config = {
           extend: "dark",
           colors: {
             primary: {
-              DEFAULT: "#2AFC98",
+              DEFAULT: "#FFF",
             },
+            secondary: {
+              DEFAULT: "#F4F9FF",
+            }
           },
         },
         memberLight: {
           extend: "light",
           colors: {
             primary: {
-              DEFAULT: "#2AFC98",
+              DEFAULT: "#F4F9FF",
             },
           },
         },
