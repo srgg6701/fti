@@ -1,0 +1,40 @@
+# Используем легковесный образ Node.js
+FROM node:20-alpine AS builder
+
+# Устанавливаем рабочую директорию
+WORKDIR /usr/src/app
+
+# Копируем файлы для установки зависимостей
+COPY package.json package-lock.json ./
+
+# Устанавливаем зависимости
+RUN npm install --legacy-peer-deps
+
+
+# Копируем весь проект
+COPY . ./
+
+# Компиляция TypeScript
+RUN npm run build
+
+# Минимальный образ для запуска
+FROM node:20-alpine
+
+# Устанавливаем рабочую директорию для собранного проекта
+WORKDIR /usr/src/app
+
+# Копируем собранный проект и необходимые файлы
+COPY --from=builder /usr/src/app/package.json ./
+COPY --from=builder /usr/src/app/package-lock.json ./
+COPY --from=builder /usr/src/app/dist ./dist
+#COPY --from=builder /usr/src/app/src/pages ./dist/pages
+#COPY --from=builder /usr/src/app/src/img ./dist/img
+#COPY --from=builder /usr/src/app/src/js ./dist/js
+COPY --from=builder /usr/src/app/public ./dist/public
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+
+# Открываем порт
+EXPOSE 3000
+
+# Запуск приложения
+CMD ["node", "dist/main.js"]

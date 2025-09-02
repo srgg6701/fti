@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+h1 {
+  @apply text-[2rem] font-bold;
+}
+h2 {
+  @apply mb-4 text-2xl font-bold;
+}
+header ul.navbar-justify-around {
+  @apply justify-around
+}
+#main-wrapper > nav {
+  @apply block relative;
+}
+nav > header {
+  @apply px-0;
+}
+.menu-item {
+  @apply text-[14px];
+}
+.color-ultra-violet {
+  color: #FF33A6;
+}
+.user-form-wrapper {
+  @apply flex flex-col items-center justify-center;
+}
+/*TODO: remove this imitation after getting real data from BE */
+.first-loader {
+  animation: grow 3s linear forwards;
+  width: 0;
+}
+@keyframes grow {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
