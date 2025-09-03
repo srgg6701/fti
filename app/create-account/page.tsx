@@ -11,7 +11,7 @@ import PhoneCountryPicker from '@/components/phoneCountryPicker';
 
 export default function CreateAnAccount() {
   const [phone, setPhone] = useState('');
-  const [country, setCountry] = useState<Country>(COUNTRIES[0]);
+  const [country, setCountry] = useState<Country>(COUNTRIES[226]);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   async function handleSubmit(e: FormEvent) {

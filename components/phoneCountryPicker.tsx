@@ -45,7 +45,6 @@ export default function PhoneCountryPicker({ value, onChange, className }: Props
           &gt;
         </span>
       </button>
-
       {/* drop-down */}
       {open && (
         <div className="absolute z-50 mt-2 rounded-2xl border border-white/10 bg-black/80 p-2 shadow-lg backdrop-blur">
