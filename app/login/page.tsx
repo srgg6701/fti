@@ -1,11 +1,11 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Form from '@/components/form';
 import { Input } from '@heroui/input';
 import { InputOtp } from '@heroui/input-otp';
 import { Button } from '@heroui/button';
 
+import Form from '@/components/form';
 import { useUserStore } from '@/lib/store/userStore';
 
 export default function LoginPage() {
@@ -71,32 +71,32 @@ export default function LoginPage() {
   };
 
   return (
-      <Form onSubmit={handleSubmit}>
-        <h1 className="mb-6 text-3xl font-bold text-gray-900 dark:text-gray-100">Login</h1>
-        <Input
-          isInvalid={!!error && email !== memberEmail && email !== partnerEmail}
-          placeholder="Enter your email"
-          type="email"
-          value={email}
-          onValueChange={setEmail}
-        />
-        <Input
-          isInvalid={!!error && password !== memberPass && password !== partnerPass}
-          placeholder="Enter your password"
-          type="password"
-          value={password}
-          onValueChange={setPassword}
-        />
-        <InputOtp
-          isInvalid={!!error && otp !== memberOtp && otp !== partnerOtp}
-          length={6}
-          value={otp}
-          onValueChange={setOtp}
-        />
-        {error && <p className="text-sm text-red-500">{error}</p>}
-        <Button color="primary" isDisabled={isLoading} isLoading={isLoading} type="submit">
-          {isLoading ? 'Logging In...' : 'Log In'}
-        </Button>
-      </Form>
+    <Form onSubmit={handleSubmit}>
+      <h1 className="mb-6 text-3xl font-bold text-gray-900 dark:text-gray-100">Login</h1>
+      <Input
+        isInvalid={!!error && email !== memberEmail && email !== partnerEmail}
+        placeholder="Enter your email"
+        type="email"
+        value={email}
+        onValueChange={setEmail}
+      />
+      <Input
+        isInvalid={!!error && password !== memberPass && password !== partnerPass}
+        placeholder="Enter your password"
+        type="password"
+        value={password}
+        onValueChange={setPassword}
+      />
+      <InputOtp
+        isInvalid={!!error && otp !== memberOtp && otp !== partnerOtp}
+        length={6}
+        value={otp}
+        onValueChange={setOtp}
+      />
+      {error && <p className="text-sm text-red-500">{error}</p>}
+      <Button color="primary" isDisabled={isLoading} isLoading={isLoading} type="submit">
+        {isLoading ? 'Logging In...' : 'Log In'}
+      </Button>
+    </Form>
   );
 }

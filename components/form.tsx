@@ -8,7 +8,7 @@ export default function FormWrapper({ onSubmit, children }: Props) {
   return (
     <section className="m-auto flex h-full w-full items-center justify-center">
       <Form
-        className={`flex flex-col w-full max-w-[328px] h-full max-h-[570px] justify-center`}
+        className={`flex h-full max-h-[570px] w-full max-w-[328px] flex-col justify-center`}
         onSubmit={onSubmit}
       >
         {children}

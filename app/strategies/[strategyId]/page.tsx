@@ -1,4 +1,5 @@
-export const metadata = { title: "Strategy" };
+import Link from 'next/link';
+export const metadata = { title: 'Strategy' };
 export default function Strategy() {
   return (
     <div className="min-h-screen bg-[#0B0F14] text-white">
@@ -9,7 +10,9 @@ export default function Strategy() {
         <section>
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold">World leaders</h2>
-            <a className="text-sm text-white/70 hover:text-white">See all</a>
+            <Link className="text-sm text-white/70 hover:text-white" href="/#">
+              See all
+            </Link>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
@@ -232,7 +235,9 @@ export default function Strategy() {
         <section>
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold">The best of the day</h2>
-            <a className="text-sm text-white/70 hover:text-white">See all</a>
+            <Link className="text-sm text-white/70 hover:text-white" href="/#">
+              See all
+            </Link>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
@@ -443,7 +448,9 @@ export default function Strategy() {
         <section>
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold">The best of the week</h2>
-            <a className="text-sm text-white/70 hover:text-white">See all</a>
+            <Link className="text-sm text-white/70 hover:text-white" href="/#">
+              See all
+            </Link>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
@@ -652,7 +659,9 @@ export default function Strategy() {
         <section>
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold">The best of the month</h2>
-            <a className="text-sm text-white/70 hover:text-white">See all</a>
+            <Link className="text-sm text-white/70 hover:text-white" href="/#">
+              See all
+            </Link>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">

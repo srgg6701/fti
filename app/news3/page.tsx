@@ -1,3 +1,4 @@
+import Link from 'next/link';
 export default function News3() {
   return (
     <div className="min-h-screen bg-[#0B0F14] text-white">
@@ -5,20 +6,24 @@ export default function News3() {
       <header className="sticky top-0 z-40 border-b border-white/10 bg-[#0B0F14]/80 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
           <nav className="flex items-center gap-6 text-sm">
-            <a className="flex items-center gap-2 font-medium text-white/90">
+            <Link className="flex items-center gap-2 font-medium text-white/90" href="/#">
               <img alt="Home" className="h-4 w-4" src="/images-temp/b9f5aa840e2d.svg" />
               <span>Home</span>
-            </a>
-            <a className="text-white/60 hover:text-white/90">People</a>
-            <a className="flex items-center gap-2 text-white/60 hover:text-white/90">
+            </Link>
+            <Link className="text-white/60 hover:text-white/90" href="/#">
+              People
+            </Link>
+            <Link className="flex items-center gap-2 text-white/60 hover:text-white/90" href="/#">
               <img alt="Strategies" className="h-4 w-4" src="/images-temp/99403c74c582.svg" />
               <span>Strategies</span>
-            </a>
-            <a className="text-white/60 hover:text-white/90">News</a>
-            <a className="flex items-center gap-2 text-white/60 hover:text-white/90">
+            </Link>
+            <Link className="text-white/60 hover:text-white/90" href="/#">
+              News
+            </Link>
+            <Link className="flex items-center gap-2 text-white/60 hover:text-white/90" href="/#">
               <img alt="Account" className="h-4 w-4" src="/images-temp/41dd40048729.svg" />
               <span>Account</span>
-            </a>
+            </Link>
           </nav>
 
           <div className="text-xs tracking-wide text-white/50 uppercase">Exit</div>
@@ -63,7 +68,9 @@ export default function News3() {
       <section className="mx-auto mt-10 max-w-7xl px-4">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-semibold">See also</h3>
-          <a className="text-sm text-white/70 hover:text-white">See all</a>
+          <Link className="text-sm text-white/70 hover:text-white" href="/#">
+            See all
+          </Link>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">

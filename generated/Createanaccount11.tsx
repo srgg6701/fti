@@ -25,7 +25,7 @@ export default function Createanaccount11() {
         <div>
           <div>
             <div>
-              <img src="/images-temp/Createanaccount11/vector2381.svg" alt="Vector2381" />
+              <img alt="Vector2381" src="/images-temp/Createanaccount11/vector2381.svg" />
               <span>Register with Google</span>
             </div>
           </div>

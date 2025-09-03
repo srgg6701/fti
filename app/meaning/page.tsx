@@ -1,4 +1,4 @@
-export const metadata = { title: "Meaning" };
+export const metadata = { title: 'Meaning' };
 export default function Meaning() {
   const filters = ['All', 'Strategy', 'Stock', 'Crypto', 'Forex'];
 

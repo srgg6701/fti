@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 // TODO: remove unused icons
 import { IconSvgProps } from '@/types';
 
@@ -142,21 +143,21 @@ export const Icon = ({
   strokeWidth?: number;
 }) => (
   <svg
-    viewBox={`0 0 ${viewBox}`}
+    aria-hidden
     fill="none"
     height="16px"
+    viewBox={`0 0 ${viewBox}`}
     width="16px"
     xmlns="http://www.w3.org/2000/svg"
-    aria-hidden
   >
     {d.map((dstr, i) => (
       <path
         key={i}
         d={dstr}
         stroke={color}
-        strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
+        strokeWidth={strokeWidth}
       />
     ))}
   </svg>
@@ -203,18 +204,21 @@ export const menuIcons = {
   },
 };
 
-export const LogoFTI = ({...props}) => <svg 
-  width="200"
-  height="98"
-  viewBox="0 0 200 98"
-  fill="none"
-  className="flex m-auto"
-  {...props}
-  xmlns="http://www.w3.org/2000/svg">
+export const LogoFTI = ({ ...props }) => (
+  <svg
+    className="m-auto flex"
+    fill="none"
+    height="98"
+    viewBox="0 0 200 98"
+    width="200"
+    {...props}
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path
       d="M25.4475 39.2549H63.6187L50.6731 61.2157H25.4475V98H0V0H74.7007L61.754 22.5098H25.4475V39.2549Z"
       fill="#FFF"
     />
     <path d="M166.594 0L153.65 22.5098H137.316V98H111.869V22.5098H82.7272V0H166.594Z" fill="#FFF" />
     <path d="M200 0V76.0789L187.055 98H174.553V0H200Z" fill="#FFF" />
-  </svg>;
+  </svg>
+);

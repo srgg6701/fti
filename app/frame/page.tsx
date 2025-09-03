@@ -1,4 +1,4 @@
-export const metadata = { title: "Frame" };
+export const metadata = { title: 'Frame' };
 export default function Frame() {
   return (
     <section className="w-full">

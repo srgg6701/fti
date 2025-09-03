@@ -1,4 +1,4 @@
-export const metadata = { title: "Accounts" };
+export const metadata = { title: 'Accounts' };
 export default function Accounts() {
   return (
     <section className="w-full">

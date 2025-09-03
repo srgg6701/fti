@@ -9,29 +9,39 @@ import Link from 'next/link';
 //import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+
+import { Icon, menuIcons } from './icons';
+
 import { siteConfig } from '@/config/site';
 //import { ThemeSwitch } from '@/components/theme-switch';
 import { useUserStore } from '@/lib/store/userStore';
-import { Icon, menuIcons } from './icons';
 
 export const Navbar = () => {
   // TODO: Check if it makes sense to leave it here:
   const { isAuthenticated } = useUserStore();
   const pathname = usePathname();
   const urlFirstSegment = `/${pathname.split('/')[1]}`;
-  console.log('urlFirstSegment', urlFirstSegment);
-  if (urlFirstSegment === '/' || urlFirstSegment === '/create-account' || urlFirstSegment === '/login' || urlFirstSegment === '/logout') return null;
 
-  const items = siteConfig.navItems/* .filter((item) => {
+  console.log('urlFirstSegment', urlFirstSegment);
+  if (
+    urlFirstSegment === '/' ||
+    urlFirstSegment === '/create-account' ||
+    urlFirstSegment === '/login' ||
+    urlFirstSegment === '/logout'
+  )
+    return null;
+
+  const items = siteConfig.navItems; /* .filter((item) => {
     if (item.protected && !isAuthenticated) return false;
     if (item.label === 'Logout' && !isAuthenticated) return false;
     return true;
-  }) */;
+  }) */
 
   const menuList = () => (
     <>
       {items.map((item) => {
         const iconName = item.href.split('/')[1] as keyof typeof menuIcons;
+
         return (
           <li key={item.href} className="flex list-none items-center">
             <Link
@@ -54,12 +64,12 @@ export const Navbar = () => {
   const Exit = ({ className }: { className?: string }) => (
     <Link className={className || ''} href="/logout">
       <Image
-        className="mr-3 inline-block"
-        src="/images/icons/exit.png"
         alt="Exit"
+        className="mr-3 inline-block"
         height="16"
-        width="16"
+        src="/images/icons/exit.png"
         style={{ height: '16px' }}
+        width="16"
       />
       <strong className="menu-item color-ultra-violet">Exit</strong>
     </Link>

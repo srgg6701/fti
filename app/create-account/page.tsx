@@ -1,12 +1,13 @@
 'use client';
 import { useState, useEffect, FormEvent } from 'react';
-import PhoneCountryPicker from '@/components/phoneCountryPicker';
-import { COUNTRIES, Country } from '@/lib/phones';
 import Image from 'next/image';
 import Link from 'next/link';
-import Form from '@/components/form';
 import { Input } from '@heroui/input';
 import { Button } from '@heroui/button';
+
+import Form from '@/components/form';
+import { COUNTRIES, Country } from '@/lib/phones';
+import PhoneCountryPicker from '@/components/phoneCountryPicker';
 
 export default function CreateAnAccount() {
   const [phone, setPhone] = useState('');
@@ -29,6 +30,7 @@ export default function CreateAnAccount() {
 
   const setCountryCode = (dial: string) => {
     let inputPadding: string = '';
+
     switch (dial.length) {
       case 2:
         inputPadding = '24px';
@@ -50,6 +52,7 @@ export default function CreateAnAccount() {
     }
 
     const input = document.querySelector('.phone-number input[data-slot="input"]');
+
     if (input) {
       (input as HTMLInputElement).style.paddingLeft = inputPadding;
     }
@@ -82,14 +85,14 @@ export default function CreateAnAccount() {
         </header>
         <div className="relative flex">
           <div className="absolute top-[10px] left-[78px] text-white">{country?.dial || '+7'}</div>
-          <PhoneCountryPicker value={country} onChange={setCountryData} className="shrink-0" />
+          <PhoneCountryPicker className="shrink-0" value={country} onChange={setCountryData} />
           <Input
-            className="form-h-45 bg-translusent-light input-rounded phone-number pt-[2px]"
             isRequired
+            className="form-h-45 bg-translusent-light input-rounded phone-number pt-[2px]"
+            inputMode="tel"
             placeholder="999 999-99-99"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            inputMode="tel"
           />
         </div>
       </section>
@@ -113,7 +116,7 @@ export default function CreateAnAccount() {
         </Button>
         <p className="mt-[11.5px]">
           Do you already have an account?{' '}
-          <Link href="/login" className="font-bold">
+          <Link className="font-bold" href="/login">
             Log in
           </Link>
         </p>

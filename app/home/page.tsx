@@ -1,4 +1,5 @@
-export const metadata = { title: "Home" };
+import Link from 'next/link';
+export const metadata = { title: 'Home' };
 export default function Home() {
   return (
     <div className="min-h-screen bg-[#0B0F14] text-white">
@@ -7,40 +8,40 @@ export default function Home() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
           {/* App Tabs */}
           <nav className="flex items-center gap-6 text-sm">
-            <a className="flex items-center gap-2 font-medium text-white/90">
+            <Link className="flex items-center gap-2 font-medium text-white/90" href="/#">
               <img alt="Home" className="h-4 w-4" src="/images-temp/HomeNostr/home2382.svg" />
               <span>Home</span>
-            </a>
+            </Link>
 
-            <a className="flex items-center gap-2 text-white/60 hover:text-white/90">
+            <Link className="flex items-center gap-2 text-white/60 hover:text-white/90" href="/#">
               <img
                 alt="Peoples2382"
                 src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMTUnIGhlaWdodD0nMTQnIHZpZXdCb3g9JzAgMCAxNSAxNCcgZmlsbD0nbm9uZScgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz4KPHBhdGggZD0nTTEwIDEyLjYyNVYxMS4zNzVDMTAgMTAuNzEyIDkuNzM2NjEgMTAuMDc2MSA5LjI2Nzc3IDkuNjA3MjNDOC43OTg5MyA5LjEzODM5IDguMTYzMDQgOC44NzUgNy41IDguODc1SDMuNzVDMy4wODY5NiA4Ljg3NSAyLjQ1MTA3IDkuMTM4MzkgMS45ODIyMyA5LjYwNzIzQzEuNTEzMzkgMTAuMDc2MSAxLjI1IDEwLjcxMiAxLjI1IDExLjM3NVYxMi42MjVNMTMuNzUgMTIuNjI1VjExLjM3NUMxMy43NDk2IDEwLjgyMTEgMTMuNTY1MiAxMC4yODMgMTMuMjI1OSA5Ljg0NTJDMTIuODg2NSA5LjQwNzQxIDEyLjQxMTMgOS4wOTQ3MyAxMS44NzUgOC45NTYyNU0xMCAxLjQ1NjI1QzEwLjUzNzggMS41OTM5NCAxMS4wMTQ0IDEuOTA2NjkgMTEuMzU0OCAyLjM0NTE5QzExLjY5NTIgMi43ODM3IDExLjg3OTkgMy4zMjMwMiAxMS44Nzk5IDMuODc4MTNDMTEuODc5OSA0LjQzMzIzIDExLjY5NTIgNC45NzI1NSAxMS4zNTQ4IDUuNDExMDZDMTEuMDE0NCA1Ljg0OTU2IDEwLjUzNzggNi4xNjIzMSAxMCA2LjNNOC4xMjUgMy44NzVDOC4xMjUgNS4yNTU3MSA3LjAwNTcxIDYuMzc1IDUuNjI1IDYuMzc1QzQuMjQ0MjkgNi4zNzUgMy4xMjUgNS4yNTU3MSAzLjEyNSAzLjg3NUMzLjEyNSAyLjQ5NDI5IDQuMjQ0MjkgMS4zNzUgNS42MjUgMS4zNzVDNy4wMDU3MSAxLjM3NSA4LjEyNSAyLjQ5NDI5IDguMTI1IDMuODc1Wicgc3Ryb2tlPScjRjRGOUZGJyBzdHJva2Utb3BhY2l0eT0nMC41JyBzdHJva2Utd2lkdGg9JzEuNScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJyBzdHJva2UtbGluZWpvaW49J3JvdW5kJy8+Cjwvc3ZnPgo="
               />
               <span>People</span>
-            </a>
+            </Link>
 
-            <a className="flex items-center gap-2 text-white/60 hover:text-white/90">
+            <Link className="flex items-center gap-2 text-white/60 hover:text-white/90" href="/#">
               <img
                 alt="Strategies"
                 className="h-4 w-4"
                 src="/images-temp/HomeNostr/graph2382.svg"
               />
               <span>Strategies</span>
-            </a>
+            </Link>
 
-            <a className="flex items-center gap-2 text-white/60 hover:text-white/90">
+            <Link className="flex items-center gap-2 text-white/60 hover:text-white/90" href="/#">
               <img
                 alt="News2382"
                 src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMTUnIGhlaWdodD0nMTYnIHZpZXdCb3g9JzAgMCAxNSAxNicgZmlsbD0nbm9uZScgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz4KPHBhdGggZD0nTTkuMzc1IDExLjc1SDYuMjVNMTEuMjUgOS4yNUg2LjI1TTIuNSAxNC4yNUgxMi41QzEyLjgzMTUgMTQuMjUgMTMuMTQ5NSAxNC4xMTgzIDEzLjM4MzkgMTMuODgzOUMxMy42MTgzIDEzLjY0OTUgMTMuNzUgMTMuMzMxNSAxMy43NSAxM1YzQzEzLjc1IDIuNjY4NDggMTMuNjE4MyAyLjM1MDU0IDEzLjM4MzkgMi4xMTYxMkMxMy4xNDk1IDEuODgxNyAxMi44MzE1IDEuNzUgMTIuNSAxLjc1SDVDNC42Njg0OCAxLjc1IDQuMzUwNTQgMS44ODE3IDQuMTE2MTIgMi4xMTYxMkMzLjg4MTcgMi4zNTA1NCAzLjc1IDIuNjY4NDggMy43NSAzVjEzQzMuNzUgMTMuMzMxNSAzLjYxODMgMTMuNjQ5NSAzLjM4Mzg4IDEzLjg4MzlDMy4xNDk0NiAxNC4xMTgzIDIuODMxNTIgMTQuMjUgMi41IDE0LjI1Wk0yLjUgMTQuMjVDMi4xNjg0OCAxNC4yNSAxLjg1MDU0IDE0LjExODMgMS42MTYxMiAxMy44ODM5QzEuMzgxNyAxMy42NDk1IDEuMjUgMTMuMzMxNSAxLjI1IDEzVjcuMzc1QzEuMjUgNy4wNDM0OCAxLjM4MTcgNi43MjU1NCAxLjYxNjEyIDYuNDkxMTJDMS44NTA1NCA2LjI1NjcgMi4xNjg0OCA2LjEyNSAyLjUgNi4xMjVIMy43NU02Ljg3NSA0LjI1SDEwLjYyNUMxMC45NzAyIDQuMjUgMTEuMjUgNC41Mjk4MiAxMS4yNSA0Ljg3NVY2LjEyNUMxMS4yNSA2LjQ3MDE4IDEwLjk3MDIgNi43NSAxMC42MjUgNi43NUg2Ljg3NUM2LjUyOTgyIDYuNzUgNi4yNSA2LjQ3MDE4IDYuMjUgNi4xMjVWNC44NzVDNi4yNSA0LjUyOTgyIDYuNTI5ODIgNC4yNSA2Ljg3NSA0LjI1Wicgc3Ryb2tlPScjRjRGOUZGJyBzdHJva2Utb3BhY2l0eT0nMC41JyBzdHJva2Utd2lkdGg9JzEuNScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJyBzdHJva2UtbGluZWpvaW49J3JvdW5kJy8+Cjwvc3ZnPgo="
               />
               <span>News</span>
-            </a>
+            </Link>
 
-            <a className="flex items-center gap-2 text-white/60 hover:text-white/90">
+            <Link className="flex items-center gap-2 text-white/60 hover:text-white/90" href="/#">
               <img alt="Account" className="h-4 w-4" src="/images-temp/HomeNostr/account2382.svg" />
               <span>Account</span>
-            </a>
+            </Link>
           </nav>
 
           {/* Right side */}
@@ -81,7 +82,9 @@ export default function Home() {
       <section className="mx-auto max-w-7xl px-4">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Top Perfoming</h2>
-          <a className="text-sm text-white/70 hover:text-white">See all</a>
+          <Link className="text-sm text-white/70 hover:text-white" href="/#">
+            See all
+          </Link>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
@@ -293,7 +296,9 @@ export default function Home() {
       <section className="mx-auto mt-10 max-w-7xl px-4">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold">News</h2>
-          <a className="text-sm text-white/70 hover:text-white">See all</a>
+          <Link className="text-sm text-white/70 hover:text-white" href="/#">
+            See all
+          </Link>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">

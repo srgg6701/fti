@@ -1,4 +1,4 @@
-export const metadata = { title: "Strategy" };
+export const metadata = { title: 'Strategy' };
 export default function Strategies() {
   return (
     <>

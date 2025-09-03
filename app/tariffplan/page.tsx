@@ -1,4 +1,4 @@
-export const metadata = { title: "Tariff Plan" };
+export const metadata = { title: 'Tariff Plan' };
 export default function Tariffplan() {
   const nav = [
     { icon: '/images-temp/b9f5aa840e2d.svg', label: 'Home' },
