@@ -114,6 +114,10 @@
   font-display: swap;
 }
 
+html, body, main {
+  background-color: #121212;
+}
+
 /* Делаем Rubik шрифтом по умолчанию */
 html, body {
   font-family: 'Rubik', system-ui, sans-serif;

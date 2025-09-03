@@ -1,0 +1,39 @@
+"use client";
+import { Button } from '@heroui/button';
+import Image from 'next/image';
+import Link from 'next/link';
+export default function Buttons({ messageType, status }: { messageType: string, status?: string }) {
+  return (
+    <div className="mx-auto mt-auto flex w-full max-w-[300px] flex-col items-center">
+      <Button
+        className="form-h-45 text-primary bg-translusent-light btn-rounded outline-color-15 m-auto mb-[10px] w-full outline"
+        //TODO: update later on:
+        isLoading={status === 'loading'}
+        startContent={
+          <Image alt="Google" height={18} src="/images/create-account/google.svg" width={18} />
+        }
+        type="submit"
+      >
+        Register with Google
+      </Button>
+      <Button
+        className="form-h-45 color-secondary btn-rounded m-auto mb-[10px] w-full bg-[blue]"
+        isLoading={status === 'loading'}
+        type="submit"
+      >
+        Complete!
+      </Button>
+      <p className="mt-[11.5px]">
+        {messageType === 'have-you-account' && 'Do you already have an account?'}
+        <Link className="ml-1 font-bold" href="/login">
+          Log in
+        </Link>
+      </p>
+      {status === 'error' && (
+        <p className="text-sm text-red-400" role="alert">
+          Something went wrong. Try again.
+        </p>
+      )}
+    </div>
+  );
+}

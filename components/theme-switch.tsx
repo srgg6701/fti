@@ -22,13 +22,13 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className, classNames }) => 
   const onChange = useCallback(() => {
     let newTheme = '';
 
-    if (!userType) {
+    /* if (!userType) {
       newTheme = theme === 'light' ? 'dark' : 'light';
     } else if (userType === 'member') {
       newTheme = theme === 'memberLight' ? 'memberDark' : 'memberLight';
     } else if (userType === 'partner') {
       newTheme = theme === 'partnerLight' ? 'partnerDark' : 'partnerLight';
-    }
+    } */
 
     if (newTheme) setTheme(newTheme);
   }, [theme, setTheme, userType]);

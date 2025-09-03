@@ -38,19 +38,34 @@ nav > header {
 .color-secondary {
   color: #f4f9ff;
 }
-.color-ultra-violet {
+.color-ultra-violet, .error {
   color: #ff33a6;
 }
 .menu-item {
   @apply text-[14px];
 }
 
+
+/* ANIMATIONS */
+#sending-data {
+  display: inline-block;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 .user-form-wrapper {
   @apply flex flex-col items-center justify-center;
 }
 /*TODO: remove this imitation after getting real data from BE */
 .first-loader {
   animation: grow 3s linear forwards;
+  background-color: #f4f9ff;
   width: 0;
 }
 @keyframes grow {

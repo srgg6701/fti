@@ -19,7 +19,7 @@ const config = {
   plugins: [
     heroui({
       themes: {
-        memberDark: {
+        /* memberDark: {
           extend: "dark",
           colors: {
             primary: {
@@ -53,7 +53,7 @@ const config = {
               DEFAULT: "#119DA4",
             },
           },
-        }     
+        } */
       },
     }),
   ],

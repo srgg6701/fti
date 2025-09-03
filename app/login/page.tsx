@@ -5,7 +5,7 @@ import { Input } from '@heroui/input';
 import { InputOtp } from '@heroui/input-otp';
 import { Button } from '@heroui/button';
 
-import Form from '@/components/form';
+import Form from '@/components/create-account/form';
 import { useUserStore } from '@/lib/store/userStore';
 
 export default function LoginPage() {
@@ -41,7 +41,7 @@ export default function LoginPage() {
     e.preventDefault();
     setError(null);
 
-    if (!email || !password || !otp) {
+    if (!email || !password/*  || !otp */) {
       setError('Please fill in all fields.');
 
       return;
@@ -53,7 +53,7 @@ export default function LoginPage() {
       const res = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, otp }),
+        body: JSON.stringify({ email, password/* , otp */ }),
       });
 
       const data = await res.json();
@@ -87,12 +87,12 @@ export default function LoginPage() {
         value={password}
         onValueChange={setPassword}
       />
-      <InputOtp
+      {/* <InputOtp
         isInvalid={!!error && otp !== memberOtp && otp !== partnerOtp}
         length={6}
         value={otp}
         onValueChange={setOtp}
-      />
+      /> */}
       {error && <p className="text-sm text-red-500">{error}</p>}
       <Button color="primary" isDisabled={isLoading} isLoading={isLoading} type="submit">
         {isLoading ? 'Logging In...' : 'Log In'}

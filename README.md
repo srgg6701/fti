@@ -26,12 +26,6 @@ pnpm lint      # lint + autofixes
 ### Env
 If API endpoints are set via config (`app/config/site.ts`), specify them there. For .env (if needed): create `.env.local` and use via `process.env.*`.
 
-## Theming
-Use `next-themes` with `attribute="class"` and an explicit `value` map:
-- `light`, `dark`
-- `memberLight`, `memberDark`
-- `partnerLight`, `partnerDark`
-
 Switch changes pairs depending on role. On logout theme resets to default (`dark`). (Solution: simple and predictable; avoided `useSyncExternalStore` cycles.)
 
 ## Data & Error States
