@@ -2,6 +2,7 @@
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@heroui/input';
+
 import Form from '@/components/create-account/form';
 import ErrMess from '@/components/errMess';
 import { validateEmail } from '@/lib/utils';
@@ -12,16 +13,20 @@ export default function CreateAccount() {
   // 'idle' | 'loading' | 'success' | 'error'
   const [errMess, setErrMess] = useState<string | null>(null);
   const router = useRouter();
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setErrMess(null);
     if (!email) {
       setErrMess('Please enter your email');
+
       return;
     }
     const emailValid = validateEmail(email);
+
     if (!emailValid.valid) {
       let errMess = '';
+
       switch (emailValid.reason) {
         case 'too_long':
           errMess = 'Too long email';
@@ -55,6 +60,7 @@ export default function CreateAccount() {
           break;
       }
       setErrMess(errMess);
+
       return;
     }
     try {
@@ -68,10 +74,15 @@ export default function CreateAccount() {
       setTimeout(() => setStatus('idle'), 1000);
     }
   }
+
   return (
-    <Form onSubmit={handleSubmit} status={status} messageType={['provide-your-email','have-you-account']}>
+    <Form
+      messageType={['provide-your-email', 'have-you-account']}
+      status={status}
+      onSubmit={handleSubmit}
+    >
       <Input
-        className="form-h-45 w-full bg-translusent-light input-rounded phone-number pt-[2px]"
+        className="form-h-45 bg-translusent-light input-rounded phone-number w-full pt-[2px]"
         inputMode="email"
         placeholder="account@gmail.com"
         value={email}

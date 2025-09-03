@@ -1,8 +1,8 @@
-"use client";
+'use client';
 import { Button } from '@heroui/button';
 import Image from 'next/image';
 import Link from 'next/link';
-export default function Buttons({ messageType, status }: { messageType: string, status?: string }) {
+export default function Buttons({ messageType, status }: { messageType: string; status?: string }) {
   return (
     <div className="mx-auto mt-auto flex w-full max-w-[300px] flex-col items-center">
       <Button

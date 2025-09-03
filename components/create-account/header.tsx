@@ -1,11 +1,18 @@
 'use client';
 import { useState } from 'react';
 
-export default function Header({ messageType, header = "Create an account" }: { messageType?: string, header?: string }) {
+export default function Header({
+  messageType,
+  header = 'Create an account',
+}: {
+  messageType?: string;
+  header?: string;
+}) {
   const [hint, setHint] = useState(false);
+
   return (
     <header className="mx-auto mb-[30px] text-center">
-      <h1 className="font-formular-black mb-[15px] text-2xl font-semibold text-white mx-[-1rem]">
+      <h1 className="font-formular-black mx-[-1rem] mb-[15px] text-2xl font-semibold text-white">
         {header}
       </h1>
       <p className="text-sm">
@@ -14,10 +21,14 @@ export default function Header({ messageType, header = "Create an account" }: { 
         )}
         {messageType === 'set-your-password' && (
           <span>
-            Come up with a strong password{' '}
-            <span onClick={() => setHint(!hint)} className="cursor-pointer">
+            Come up with a strong password
+            <button
+              className="ml-[8px] scale-[1.5] cursor-pointer"
+              type="button"
+              onClick={() => setHint(!hint)}
+            >
               🛈︎
-            </span>
+            </button>
           </span>
         )}
         {messageType === 'enter-your-account-details' && (
@@ -25,9 +36,9 @@ export default function Header({ messageType, header = "Create an account" }: { 
         )}
       </p>
       {hint && (
-        <div className="w-full text-left mt-4 max-w-[300px] text-sm">
+        <div className="mt-4 w-full max-w-[300px] text-left text-sm">
           Password: 8–128 chars, including:
-          <ul className="pl-8 list-disc">
+          <ul className="list-disc pl-8">
             <li>lowercase</li>
             <li>uppercase</li>
             <li>digit and</li>

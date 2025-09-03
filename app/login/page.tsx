@@ -1,7 +1,7 @@
 'use client';
-import { useState, useEffect, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, FormEvent } from 'react';
 import { Input } from '@heroui/input';
+
 import Form from '@/components/create-account/form';
 import { useUserStore } from '@/lib/store/userStore';
 
@@ -26,7 +26,7 @@ export default function LoginPage() {
   const partnerPass = 'Partner123!';
   //const partnerOtp = '262699';
 
-/*   useEffect(() => {
+  /*   useEffect(() => {
     if (isAuthenticated) {
       // TODO: Uncomment as the app is ready to work in such a regime
       // router.push('/home');
@@ -38,7 +38,7 @@ export default function LoginPage() {
     e.preventDefault();
     setError(null);
 
-    if (!email || !password/*  || !otp */) {
+    if (!email || !password /*  || !otp */) {
       setError('Please fill in all fields.');
 
       return;
@@ -50,7 +50,7 @@ export default function LoginPage() {
       const res = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password/* , otp */ }),
+        body: JSON.stringify({ email, password /* , otp */ }),
       });
 
       const data = await res.json();
@@ -68,16 +68,21 @@ export default function LoginPage() {
   };
 
   return (
-    <Form onSubmit={handleSubmit} header="Login to your account" status="ok" messageType={['provide-your-email', 'have-you-account']}>
+    <Form
+      header="Login to your account"
+      messageType={['provide-your-email', 'have-you-account']}
+      status="ok"
+      onSubmit={handleSubmit}
+    >
       <Input
-        className="form-h-45 w-full bg-translusent-light input-rounded phone-number pt-[2px] mb-[10px]"
+        className="form-h-45 bg-translusent-light input-rounded phone-number mb-[10px] w-full pt-[2px]"
         placeholder="Enter your email"
         type="email"
         value={email}
         onValueChange={setEmail}
       />
       <Input
-        className="form-h-45 w-full bg-translusent-light input-rounded phone-number"
+        className="form-h-45 bg-translusent-light input-rounded phone-number w-full"
         placeholder="Enter your password"
         type="password"
         value={password}

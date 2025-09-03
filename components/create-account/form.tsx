@@ -1,5 +1,6 @@
 'use client';
 import { Form } from '@heroui/form';
+
 import Header from '@/components/create-account/header';
 import Buttons from '@/components/create-account/buttons';
 type Props = {
@@ -20,10 +21,8 @@ export default function FormWrapper({ onSubmit, status, messageType, header, chi
         className={`flex h-full max-h-[570px] w-full max-w-[328px] flex-col justify-center`}
         onSubmit={onSubmit}
       >
-        <Header messageType={messageType[0]} header={header} />
-        <div className="relative flex flex-col mx-auto w-full max-w-[300px]">
-          {children}
-        </div>
+        <Header header={header} messageType={messageType[0]} />
+        <div className="relative mx-auto flex w-full max-w-[300px] flex-col">{children}</div>
         <Buttons messageType={messageType[1]} status={status} />
       </Form>
     </section>

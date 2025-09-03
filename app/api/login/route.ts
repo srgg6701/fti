@@ -18,15 +18,20 @@ const users = [
 
 export async function POST(req: Request) {
   try {
-    const { email, password/* , otp */ } = await req.json();
+    const { email, password /* , otp */ } = await req.json();
 
     // Simulate server processing delay
     await new Promise((resolve) => setTimeout(resolve, 800));
 
-    const user = users.find((u) => u.email === email && u.password === password/*  && u.otp === otp */);
+    const user = users.find(
+      (u) => u.email === email && u.password === password /*  && u.otp === otp */,
+    );
 
     if (!user) {
-      return NextResponse.json({ error: 'Invalid email, password.' /* , or OTP */}, { status: 401 });
+      return NextResponse.json(
+        { error: 'Invalid email, password.' /* , or OTP */ },
+        { status: 401 },
+      );
     }
 
     return NextResponse.json({

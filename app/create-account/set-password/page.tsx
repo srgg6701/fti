@@ -2,6 +2,7 @@
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@heroui/input';
+
 import Form from '@/components/create-account/form';
 import ErrMess from '@/components/errMess';
 import { validatePassword } from '@/lib/utils';
@@ -12,15 +13,18 @@ export default function SetPassword() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errMess, setErrMess] = useState<string | null>(null);
   const router = useRouter();
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setErrMess(null);
     if (!password) {
       setErrMess('Please enter password');
+
       return;
     }
     if (!password_confirmation) {
       setErrMess('Please enter password confirmation');
+
       return;
     }
     const passwordMessagesEN = {
@@ -39,9 +43,12 @@ export default function SetPassword() {
     };
 
     const passwordValid = validatePassword(password);
+
     if (!passwordValid.valid) {
       const errMess = passwordMessagesEN[passwordValid.reason];
+
       setErrMess(errMess);
+
       return;
     }
     try {
@@ -55,25 +62,26 @@ export default function SetPassword() {
       setTimeout(() => setStatus('idle'), 1000);
     }
   }
+
   return (
     <Form
-      onSubmit={handleSubmit}
-      status={status}
       messageType={['set-your-password', 'have-you-account']}
+      status={status}
+      onSubmit={handleSubmit}
     >
       <Input
-        className="form-h-45 w-full bg-translusent-light input-rounded pt-[2px] mb-[10px]"
+        className="form-h-45 bg-translusent-light input-rounded mb-[10px] w-full pt-[2px]"
         inputMode="text"
-        type="password"
         placeholder="password"
+        type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
       <Input
-        className="form-h-45 w-full bg-translusent-light input-rounded pt-[2px]"
+        className="form-h-45 bg-translusent-light input-rounded w-full pt-[2px]"
         inputMode="text"
-        type="password"
         placeholder="password retry"
+        type="password"
         value={password_confirmation}
         onChange={(e) => setPasswordConfirmation(e.target.value)}
       />
