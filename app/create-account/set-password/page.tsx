@@ -1,34 +1,83 @@
-"use client";
-import { useState,FormEvent } from 'react';
-import { Input } from '@heroui/input';
-import Section from '@/components/create-account/section'
-import Form from '@/components/create-account/form';
-import Header from '@/components/create-account/header';
+'use client';
+import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-export default function SetPassword () {
-    const router = useRouter();
-    const [password, setPassword] = useState('');
-    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-    async function handleSubmit(e: FormEvent) {
-      e.preventDefault();
-      if (!password) return;
-      try {
-        setStatus('loading');
-        await new Promise((r) => setTimeout(r, 600));
-        setStatus('success');
-        router.push('/login');
-      } catch {
-        setStatus('error');
-      } finally {
-        setTimeout(() => setStatus('idle'), 1000);
-      }
+import { Input } from '@heroui/input';
+import Form from '@/components/create-account/form';
+import ErrMess from '@/components/errMess';
+import { validatePassword } from '@/lib/utils';
+
+export default function SetPassword() {
+  const [password, setPassword] = useState('');
+  const [password_confirmation, setPasswordConfirmation] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errMess, setErrMess] = useState<string | null>(null);
+  const router = useRouter();
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    setErrMess(null);
+    if (!password) {
+      setErrMess('Please enter password');
+      return;
     }
-  return <Form onSubmit={handleSubmit}>
-      <Section messageType="have-you-account" status={status} >
-        <Header messageType="set-your-password" />
-        <div className="relative flex">
-          
-        </div>
-      </Section>
+    if (!password_confirmation) {
+      setErrMess('Please enter password confirmation');
+      return;
+    }
+    const passwordMessagesEN = {
+      empty: 'Enter a password.',
+      too_short: 'At least 8 characters.',
+      too_long: 'Too long (max 128).',
+      whitespace: 'No whitespace allowed.',
+      invalid_char: 'ASCII only (no Unicode).',
+      lower: 'Add a lowercase letter (a–z).',
+      upper: 'Add an uppercase letter (A–Z).',
+      digit: 'Add a digit (0–9).',
+      symbol: 'Add a symbol (!@#$… ).',
+      repeat: 'Avoid 3+ repeated characters.',
+      sequence: 'Avoid sequences like 1234/abcd.',
+      common: 'Password is too common.',
+    };
+
+    const passwordValid = validatePassword(password);
+    if (!passwordValid.valid) {
+      const errMess = passwordMessagesEN[passwordValid.reason];
+      setErrMess(errMess);
+      return;
+    }
+    try {
+      setStatus('loading');
+      await new Promise((r) => setTimeout(r, 600));
+      setStatus('success');
+      router.push('/login');
+    } catch {
+      setStatus('error');
+    } finally {
+      setTimeout(() => setStatus('idle'), 1000);
+    }
+  }
+  return (
+    <Form
+      onSubmit={handleSubmit}
+      status={status}
+      messageType={['set-your-password', 'have-you-account']}
+    >
+      <Input
+        className="form-h-45 w-full bg-translusent-light input-rounded pt-[2px] mb-[10px]"
+        inputMode="text"
+        type="password"
+        placeholder="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <Input
+        className="form-h-45 w-full bg-translusent-light input-rounded pt-[2px]"
+        inputMode="text"
+        type="password"
+        placeholder="password retry"
+        value={password_confirmation}
+        onChange={(e) => setPasswordConfirmation(e.target.value)}
+      />
+      <ErrMess error={errMess} />
     </Form>
+  );
 }

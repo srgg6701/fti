@@ -20,12 +20,12 @@ export function middleware(request: NextRequest) {
 
     return NextResponse.redirect(loginUrl);
   }
-
-  if (isAuthenticated && pathname === '/login') {
+  // TODO: sort it out
+  /* if (isAuthenticated && pathname === '/login') {
     const dashboardUrl = new URL('/home', request.url);
 
     return NextResponse.redirect(dashboardUrl);
-  }
+  } */
 
   // Continue executing the request if everything is OK
   return NextResponse.next();

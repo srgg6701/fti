@@ -1,43 +1,40 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@heroui/input';
-import { InputOtp } from '@heroui/input-otp';
-import { Button } from '@heroui/button';
-
 import Form from '@/components/create-account/form';
 import { useUserStore } from '@/lib/store/userStore';
 
 export default function LoginPage() {
   const loginUser = useUserStore((state) => state.login);
-  const isAuthenticated = useUserStore((state) => state.isAuthenticated);
+  //const isAuthenticated = useUserStore((state) => state.isAuthenticated);
 
-  const router = useRouter();
+  //const router = useRouter();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [otp, setOtp] = useState('');
+  //const [otp, setOtp] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   // Hardcoded credentials for local testing
   const memberEmail = 'member@valid.email';
   const memberPass = 'Member123!';
-  const memberOtp = '151588';
+  //const memberOtp = '151588';
 
   const partnerEmail = 'partner@valid.email';
   const partnerPass = 'Partner123!';
-  const partnerOtp = '262699';
+  //const partnerOtp = '262699';
 
-  useEffect(() => {
+/*   useEffect(() => {
     if (isAuthenticated) {
       // TODO: Uncomment as the app is ready to work in such a regime
       // router.push('/home');
       console.log('User is authenticated');
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, router]); */
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
 
@@ -71,32 +68,25 @@ export default function LoginPage() {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <h1 className="mb-6 text-3xl font-bold text-gray-900 dark:text-gray-100">Login</h1>
+    <Form onSubmit={handleSubmit} header="Login to your account" status="ok" messageType={['provide-your-email', 'have-you-account']}>
       <Input
-        isInvalid={!!error && email !== memberEmail && email !== partnerEmail}
+        className="form-h-45 w-full bg-translusent-light input-rounded phone-number pt-[2px] mb-[10px]"
         placeholder="Enter your email"
         type="email"
         value={email}
         onValueChange={setEmail}
       />
       <Input
-        isInvalid={!!error && password !== memberPass && password !== partnerPass}
+        className="form-h-45 w-full bg-translusent-light input-rounded phone-number"
         placeholder="Enter your password"
         type="password"
         value={password}
         onValueChange={setPassword}
       />
-      {/* <InputOtp
-        isInvalid={!!error && otp !== memberOtp && otp !== partnerOtp}
-        length={6}
-        value={otp}
-        onValueChange={setOtp}
-      /> */}
       {error && <p className="text-sm text-red-500">{error}</p>}
-      <Button color="primary" isDisabled={isLoading} isLoading={isLoading} type="submit">
+      {/* <Button color="primary" isDisabled={isLoading} isLoading={isLoading} type="submit">
         {isLoading ? 'Logging In...' : 'Log In'}
-      </Button>
+      </Button> */}
     </Form>
   );
 }
