@@ -2,39 +2,6 @@ import Link from 'next/link';
 export default function News3() {
   return (
     <div className="min-h-screen bg-[#0B0F14] text-white">
-      {/* Top Nav */}
-      <header className="sticky top-0 z-40 border-b border-white/10 bg-[#0B0F14]/80 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <nav className="flex items-center gap-6 text-sm">
-            <Link className="flex items-center gap-2 font-medium text-white/90" href="/#">
-              <img alt="Home" className="h-4 w-4" src="/images-temp/b9f5aa840e2d.svg" />
-              <span>Home</span>
-            </Link>
-            <Link className="text-white/60 hover:text-white/90" href="/#">
-              People
-            </Link>
-            <Link className="flex items-center gap-2 text-white/60 hover:text-white/90" href="/#">
-              <img alt="Strategies" className="h-4 w-4" src="/images-temp/99403c74c582.svg" />
-              <span>Strategies</span>
-            </Link>
-            <Link className="text-white/60 hover:text-white/90" href="/#">
-              News
-            </Link>
-            <Link className="flex items-center gap-2 text-white/60 hover:text-white/90" href="/#">
-              <img alt="Account" className="h-4 w-4" src="/images-temp/41dd40048729.svg" />
-              <span>Account</span>
-            </Link>
-          </nav>
-
-          <div className="text-xs tracking-wide text-white/50 uppercase">Exit</div>
-        </div>
-      </header>
-
-      {/* Page Title */}
-      <div className="mx-auto max-w-7xl px-4">
-        <h1 className="py-6 text-xl font-semibold">News</h1>
-      </div>
-
       {/* Main article */}
       <article className="mx-auto max-w-3xl px-4">
         <header className="mb-4 flex items-center justify-between">
@@ -163,39 +130,6 @@ export default function News3() {
           </article>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="mt-12 border-t border-white/10">
-        <div className="mx-auto grid max-w-7xl gap-6 px-4 py-8 md:grid-cols-3">
-          <div>
-            <img
-              alt="Fintech Innovation Trade"
-              className="h-6 opacity-80"
-              src="/images-temp/4f917a926962.svg"
-            />
-            <nav className="mt-3 grid grid-cols-3 gap-2 text-sm text-white/70">
-              <span>Home</span>
-              <span>People</span>
-              <span>Strategies</span>
-              <span>News</span>
-              <span>Account</span>
-            </nav>
-          </div>
-
-          <div className="space-y-1 text-sm text-white/70">
-            <div>+7 999 999 99 99</div>
-            <div>name@gmail.com</div>
-          </div>
-
-          <div className="text-xs text-white/50">
-            <div className="mt-2">
-              Copyright © 2025 TenWeb. All rights reserved.
-              <br />
-              Address: 40 E Main St, Suite 721, Newark, DE 19711, United States
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

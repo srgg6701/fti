@@ -20,9 +20,9 @@ export const Navbar = () => {
   // TODO: Check if it makes sense to leave it here:
   const { isAuthenticated } = useUserStore();
   const pathname = usePathname();
-  const urlFirstSegment = `/${pathname.split('/')[1]}`;
-
-  console.log('urlFirstSegment', urlFirstSegment);
+  const pathArray = pathname.split('/');
+  const urlFirstSegment = `/${pathArray[1]}`;
+  //console.log('urlFirstSegment', urlFirstSegment);
   if (
     urlFirstSegment === '/' ||
     urlFirstSegment === '/create-account' ||
@@ -30,6 +30,55 @@ export const Navbar = () => {
     urlFirstSegment === '/logout'
   )
     return null;
+  let pageHeader = "";
+  switch (urlFirstSegment) {
+    case '/home':
+      pageHeader = "Home";
+      break;
+    case '/people':
+      pageHeader = "People";
+      break;
+    case '/strategies':
+      if (pathArray?.[2]?.includes("strategy")) {
+        const segment = pathArray[2];
+        pageHeader = segment[0].toLocaleUpperCase() + segment.slice(1);
+        break;
+      }
+      pageHeader = "Strategies";
+      break;
+    case '/news':
+      pageHeader = "News";
+      break;
+    case '/account':
+      pageHeader = "Account";
+      break;
+    case '/profile':
+      pageHeader = "Profile";
+      break;
+    case '/frame':
+      pageHeader = "Frame";
+      break;
+    case '/frame256':
+      pageHeader = "Frame 256";
+      break;
+    case '/meaning':
+      pageHeader = "Meaning";
+      break;
+    case '/news3':
+      pageHeader = "News 3";
+      break;
+    case '/tariffplan':
+      pageHeader = "Tariff Plan";
+      break;
+    case '/update':
+      pageHeader = "Update";
+      break;
+    case '/verification':
+      pageHeader = "Verification";
+      break;  
+    default:
+      break;
+  }
 
   const items = siteConfig.navItems; /* .filter((item) => {
     if (item.protected && !isAuthenticated) return false;
@@ -80,7 +129,7 @@ export const Navbar = () => {
       {/* desktop */}
       <NavbarContent className="navbar-justify-around basis-1/5 items-center sm:basis-full">
         <div className="flex w-full justify-between pt-[46.5px]">
-          <h1 className="leading-[27px]">/Header</h1>
+          <h1 className="leading-[27px]">{pageHeader}</h1>
           <div className="hidden lg:flex">
             <ul className="flex items-center gap-[50px]">{menuList()}</ul>
             {/* <ThemeSwitch /> */}
