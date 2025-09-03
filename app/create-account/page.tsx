@@ -82,7 +82,7 @@ export default function CreateAccount() {
       onSubmit={handleSubmit}
     >
       <Input
-        className="form-h-45 bg-translusent-light input-rounded phone-number w-full pt-[2px]"
+        className="btn-account"
         inputMode="email"
         placeholder="account@gmail.com"
         value={email}
