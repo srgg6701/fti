@@ -17,18 +17,14 @@ export default function SetPassword() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setErrMess(null);
-    if (!password) {
+    /* if (!password) {
       setErrMess('Please enter password');
 
       return;
     }
-    if (!password_confirmation) {
-      setErrMess('Please enter password confirmation');
-
-      return;
-    }
+     else */ 
     const passwordMessagesEN = {
-      empty: 'Enter a password.',
+      empty: 'Please enter password.',
       too_short: 'At least 8 characters.',
       too_long: 'Too long (max 128).',
       whitespace: 'No whitespace allowed.',
@@ -46,9 +42,13 @@ export default function SetPassword() {
 
     if (!passwordValid.valid) {
       const errMess = passwordMessagesEN[passwordValid.reason];
-
       setErrMess(errMess);
-
+      return;
+    } else if (!password_confirmation) {
+      setErrMess('Please enter password confirmation');
+      return;
+    } else if (password !== password_confirmation) {
+      setErrMess("Passwords don't match");
       return;
     }
     try {
