@@ -1,30 +1,22 @@
 'use client';
 import { useState, FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
 import { Input } from '@heroui/input';
-
 import Form from '@/components/create-account/form';
 import { useUserStore } from '@/lib/store/userStore';
+import ErrMess from '@/components/errMess';
 
 export default function LoginPage() {
   const loginUser = useUserStore((state) => state.login);
   //const isAuthenticated = useUserStore((state) => state.isAuthenticated);
 
-  //const router = useRouter();
+  const router = useRouter();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   //const [otp, setOtp] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  // Hardcoded credentials for local testing
-  const memberEmail = 'member@valid.email';
-  const memberPass = 'Member123!';
-  //const memberOtp = '151588';
-
-  const partnerEmail = 'partner@valid.email';
-  const partnerPass = 'Partner123!';
-  //const partnerOtp = '262699';
 
   /*   useEffect(() => {
     if (isAuthenticated) {
@@ -59,9 +51,11 @@ export default function LoginPage() {
         setError(data.error || 'Unknown error occurred.');
       } else {
         loginUser(data.type, data.email);
+        router.replace('/home');
       }
     } catch (err) {
-      setError('Network error. Please try again later.');
+      setError("Network error. Please try again later");
+      console.error("Network error:", err);
     } finally {
       setIsLoading(false);
     }
@@ -75,23 +69,20 @@ export default function LoginPage() {
       onSubmit={handleSubmit}
     >
       <Input
-        className="form-h-45 bg-translusent-light input-rounded phone-number mb-[10px] w-full pt-[2px]"
+        className="btn-account mb-[10px]"
         placeholder="Enter your email"
         type="email"
         value={email}
         onValueChange={setEmail}
       />
       <Input
-        className="form-h-45 bg-translusent-light input-rounded phone-number w-full"
+        className="btn-account"
         placeholder="Enter your password"
         type="password"
         value={password}
         onValueChange={setPassword}
       />
-      {error && <p className="text-sm text-red-500">{error}</p>}
-      {/* <Button color="primary" isDisabled={isLoading} isLoading={isLoading} type="submit">
-        {isLoading ? 'Logging In...' : 'Log In'}
-      </Button> */}
+      <ErrMess error={error} />
     </Form>
   );
 }

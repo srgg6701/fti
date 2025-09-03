@@ -22,7 +22,7 @@ export default function SetPassword() {
 
       return;
     }
-     else */ 
+     else */
     const passwordMessagesEN = {
       empty: 'Please enter password.',
       too_short: 'At least 8 characters.',
@@ -42,13 +42,17 @@ export default function SetPassword() {
 
     if (!passwordValid.valid) {
       const errMess = passwordMessagesEN[passwordValid.reason];
+
       setErrMess(errMess);
+
       return;
     } else if (!password_confirmation) {
       setErrMess('Please enter password confirmation');
+
       return;
     } else if (password !== password_confirmation) {
       setErrMess("Passwords don't match");
+
       return;
     }
     try {

@@ -16,7 +16,8 @@ nav > header {
   @apply px-0;
 }
 .bg-translusent-light {
-  background-color: rgba(244, 249, 255, 0.1);
+  @apply bg-[rgba(244,249,255,0.1)];
+  /* background-color: rgba(244, 249, 255, 0.1); */
 }
 .outline-color-15 {
   outline-color:rgba(244,249,255,0.15)
@@ -28,12 +29,16 @@ nav > header {
 .input-rounded {
   @apply rounded-[15px];
 }
-.form-h-45 {
-  @apply h-[45px];
+/* .form-h-45 {
+} */
+.btn-account{
+  @apply h-[45px] bg-[rgba(244,249,255,0.1)] rounded-[15px] w-full; 
+  
 }
-.phone-number input[data-slot="input"]{
+
+/* .phone-number input[data-slot="input"]{
   @apply h-[38px];
-}
+} */
 
 .color-secondary {
   color: #f4f9ff;
