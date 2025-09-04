@@ -10,7 +10,7 @@ export default function Accounts() {
             <img
               alt="image2386"
               className="h-10 w-10 rounded-md"
-              src="/images/Accounts/image2386.png"
+              src="/assets/images/Accounts/image2386.png"
             />
             <div>
               <div className="flex items-center gap-2 text-sm text-white/80">
@@ -88,7 +88,7 @@ export default function Accounts() {
               <span>mar 24</span>
             </div>
             <div className="relative isolate">
-              <img alt="Vector2386" className="w-full" src="/images/Accounts/vector2386.svg" />
+              <img alt="Vector2386" className="w-full" src="/assets/images/Accounts/vector2386.svg" />
               <img
                 alt="Vector22386"
                 className="w-full"
@@ -104,7 +104,7 @@ export default function Accounts() {
             <img
               alt="image2386"
               className="h-10 w-10 rounded-md"
-              src="/images/Accounts/image2386-6f0f5852.png"
+              src="/assets/images/Accounts/image2386-6f0f5852.png"
             />
             <div>
               <div className="flex items-center gap-2 text-sm text-white/80">

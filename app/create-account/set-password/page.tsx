@@ -1,11 +1,12 @@
 'use client';
 import { useState, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Input } from '@heroui/input';
 
 import Form from '@/components/create-account/form';
 import ErrMess from '@/components/errMess';
 import { validatePassword } from '@/lib/utils';
+import { apiFetch } from '@/lib/api';
 
 export default function SetPassword() {
   const [password, setPassword] = useState('');
@@ -13,6 +14,10 @@ export default function SetPassword() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errMess, setErrMess] = useState<string | null>(null);
   const router = useRouter();
+  const searchParams = useSearchParams(); // <-- hook at top level
+  
+  const email = searchParams.get('email');
+  const username = email?.split('@').join("").split(".").shift() || "unknown";
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -57,11 +62,23 @@ export default function SetPassword() {
     }
     try {
       setStatus('loading');
-      await new Promise((r) => setTimeout(r, 600));
+      await apiFetch('/auth/register', {
+        method: 'POST',
+        body: JSON.stringify({ email, password, username }),
+      });
       setStatus('success');
+      console.log("%cRegistration is successful", "color: green");
       router.push('/login');
-    } catch {
+    } catch (e) {
       setStatus('error');
+      console.log('%cerror', 'color: orangered', {
+        e,
+        request: JSON.stringify({ 
+          email, 
+          password,
+          username 
+        }),
+      });
     } finally {
       setTimeout(() => setStatus('idle'), 1000);
     }
@@ -89,6 +106,12 @@ export default function SetPassword() {
         value={password_confirmation}
         onChange={(e) => setPasswordConfirmation(e.target.value)}
       />
+      <br />
+      <br />
+      email: {email}, username: {username}
+      <br />
+      <br />
+      status: {status}
       <ErrMess error={errMess} />
     </Form>
   );

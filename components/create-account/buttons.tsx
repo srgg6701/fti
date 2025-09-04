@@ -10,7 +10,7 @@ export default function Buttons({ messageType, status }: { messageType: string; 
         //TODO: update later on:
         isLoading={status === 'loading'}
         startContent={
-          <Image alt="Google" height={18} src="/images/create-account/google.svg" width={18} />
+          <Image alt="Google" height={18} src="/assets/images/icons/google.svg" width={18} />
         }
         type="submit"
       >

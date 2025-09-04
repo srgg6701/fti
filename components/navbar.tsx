@@ -118,7 +118,7 @@ export const Navbar = () => {
         alt="Exit"
         className="mr-3 inline-block"
         height="16"
-        src="/images/icons/exit.png"
+        src="/assets/images/icons/bell.png"
         style={{ height: '16px' }}
         width="16"
       />

@@ -2,7 +2,6 @@
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@heroui/input';
-
 import Form from '@/components/create-account/form';
 import ErrMess from '@/components/errMess';
 import { validateEmail } from '@/lib/utils';
@@ -65,9 +64,12 @@ export default function CreateAccount() {
     }
     try {
       setStatus('loading');
-      await new Promise((r) => setTimeout(r, 600));
+
+      /****** send request to the endpoint to get the confirmation code ******/
+
+      new Promise((r) => setTimeout(r, 600));
       setStatus('success');
-      router.push('/create-account/set-password');
+      router.push(`/create-account/set-password?email=${email}`);
     } catch {
       setStatus('error');
     } finally {
