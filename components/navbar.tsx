@@ -9,6 +9,7 @@ import Link from 'next/link';
 //import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+import { checkRouteAside } from '@/lib/utils';
 
 import { Icon, menuIcons } from './icons';
 
@@ -16,20 +17,20 @@ import { siteConfig } from '@/config/site';
 //import { ThemeSwitch } from '@/components/theme-switch';
 import { useUserStore } from '@/lib/store/userStore';
 
+export const getUrlSegments = (usePathname: () => string, segment: number) => {
+  const pathname = usePathname();
+  const pathArray = pathname.split('/');
+  return `/${pathArray[segment]}`;
+}
+
 export const Navbar = () => {
   // TODO: Check if it makes sense to leave it here:
   const { isAuthenticated } = useUserStore();
-  const pathname = usePathname();
-  const pathArray = pathname.split('/');
-  const urlFirstSegment = `/${pathArray[1]}`;
-  //console.log('urlFirstSegment', urlFirstSegment);
-  if (
-    urlFirstSegment === '/' ||
-    urlFirstSegment === '/create-account' ||
-    urlFirstSegment === '/login' ||
-    urlFirstSegment === '/logout'
-  )
-    return null;
+  const urlFirstSegment = getUrlSegments(usePathname, 1);
+  const urlSecondSegment = getUrlSegments(usePathname, 2);
+  
+  if (checkRouteAside(urlFirstSegment)) return null;
+  
   let pageHeader = "";
   switch (urlFirstSegment) {
     case '/home':
@@ -39,9 +40,8 @@ export const Navbar = () => {
       pageHeader = "People";
       break;
     case '/strategies':
-      if (pathArray?.[2]?.includes("strategy")) {
-        const segment = pathArray[2];
-        pageHeader = segment[0].toLocaleUpperCase() + segment.slice(1);
+      if (urlSecondSegment?.[2]?.includes("strategy")) {
+        pageHeader = urlSecondSegment.toLocaleUpperCase() + urlSecondSegment.slice(1);
         break;
       }
       pageHeader = "Strategies";
@@ -49,8 +49,8 @@ export const Navbar = () => {
     case '/news':
       pageHeader = "News";
       break;
-    case '/account':
-      pageHeader = "Account";
+    case '/accounts':
+      pageHeader = "Accounts";
       break;
     case '/profile':
       pageHeader = "Profile";

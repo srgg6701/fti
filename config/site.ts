@@ -29,7 +29,6 @@ export const siteConfig = {
       href: '/account',
       protected: true,
     },
-
     /* {
       label: 'Logout',
       href: '/logout',

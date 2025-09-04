@@ -6,10 +6,11 @@ import '@/styles/globals.css';
 import '@/styles/xtra.css';
 import { Providers } from './providers';
 
-import { ThemeAutoSwitch } from '@/app/ThemeAutoSwitch';
+//import { ThemeAutoSwitch } from '@/app/ThemeAutoSwitch';
 import { siteConfig } from '@/config/site';
 import { fontSans } from '@/config/fonts';
 import { Navbar } from '@/components/navbar';
+import Footer from '@/components/footer';
 
 export const metadata: Metadata = {
   title: {
@@ -60,7 +61,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           >
             <Navbar />
             <main className="container mx-auto flex-grow py-6">{children}</main>
-            <ThemeAutoSwitch />
+            <Footer />
+            {/* <ThemeAutoSwitch /> */}
           </div>
         </Providers>
       </body>
