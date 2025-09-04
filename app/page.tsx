@@ -8,7 +8,6 @@ export default function Default() {
     clearTimeout(tm);
     console.log('Will redirect to the create account');
     router.replace('/create-account');
-    //redirect('/login');
   }, 4000);
 
   return (

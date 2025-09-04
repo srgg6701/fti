@@ -9,25 +9,21 @@ import { validatePassword } from '@/lib/utils';
 import { apiFetch } from '@/lib/api';
 
 export default function SetPassword() {
+  const router = useRouter();
+  const searchParams = useSearchParams(); // <-- hook at top level
+  const email = searchParams.get('email');
+  const username = email?.split('@').join("").split(".").shift() || "unknown";
+
   const [password, setPassword] = useState('');
   const [password_confirmation, setPasswordConfirmation] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errMess, setErrMess] = useState<string | null>(null);
-  const router = useRouter();
-  const searchParams = useSearchParams(); // <-- hook at top level
-  
-  const email = searchParams.get('email');
-  const username = email?.split('@').join("").split(".").shift() || "unknown";
+  //const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setErrMess(null);
-    /* if (!password) {
-      setErrMess('Please enter password');
-
-      return;
-    }
-     else */
+    
     const passwordMessagesEN = {
       empty: 'Please enter password.',
       too_short: 'At least 8 characters.',
@@ -57,7 +53,6 @@ export default function SetPassword() {
       return;
     } else if (password !== password_confirmation) {
       setErrMess("Passwords don't match");
-
       return;
     }
     try {
@@ -71,14 +66,6 @@ export default function SetPassword() {
       router.push('/login');
     } catch (e) {
       setStatus('error');
-      console.log('%cerror', 'color: orangered', {
-        e,
-        request: JSON.stringify({ 
-          email, 
-          password,
-          username 
-        }),
-      });
     } finally {
       setTimeout(() => setStatus('idle'), 1000);
     }
@@ -106,12 +93,6 @@ export default function SetPassword() {
         value={password_confirmation}
         onChange={(e) => setPasswordConfirmation(e.target.value)}
       />
-      <br />
-      <br />
-      email: {email}, username: {username}
-      <br />
-      <br />
-      status: {status}
       <ErrMess error={errMess} />
     </Form>
   );

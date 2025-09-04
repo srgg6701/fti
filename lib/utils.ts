@@ -156,3 +156,10 @@ export const routesAside = ['/', '/create-account', '/login', '/logout'];
 export function checkRouteAside(segment: string) {
   return routesAside.some((seg) => seg === segment);
 }
+
+export const getUrlSegments = (path: () => string, segment: number) => {
+  const pathname = path();
+  const pathArray = pathname.split('/');
+
+  return `/${pathArray[segment]}`;
+};

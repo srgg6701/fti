@@ -5,10 +5,10 @@ import { useUserStore } from '@/lib/store/userStore';
 
 export function ThemeAutoSwitch() {
   //const { theme, setTheme } = useTheme();
-  const { isAuthenticated, userType } = useUserStore();
+  const { isAuthenticated/* , userType */ } = useUserStore();
 
   useEffect(() => {
-    if (!userType) return;
+    //if (!userType) return;
 
     /* const isDark = theme?.toLowerCase().includes('dark');
 
@@ -17,7 +17,7 @@ export function ThemeAutoSwitch() {
     } else if (userType === 'partner') {
       setTheme(isDark ? 'partnerDark' : 'partnerLight');
     } */
-  }, [isAuthenticated, userType]);
+  }, [isAuthenticated/* , userType */]);
 
   return null;
 }

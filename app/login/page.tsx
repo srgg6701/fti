@@ -1,64 +1,73 @@
 'use client';
-import { useState, FormEvent } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@heroui/input';
-
 import Form from '@/components/create-account/form';
 import { useUserStore } from '@/lib/store/userStore';
 import ErrMess from '@/components/errMess';
+import { apiFetch } from '@/lib/api';
 
 export default function LoginPage() {
   const loginUser = useUserStore((state) => state.login);
-  //const isAuthenticated = useUserStore((state) => state.isAuthenticated);
+  const isAuthenticated = useUserStore((state) => state.isAuthenticated);
 
   const router = useRouter();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  //const [otp, setOtp] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errMess, setErrMess] = useState<string | null>(null);
+  // const [isLoading, setIsLoading] = useState(false);
 
-  /*   useEffect(() => {
+    useEffect(() => {
     if (isAuthenticated) {
-      // TODO: Uncomment as the app is ready to work in such a regime
-      // router.push('/home');
+      router.push('/home');
       console.log('User is authenticated');
     }
-  }, [isAuthenticated, router]); */
+  }, [isAuthenticated, router]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setError(null);
+    setErrMess(null);
 
     if (!email || !password /*  || !otp */) {
-      setError('Please fill in all fields.');
-
+      setErrMess('Please fill in all fields.');
       return;
     }
 
-    setIsLoading(true);
+    //setIsLoading(true);
+
+    type loginResponse = {
+      success: boolean,
+      message: string,
+      token: string,
+      user: {
+        id: number,
+        email: string,
+        username: string, 
+        default_language_id: number,
+        start_page: string,
+        is_ban: boolean,
+        tour_step: number
+      }
+    };
 
     try {
-      const res = await fetch('/api/login', {
+      const {success, message, token, user}:loginResponse = await apiFetch('/auth/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password /* , otp */ }),
+        body: JSON.stringify({ email, password }),
       });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || 'Unknown error occurred.');
-      } else {
-        loginUser(data.type, data.email);
-        router.replace('/home');
-      }
+      setStatus('success');
+      console.log('%cLogin is successful', 'color: green', {success, message, token, user});
+      // store user email and isAuthenticated in sessionStorage and Cookies
+      loginUser(user.email);
+      router.push('/home');
     } catch (err) {
-      setError('Network error. Please try again later');
+      setErrMess('Network error. Please try again later');
       console.error('Network error:', err);
     } finally {
-      setIsLoading(false);
+      //setIsLoading(false);
+      setTimeout(() => setStatus('idle'), 1000);
     }
   };
 
@@ -66,7 +75,7 @@ export default function LoginPage() {
     <Form
       header="Login to your account"
       messageType={['provide-your-email', 'have-you-account']}
-      status="ok"
+      status={status}
       onSubmit={handleSubmit}
     >
       <Input
@@ -83,7 +92,7 @@ export default function LoginPage() {
         value={password}
         onValueChange={setPassword}
       />
-      <ErrMess error={error} />
+      <ErrMess error={errMess} />
     </Form>
   );
 }

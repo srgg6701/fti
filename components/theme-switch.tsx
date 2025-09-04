@@ -7,7 +7,7 @@ import { useIsSSR } from '@react-aria/ssr';
 import clsx from 'clsx';
 
 import { SunFilledIcon, MoonFilledIcon } from '@/components/icons';
-import { useUserStore } from '@/lib/store/userStore';
+//import { useUserStore } from '@/lib/store/userStore';
 
 export interface ThemeSwitchProps {
   className?: string;
@@ -17,7 +17,7 @@ export interface ThemeSwitchProps {
 export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className, classNames }) => {
   const { theme, setTheme } = useTheme();
   const isSSR = useIsSSR();
-  const { userType } = useUserStore();
+  //const { userType } = useUserStore();
 
   const onChange = useCallback(() => {
     let newTheme = '';
@@ -31,13 +31,13 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className, classNames }) => 
     } */
 
     if (newTheme) setTheme(newTheme);
-  }, [theme, setTheme, userType]);
+  }, [theme, setTheme/* , userType */]);
 
   const { Component, slots, isSelected, getBaseProps, getInputProps, getWrapperProps } = useSwitch({
     isSelected:
-      (!userType && theme === 'light') ||
+      /* (!userType && theme === 'light') ||
       (userType === 'member' && theme === 'memberLight') ||
-      (userType === 'partner' && theme === 'partnerLight') ||
+      (userType === 'partner' && theme === 'partnerLight') || */
       isSSR,
     'aria-label': 'Toggle theme',
     onChange,

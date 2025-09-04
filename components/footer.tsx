@@ -2,7 +2,7 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
-import { getUrlSegments } from './navbar';
+import { getUrlSegments } from '@/lib/utils';
 
 import { LogoFTI } from '@/components/icons';
 import { siteConfig } from '@/config/site';

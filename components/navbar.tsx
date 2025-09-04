@@ -12,17 +12,10 @@ import Image from 'next/image';
 
 import { Icon, menuIcons } from './icons';
 
-import { checkRouteAside } from '@/lib/utils';
+import { checkRouteAside, getUrlSegments } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 //import { ThemeSwitch } from '@/components/theme-switch';
 import { useUserStore } from '@/lib/store/userStore';
-
-export const getUrlSegments = (path: () => string, segment: number) => {
-  const pathname = path();
-  const pathArray = pathname.split('/');
-
-  return `/${pathArray[segment]}`;
-};
 
 export const Navbar = () => {
   // TODO: Check if it makes sense to leave it here:

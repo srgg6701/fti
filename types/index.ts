@@ -1,5 +1,5 @@
 import { SVGProps } from 'react';
-
+// TODO clarify if we need currency
 interface Currency {
   id: string;
   symbol: string;
