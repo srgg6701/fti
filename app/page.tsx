@@ -1,14 +1,15 @@
 'use client';
-
+import { useRouter } from 'next/navigation';
 import { LogoFTI } from '@/components/icons';
 
 export default function Default() {
+  const router = useRouter();
   const tm = setTimeout(() => {
     clearTimeout(tm);
     console.log('Will redirect to the create account');
-    //redirect('/create-account');
+    router.replace('/create-account');
     //redirect('/login');
-  }, 3600);
+  }, 4000);
 
   return (
     <div className="relative flex h-full w-full flex-col items-center justify-center">
