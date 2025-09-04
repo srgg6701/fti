@@ -2,6 +2,7 @@
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@heroui/input';
+
 import Form from '@/components/create-account/form';
 import { useUserStore } from '@/lib/store/userStore';
 import ErrMess from '@/components/errMess';
@@ -54,8 +55,8 @@ export default function LoginPage() {
         router.replace('/home');
       }
     } catch (err) {
-      setError("Network error. Please try again later");
-      console.error("Network error:", err);
+      setError('Network error. Please try again later');
+      console.error('Network error:', err);
     } finally {
       setIsLoading(false);
     }

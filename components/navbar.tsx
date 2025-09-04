@@ -9,73 +9,75 @@ import Link from 'next/link';
 //import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import { checkRouteAside } from '@/lib/utils';
 
 import { Icon, menuIcons } from './icons';
 
+import { checkRouteAside } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 //import { ThemeSwitch } from '@/components/theme-switch';
 import { useUserStore } from '@/lib/store/userStore';
 
-export const getUrlSegments = (usePathname: () => string, segment: number) => {
-  const pathname = usePathname();
+export const getUrlSegments = (path: () => string, segment: number) => {
+  const pathname = path();
   const pathArray = pathname.split('/');
+
   return `/${pathArray[segment]}`;
-}
+};
 
 export const Navbar = () => {
   // TODO: Check if it makes sense to leave it here:
   const { isAuthenticated } = useUserStore();
   const urlFirstSegment = getUrlSegments(usePathname, 1);
   const urlSecondSegment = getUrlSegments(usePathname, 2);
-  
+
   if (checkRouteAside(urlFirstSegment)) return null;
-  
-  let pageHeader = "";
+
+  let pageHeader = '';
+
   switch (urlFirstSegment) {
     case '/home':
-      pageHeader = "Home";
+      pageHeader = 'Home';
       break;
     case '/people':
-      pageHeader = "People";
+      pageHeader = 'People';
       break;
     case '/strategies':
-      if (urlSecondSegment?.[2]?.includes("strategy")) {
+      if (urlSecondSegment?.[2]?.includes('strategy')) {
         pageHeader = urlSecondSegment.toLocaleUpperCase() + urlSecondSegment.slice(1);
         break;
       }
-      pageHeader = "Strategies";
+      pageHeader = 'Strategies';
       break;
     case '/news':
-      pageHeader = "News";
+      pageHeader = 'News';
       break;
     case '/accounts':
-      pageHeader = "Accounts";
+      pageHeader = 'Accounts';
       break;
     case '/profile':
-      pageHeader = "Profile";
+      pageHeader = 'Profile';
       break;
     case '/frame':
-      pageHeader = "Frame";
+      pageHeader = 'Frame';
       break;
     case '/frame256':
-      pageHeader = "Frame 256";
+      pageHeader = 'Frame 256';
       break;
     case '/meaning':
-      pageHeader = "Meaning";
+      pageHeader = 'Meaning';
       break;
     case '/news3':
-      pageHeader = "News 3";
+      pageHeader = 'News 3';
       break;
     case '/tariffplan':
-      pageHeader = "Tariff Plan";
+      pageHeader = 'Tariff Plan';
       break;
     case '/update':
-      pageHeader = "Update";
+      pageHeader = 'Update';
       break;
     case '/verification':
-      pageHeader = "Verification";
-      break;  
+      pageHeader = 'Verification';
+      break;
     default:
       break;
   }

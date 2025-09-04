@@ -151,10 +151,8 @@ export function validatePassword(pw: string, opts: Opts = {}): PasswordValidatio
   return { valid: true };
 }
 
-export const routesAside = [
-  '/', '/create-account', '/login', '/logout'
-]
+export const routesAside = ['/', '/create-account', '/login', '/logout'];
 
-export function checkRouteAside (segment:string) {
-    return routesAside.some(seg => seg === segment);
+export function checkRouteAside(segment: string) {
+  return routesAside.some((seg) => seg === segment);
 }
