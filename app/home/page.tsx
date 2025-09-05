@@ -1,8 +1,10 @@
 'use client'; // TODO: check if it should be a client component
 import { useLayoutEffect } from 'react';
-import Link from 'next/link';
+//import Link from 'next/link';
 import Image from 'next/image';
-
+import DataTopPerforming from '@/mockData/dataTopPerforming';
+import DataNews from '@/mockData/dataNews';
+import { SectionData } from '@/components/sectionData';
 import CardTopPerforming from '@/components/cards/top-performing';
 import CardNews from '@/components/cards/news';
 import './style.css';
@@ -50,88 +52,6 @@ export default function Home() {
     };
   }, []);
 
-  const DataTopPerforming = [
-    {
-      chartImg: 'home/top-performing/graph1.svg',
-      risk: 5,
-      roi: 51.25,
-      timeFrame: '6 Months',
-      userImg: 'face-female.png',
-    },
-    {
-      chartImg: 'home/top-performing/graph1.svg',
-      risk: 5,
-      roi: 51.25,
-      timeFrame: '6 Months',
-      userImg: 'face-female2.png',
-    },
-    {
-      chartImg: 'home/top-performing/graph3.svg',
-      risk: 5,
-      roi: 51.25,
-      timeFrame: '6 Months',
-      userImg: 'face-male.png',
-    },
-    {
-      chartImg: 'home/top-performing/graph1.svg',
-      risk: 5,
-      roi: 51.25,
-      timeFrame: '6 Months',
-      userImg: 'face-male2.png',
-    },
-    {
-      chartImg: 'home/top-performing/graph1.svg',
-      risk: 5,
-      roi: 51.25,
-      timeFrame: '6 Months',
-      userImg: 'face-female.png',
-    },
-    {
-      chartImg: 'home/top-performing/graph1.svg',
-      risk: 5,
-      roi: 51.25,
-      timeFrame: '6 Months',
-      userImg: 'face-female2.png',
-    },
-  ];
-  const DataNews = [
-    {
-      date: '10 May',
-      img: 'bitcoin.png',
-      text: 'Bitcoin’s price surges as institutional investors start buying more',
-      title: 'The Future of Bitcoing: Will it Reach',
-      userImg: 'face-male-spectacles.svg',
-    },
-    {
-      date: '10 May',
-      img: 'key-transparent.png',
-      text: 'Bitcoin’s price surges as institutional investors start buying more',
-      title: 'The Future of Bitcoing: Will it Reach',
-      userImg: 'male-yellow-face-bg-blue.svg',
-    },
-    {
-      date: '10 May',
-      img: 'rings-vertical.jpg',
-      text: 'Bitcoin’s price surges as institutional investors start buying more',
-      title: 'The Future of Bitcoing: Will it Reach',
-      userImg: 'face-male-all-orange.svg',
-    },
-    {
-      date: '10 May',
-      img: 'monedas.png',
-      text: 'Bitcoin’s price surges as institutional investors start buying more',
-      title: 'The Future of Bitcoing: Will it Reach',
-      userImg: 'face-female-rosy-darkhair.svg',
-    },
-    {
-      date: '10 May',
-      img: 'bitcoin.png',
-      text: 'Bitcoin’s price surges as institutional investors start buying more',
-      title: 'The Future of Bitcoing: Will it Reach',
-      userImg: 'face-male-spectacles.svg',
-    },
-  ];
-
   return (
     <div className="mt-[80px] mb-[56px] flex min-h-screen flex-col gap-[5rem] text-white">
       {/* Empty state / CTA */}
@@ -151,47 +71,43 @@ export default function Home() {
         </div>
       </section>
       {/* Top Performing */}
-      <section className="scroller w-full">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Top Perfoming</h2>
-          <Link className="text-sm text-white/70 hover:text-white" href="/#">
-            See all
-          </Link>
-        </div>
-        <div className="row article-container h-[327px]">
-          {DataTopPerforming.map((data, index) => (
-            <CardTopPerforming
-              key={index}
-              chartImg={data.chartImg}
-              risk={data.risk}
-              roi={data.roi}
-              timeFrame={data.timeFrame}
-              userImg={data.userImg}
-            />
-          ))}
-        </div>
-      </section>
+      <SectionData
+        data={DataTopPerforming}
+        title="Top Performing"
+        seeAllHref="/top"
+        height={327}
+        rowClassName=""
+        renderItem={(d, i) => (
+          <CardTopPerforming
+            key={i} // если есть id — лучше его
+            chartImg={d.chartImg}
+            risk={d.risk}
+            roi={d.roi}
+            timeFrame={d.timeFrame}
+            userImg={d.userImg}
+          />
+        )}
+        getKey={(d, i) => `${d.timeFrame}-${i}`}
+      />
       {/* News */}
-      <section className="scroller w-full">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">News</h2>
-          <Link className="text-sm text-white/70 hover:text-white" href="/#">
-            See all
-          </Link>
-        </div>
-        <div className="row article-container h-[393px]">
-          {DataNews.map((data, index) => (
-            <CardNews
-              key={index}
-              date={data.date}
-              img={data.img}
-              text={data.text}
-              title={data.title}
-              userImg={data.userImg}
-            />
-          ))}
-        </div>
-      </section>
+      <SectionData
+        data={DataNews}
+        title="DataNews"
+        seeAllHref="/top"
+        height={393}
+        rowClassName=""
+        renderItem={(d, i) => (
+          <CardNews
+            key={i} // если есть id — лучше его
+            date={d.date}
+            img={d.img}
+            text={d.text}
+            title={d.title}
+            userImg={d.userImg}
+          />
+        )}
+        getKey={(d, i) => `${d.title}-${i}`}
+      />
     </div>
   );
 }
