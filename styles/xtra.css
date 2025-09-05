@@ -4,7 +4,7 @@ h1 {
   @apply text-[2rem] font-bold;
 }
 h2 {
-  @apply mb-4 text-2xl font-bold;
+  @apply text-3xl font-bold;
 }
 header ul.navbar-justify-around {
   @apply justify-around;
