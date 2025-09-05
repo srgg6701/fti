@@ -46,7 +46,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="mt-[56px] flex min-h-screen flex-col gap-[5rem] text-white">
+    <div className="mb-[56px] mt-[80px] flex min-h-screen flex-col gap-[5rem] text-white">
       {/* Empty state / CTA */}
       <section className="mx-auto py-[80px]">
         <div className="mx-auto flex w-full max-w-[370px] flex-col text-center">
