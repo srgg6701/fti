@@ -10,21 +10,21 @@ export default function HomeSections() {
   return (
     <div className="mt-[80px] mb-[56px] flex flex-col gap-[5rem]">
       <SectionData
-        getKey={(d, i) => `${d.username}-${i}`}
         data={DataMyStrategies}
-        title="My Strategies"
+        getKey={(d, i) => `${d.username}-${i}`}
         renderItem={(d, i) => (
           <CardMyStrategies
-          username={d.username}
-          userImg={d.userImg}
-          invested={d.invested}
-          proRata={d.proRata}
-          direction={d.direction}
-          dynamics={d.dynamics}
-          key={i}
+            key={i}
+            direction={d.direction}
+            dynamics={d.dynamics}
+            invested={d.invested}
+            proRata={d.proRata}
+            userImg={d.userImg}
+            username={d.username}
           />
         )}
-        />
+        title="My Strategies"
+      />
       {/* Top Performing */}
       <SectionData
         data={DataTopPerforming}

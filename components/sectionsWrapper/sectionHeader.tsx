@@ -1,5 +1,11 @@
 import Link from 'next/link';
-export default function SectionHeader({title, seeAllHref} : {title: string, seeAllHref: string}) {
+export default function SectionHeader({
+  title,
+  seeAllHref,
+}: {
+  title: string;
+  seeAllHref: string;
+}) {
   return (
     <div className="mb-4 flex items-center justify-start gap-5">
       <h2 className="text-lg font-semibold">{title}</h2>

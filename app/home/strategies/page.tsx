@@ -1,10 +1,10 @@
 'use client'; // TODO: check if it should be a client component
-import { useAdjustArticleWidth } from '@/hooks/useAdjustArticleWidth';
 import Image from 'next/image';
+
+import { useAdjustArticleWidth } from '@/hooks/useAdjustArticleWidth';
 import HomeSections from '@/app/home/homeSections';
 import HomeStrategiesGraph from '@/mockData/graphs/home-strategies';
 import DropdownPill from '@/components/dateDropDown';
-import SectionHeader from '@/components/sectionsWrapper/sectionHeader';
 import '@/app/home/style.css';
 
 export default function Home() {
@@ -12,12 +12,12 @@ export default function Home() {
 
   return (
     <>
-      <section className="flex w-full py-5 lg:p-[80px] lg:pb-[90px] gap-11 flex-wrap xl:flex-nowrap">
-        <div className="flex flex-col max-w-[452px] gap-2.5">
+      <section className="flex w-full flex-wrap gap-11 py-5 lg:p-[80px] lg:pb-[90px] xl:flex-nowrap">
+        <div className="flex max-w-[452px] flex-col gap-2.5">
           <h3 className="text-2xl font-medium">Total Balance</h3>
           <h1 className="text-5xl font-medium">$ 1000.00</h1>
-          <p className='color-secondary opacity-50 leading-normal'>
-            Google's free service allows you to instantly translate words, phrases, and web pages.
+          <p className="color-secondary leading-normal opacity-50">
+            Google&apos;s free service allows you to instantly translate words, phrases, and web pages.
             It supports over 100 languages.
           </p>
         </div>
@@ -27,9 +27,9 @@ export default function Home() {
               <span className="font-semibold">Graph</span>
               <span className="flex gap-1 text-blue-600">
                 <Image
-                  src="/assets/images/icons/arrows/arrow_up_blue.svg"
                   alt="Up"
                   height={7}
+                  src="/assets/images/icons/arrows/arrow_up_blue.svg"
                   width={7}
                 />
                 <span>$ 32 (1.23%)</span>
@@ -52,7 +52,6 @@ export default function Home() {
           <HomeStrategiesGraph />
         </div>
       </section>
-      {/* <SectionHeader title="My Strategies" seeAllHref='#' /> */}
       <HomeSections />
     </>
   );

@@ -1,11 +1,11 @@
 export default function HomeStrategiesGraph() {
   return (
     <svg
-      width="561"
-      height="160"
       className="max-w-[100%]"
-      viewBox="0 0 561 160"
       fill="none"
+      height="160"
+      viewBox="0 0 561 160"
+      width="561"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
@@ -105,30 +105,30 @@ export default function HomeStrategiesGraph() {
       <path
         d="M1.48779 100.5L35.1936 89.5L68.8995 82H102.605H136.311L170.017 100.5H204.846L237.429 111.5L271.135 120L304.84 78.5L339.67 84L372.252 94L439.664 78.5L473.37 70.5H507.075H529.546"
         stroke="#3B57FF"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeMiterlimit="1.58611"
         strokeWidth="2"
-        stroke-miterlimit="1.58611"
-        stroke-linecap="round"
-        stroke-linejoin="round"
       />
       <circle
         cx="528.154"
         cy="69.8457"
-        r="1.8457"
         fill="#030303"
+        r="1.8457"
         stroke="#3B57FF"
         strokeWidth="2"
       />
       <defs>
         <linearGradient
+          gradientUnits="userSpaceOnUse"
           id="paint0_linear_238_24171"
           x1="313.829"
-          y1="136"
           x2="313.383"
+          y1="136"
           y2="79.9857"
-          gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#3B57FF" stop-opacity="0" />
-          <stop offset="1" stop-color="#3B57FF" stop-opacity="0.2" />
+          <stop stopColor="#3B57FF" stopOpacity="0" />
+          <stop offset="1" stopColor="#3B57FF" stopOpacity="0.2" />
         </linearGradient>
       </defs>
     </svg>

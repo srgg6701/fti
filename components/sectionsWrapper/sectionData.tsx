@@ -1,4 +1,5 @@
 import React from 'react';
+
 import SectionHeader from '@/components/sectionsWrapper/sectionHeader';
 type SectionDataProps<T> = {
   data: T[];
@@ -27,7 +28,7 @@ export function SectionData<T>({
 
   return (
     <section className={`scroller w-full ${sectionClassName}`}>
-      <SectionHeader title={title} seeAllHref={seeAllHref} />
+      <SectionHeader seeAllHref={seeAllHref} title={title} />
       <div className={`row article-container ${rowClassName}`} style={style}>
         {data.map((item, i) => (
           <React.Fragment key={getKey?.(item, i) ?? i}>{renderItem(item, i)}</React.Fragment>
