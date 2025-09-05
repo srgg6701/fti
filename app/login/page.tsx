@@ -2,6 +2,7 @@
 import { useState, useEffect, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@heroui/input';
+
 import Form from '@/components/create-account/form';
 import { useUserStore } from '@/lib/store/userStore';
 import ErrMess from '@/components/errMess';
@@ -19,7 +20,7 @@ export default function LoginPage() {
   const [errMess, setErrMess] = useState<string | null>(null);
   // const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
+  useEffect(() => {
     if (isAuthenticated) {
       router.push('/home');
       console.log('User is authenticated');
@@ -32,33 +33,35 @@ export default function LoginPage() {
 
     if (!email || !password /*  || !otp */) {
       setErrMess('Please fill in all fields.');
+
       return;
     }
 
     //setIsLoading(true);
 
     type loginResponse = {
-      success: boolean,
-      message: string,
-      token: string,
+      success: boolean;
+      message: string;
+      token: string;
       user: {
-        id: number,
-        email: string,
-        username: string, 
-        default_language_id: number,
-        start_page: string,
-        is_ban: boolean,
-        tour_step: number
-      }
+        id: number;
+        email: string;
+        username: string;
+        default_language_id: number;
+        start_page: string;
+        is_ban: boolean;
+        tour_step: number;
+      };
     };
 
     try {
-      const {success, message, token, user}:loginResponse = await apiFetch('/auth/login', {
+      const { success, message, token, user }: loginResponse = await apiFetch('/auth/login', {
         method: 'POST',
         body: JSON.stringify({ email, password }),
       });
+
       setStatus('success');
-      console.log('%cLogin is successful', 'color: green', {success, message, token, user});
+      console.log('%cLogin is successful', 'color: green', { success, message, token, user });
       // store user email and isAuthenticated in sessionStorage and Cookies
       loginUser(user.email);
       router.push('/home');

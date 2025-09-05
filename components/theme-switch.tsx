@@ -31,7 +31,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className, classNames }) => 
     } */
 
     if (newTheme) setTheme(newTheme);
-  }, [theme, setTheme/* , userType */]);
+  }, [theme, setTheme /* , userType */]);
 
   const { Component, slots, isSelected, getBaseProps, getInputProps, getWrapperProps } = useSwitch({
     isSelected:

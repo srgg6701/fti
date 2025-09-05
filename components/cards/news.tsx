@@ -13,28 +13,30 @@ const CardNews = ({
   title: string;
   text: string;
 }) => (
-  <article className="flex flex-col gap-5 mr-[10px] p-5 md:h-[376px] md:w-[320px]">
+  <article className="mr-[10px] flex flex-col gap-5 p-5 md:h-[376px] md:w-[320px]">
     <header className="flex items-center justify-between">
       <div className="flex items-center gap-2">
-        <Image src={`/assets/images/users/${userImg}`} alt="title" width={30} height={30} />
+        <Image alt="title" height={30} src={`/assets/images/users/${userImg}`} width={30} />
         <span className="text-sm">username</span>
       </div>
       <span className="text-xs text-white/60">{date}</span>
     </header>
-    <div className="flex w-[280] h-[180] items-center rounded-[16px] overflow-hidden">
+    <div className="flex h-[180] w-[280] items-center overflow-hidden rounded-[16px]">
       <Image
         alt={title}
+        className="h-full w-full"
+        height={180}
         src={`/assets/images/news/${img}`}
         width={280}
-        height={180}
-        className="h-full w-full"
       />
     </div>
     <div className="p-4">
       <h3 className="mb-[10px] text-lg leading-[1.2] font-semibold">{title}</h3>
       <p className="relative text-sm">
         {text}
-        <Link className="read-more" href="/news/news11">... <span className="text-blue-600/100"> read more</span></Link>
+        <Link className="read-more" href="/news/news11">
+          ... <span className="text-blue-600/100"> read more</span>
+        </Link>
       </p>
     </div>
   </article>

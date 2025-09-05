@@ -2,6 +2,7 @@
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@heroui/input';
+
 import Form from '@/components/create-account/form';
 import ErrMess from '@/components/errMess';
 import { validateEmail } from '@/lib/utils';

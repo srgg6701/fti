@@ -1,5 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
+
 import { LogoFTI } from '@/components/icons';
 
 export default function Default() {

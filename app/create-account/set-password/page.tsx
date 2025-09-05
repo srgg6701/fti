@@ -12,7 +12,7 @@ export default function SetPassword() {
   const router = useRouter();
   const searchParams = useSearchParams(); // <-- hook at top level
   const email = searchParams.get('email');
-  const username = email?.split('@').join("").split(".").shift() || "unknown";
+  const username = email?.split('@').join('').split('.').shift() || 'unknown';
 
   const [password, setPassword] = useState('');
   const [password_confirmation, setPasswordConfirmation] = useState('');
@@ -23,7 +23,7 @@ export default function SetPassword() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setErrMess(null);
-    
+
     const passwordMessagesEN = {
       empty: 'Please enter password.',
       too_short: 'At least 8 characters.',
@@ -53,6 +53,7 @@ export default function SetPassword() {
       return;
     } else if (password !== password_confirmation) {
       setErrMess("Passwords don't match");
+
       return;
     }
     try {
@@ -62,7 +63,7 @@ export default function SetPassword() {
         body: JSON.stringify({ email, password, username }),
       });
       setStatus('success');
-      console.log("%cRegistration is successful", "color: green");
+      console.log('%cRegistration is successful', 'color: green');
       router.push('/login');
     } catch (e) {
       setStatus('error');

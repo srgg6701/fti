@@ -2,11 +2,13 @@
 import { Button } from '@heroui/button';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getUrlSegments } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
+
+import { getUrlSegments } from '@/lib/utils';
 
 export default function Buttons({ messageType, status }: { messageType: string; status?: string }) {
   const urlFirstSegment = getUrlSegments(usePathname, 1);
+
   return (
     <div className="mx-auto mt-auto flex w-full max-w-[300px] flex-col items-center">
       <Button

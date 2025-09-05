@@ -15,7 +15,7 @@ export const useUserStore = create<UserState>((set) => ({
   //userType: null,
   email: null,
 
-  login: (/* userType,  */email) => {
+  login: (/* userType,  */ email) => {
     set({ isAuthenticated: true, /* userType, */ email });
     if (typeof window !== 'undefined') {
       sessionStorage.setItem('isAuthenticated', 'true');

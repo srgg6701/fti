@@ -88,7 +88,11 @@ export default function Accounts() {
               <span>mar 24</span>
             </div>
             <div className="relative isolate">
-              <img alt="Vector2386" className="w-full" src="/assets/images/Accounts/vector2386.svg" />
+              <img
+                alt="Vector2386"
+                className="w-full"
+                src="/assets/images/Accounts/vector2386.svg"
+              />
               <img
                 alt="Vector22386"
                 className="w-full"
