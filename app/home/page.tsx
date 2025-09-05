@@ -50,6 +50,88 @@ export default function Home() {
     };
   }, []);
 
+  const DataTopPerforming = [
+    {
+      chartImg: 'home/top-performing/graph1.svg',
+      risk: 5,
+      roi: 51.25,
+      timeFrame: '6 Months',
+      userImg: 'face-female.png',
+    },
+    {
+      chartImg: 'home/top-performing/graph1.svg',
+      risk: 5,
+      roi: 51.25,
+      timeFrame: '6 Months',
+      userImg: 'face-female2.png',
+    },
+    {
+      chartImg: 'home/top-performing/graph3.svg',
+      risk: 5,
+      roi: 51.25,
+      timeFrame: '6 Months',
+      userImg: 'face-male.png',
+    },
+    {
+      chartImg: 'home/top-performing/graph1.svg',
+      risk: 5,
+      roi: 51.25,
+      timeFrame: '6 Months',
+      userImg: 'face-male2.png',
+    },
+    {
+      chartImg: 'home/top-performing/graph1.svg',
+      risk: 5,
+      roi: 51.25,
+      timeFrame: '6 Months',
+      userImg: 'face-female.png',
+    },
+    {
+      chartImg: 'home/top-performing/graph1.svg',
+      risk: 5,
+      roi: 51.25,
+      timeFrame: '6 Months',
+      userImg: 'face-female2.png',
+    },
+  ];
+  const DataNews = [
+    {
+      date: '10 May',
+      img: 'bitcoin.png',
+      text: 'Bitcoin’s price surges as institutional investors start buying more',
+      title: 'The Future of Bitcoing: Will it Reach',
+      userImg: 'face-male-spectacles.svg',
+    },
+    {
+      date: '10 May',
+      img: 'key-transparent.png',
+      text: 'Bitcoin’s price surges as institutional investors start buying more',
+      title: 'The Future of Bitcoing: Will it Reach',
+      userImg: 'male-yellow-face-bg-blue.svg',
+    },
+    {
+      date: '10 May',
+      img: 'rings-vertical.jpg',
+      text: 'Bitcoin’s price surges as institutional investors start buying more',
+      title: 'The Future of Bitcoing: Will it Reach',
+      userImg: 'face-male-all-orange.svg',
+    },
+    {
+      date: '10 May',
+      img: 'monedas.png',
+      text: 'Bitcoin’s price surges as institutional investors start buying more',
+      title: 'The Future of Bitcoing: Will it Reach',
+      userImg: 'face-female-rosy-darkhair.svg',
+    },
+    {
+      date: '10 May',
+      img: 'bitcoin.png',
+      text: 'Bitcoin’s price surges as institutional investors start buying more',
+      title: 'The Future of Bitcoing: Will it Reach',
+      userImg: 'face-male-spectacles.svg',
+    },
+  ];
+
   return (
     <div className="mt-[80px] mb-[56px] flex min-h-screen flex-col gap-[5rem] text-white">
       {/* Empty state / CTA */}
@@ -68,7 +150,6 @@ export default function Home() {
           </button>
         </div>
       </section>
-
       {/* Top Performing */}
       <section className="scroller w-full">
         <div className="mb-4 flex items-center justify-between">
@@ -78,57 +159,18 @@ export default function Home() {
           </Link>
         </div>
         <div className="row article-container h-[327px]">
-          {/* Card 1 */}
-          <CardTopPerforming
-            chartImg="home/top-performing/graph1.svg"
-            risk={5}
-            roi={51.25}
-            timeFrame="6 Months"
-            userImg="face-female.png"
-          />
-          {/* Card 2 */}
-          <CardTopPerforming
-            chartImg="home/top-performing/graph1.svg"
-            risk={5}
-            roi={51.25}
-            timeFrame="6 Months"
-            userImg="face-female2.png"
-          />
-          {/* Card 3 */}
-          <CardTopPerforming
-            chartImg="home/top-performing/graph3.svg"
-            risk={5}
-            roi={51.25}
-            timeFrame="6 Months"
-            userImg="face-male.png"
-          />
-          {/* Card 4 */}
-          <CardTopPerforming
-            chartImg="home/top-performing/graph1.svg"
-            risk={5}
-            roi={51.25}
-            timeFrame="6 Months"
-            userImg="face-male2.png"
-          />
-          {/* Card 5 */}
-          <CardTopPerforming
-            chartImg="home/top-performing/graph1.svg"
-            risk={5}
-            roi={51.25}
-            timeFrame="6 Months"
-            userImg="face-female.png"
-          />
-          {/* Card 6 */}
-          <CardTopPerforming
-            chartImg="home/top-performing/graph1.svg"
-            risk={5}
-            roi={51.25}
-            timeFrame="6 Months"
-            userImg="face-female2.png"
-          />
+          {DataTopPerforming.map((data, index) => (
+            <CardTopPerforming
+              key={index}
+              chartImg={data.chartImg}
+              risk={data.risk}
+              roi={data.roi}
+              timeFrame={data.timeFrame}
+              userImg={data.userImg}
+            />
+          ))}
         </div>
       </section>
-
       {/* News */}
       <section className="scroller w-full">
         <div className="mb-4 flex items-center justify-between">
@@ -137,48 +179,17 @@ export default function Home() {
             See all
           </Link>
         </div>
-        {/* <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3"> */}
         <div className="row article-container h-[393px]">
-          {/* News card 1 */}
-          <CardNews
-            date="10 May"
-            img="bitcoin.png"
-            text="Bitcoin’s price surges as institutional investors start buying more"
-            title="The Future of Bitcoing: Will it Reach"
-            userImg="face-male-spectacles.svg"
-          />
-          {/* News card 2 */}
-          <CardNews
-            date="10 May"
-            img="key-transparent.png"
-            text="Bitcoin’s price surges as institutional investors start buying more"
-            title="The Future of Bitcoing: Will it Reach"
-            userImg="male-yellow-face-bg-blue.svg"
-          />
-          {/* News card 3 */}
-          <CardNews
-            date="10 May"
-            img="rings-vertical.jpg"
-            text="Bitcoin’s price surges as institutional investors start buying more"
-            title="The Future of Bitcoing: Will it Reach"
-            userImg="face-male-all-orange.svg"
-          />
-          {/* News card 4 */}
-          <CardNews
-            date="10 May"
-            img="monedas.png"
-            text="Bitcoin’s price surges as institutional investors start buying more"
-            title="The Future of Bitcoing: Will it Reach"
-            userImg="face-female-rosy-darkhair.svg"
-          />
-          {/* News card 5 */}
-          <CardNews
-            date="10 May"
-            img="bitcoin.png"
-            text="Bitcoin’s price surges as institutional investors start buying more"
-            title="The Future of Bitcoing: Will it Reach"
-            userImg="face-male-spectacles.svg"
-          />
+          {DataNews.map((data, index) => (
+            <CardNews
+              key={index}
+              date={data.date}
+              img={data.img}
+              text={data.text}
+              title={data.title}
+              userImg={data.userImg}
+            />
+          ))}
         </div>
       </section>
     </div>

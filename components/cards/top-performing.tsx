@@ -23,9 +23,13 @@ const CardTopPerforming = ({
     <div className="mb-4 h-[158px] w-[312px]">
       <Image alt="Chart1" height={158} src={`/assets/images/charts/${chartImg}`} width={312} />
     </div>
-    <footer className="flex font-bold gap-3 text-white/70 items-center justify-end text-xs">
-      <span className="">ROI: <span className="text-white">{roi}%</span></span>
-      <span className="">RISK: <span className="text-white">{risk}</span></span>
+    <footer className="flex items-center justify-end gap-3 text-xs font-bold text-white/70">
+      <span className="">
+        ROI: <span className="text-white">{roi}%</span>
+      </span>
+      <span className="">
+        RISK: <span className="text-white">{risk}</span>
+      </span>
     </footer>
   </article>
 );
