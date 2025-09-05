@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+:root {
+  --color-second: #f4f9ff;
+  --color-ultra-violet: #ff33a6;
+}
+
 /* Regular */
 @font-face {
   font-family: 'Rubik';

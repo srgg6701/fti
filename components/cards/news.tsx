@@ -33,7 +33,7 @@ const CardNews = ({
     <div className="p-4">
       <h3 className="mb-[10px] text-lg leading-[1.2] font-semibold">{title}</h3>
       <p className="relative text-sm">
-        {text}
+        <span className="color-secondary opacity-80">{text}</span>
         <Link className="read-more" href="/news/news11">
           ... <span className="text-blue-600/100"> read more</span>
         </Link>

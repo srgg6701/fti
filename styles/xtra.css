@@ -17,34 +17,25 @@ nav > header {
 }
 .bg-translusent-light {
   @apply bg-[rgba(244,249,255,0.1)];
-  /* background-color: rgba(244, 249, 255, 0.1); */
 }
 .outline-color-15 {
   outline-color:rgba(244,249,255,0.15)
 }
 .btn-rounded {
-  /* border-radius: 40px; */
   @apply rounded-[40px];
 }
 .input-rounded {
   @apply rounded-[15px];
 }
-/* .form-h-45 {
-} */
 .btn-account{
   @apply h-[45px] bg-[rgba(244,249,255,0.1)] rounded-[15px] w-full; 
   
 }
-
-/* .phone-number input[data-slot="input"]{
-  @apply h-[38px];
-} */
-
 .color-secondary {
-  color: #f4f9ff;
+  color: var(--color-second);
 }
 .color-ultra-violet, .error {
-  color: #ff33a6;
+  color: var(--color-ultra-violet);
 }
 .menu-item {
   @apply text-[14px];
@@ -70,7 +61,7 @@ nav > header {
 /*TODO: remove this imitation after getting real data from BE */
 .first-loader {
   animation: grow 3s linear forwards;
-  background-color: #f4f9ff;
+  background-color: var(--color-second);
   width: 0;
 }
 @keyframes grow {
