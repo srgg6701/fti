@@ -1,23 +1,37 @@
 import Link from 'next/link';
 import Image from 'next/image';
 const CardNews = ({
+  username,
   userImg,
   date,
   img,
   title,
   text,
+  marginRight = 'mr-[10px]',
+  padding = 'p-5',
 }: {
+  username: string;
   userImg: string;
   date: string;
   img: string;
   title: string;
   text: string;
+  marginRight?: string;
+  padding?: string;
 }) => (
-  <article className="mr-[10px] flex flex-col gap-5 p-5 md:h-[376px] md:w-[320px]">
+  <article className={`
+    md:h-[376px]
+    md:w-[320px]
+    ${marginRight}
+    ${padding}
+    flex
+    flex-col
+    gap-5
+    `}>
     <header className="flex items-center justify-between">
       <div className="flex items-center gap-2">
         <Image alt="title" height={30} src={`/assets/images/users/${userImg}`} width={30} />
-        <span className="text-sm">username</span>
+        <span className="text-sm">{username}</span>
       </div>
       <span className="text-xs text-white/60">{date}</span>
     </header>

@@ -1,22 +1,34 @@
 import Image from 'next/image';
 const CardTopPerforming = ({
+  username,
   userImg,
   timeFrame,
   chartImg,
   roi = 51.25,
   risk = 5,
+  marginRight = 'mr-[10px]',
+  padding = 'p-5',
 }: {
+  username: string;
   userImg: string;
   timeFrame: string;
   chartImg: string;
   roi: number;
   risk: number;
+  marginRight?: string;
+  padding?: string;
 }) => (
-  <article className="mr-[10px] p-5 md:h-[310px] md:w-[352px]">
+  <article className={`
+    md:h-[310px]
+    md:w-[352px]
+    ${marginRight}
+    ${padding}
+      `}
+    >
     <header className="mb-5 flex items-center gap-3">
       <Image alt="User" height="55" src={`/assets/images/users/${userImg}`} width="55" />
       <div className="flex flex-col">
-        <span className="text-sm font-medium">username</span>
+        <span className="text-sm font-medium">{username}</span>
         <span className="text-xs text-white/60">TimeFrame: {timeFrame}</span>
       </div>
     </header>

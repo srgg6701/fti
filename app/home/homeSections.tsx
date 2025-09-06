@@ -6,17 +6,18 @@ import CardMyStrategies from '@/components/cards/my-strategies';
 import CardTopPerforming from '@/components/cards/top-performing';
 import CardNews from '@/components/cards/news';
 
-export default function HomeSections() {
+export default function HomeSections({strategies} : {strategies?: boolean}) {
   return (
     <div className="mt-[80px] mb-[56px] flex flex-col gap-[5rem]">
-      <SectionData
+      {strategies && <SectionData
         data={DataMyStrategies}
         getKey={(d, i) => `${d.username}-${i}`}
+        height={95}
         renderItem={(d, i) => (
           <CardMyStrategies
             key={i}
             direction={d.direction}
-            dynamics={d.dynamics}
+            data={d.data}
             invested={d.invested}
             proRata={d.proRata}
             userImg={d.userImg}
@@ -24,15 +25,16 @@ export default function HomeSections() {
           />
         )}
         title="My Strategies"
-      />
+      />}
       {/* Top Performing */}
       <SectionData
         data={DataTopPerforming}
         getKey={(d, i) => `${d.timeFrame}-${i}`}
-        height={327}
+        height={310}
         renderItem={(d, i) => (
           <CardTopPerforming
             key={i}
+            username={d.username}
             chartImg={d.chartImg}
             risk={d.risk}
             roi={d.roi}
@@ -48,10 +50,11 @@ export default function HomeSections() {
       <SectionData
         data={DataNews}
         getKey={(d, i) => `${d.title}-${i}`}
-        height={393}
+        height={378}
         renderItem={(d, i) => (
           <CardNews
             key={i}
+            username={d.username}
             date={d.date}
             img={d.img}
             text={d.text}
