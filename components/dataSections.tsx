@@ -9,9 +9,18 @@ import CardMyStrategies from '@/components/cards/my-strategies';
 import CardShared from '@/components/cards/card-shared';
 import CardNews from '@/components/cards/news';
 
+//TODO: temporal solution, DataTopPerforming should be changed to real data obtained from server
+const DataWorldLeaders = [...DataTopPerforming];
+const DataTheBestOfTheDay = [...DataTopPerforming];
+const DataTheBestOfTheWeek = [...DataTopPerforming];
+const DataTheBestOfTheMonth = [...DataTopPerforming];
+
+export function filterData(message:string) {
+  console.log(`${message}, DATA`, {DataWorldLeaders,DataTheBestOfTheDay,DataTheBestOfTheWeek,DataTheBestOfTheMonth});
+}
+
 export default function HomeSections({ section }: { section: string }) {
   useAdjustArticleWidth();
-
   return (
     <div className="mt-[80px] mb-[56px] flex flex-col gap-[5rem]">
       {section === 'home/strategies' && (
@@ -77,7 +86,7 @@ export default function HomeSections({ section }: { section: string }) {
         <>
           <SectionData
             title="World leaders"
-            data={DataTopPerforming}
+            data={DataWorldLeaders}
             height={310}
             seeAllHref="/top"
             getKey={(d, i) => `${d.timeFrame}-${i}`}
@@ -95,7 +104,7 @@ export default function HomeSections({ section }: { section: string }) {
           />
           <SectionData
             title="The best of the day"
-            data={DataTopPerforming}
+            data={DataTheBestOfTheDay}
             height={310}
             seeAllHref="/top"
             getKey={(d, i) => `${d.timeFrame}-${i}`}
@@ -113,7 +122,7 @@ export default function HomeSections({ section }: { section: string }) {
           />
           <SectionData
             title="The best of the week"
-            data={DataTopPerforming}
+            data={DataTheBestOfTheWeek}
             height={310}
             seeAllHref="/top"
             getKey={(d, i) => `${d.timeFrame}-${i}`}
@@ -131,7 +140,7 @@ export default function HomeSections({ section }: { section: string }) {
           />
           <SectionData
             title="The best of the month"
-            data={DataTopPerforming}
+            data={DataTheBestOfTheMonth}
             height={310}
             seeAllHref="/top"
             getKey={(d, i) => `${d.timeFrame}-${i}`}

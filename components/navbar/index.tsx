@@ -12,13 +12,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { Input } from '@heroui/input';
-
 import { Icon, menuIcons } from '../icons';
-
 import { checkRouteAside, getUrlSegments } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 //import { ThemeSwitch } from '@/components/theme-switch';
 import { useUserStore } from '@/lib/store/userStore';
+import { filterData } from "@/components/dataSections";
 import '@/styles/style-navbar.css';
 
 export const Navbar = () => {
@@ -124,19 +123,14 @@ export const Navbar = () => {
     </Link>
   );
 
-  function filterData () {
-    console.log('Filter data');
-  }
-
   const filterDataEnter: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
-    if (e.key === 'Enter') {
-      //e.preventDefault(); // если нужно отменить сабмит формы
-      console.log('Enter: filtered data by', search_text);
+    if (e.key === 'Enter') { //e.preventDefault(); // если нужно отменить сабмит формы
+      filterData(`Enter: filtered data by ${search_text}`);
     }
   };
 
   const filterDataClick = () => {
-    console.log('Click: filtered data by', search_text);
+    filterData(`Click: filtered data by ${search_text}`);
   }
 
   const SetSearchCommand = ({ action, alt, onClick }: { action: string; alt: string, onClick?: boolean }) => (
