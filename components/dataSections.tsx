@@ -15,12 +15,18 @@ const DataTheBestOfTheDay = [...DataTopPerforming];
 const DataTheBestOfTheWeek = [...DataTopPerforming];
 const DataTheBestOfTheMonth = [...DataTopPerforming];
 
-export function filterData(message:string) {
-  console.log(`${message}, DATA`, {DataWorldLeaders,DataTheBestOfTheDay,DataTheBestOfTheWeek,DataTheBestOfTheMonth});
+export function filterData(message: string) {
+  console.log(`${message}, DATA`, {
+    DataWorldLeaders,
+    DataTheBestOfTheDay,
+    DataTheBestOfTheWeek,
+    DataTheBestOfTheMonth,
+  });
 }
 
 export default function HomeSections({ section }: { section: string }) {
   useAdjustArticleWidth();
+
   return (
     <div className="mt-[80px] mb-[56px] flex flex-col gap-[5rem]">
       {section === 'home/strategies' && (
@@ -85,11 +91,9 @@ export default function HomeSections({ section }: { section: string }) {
       {section === 'strategies' && (
         <>
           <SectionData
-            title="World leaders"
             data={DataWorldLeaders}
-            height={310}
-            seeAllHref="/top"
             getKey={(d, i) => `${d.timeFrame}-${i}`}
+            height={310}
             renderItem={(d, i) => (
               <CardShared
                 key={i}
@@ -101,13 +105,13 @@ export default function HomeSections({ section }: { section: string }) {
                 username={d.username}
               />
             )}
+            seeAllHref="/top"
+            title="World leaders"
           />
           <SectionData
-            title="The best of the day"
             data={DataTheBestOfTheDay}
-            height={310}
-            seeAllHref="/top"
             getKey={(d, i) => `${d.timeFrame}-${i}`}
+            height={310}
             renderItem={(d, i) => (
               <CardShared
                 key={i}
@@ -119,13 +123,13 @@ export default function HomeSections({ section }: { section: string }) {
                 username={d.username}
               />
             )}
+            seeAllHref="/top"
+            title="The best of the day"
           />
           <SectionData
-            title="The best of the week"
             data={DataTheBestOfTheWeek}
-            height={310}
-            seeAllHref="/top"
             getKey={(d, i) => `${d.timeFrame}-${i}`}
+            height={310}
             renderItem={(d, i) => (
               <CardShared
                 key={i}
@@ -137,13 +141,13 @@ export default function HomeSections({ section }: { section: string }) {
                 username={d.username}
               />
             )}
+            seeAllHref="/top"
+            title="The best of the week"
           />
           <SectionData
-            title="The best of the month"
             data={DataTheBestOfTheMonth}
-            height={310}
-            seeAllHref="/top"
             getKey={(d, i) => `${d.timeFrame}-${i}`}
+            height={310}
             renderItem={(d, i) => (
               <CardShared
                 key={i}
@@ -155,6 +159,8 @@ export default function HomeSections({ section }: { section: string }) {
                 username={d.username}
               />
             )}
+            seeAllHref="/top"
+            title="The best of the month"
           />
         </>
       )}

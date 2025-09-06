@@ -12,12 +12,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { Input } from '@heroui/input';
+
 import { Icon, menuIcons } from '../icons';
+
 import { checkRouteAside, getUrlSegments } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 //import { ThemeSwitch } from '@/components/theme-switch';
 import { useUserStore } from '@/lib/store/userStore';
-import { filterData } from "@/components/dataSections";
+import { filterData } from '@/components/dataSections';
 import '@/styles/style-navbar.css';
 
 export const Navbar = () => {
@@ -124,22 +126,32 @@ export const Navbar = () => {
   );
 
   const filterDataEnter: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
-    if (e.key === 'Enter') { //e.preventDefault(); // если нужно отменить сабмит формы
+    if (e.key === 'Enter') {
+      //e.preventDefault(); // если нужно отменить сабмит формы
       filterData(`Enter: filtered data by ${search_text}`);
     }
   };
 
   const filterDataClick = () => {
     filterData(`Click: filtered data by ${search_text}`);
-  }
+  };
 
-  const SetSearchCommand = ({ action, alt, onClick }: { action: string; alt: string, onClick?: boolean }) => (
-    <div
+  const SetSearchCommands = ({
+    action,
+    alt,
+    onClick,
+  }: {
+    action: string;
+    alt: string;
+    onClick?: boolean;
+  }) => (
+    <button
       className="input-standard-40 bg-translusent-light w-[40px] p-[13px]"
+      type="button"
       onClick={onClick ? () => filterDataClick() : () => {}}
     >
       <Image alt={alt} height={14} src={`/assets/images/service/${action}.svg`} width={14} />
-    </div>
+    </button>
   );
 
   return (
@@ -162,8 +174,8 @@ export const Navbar = () => {
                   onKeyDown={filterDataEnter}
                   onValueChange={setSearch}
                 />
-                <SetSearchCommand action="sort" alt="Sort search results" />
-                <SetSearchCommand onClick={true} action="set" alt="Set search results" />
+                <SetSearchCommands action="sort" alt="Sort search results" />
+                <SetSearchCommands action="set" alt="Set search results" onClick={true} />
               </div>
             )}
           </div>
