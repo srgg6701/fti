@@ -19,7 +19,8 @@ import { siteConfig } from '@/config/site';
 import { useUserStore } from '@/lib/store/userStore';
 import { filterData } from '@/components/dataSections';
 import '@/styles/style-navbar.css';
-import SortingModal from '../pop-ups/sorting-cursor';
+import SortingModal from '@/components/pop-ups/sorting';
+import FilterModal, {type FilterState} from '@/components/pop-ups/filter';
 
 export const Navbar = () => {
   // TODO: Check if it makes sense to leave it here:
@@ -27,8 +28,16 @@ export const Navbar = () => {
   const urlFirstSegment = getUrlSegments(usePathname, 1);
   const urlSecondSegment = getUrlSegments(usePathname, 2);
   const [search_text, setSearch] = useState('');
+  // SORT
   const [isSortingOpen, setIsSortingOpen] = useState(false);
   const [currentSort, setCurrentSort] = useState('alphabetical');
+  // FILTER
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filters, setFilters] = useState<FilterState>({
+    growthType: 'all',
+    strategyType: 'stocks',
+    winningRatio: 15,
+  });
 
   if (checkRouteAside(urlFirstSegment)) return null;
 
@@ -179,8 +188,18 @@ export const Navbar = () => {
                     onKeyDown={filterDataEnter}
                     onValueChange={setSearch}
                   />
-                  <SetSearchCommands title="Click to sort records" action="sort" alt="Sort search results" onClick={() => setIsSortingOpen(!isSortingOpen)} />
-                  <SetSearchCommands title="Click to filter records by search string" action="set" alt="Set search results" onClick={filterDataClick} />
+                  <SetSearchCommands
+                    title="Click to sort records"
+                    action="sort"
+                    alt="Sort search results"
+                    onClick={() => setIsSortingOpen(!isSortingOpen)}
+                  />
+                  <SetSearchCommands
+                    title="Click to filter records by search string"
+                    action="set"
+                    alt="Set search results"
+                    onClick={() => setIsFilterOpen(!isFilterOpen)}
+                  />
                 </div>
               )}
             </div>
@@ -216,6 +235,15 @@ export const Navbar = () => {
           setCurrentSort(sortType);
         }}
         currentSort={currentSort}
+      />
+      <FilterModal
+        isOpen={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+        onApply={(newFilters) => {
+          setFilters(newFilters);
+          // Ваша логика фильтрации
+        }}
+        initialFilters={filters}
       />
     </>
   );
