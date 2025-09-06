@@ -1,9 +1,9 @@
 'use client'; // TODO: check if it should be a client component
 import Image from 'next/image';
 
-import { useAdjustArticleWidth } from '@/hooks/useAdjustArticleWidth';
-import '@/app/home/style.css';
-import HomeSections from '@/app/home/homeSections';
+//import { useAdjustArticleWidth } from '@/hooks/useAdjustArticleWidth';
+//import '@/styles/style-sections.css';
+import HomeSections from '@/components/dataSections';
 
 export default function Home() {
   function addStrategy() {
@@ -14,7 +14,7 @@ export default function Home() {
     }
   }
 
-  useAdjustArticleWidth();
+  //useAdjustArticleWidth();
 
   return (
     <>
@@ -33,7 +33,7 @@ export default function Home() {
           </button>
         </div>
       </section>
-      <HomeSections />
+      <HomeSections section="home" />
     </>
   );
 }

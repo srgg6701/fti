@@ -1,17 +1,18 @@
 'use client';
-import { useAdjustArticleWidth } from '@/hooks/useAdjustArticleWidth';
-import HomeSections from '@/app/home/homeSections';
+//import { useAdjustArticleWidth } from '@/hooks/useAdjustArticleWidth';
+import HomeSections from '@/components/dataSections';
 import HomeStrategiesGraph from '@/mockData/graphs/home-strategies';
 import DropdownPill from '@/components/dateDropDown';
 import ColoredIndicator from '@/components/coloredIndicator';
-import '@/app/home/style.css';
+//import '@/styles/style-sections.css';
 
 export default function Home() {
-  useAdjustArticleWidth();
+
+  //useAdjustArticleWidth();
 
   return (
     <>
-      <section className="flex w-full gap-11 py-5 lg:p-[80px] lg:pb-[90px] flex-wrap lg:flex-nowrap">
+      <section className="flex w-full flex-wrap gap-11 py-5 lg:flex-nowrap lg:p-[80px] lg:pb-[90px]">
         <div className="flex max-w-[452px] flex-col gap-2.5">
           <h3 className="text-2xl font-medium">Total Balance</h3>
           <h1 className="text-5xl font-medium">$ 1000.00</h1>
@@ -24,7 +25,7 @@ export default function Home() {
           <div className="jus flex justify-between">
             <div className="flex gap-2.5">
               <span className="font-semibold">Graph</span>
-              <ColoredIndicator data={['32', '1.23']} direction='Up' />
+              <ColoredIndicator data={['32', '1.23']} direction="Up" />
             </div>
             <div>
               <DropdownPill
@@ -43,7 +44,7 @@ export default function Home() {
           <HomeStrategiesGraph />
         </div>
       </section>
-      <HomeSections strategies={true} />
+      <HomeSections section="home/strategies" />
     </>
   );
 }

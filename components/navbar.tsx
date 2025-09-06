@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import {
   Navbar as HeroUINavbar,
   NavbarContent,
@@ -6,12 +7,12 @@ import {
   NavbarMenuToggle,
 } from '@heroui/navbar';
 import Link from 'next/link';
+// FIXME: clarify if we can get rid from clsx and remove if we can
 //import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-
+import { Input } from '@heroui/input';
 import { Icon, menuIcons } from './icons';
-
 import { checkRouteAside, getUrlSegments } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 //import { ThemeSwitch } from '@/components/theme-switch';
@@ -22,6 +23,7 @@ export const Navbar = () => {
   const { isAuthenticated } = useUserStore();
   const urlFirstSegment = getUrlSegments(usePathname, 1);
   const urlSecondSegment = getUrlSegments(usePathname, 2);
+  const [search_text, setSearch] = useState('');
 
   if (checkRouteAside(urlFirstSegment)) return null;
 
@@ -119,12 +121,29 @@ export const Navbar = () => {
     </Link>
   );
 
+  const filterData: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (e.key === 'Enter') {
+      //e.preventDefault(); // если нужно отменить сабмит формы
+      console.log('filtered data by', search_text);
+    }
+  };
+
   return (
     <HeroUINavbar aria-label="Main" as="nav" maxWidth="xl">
       {/* desktop */}
       <NavbarContent className="navbar-justify-around basis-1/5 items-center sm:basis-full">
         <div className="flex w-full justify-between pt-[46.5px]">
           <h1 className="leading-[27px]">{pageHeader}</h1>
+          {pageHeader === 'Strategies' && (
+            <Input
+              className="input-standard mb-[10px]"
+              placeholder="Enter your email"
+              type="search"
+              value={search_text}
+              onValueChange={setSearch}
+              onKeyDown={filterData}
+            />
+          )}
           <div className="hidden lg:flex">
             <ul className="flex items-center gap-[50px]">{menuList()}</ul>
             {/* <ThemeSwitch /> */}

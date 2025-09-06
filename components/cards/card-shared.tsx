@@ -1,5 +1,5 @@
 import Image from 'next/image';
-const CardTopPerforming = ({
+const CardShared = ({
   username,
   userImg,
   timeFrame,
@@ -18,13 +18,7 @@ const CardTopPerforming = ({
   marginRight?: string;
   padding?: string;
 }) => (
-  <article className={`
-    md:h-[310px]
-    md:w-[352px]
-    ${marginRight}
-    ${padding}
-      `}
-    >
+  <article className={`md:h-[310px] md:w-[352px] ${marginRight} ${padding} `}>
     <header className="mb-5 flex items-center gap-3">
       <Image alt="User" height="55" src={`/assets/images/users/${userImg}`} width="55" />
       <div className="flex flex-col">
@@ -46,4 +40,4 @@ const CardTopPerforming = ({
   </article>
 );
 
-export default CardTopPerforming;
+export default CardShared;

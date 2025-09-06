@@ -1,8 +1,5 @@
-//export const metadata = { title: 'Strategies' };
+export const metadata = { title: 'Strategies' };
+import HomeSections from "@/components/dataSections";
 export default function Strategies() {
-  return (
-    <>
-      <p>Strategies</p>
-    </>
-  );
+  return (<HomeSections section="strategies" />);
 }

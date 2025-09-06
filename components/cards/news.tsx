@@ -19,15 +19,7 @@ const CardNews = ({
   marginRight?: string;
   padding?: string;
 }) => (
-  <article className={`
-    md:h-[376px]
-    md:w-[320px]
-    ${marginRight}
-    ${padding}
-    flex
-    flex-col
-    gap-5
-    `}>
+  <article className={`md:h-[376px] md:w-[320px] ${marginRight} ${padding} flex flex-col gap-5`}>
     <header className="flex items-center justify-between">
       <div className="flex items-center gap-2">
         <Image alt="title" height={30} src={`/assets/images/users/${userImg}`} width={30} />

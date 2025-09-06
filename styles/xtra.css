@@ -27,7 +27,7 @@ nav > header {
 .input-rounded {
   @apply rounded-[15px];
 }
-.btn-account{
+.input-standard{
   @apply h-[45px] bg-[rgba(244,249,255,0.1)] rounded-[15px] w-full; 
   
 }

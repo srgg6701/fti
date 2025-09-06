@@ -18,7 +18,7 @@ section {
   scroll-snap-align: start;
 }
 .row.article-container {
-  margin-bottom: -17px;
+  overflow-y: hidden;
 }
 .read-more {
   background-color: #121212;
