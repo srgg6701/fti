@@ -21,15 +21,25 @@ nav > header {
 .outline-color-15 {
   outline-color:rgba(244,249,255,0.15)
 }
+.block-strategies {
+  
+}
 .btn-rounded {
   @apply rounded-[40px];
 }
 .input-rounded {
   @apply rounded-[15px];
 }
-.input-standard{
-  @apply h-[45px] bg-[rgba(244,249,255,0.1)] rounded-[15px] w-full; 
+.input-standard-45,
+.input-standard-40 {
+  @apply bg-[rgba(244,249,255,0.1)] rounded-[15px]; 
   
+}
+.input-standard-45 {
+  @apply h-[45px] w-full;
+}
+.input-standard-40 {
+  @apply h-[40px] 
 }
 .color-secondary {
   color: var(--color-second);

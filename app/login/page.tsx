@@ -82,14 +82,14 @@ export default function LoginPage() {
       onSubmit={handleSubmit}
     >
       <Input
-        className="input-standard mb-[10px]"
+        className="input-standard-45 mb-[10px]"
         placeholder="Enter your email"
         type="email"
         value={email}
         onValueChange={setEmail}
       />
       <Input
-        className="input-standard"
+        className="input-standard-45"
         placeholder="Enter your password"
         type="password"
         value={password}

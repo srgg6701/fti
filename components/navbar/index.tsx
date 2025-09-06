@@ -12,11 +12,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { Input } from '@heroui/input';
-import { Icon, menuIcons } from './icons';
+import { Icon, menuIcons } from '../icons';
 import { checkRouteAside, getUrlSegments } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 //import { ThemeSwitch } from '@/components/theme-switch';
 import { useUserStore } from '@/lib/store/userStore';
+import '@/styles/style-navbar.css';
 
 export const Navbar = () => {
   // TODO: Check if it makes sense to leave it here:
@@ -117,7 +118,7 @@ export const Navbar = () => {
         style={{ height: '16px' }}
         width="16"
       />
-      <strong className="menu-item color-ultra-violet">Exit</strong>
+      <strong className="menu-item color-ultra-violet whitespace-nowrap">Exit</strong>
     </Link>
   );
 
@@ -128,30 +129,37 @@ export const Navbar = () => {
     }
   };
 
-  const SetSearchCommand = ({action, alt} : {action: string, alt: string}) => <div className="p-[13px]">
-    <Image src={`/assets/images/service/${action}.svg`} height={14} width={14} alt={alt} />
-  </div>;
+  const SetSearchCommand = ({ action, alt }: { action: string; alt: string }) => (
+    <div className="input-standard-40 bg-translusent-light w-[40px] p-[13px]">
+      <Image src={`/assets/images/service/${action}.svg`} height={14} width={14} alt={alt} />
+    </div>
+  );
 
   return (
     <HeroUINavbar aria-label="Main" as="nav" maxWidth="xl">
       {/* desktop */}
       <NavbarContent className="navbar-justify-around basis-1/5 items-center sm:basis-full">
-        <div className="flex w-full justify-between pt-[46.5px]">
-          <h1 className="leading-[27px]">{pageHeader}</h1>
-          {pageHeader === 'Strategies' && (
-            <div className="flex items-center justify-center">
-              <Input
-                className="input-standard mb-[10px]"
-                placeholder="Enter your email"
-                type="search"
-                value={search_text}
-                onValueChange={setSearch}
-                onKeyDown={filterData}
-              />
-              <SetSearchCommand action='sort' alt='Sort search results' />
-              <SetSearchCommand action='set' alt='Set search results' />
-            </div>
-          )}
+        <div
+          id="navbar-container"
+          className="block-strategies flex w-full justify-between pt-[40px]"
+        >
+          <div className="min-2xl:flex min-w-[240px]">
+            <h1 className="leading-[27px] mr-[1vw]">{pageHeader}</h1>
+            {pageHeader === 'Strategies' && (
+              <div className="flex gap-[5px] max-2xl:-mb-10 max-2xl:translate-y-[20px]">
+                <Input
+                  className="input-standard-40"
+                  placeholder="Enter your search request"
+                  type="search"
+                  value={search_text}
+                  onValueChange={setSearch}
+                  onKeyDown={filterData}
+                />
+                <SetSearchCommand action="sort" alt="Sort search results" />
+                <SetSearchCommand action="set" alt="Set search results" />
+              </div>
+            )}
+          </div>
           <div className="hidden lg:flex">
             <ul className="flex items-center gap-[50px]">{menuList()}</ul>
             {/* <ThemeSwitch /> */}
