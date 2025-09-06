@@ -128,6 +128,10 @@ export const Navbar = () => {
     }
   };
 
+  const SetSearchCommand = ({action, alt} : {action: string, alt: string}) => <div className="p-[13px]">
+    <Image src={`/assets/images/service/${action}.svg`} height={14} width={14} alt={alt} />
+  </div>;
+
   return (
     <HeroUINavbar aria-label="Main" as="nav" maxWidth="xl">
       {/* desktop */}
@@ -135,14 +139,18 @@ export const Navbar = () => {
         <div className="flex w-full justify-between pt-[46.5px]">
           <h1 className="leading-[27px]">{pageHeader}</h1>
           {pageHeader === 'Strategies' && (
-            <Input
-              className="input-standard mb-[10px]"
-              placeholder="Enter your email"
-              type="search"
-              value={search_text}
-              onValueChange={setSearch}
-              onKeyDown={filterData}
-            />
+            <div className="flex items-center justify-center">
+              <Input
+                className="input-standard mb-[10px]"
+                placeholder="Enter your email"
+                type="search"
+                value={search_text}
+                onValueChange={setSearch}
+                onKeyDown={filterData}
+              />
+              <SetSearchCommand action='sort' alt='Sort search results' />
+              <SetSearchCommand action='set' alt='Set search results' />
+            </div>
           )}
           <div className="hidden lg:flex">
             <ul className="flex items-center gap-[50px]">{menuList()}</ul>
