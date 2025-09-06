@@ -7,7 +7,6 @@ import ColoredIndicator from '@/components/coloredIndicator';
 //import '@/styles/style-sections.css';
 
 export default function Home() {
-
   //useAdjustArticleWidth();
 
   return (

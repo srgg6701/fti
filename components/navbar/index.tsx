@@ -12,7 +12,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { Input } from '@heroui/input';
+
 import { Icon, menuIcons } from '../icons';
+
 import { checkRouteAside, getUrlSegments } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 //import { ThemeSwitch } from '@/components/theme-switch';
@@ -122,16 +124,27 @@ export const Navbar = () => {
     </Link>
   );
 
-  const filterData: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
+  function filterData () {
+    console.log('Filter data');
+  }
+
+  const filterDataEnter: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
     if (e.key === 'Enter') {
       //e.preventDefault(); // если нужно отменить сабмит формы
-      console.log('filtered data by', search_text);
+      console.log('Enter: filtered data by', search_text);
     }
   };
 
-  const SetSearchCommand = ({ action, alt }: { action: string; alt: string }) => (
-    <div className="input-standard-40 bg-translusent-light w-[40px] p-[13px]">
-      <Image src={`/assets/images/service/${action}.svg`} height={14} width={14} alt={alt} />
+  const filterDataClick = () => {
+    console.log('Click: filtered data by', search_text);
+  }
+
+  const SetSearchCommand = ({ action, alt, onClick }: { action: string; alt: string, onClick?: boolean }) => (
+    <div
+      className="input-standard-40 bg-translusent-light w-[40px] p-[13px]"
+      onClick={onClick ? () => filterDataClick() : () => {}}
+    >
+      <Image alt={alt} height={14} src={`/assets/images/service/${action}.svg`} width={14} />
     </div>
   );
 
@@ -140,11 +153,11 @@ export const Navbar = () => {
       {/* desktop */}
       <NavbarContent className="navbar-justify-around basis-1/5 items-center sm:basis-full">
         <div
-          id="navbar-container"
           className="block-strategies flex w-full justify-between pt-[40px]"
+          id="navbar-container"
         >
-          <div className="min-2xl:flex min-w-[240px]">
-            <h1 className="leading-[27px] mr-[1vw]">{pageHeader}</h1>
+          <div className="min-w-[240px] min-2xl:flex">
+            <h1 className="mr-[1vw] leading-[27px]">{pageHeader}</h1>
             {pageHeader === 'Strategies' && (
               <div className="flex gap-[5px] max-2xl:-mb-10 max-2xl:translate-y-[20px]">
                 <Input
@@ -152,11 +165,11 @@ export const Navbar = () => {
                   placeholder="Enter your search request"
                   type="search"
                   value={search_text}
+                  onKeyDown={filterDataEnter}
                   onValueChange={setSearch}
-                  onKeyDown={filterData}
                 />
                 <SetSearchCommand action="sort" alt="Sort search results" />
-                <SetSearchCommand action="set" alt="Set search results" />
+                <SetSearchCommand onClick={true} action="set" alt="Set search results" />
               </div>
             )}
           </div>

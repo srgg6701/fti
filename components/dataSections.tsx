@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import DataMyStrategies from '@/mockData/dataMyStrategies';
 import DataTopPerforming from '@/mockData/dataTopPerforming';
 import DataNews from '@/mockData/dataNews';
@@ -10,7 +10,6 @@ import CardShared from '@/components/cards/card-shared';
 import CardNews from '@/components/cards/news';
 
 export default function HomeSections({ section }: { section: string }) {
-
   useAdjustArticleWidth();
 
   return (
@@ -20,7 +19,6 @@ export default function HomeSections({ section }: { section: string }) {
           data={DataMyStrategies}
           getKey={(d, i) => `${d.username}-${i}`}
           height={95}
-          title="My Strategies"
           renderItem={(d, i) => (
             <CardMyStrategies
               key={i}
@@ -32,6 +30,7 @@ export default function HomeSections({ section }: { section: string }) {
               username={d.username}
             />
           )}
+          title="My Strategies"
         />
       )}
       {(section === 'home' || section === 'home/strategies') && (
@@ -39,8 +38,6 @@ export default function HomeSections({ section }: { section: string }) {
           data={DataTopPerforming}
           getKey={(d, i) => `${d.timeFrame}-${i}`}
           height={310}
-          seeAllHref="/top"
-          title="Top Performing"
           renderItem={(d, i) => (
             <CardShared
               key={i}
@@ -52,6 +49,8 @@ export default function HomeSections({ section }: { section: string }) {
               username={d.username}
             />
           )}
+          seeAllHref="/top"
+          title="Top Performing"
         />
       )}
       {(section === 'home' || section === 'home/strategies') && (
@@ -59,8 +58,6 @@ export default function HomeSections({ section }: { section: string }) {
           data={DataNews}
           getKey={(d, i) => `${d.title}-${i}`}
           height={378}
-          seeAllHref="/top"
-          title="DataNews"
           renderItem={(d, i) => (
             <CardNews
               key={i}
@@ -72,16 +69,18 @@ export default function HomeSections({ section }: { section: string }) {
               username={d.username}
             />
           )}
+          seeAllHref="/top"
+          title="DataNews"
         />
       )}
       {section === 'strategies' && (
         <>
           <SectionData
-            data={DataTopPerforming}
-            getKey={(d, i) => `${d.timeFrame}-${i}`}
-            height={310}
-            seeAllHref="/top"
             title="World leaders"
+            data={DataTopPerforming}
+            height={310}
+            seeAllHref="/top"
+            getKey={(d, i) => `${d.timeFrame}-${i}`}
             renderItem={(d, i) => (
               <CardShared
                 key={i}
@@ -95,11 +94,11 @@ export default function HomeSections({ section }: { section: string }) {
             )}
           />
           <SectionData
-            data={DataTopPerforming}
-            getKey={(d, i) => `${d.timeFrame}-${i}`}
-            height={310}
-            seeAllHref="/top"
             title="The best of the day"
+            data={DataTopPerforming}
+            height={310}
+            seeAllHref="/top"
+            getKey={(d, i) => `${d.timeFrame}-${i}`}
             renderItem={(d, i) => (
               <CardShared
                 key={i}
@@ -113,11 +112,11 @@ export default function HomeSections({ section }: { section: string }) {
             )}
           />
           <SectionData
-            data={DataTopPerforming}
-            getKey={(d, i) => `${d.timeFrame}-${i}`}
-            height={310}
-            seeAllHref="/top"
             title="The best of the week"
+            data={DataTopPerforming}
+            height={310}
+            seeAllHref="/top"
+            getKey={(d, i) => `${d.timeFrame}-${i}`}
             renderItem={(d, i) => (
               <CardShared
                 key={i}
@@ -131,11 +130,11 @@ export default function HomeSections({ section }: { section: string }) {
             )}
           />
           <SectionData
+            title="The best of the month"
             data={DataTopPerforming}
-            getKey={(d, i) => `${d.timeFrame}-${i}`}
             height={310}
             seeAllHref="/top"
-            title="The best of the month"
+            getKey={(d, i) => `${d.timeFrame}-${i}`}
             renderItem={(d, i) => (
               <CardShared
                 key={i}
