@@ -12,15 +12,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { Input } from '@heroui/input';
-
 import { Icon, menuIcons } from '../icons';
-
 import { checkRouteAside, getUrlSegments } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 //import { ThemeSwitch } from '@/components/theme-switch';
 import { useUserStore } from '@/lib/store/userStore';
 import { filterData } from '@/components/dataSections';
 import '@/styles/style-navbar.css';
+import SortingModal from '../pop-ups/sorting-cursor';
 
 export const Navbar = () => {
   // TODO: Check if it makes sense to leave it here:
@@ -28,6 +27,8 @@ export const Navbar = () => {
   const urlFirstSegment = getUrlSegments(usePathname, 1);
   const urlSecondSegment = getUrlSegments(usePathname, 2);
   const [search_text, setSearch] = useState('');
+  const [isSortingOpen, setIsSortingOpen] = useState(false);
+  const [currentSort, setCurrentSort] = useState('alphabetical');
 
   if (checkRouteAside(urlFirstSegment)) return null;
 
@@ -139,70 +140,83 @@ export const Navbar = () => {
   const SetSearchCommands = ({
     action,
     alt,
+    title,
     onClick,
   }: {
     action: string;
     alt: string;
-    onClick?: boolean;
+    title: string;
+    onClick: () => void;
   }) => (
     <button
       className="input-standard-40 bg-translusent-light w-[40px] p-[13px]"
       type="button"
-      onClick={onClick ? () => filterDataClick() : () => {}}
+      title={title}
+      onClick={onClick}
     >
       <Image alt={alt} height={14} src={`/assets/images/service/${action}.svg`} width={14} />
     </button>
   );
 
   return (
-    <HeroUINavbar aria-label="Main" as="nav" maxWidth="xl">
-      {/* desktop */}
-      <NavbarContent className="navbar-justify-around basis-1/5 items-center sm:basis-full">
-        <div
-          className="block-strategies flex w-full justify-between pt-[40px]"
-          id="navbar-container"
-        >
-          <div className="min-w-[240px] min-2xl:flex">
-            <h1 className="mr-[1vw] leading-[27px]">{pageHeader}</h1>
-            {pageHeader === 'Strategies' && (
-              <div className="flex gap-[5px] max-2xl:-mb-10 max-2xl:translate-y-[20px]">
-                <Input
-                  className="input-standard-40"
-                  placeholder="Enter your search request"
-                  type="search"
-                  value={search_text}
-                  onKeyDown={filterDataEnter}
-                  onValueChange={setSearch}
-                />
-                <SetSearchCommands action="sort" alt="Sort search results" />
-                <SetSearchCommands action="set" alt="Set search results" onClick={true} />
-              </div>
-            )}
+    <>
+      <HeroUINavbar aria-label="Main" as="nav" maxWidth="xl">
+        {/* desktop */}
+        <NavbarContent className="navbar-justify-around basis-1/5 items-center sm:basis-full">
+          <div
+            className="block-strategies flex w-full justify-between pt-[40px]"
+            id="navbar-container"
+          >
+            <div className="min-w-[240px] min-2xl:flex">
+              <h1 className="mr-[1vw] leading-[27px]">{pageHeader}</h1>
+              {pageHeader === 'Strategies' && (
+                <div className="flex gap-[5px] max-2xl:-mb-10 max-2xl:translate-y-[20px]">
+                  <Input
+                    className="input-standard-40"
+                    placeholder="Enter your search request"
+                    type="search"
+                    value={search_text}
+                    onKeyDown={filterDataEnter}
+                    onValueChange={setSearch}
+                  />
+                  <SetSearchCommands title="Click to sort records" action="sort" alt="Sort search results" onClick={() => setIsSortingOpen(!isSortingOpen)} />
+                  <SetSearchCommands title="Click to filter records by search string" action="set" alt="Set search results" onClick={filterDataClick} />
+                </div>
+              )}
+            </div>
+            <div className="hidden lg:flex">
+              <ul className="flex items-center gap-[50px]">{menuList()}</ul>
+              {/* <ThemeSwitch /> */}
+            </div>
+            <div className="hidden items-center lg:flex">
+              <Exit />
+            </div>
           </div>
-          <div className="hidden lg:flex">
-            <ul className="flex items-center gap-[50px]">{menuList()}</ul>
-            {/* <ThemeSwitch /> */}
-          </div>
-          <div className="hidden items-center lg:flex">
-            <Exit />
-          </div>
-        </div>
-      </NavbarContent>
-      {/* mobile */}
-      <NavbarContent className="basis-1 pl-4 lg:hidden" justify="end">
-        {/* <ThemeSwitch /> */}
-        {isAuthenticated && <NavbarMenuToggle aria-controls="main-menu" aria-label="Open menu" />}
-      </NavbarContent>
-      {isAuthenticated && (
-        <NavbarMenu id="main-menu">
-          <ul className="mx-4 mt-2 flex flex-col gap-2">
-            {menuList()}
-            <li className="flex list-none items-center">
-              <Exit className="py-2" />
-            </li>
-          </ul>
-        </NavbarMenu>
-      )}
-    </HeroUINavbar>
+        </NavbarContent>
+        {/* mobile */}
+        <NavbarContent className="basis-1 pl-4 lg:hidden" justify="end">
+          {/* <ThemeSwitch /> */}
+          {isAuthenticated && <NavbarMenuToggle aria-controls="main-menu" aria-label="Open menu" />}
+        </NavbarContent>
+        {isAuthenticated && (
+          <NavbarMenu id="main-menu">
+            <ul className="mx-4 mt-2 flex flex-col gap-2">
+              {menuList()}
+              <li className="flex list-none items-center">
+                <Exit className="py-2" />
+              </li>
+            </ul>
+          </NavbarMenu>
+        )}
+      </HeroUINavbar>
+      <SortingModal
+        isOpen={isSortingOpen}
+        onClose={() => setIsSortingOpen(false)}
+        onApply={(sortType) => {
+          setCurrentSort(sortType);
+        }}
+        currentSort={currentSort}
+      />
+    </>
   );
 };
