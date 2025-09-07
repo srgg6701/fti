@@ -21,7 +21,12 @@ export default function CardMyStrategies({
   padding?: string;
 }) {
   return (
-    <UserBlock userImg={userImg} imgAlt={`Card of ${username}`} marginRight={marginRight} padding={padding}>
+    <UserBlock
+      imgAlt={`Card of ${username}`}
+      marginRight={marginRight}
+      padding={padding}
+      userImg={userImg}
+    >
       <div className="flex flex-col">
         <span className="text-sm font-medium">{username}</span>
         <span className="text-xs text-white/60">Invested: {invested}</span>

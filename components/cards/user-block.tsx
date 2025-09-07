@@ -13,7 +13,7 @@ export default function UserBlock({
   padding = 'p-5',
   mb = 'mb-5',
   gap = 'gap-3',
-} : {
+}: {
   userImg: string;
   imgAlt: string;
   children: ReactNode;
@@ -30,7 +30,13 @@ export default function UserBlock({
   return (
     <article className={`${h} ${w} ${marginRight} ${padding}`}>
       <header className={`${mb} ${gap} flex items-center`}>
-        <Image alt={imgAlt} title={imgTitle} height={height}  width={width} src={`/assets/images/users/${userImg}`} />
+        <Image
+          alt={imgAlt}
+          height={height}
+          src={`/assets/images/users/${userImg}`}
+          title={imgTitle}
+          width={width}
+        />
         {children}
       </header>
     </article>

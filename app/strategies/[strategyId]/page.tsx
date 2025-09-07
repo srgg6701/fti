@@ -1,31 +1,39 @@
 'use client';
 //export const metadata = { title: 'Your Strategy' };
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import Image from 'next/image';
-import UserBlock from '@/components/cards/user-block';
 import { Button } from '@heroui/button';
+
+import UserBlock from '@/components/cards/user-block';
 import Subheaders from '@/components/headers/subheaders';
 import ArrowsUpDown from '@/components/arrows/up-down';
 import DropdownPill from '@/components/dateDropDown';
 import perfData from '@/mockData/performance';
 
 export default function Strategy() {
+  const [openId, setOpenId] = useState<string | null>(null);
+
+  function handleTextBlock(id: string) {
+    console.log('handleTextBlock', id);
+    setOpenId((prev) => (prev === id ? null : id));
+  }
+
   return (
     <div className="mx-auto my-[80px] flex w-full max-w-[880] flex-col">
       <section className="mb-10 flex items-center justify-between">
         <div className="max-w-[207px]">
           <UserBlock
-            userImg="male-yellow-face-bg-blue.svg"
-            imgAlt="Strategy of Joshua"
             h="h-auto"
+            imgAlt="Strategy of Joshua"
             marginRight="mx-0"
-            padding="0"
             mb="0"
+            padding="0"
+            userImg="male-yellow-face-bg-blue.svg"
           >
             Joshua
           </UserBlock>
           <p className="mt-2.5 text-sm">
-            This strategy represents a set of the world's leading assets
+            This strategy represents a set of the world&apos;s leading assets
           </p>
         </div>
         <div className="flex gap-2.5">
@@ -38,7 +46,7 @@ export default function Strategy() {
       <section className="mb-2.5 flex justify-between gap-2.5 max-sm:flex-wrap">
         <div className="standard-colored-005-rounded flex flex-col p-5">
           <div className="flex justify-between">
-            <Subheaders header="$ 1432" subheader="$ 324 (3.23%)" direction="Up" />
+            <Subheaders direction="Up" header="$ 1432" subheader="$ 324 (3.23%)" />
             <DropdownPill
               items={[
                 { label: '1 Week', value: '1week' },
@@ -52,11 +60,11 @@ export default function Strategy() {
             />
           </div>
           <Image
+            alt="Strategy Graph"
+            className="mt-5"
+            height={160.5}
             src="/assets/images/charts/strategies/strategy-graph.svg"
             width={510}
-            height={160.5}
-            className="mt-5"
-            alt="Strategy Graph"
           />
         </div>
         <div className="standard-colored-005-rounded w-[100%] p-5 min-sm:max-w-[320px]">
@@ -89,26 +97,35 @@ export default function Strategy() {
           { header: '2025', subheader: '$ 32 (1.23%)', direction: 'Up' },
           { header: '2024', subheader: '$ 32 (1.23%)', direction: 'Up' },
           { header: '2023', subheader: '$ 674 (16.29%)', direction: 'Up' },
-        ].map((data) => (
-          <div>
-            <div className="mb-2.5 flex h-[23px] justify-between">
-              <Subheaders
-                header={data.header}
-                h="regular17 mr-1.25"
-                sSize='text-sm'
-                subheader={data.subheader}
-                direction={data.direction}
-              />
-              <Image
-                src="/assets/images/icons/arrows/arrow_down.png"
-                width={14}
-                height={9}
-                style={{ height: '9px' }}
-                alt="Click to Expand / Collaps"
-              />
+        ].map((data, i) => {
+          const itemId = `${data.header}-${i}`;
+
+          return (
+            <div key={itemId}>
+              <div
+                className="mb-2.5 flex h-[23px] justify-between"
+                role="button"
+                onClick={() => handleTextBlock(itemId)}
+              >
+                <Subheaders
+                  direction={data.direction}
+                  h="regular17 mr-1.25"
+                  header={data.header}
+                  sSize="text-sm"
+                  subheader={data.subheader}
+                />
+                <Image
+                  alt="Click to Expand / Collaps"
+                  height={9}
+                  src="/assets/images/icons/arrows/arrow_down.png"
+                  style={{ height: '9px' }}
+                  width={14}
+                />
+              </div>
+              {openId === itemId && <div className="mb-5">Hidden text here</div>}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </section>
     </div>
   );

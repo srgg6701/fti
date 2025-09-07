@@ -1,4 +1,4 @@
-import ArrowsUpDown from "@/components/arrows/up-down";
+import ArrowsUpDown from '@/components/arrows/up-down';
 export default function coloredIndicator({
   data,
   direction,

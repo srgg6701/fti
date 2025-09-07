@@ -22,7 +22,11 @@ export default function Subheaders({
     <div className={`flex ${gap} ${leading}`}>
       <h4 className={`${h} ${hSize}`}>{header}</h4>
       <ArrowsUpDown direction={direction} />
-      <div className={`${direction ==='Up' ? 'color-blue-canonical' : 'color-ultra-violet'} ${sSize}`}>{subheader}</div>
+      <div
+        className={`${direction === 'Up' ? 'color-blue-canonical' : 'color-ultra-violet'} ${sSize}`}
+      >
+        {subheader}
+      </div>
     </div>
   );
 }
