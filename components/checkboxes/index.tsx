@@ -15,12 +15,12 @@ export default function GenerateCheckbox({
     <label className="group flex cursor-pointer items-center">
       <div className="relative mr-3">
         <input
-          type={type}
-          name={name}
-          value={option.value}
           checked={checkedCondition === option.value}
-          onChange={onChange}
           className="sr-only"
+          name={name}
+          type={type}
+          value={option.value}
+          onChange={onChange}
         />
         <div
           className={`h-5 w-5 rounded-full border-[1px] transition-all duration-200 ${
@@ -34,7 +34,9 @@ export default function GenerateCheckbox({
           )}
         </div>
       </div>
-      <span className={`${checkedCondition === option.value ? 'text-white' : 'opacity-60'} text-sm`}>
+      <span
+        className={`${checkedCondition === option.value ? 'text-white' : 'opacity-60'} text-sm`}
+      >
         {option.label}
       </span>
     </label>

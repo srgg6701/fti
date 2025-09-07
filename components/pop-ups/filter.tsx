@@ -1,8 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Button } from '@heroui/button';
+
 import PopupWrapper from './popup-wrapper';
+
 import GenerateCheckbox from '@/components/checkboxes';
+import '@/styles/style-popup-slider.css';
 
 interface FilterModalProps {
   isOpen: boolean;
@@ -41,6 +44,7 @@ export default function FilterModal({
   },
 }: FilterModalProps) {
   const [filters, setFilters] = useState<FilterState>(initialFilters);
+
   useEffect(() => {
     setFilters({ ...initialFilters, posIndicator: -4 });
   }, []);
@@ -52,10 +56,7 @@ export default function FilterModal({
     onClose();
   };
   // Stub handler for radio selection side-effects
-  const onRadioSelect = (
-    group: 'growthType' | 'strategyType',
-    value: string
-  ) => {
+  const onRadioSelect = (group: 'growthType' | 'strategyType', value: string) => {
     // no-op stub; replace with analytics/telemetry or side-effects if needed
     console.debug('Radio selected:', group, value);
   };
@@ -68,6 +69,7 @@ export default function FilterModal({
 
       const wrLen = String(value).length;
       let posFix = 4;
+
       switch (wrLen) {
         case 3:
           posFix = 8;
@@ -95,7 +97,7 @@ export default function FilterModal({
   const sliderPosition = filters.winningRatio;
 
   return (
-    <PopupWrapper onClose={onClose} h="[673px]" w="[380px]">
+    <PopupWrapper h="[673px]" w="[380px]" onClose={onClose}>
       {/* Header */}
       <div className="mb-8">
         <h2 className="mb-2 text-2xl font-bold text-white">Filter</h2>
@@ -108,14 +110,14 @@ export default function FilterModal({
           {growthOptions.map((option) => (
             <GenerateCheckbox
               key={option.value}
+              checkedCondition={filters.growthType}
+              name="growthType"
+              option={option}
+              type="radio"
               onChange={(e) => {
                 onRadioSelect('growthType', e.target.value);
                 updateFilter('growthType', e.target);
               }}
-              checkedCondition={filters.growthType}
-              type="radio"
-              name="growthType"
-              option={option}
             />
           ))}
         </div>
@@ -127,14 +129,14 @@ export default function FilterModal({
           {strategyOptions.map((option) => (
             <GenerateCheckbox
               key={option.value}
+              checkedCondition={filters.strategyType}
+              name="strategyType"
+              option={option}
+              type="radio"
               onChange={(e) => {
                 onRadioSelect('strategyType', e.target.value);
                 updateFilter('strategyType', e.target);
               }}
-              type="radio"
-              name="strategyType"
-              checkedCondition={filters.strategyType}
-              option={option}
             />
           ))}
         </div>
@@ -142,19 +144,19 @@ export default function FilterModal({
       {/* The winning ratio outline-dotted outline-1 */}
       <div className="pr-[25px] pl-[16px]">
         <h3 className="h-[144px] text-lg font-semibold">The winning ratio</h3>
-        <div className="relative flex mt-[-55px] mb-[55px]">
+        <div className="relative mt-[-55px] mb-[55px] flex">
           <span className="absolute -top-3 left-[-16px] z-1">1</span>
           <span className="absolute -top-3 right-[-25px] z-1">100</span>
           <input
-            type="range"
-            min="1"
-            max="100"
-            value={filters.winningRatio}
-            onChange={(e) => updateFilter('winningRatio', e.target)}
             className="custom-slider h-[1px] w-full cursor-pointer appearance-none rounded-lg bg-white/20"
+            max="100"
+            min="1"
             style={{
               background: `linear-gradient(to right, #3B57FF 0%, #3B57FF ${sliderPosition}%, rgba(255,255,255,0.2) ${sliderPosition}%, rgba(255,255,255,0.2) 100%)`,
             }}
+            type="range"
+            value={filters.winningRatio}
+            onChange={(e) => updateFilter('winningRatio', e.target)}
           />
           <div
             className="pointer-events-none absolute -top-[50px] z-1"
@@ -169,30 +171,9 @@ export default function FilterModal({
         </div>
       </div>
       {/* Apply Button */}
-      <Button onClick={handleApply} className="btn-rounded bg-blue h-10 w-full">
+      <Button className="btn-rounded bg-blue h-10 w-full" onClick={handleApply}>
         Apply here
       </Button>
-      <style jsx>{`
-        .custom-slider {
-        }
-        .custom-slider::-webkit-slider-thumb {
-          background: #3b82f6;
-          appearance: none;
-          width: 30px;
-          height: 30px;
-          border-radius: 50%;
-          cursor: pointer;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        .custom-slider::-moz-range-thumb {
-          background: #3b82f6;
-          width: 30px;
-          height: 30px;
-          border-radius: 50%;
-          cursor: pointer;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-      `}</style>
     </PopupWrapper>
   );
 }

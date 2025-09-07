@@ -68,7 +68,7 @@ export default function CreateAccount() {
 
       /****** send request to the endpoint to get the confirmation code ******/
 
-      new Promise((r) => setTimeout(r, 600));
+      await new Promise((r) => setTimeout(r, 600));
       setStatus('success');
       router.push(`/create-account/set-password?email=${email}`);
     } catch {
