@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@heroui/button';
 
 interface FilterModalProps {
@@ -34,11 +34,14 @@ export default function FilterModal({
   initialFilters = {
     growthType: 'all',
     strategyType: 'stocks',
-    winningRatio: 15,
-    posIndicator: -4,
+    winningRatio: 0,
+    posIndicator: 0,
   },
 }: FilterModalProps) {
   const [filters, setFilters] = useState<FilterState>(initialFilters);
+  useEffect(() => {
+    setFilters({ ...initialFilters, posIndicator: -4 });
+  }, []);
 
   if (!isOpen) return null;
 
@@ -46,37 +49,37 @@ export default function FilterModal({
     onApply(filters);
     onClose();
   };
-  
   const updateFilter = (key: keyof FilterState, target: HTMLInputElement) => {
     const pos = target.getBoundingClientRect();
     const value = parseInt(target.value);
-    const indicatorPos = ((pos.width - 30) / 100) * value + 1;
-    //console.log({ pos, ratioValue: value, offset: (pos.width / 100) * value, indicatorPos });
+    const actualWidth = pos.width - 30;
+    const indicatorPos = (actualWidth / 99) * value - 2.29 || 0;
     if (key === 'winningRatio') {
       const wrLen = String(filters.winningRatio).length;
-      let posFix = 0;
+      let posFix = 4;
       switch (wrLen) {
         case 3:
-          console.log('%clen:3', 'color: orange', -9);
+          console.log('%clen:3', 'color: orange', posFix);
           posFix = 9;
           break;
         case 2:
-          console.log('%clen:3', 'color: violet', -6.25);
+          console.log('%clen:3', 'color: violet', posFix);
           posFix = 6.5;
           break;
         default:
-          console.log('%clen:3', 'color: darkred', -3.5);
-          posFix = 4;
+          console.log('%clen:3', 'color: darkred', posFix);
           break;
       }
-      setFilters((prev) => ({ ...prev, ...{ [key]: value, posIndicator: indicatorPos - posFix } }));
+      setFilters((prev) => ({
+        ...prev,
+        ...{ [key]: value, posIndicator: (indicatorPos.toFixed() as unknown as number) - posFix },
+      }));
     } else {
       setFilters((prev) => ({ ...prev, [key]: value }));
     }
   };
 
   const sliderPosition = filters.winningRatio;
-  const posIndicator = filters.posIndicator;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -84,13 +87,12 @@ export default function FilterModal({
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
 
       {/* Modal */}
-      <div className="relative flex h-[673px] w-[380px] flex-col overflow-y-auto rounded-lg bg-[#121212] p-10 shadow-2xl">
+      <div className="relative flex flex-col justify-between h-[673px] w-[380px] overflow-y-auto rounded-lg bg-[#121212] p-10 shadow-2xl">
         {/* Header */}
         <div className="mb-8">
           <h2 className="mb-2 text-2xl font-bold text-white">Filter</h2>
           <p className="text-sm text-white/70">Select the types of filtering</p>
         </div>
-
         {/* Type of growth */}
         <div className="mb-8">
           <h3 className="mb-4 text-lg font-semibold text-white">Type of growth</h3>
@@ -131,7 +133,6 @@ export default function FilterModal({
             ))}
           </div>
         </div>
-
         {/* Type of strategy */}
         <div className="mb-8">
           <h3 className="mb-4 text-lg font-semibold text-white">Type of strategy</h3>
@@ -191,7 +192,7 @@ export default function FilterModal({
             />
             <div
               className="pointer-events-none absolute -top-8 z-10"
-              style={{ left: posIndicator || -4 }}
+              style={{ left: `${filters.posIndicator}px` }}
             >
               <div className="min-w-[38px] rounded-full bg-[rgba(244,249,255,0.05)] px-3 py-1 text-center">
                 <span className="text-center text-sm font-medium text-white">
@@ -201,7 +202,6 @@ export default function FilterModal({
             </div>
           </div>
         </div>
-
         {/* Apply Button */}
         <Button onClick={handleApply} className="btn-rounded bg-blue h-10 w-full">
           Apply

@@ -36,7 +36,8 @@ export const Navbar = () => {
   const [filters, setFilters] = useState<FilterState>({
     growthType: 'all',
     strategyType: 'stocks',
-    winningRatio: 0,
+    winningRatio: 1,
+    posIndicator: 0,
   });
 
   if (checkRouteAside(urlFirstSegment)) return null;
