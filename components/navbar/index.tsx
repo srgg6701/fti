@@ -55,8 +55,9 @@ export const Navbar = () => {
       pageHeader = 'People';
       break;
     case '/strategies':
-      if (urlSecondSegment?.[2]?.includes('strategy')) {
-        pageHeader = urlSecondSegment.toLocaleUpperCase() + urlSecondSegment.slice(1);
+      if (urlSecondSegment?.includes('strategy')) {
+        pageHeader = 'Strategy';
+        console.log('pageHeader', pageHeader);
         break;
       }
       pageHeader = 'Strategies';
@@ -184,7 +185,7 @@ export const Navbar = () => {
     onClick: () => void;
   }) => (
     <button
-      className="input-standard-40 bg-translusent-light w-[40px] p-[13px]"
+      className="standard-block-decoration-40 bg-translusent-light w-[40px] p-[13px]"
       title={title}
       type="button"
       onClick={onClick}
@@ -210,7 +211,7 @@ export const Navbar = () => {
                 {pageHeader === 'Strategies' && (
                   <div className="flex gap-[5px] max-2xl:-mb-10 max-2xl:translate-y-[20px]">
                     <Input
-                      className="input-standard-40"
+                      className="standard-block-decoration-40"
                       placeholder="Enter your search request"
                       type="search"
                       value={search_text}

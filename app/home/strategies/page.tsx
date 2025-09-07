@@ -1,14 +1,10 @@
 'use client';
-//import { useAdjustArticleWidth } from '@/hooks/useAdjustArticleWidth';
 import HomeSections from '@/components/dataSections';
 import HomeStrategiesGraph from '@/mockData/graphs/home-strategies';
 import DropdownPill from '@/components/dateDropDown';
 import ColoredIndicator from '@/components/coloredIndicator';
-//import '@/styles/style-sections.css';
 
 export default function Home() {
-  //useAdjustArticleWidth();
-
   return (
     <>
       <section className="flex w-full flex-wrap gap-11 py-5 lg:flex-nowrap lg:p-[80px] lg:pb-[90px]">

@@ -9,6 +9,18 @@ h2 {
 h2.bigger {
   @apply text-[32px];
 }
+
+h3 {
+
+}
+
+h4 {
+  @apply font-semibold text-[18px];
+}
+h4.regular17 {
+  @apply font-normal text-[17px];
+}
+
 header ul.navbar-justify-around {
   @apply justify-around;
 }
@@ -19,7 +31,7 @@ nav > header {
   @apply px-0;
 }
 .bg-blue {
-  background-color: var(--color-blue-canonical);
+  @apply bg-[var(--color-blue-canonical)];
 }
 .bg-translusent-light {
   @apply bg-[rgba(244,249,255,0.1)];
@@ -33,25 +45,31 @@ nav > header {
 .btn-rounded {
   @apply rounded-[40px];
 }
-.input-rounded {
-  @apply rounded-[15px];
-}
-.input-standard-45,
-.input-standard-40 {
-  @apply bg-[rgba(244,249,255,0.1)] rounded-[15px]; 
-  
-}
-.input-standard-45 {
-  @apply h-[45px] w-full;
-}
-.input-standard-40 {
-  @apply h-[40px] 
+.color-blue-canonical {
+  @apply text-[var(--color-blue-canonical)];
 }
 .color-secondary {
-  color: var(--color-second);
+  @apply text-[var(--color-second)];
 }
 .color-ultra-violet, .error {
-  color: var(--color-ultra-violet);
+  @apply text-[var(--color-ultra-violet)];
+}
+.blick-rounded {
+  @apply rounded-[15px];
+}
+.standard-colored-005-rounded {
+  @apply bg-[rgba(244,249,255,0.05)] rounded-[15px]; 
+}
+.standard-colored-01-rounded, /* TODO: check entries to apply */
+.standard-block-decoration-45,
+.standard-block-decoration-40 {
+  @apply bg-[rgba(244,249,255,0.1)] rounded-[15px]; 
+}
+.standard-block-decoration-45 {
+  @apply h-[45px] w-full;
+}
+.standard-block-decoration-40 {
+  @apply h-[40px] 
 }
 .menu-item {
   @apply text-[14px];

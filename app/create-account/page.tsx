@@ -85,7 +85,7 @@ export default function CreateAccount() {
       onSubmit={handleSubmit}
     >
       <Input
-        className="input-standard-45"
+        className="standard-block-decoration-45"
         inputMode="email"
         placeholder="account@gmail.com"
         value={email}

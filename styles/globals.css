@@ -122,10 +122,12 @@
 }
 
 html, body, main {
+  color: var(--color-second);
   background-color: #121212;
 }
 
 /* Делаем Rubik шрифтом по умолчанию */
-html, body {
+html, body, p {
   font-family: 'Rubik', system-ui, sans-serif;
+  font-weight: 300;
 }
