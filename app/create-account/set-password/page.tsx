@@ -79,7 +79,7 @@ export default function SetPassword() {
       onSubmit={handleSubmit}
     >
       <Input
-        className="form-h-45 bg-translusent-light input-rounded mb-[10px] w-full pt-[2px]"
+        className="bg-translusent-light input-rounded mb-[10px] w-full pt-[2px]"
         inputMode="text"
         placeholder="password"
         type="password"
@@ -87,7 +87,7 @@ export default function SetPassword() {
         onChange={(e) => setPassword(e.target.value)}
       />
       <Input
-        className="form-h-45 bg-translusent-light input-rounded w-full pt-[2px]"
+        className="bg-translusent-light input-rounded w-full pt-[2px]"
         inputMode="text"
         placeholder="password retry"
         type="password"

@@ -12,7 +12,7 @@ export default function Buttons({ messageType, status }: { messageType: string; 
   return (
     <div className="mx-auto mt-auto flex w-full max-w-[300px] flex-col items-center">
       <Button
-        className="form-h-45 text-primary bg-translusent-light btn-rounded outline-color-15 m-auto mb-[10px] w-full outline"
+        className="text-primary bg-translusent-light btn-rounded outline-color-15 m-auto mb-[10px] w-full outline"
         //TODO: update later on:
         isLoading={status === 'loading'}
         startContent={
@@ -23,7 +23,7 @@ export default function Buttons({ messageType, status }: { messageType: string; 
         Register with Google
       </Button>
       <Button
-        className="form-h-45 color-secondary btn-rounded m-auto mb-[10px] w-full bg-[blue]"
+        className="btn-rounded bg-blue m-auto mb-[10px] w-full"
         isLoading={status === 'loading'}
         type="submit"
       >

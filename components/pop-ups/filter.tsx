@@ -46,14 +46,30 @@ export default function FilterModal({
     onApply(filters);
     onClose();
   };
-
+  
   const updateFilter = (key: keyof FilterState, target: HTMLInputElement) => {
     const pos = target.getBoundingClientRect();
     const value = parseInt(target.value);
     const indicatorPos = ((pos.width - 30) / 100) * value + 1;
-    console.log({ pos, ratioValue: value, offset: (pos.width / 100) * value, indicatorPos });
+    //console.log({ pos, ratioValue: value, offset: (pos.width / 100) * value, indicatorPos });
     if (key === 'winningRatio') {
-      setFilters((prev) => ({ ...prev, ...{ [key]: value, posIndicator: indicatorPos } }));
+      const wrLen = String(filters.winningRatio).length;
+      let posFix = 0;
+      switch (wrLen) {
+        case 3:
+          console.log('%clen:3', 'color: orange', -9);
+          posFix = 9;
+          break;
+        case 2:
+          console.log('%clen:3', 'color: violet', -6.25);
+          posFix = 6.5;
+          break;
+        default:
+          console.log('%clen:3', 'color: darkred', -3.5);
+          posFix = 4;
+          break;
+      }
+      setFilters((prev) => ({ ...prev, ...{ [key]: value, posIndicator: indicatorPos - posFix } }));
     } else {
       setFilters((prev) => ({ ...prev, [key]: value }));
     }
@@ -68,7 +84,7 @@ export default function FilterModal({
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
 
       {/* Modal */}
-      <div className="flex flex-col relative h-[673px] w-[380px] overflow-y-auto rounded-lg bg-[#121212] p-10 shadow-2xl">
+      <div className="relative flex h-[673px] w-[380px] flex-col overflow-y-auto rounded-lg bg-[#121212] p-10 shadow-2xl">
         {/* Header */}
         <div className="mb-8">
           <h2 className="mb-2 text-2xl font-bold text-white">Filter</h2>
@@ -157,7 +173,7 @@ export default function FilterModal({
           </div>
         </div>
         {/* The winning ratio outline-dotted outline-1 */}
-        <div className="mb-4 pr-[25px] pl-[16px]">
+        <div className="pr-[25px] pl-[16px]">
           <h3 className="mb-12 text-lg font-semibold text-white">The winning ratio</h3>
           <div className="relative flex h-[60px]">
             <span className="absolute -top-3 left-[-16px] z-1">1</span>
@@ -166,49 +182,50 @@ export default function FilterModal({
               type="range"
               min="1"
               max="100"
-              height={1}
               value={filters.winningRatio}
               onChange={(e) => updateFilter('winningRatio', e.target)}
-              className="custom-slider w-full cursor-pointer appearance-none rounded-lg bg-white/20"
+              className="custom-slider h-[1px] w-full cursor-pointer appearance-none rounded-lg bg-white/20"
               style={{
-                background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${sliderPosition}%, rgba(255,255,255,0.2) ${sliderPosition}%, rgba(255,255,255,0.2) 100%)`
+                background: `linear-gradient(to right, #3B57FF 0%, #3B57FF ${sliderPosition}%, rgba(255,255,255,0.2) ${sliderPosition}%, rgba(255,255,255,0.2) 100%)`,
               }}
             />
-            <div className="pointer-events-none absolute -top-8 -translate-x-[7px]" style={{ left: posIndicator }}>
+            <div
+              className="pointer-events-none absolute -top-8 z-10"
+              style={{ left: posIndicator || -4 }}
+            >
               <div className="min-w-[38px] rounded-full bg-[rgba(244,249,255,0.05)] px-3 py-1 text-center">
-                <span className="text-sm text-center font-medium text-white">{filters.winningRatio}</span>
+                <span className="text-center text-sm font-medium text-white">
+                  {filters.winningRatio}
+                </span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Apply Button */}
-        <div className="mt-auto">
-          <Button
-            onClick={handleApply}
-            className="h-12 w-full rounded-lg bg-blue-500 font-semibold text-white outline-0 transition-colors duration-200 hover:bg-blue-600"
-          >
-            Apply
-          </Button>
-        </div>
+        <Button onClick={handleApply} className="btn-rounded bg-blue h-10 w-full">
+          Apply
+        </Button>
       </div>
 
       <style jsx>{`
+        .custom-slider {
+        }
         .custom-slider::-webkit-slider-thumb {
+          background: #3b82f6;
           appearance: none;
           width: 30px;
           height: 30px;
           border-radius: 50%;
-          background: #3b82f6;
           cursor: pointer;
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .custom-slider::-moz-range-thumb {
+          background: #3b82f6;
           width: 30px;
           height: 30px;
           border-radius: 50%;
-          background: #3b82f6;
           cursor: pointer;
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }

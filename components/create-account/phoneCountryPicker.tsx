@@ -30,7 +30,7 @@ export default function PhoneCountryPicker({ value, onChange, className }: Props
     <div className={`relative ${className ?? ''} mr-[5px] w-[60px]`}>
       {/* trigger */}
       <button
-        className="form-h-45 input-rounded bg-translusent-light flex w-full items-center gap-3"
+        className="input-rounded bg-translusent-light flex w-full items-center gap-3"
         type="button"
         onClick={() => setOpen((v) => !v)}
       >
