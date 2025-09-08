@@ -33,6 +33,9 @@ nav > header {
 .bg-blue {
   @apply bg-[var(--color-blue-canonical)];
 }
+.bg-blue-second {
+  @apply bg-[var(--color-blue-second)];
+}
 .bg-translusent-light {
   @apply bg-[rgba(244,249,255,0.1)];
 }
@@ -47,9 +50,6 @@ nav > header {
 }
 .color-blue-canonical {
   @apply text-[var(--color-blue-canonical)];
-}
-.color-secondary {
-  @apply text-[var(--color-second)];
 }
 .color-ultra-violet, .error {
   @apply text-[var(--color-ultra-violet)];

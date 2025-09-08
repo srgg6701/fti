@@ -23,8 +23,8 @@ export default function Notification({ onCloseModal }: { onCloseModal: () => voi
           width={26}
         />
         <h4 className="h-[21px]">Notification</h4>
-        <p className="color-secondary pt-[15px] text-sm">
-          <span className="color-secondary text-sm opacity-50">Added a new asset named</span>{' '}
+        <p className="pt-[15px] text-sm">
+          <span className="text-sm opacity-50">Added a new asset named</span>{' '}
           <Link className="color-blue-canonical" href="/contents/memicon">
             &quot;memcoin&quot;
           </Link>

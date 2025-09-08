@@ -16,7 +16,7 @@ export default function Tariffplan() {
 
   const plans = [
     {
-      name: 'Standart',
+      name: 'Standard',
       badge: 'Popular',
       price: '$50.99',
       period: '1 month',

@@ -13,7 +13,7 @@ const DataNews = [
     img: 'key-transparent.png',
     text: 'Bitcoin’s price surges as institutional investors start buying more',
     title: 'The Future of Bitcoing: Will it Reach',
-    userImg: 'male-yellow-face-bg-blue.svg',
+    userImg: 'user-joshua.svg',
   },
   {
     username: 'Colbert',

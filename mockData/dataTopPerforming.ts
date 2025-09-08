@@ -1,3 +1,14 @@
+/* {
+  "id": 1918254,
+  "name": "AlexProgrammer's Strategy",
+  "description": "asd",
+  "status": 5,
+  "account": "25253332",
+  "server": "RoboForex-Pro-5",
+  "is_connected": 1,
+  "is_mt5": 0,
+  "account_type": 0
+} */
 const DataTopPerforming = [
   {
     username: 'Clarisse',

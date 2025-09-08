@@ -11,7 +11,7 @@ export default function Home() {
         <div className="flex max-w-[452px] flex-col gap-2.5">
           <h3 className="text-2xl font-medium">Total Balance</h3>
           <h1 className="text-5xl font-medium">$ 1000.00</h1>
-          <p className="color-secondary leading-normal opacity-50">
+          <p className="leading-normal opacity-50">
             Google&apos;s free service allows you to instantly translate words, phrases, and web
             pages. It supports over 100 languages.
           </p>
