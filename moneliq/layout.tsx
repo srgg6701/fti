@@ -2,9 +2,13 @@ import { Metadata, Viewport } from 'next';
 import clsx from 'clsx';
 
 import '@/styles/globals.css';
+import '@/styles/xtra.css';
 import { Providers } from './providers';
 
+import { ThemeAutoSwitch } from '@/app/ThemeAutoSwitch';
 import { siteConfig } from '@/config/site';
+import { fontSans } from '@/config/fonts';
+import { Navbar } from '@/components/navbar';
 
 export const metadata: Metadata = {
   title: {
@@ -31,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body
         className={clsx(
           'text-foreground bg-background min-h-screen font-sans antialiased',
+          fontSans.variable,
         )}
       >
         <Providers
@@ -49,7 +54,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         >
           <div className="relative flex h-screen flex-col">
+            <Navbar />
             <main className="container mx-auto max-w-7xl flex-grow px-6 pt-16">{children}</main>
+            <ThemeAutoSwitch />
           </div>
         </Providers>
       </body>

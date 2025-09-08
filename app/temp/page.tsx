@@ -1,6 +1,7 @@
 'use client';
 import { Switch } from '@heroui/react';
-export default function Temp() {
+
+export default function TestSwitch() {
   return (
     <div className="p-8">
       <h1>Switch Test</h1>
