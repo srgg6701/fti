@@ -1,20 +1,21 @@
 'use client';
 import Image from 'next/image';
 import SectionHeader from '@/components/sectionsWrapper/sectionHeader';
-import Link from 'next/link';
+//import Link from 'next/link';
 import { Button } from '@heroui/button';
 import { Input } from '@heroui/input';
 import { Textarea } from '@heroui/input';
-import { Switch } from '@heroui/switch';
+import { Switch } from '@heroui/react';
+import { ButtonRoundedGrey } from "@/components/button-rounded";
 
 const headerParams = {
   h: 'h-[33px]',
   mb: 'mb-5',
   seeAllHref: '/#',
 };
-
+const verticalOffset = 'pt-[var(--offset-80)]';
 const sectionParams = {
-  className: 'flex flex-col pt-[var(--offset-80)]',
+  className: `flex flex-col ${verticalOffset}`,
 };
 
 const billingData = [
@@ -41,7 +42,10 @@ const billingData = [
 
 export default function ProfileDraft() {
   // Handlers (placeholders)
-  const handleVerification = () => {};
+  const handleVerification = () => {
+    console.log('Handling verification...');
+    window.alert('Handling verification...');
+  };
   const handleToggleDark = (checked: boolean) => {};
   const handleSendSupport = () => {};
 
@@ -110,20 +114,17 @@ export default function ProfileDraft() {
         ))}
       </section>
       {/* Verification */}
-      <section {...sectionParams}>
+      <section className={verticalOffset}>
         <SectionHeader title="Verification" noLink={true} {...headerParams} />
-        <div className="rounded-xl p-4">
-          <Button onPress={handleVerification} className="w-max">
-            Verification page
-          </Button>
-        </div>
+        <ButtonRoundedGrey onPress={handleVerification} height='h-[45px]' width='w-[171px]' onClick={handleVerification} btnText="Verification page" />
       </section>
       {/* Settings */}
       <section {...sectionParams}>
         <SectionHeader title="Settings" noLink={true} {...headerParams} />
         <div className="flex items-center justify-between rounded-xl p-4">
           <span className="text-sm">Dark theme</span>
-          <Switch onChange={(e) => handleToggleDark(e.target.checked)} aria-label="Dark theme" />
+          <Switch defaultSelected size="sm"></Switch>
+          {/* <Switch onChange={(e) => handleToggleDark(e.target.checked)} aria-label="Dark theme" /> */}
         </div>
         <div className="mt-3 flex items-center justify-between rounded-xl p-4 text-xs">
           <span>Fintech Innovation Trade, LLC</span>

@@ -1,8 +1,8 @@
 'use client';
-import { Button } from '@heroui/button';
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
+import {ButtonRoundedGrey, ButtonRoundedBlue} from '@/components/button-rounded';
 
 import { getUrlSegments } from '@/lib/utils';
 
@@ -11,24 +11,8 @@ export default function Buttons({ messageType, status }: { messageType: string; 
 
   return (
     <div className="mx-auto mt-auto flex w-full max-w-[300px] flex-col items-center">
-      <Button
-        className="text-primary bg-translusent-light btn-rounded outline-color-15 m-auto mb-[10px] w-full outline"
-        //TODO: update later on:
-        isLoading={status === 'loading'}
-        startContent={
-          <Image alt="Google" height={18} src="/assets/images/icons/google.svg" width={18} />
-        }
-        type="submit"
-      >
-        Register with Google
-      </Button>
-      <Button
-        className="btn-rounded bg-blue m-auto mb-[10px] w-full"
-        isLoading={status === 'loading'}
-        type="submit"
-      >
-        Complete!
-      </Button>
+      <ButtonRoundedGrey startContent={<Image alt="Google" src="/assets/images/icons/google.svg" width={18} height={18} />} />
+      <ButtonRoundedBlue />
       {urlFirstSegment !== '/login' && urlFirstSegment !== '/logout' && (
         <p className="mt-[11.5px]">
           {messageType === 'have-you-account' && 'Do you already have an account?'}

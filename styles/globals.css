@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@heroui/theme";
 
 :root {
   --color-second: #f4f9ff;
