@@ -1,6 +1,0 @@
-@import 'tailwindcss';
-#navbar-container {
-  input[data-type="search"] {
-     @apply w-full lg:w-[210px];
-  }
-}
