@@ -1,3 +1,5 @@
+import { CSSProperties } from 'react';
+
 import ArrowsUpDown from '@/components/arrows/up-down';
 export default function Subheaders({
   header,
@@ -8,6 +10,8 @@ export default function Subheaders({
   sSize = 'text-sm',
   gap = 'gap-[5px]',
   leading = 'leading-[21px]',
+  position,
+  style,
 }: {
   header: string;
   subheader: string;
@@ -17,9 +21,11 @@ export default function Subheaders({
   sSize?: string;
   gap?: string;
   leading?: string;
+  position?: string;
+  style?: CSSProperties | undefined;
 }) {
   return (
-    <div className={`flex ${gap} ${leading}`}>
+    <div className={`flex ${gap} ${leading} ${position}`} style={style}>
       <h4 className={`${h} ${hSize}`}>{header}</h4>
       <ArrowsUpDown direction={direction} />
       <div
