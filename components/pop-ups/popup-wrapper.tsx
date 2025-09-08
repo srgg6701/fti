@@ -7,7 +7,7 @@ export default function PopupWrapper({
   w,
 }: {
   children: ReactNode;
-  onClose: () => void;
+  onClose?: () => void;
   h: string;
   w: string;
 }) {
