@@ -124,7 +124,6 @@ export default function ProfileDraft() {
         <div className="flex items-center justify-between rounded-xl p-4">
           <span className="text-sm">Dark theme</span>
           <Switch defaultSelected size="sm"></Switch>
-          {/* <Switch onChange={(e) => handleToggleDark(e.target.checked)} aria-label="Dark theme" /> */}
         </div>
         <div className="mt-3 flex items-center justify-between rounded-xl p-4 text-xs">
           <span>Fintech Innovation Trade, LLC</span>
@@ -133,7 +132,7 @@ export default function ProfileDraft() {
       </section>
       {/* Support */}
       <section {...sectionParams}>
-        <SectionHeader title="Support" noLink={true} {...headerParams} />
+       <SectionHeader title="Support" noLink={true} {...headerParams} />
         <p className="mb-3 text-sm">Specify your email address and describe the problem</p>
         <div className="space-y-3 rounded-xl p-4">
           <Input type="email" placeholder="account@gmail.com" className="w-full" />
