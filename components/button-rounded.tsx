@@ -1,6 +1,5 @@
 // TODO: Use this button library everywhere to unify code!
 import { Button } from '@heroui/button';
-import Image from 'next/image';
 import React from 'react';
 
 type ButtonProps = {
@@ -45,6 +44,7 @@ function renderButton(p: ButtonProps) {
     type,
     ...rest // (onClick/onPress/aria-*)
   } = { ...baseDefaults, ...p };
+
   return (
     <Button
       className={`${rounded} ${bgColor} ${marginClass} ${marginBottom} ${outline} ${width} ${height}`}
@@ -61,6 +61,7 @@ type PresetProps = Partial<ButtonProps>;
 
 function makeButton(preset: PresetProps) {
   const PresetButton: React.FC<PresetProps> = (props) => renderButton({ ...preset, ...props });
+
   return PresetButton;
 }
 
