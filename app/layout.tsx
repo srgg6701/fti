@@ -8,7 +8,6 @@ import '@/styles/xtra.css';
 import { Providers } from './providers';
 
 import { siteConfig } from '@/config/site';
-
 //import { ThemeAutoSwitch } from '@/app/ThemeAutoSwitch';
 import { fontSans } from '@/config/fonts';
 import { Navbar } from '@/components/navbar';
@@ -53,9 +52,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             className="relative m-auto flex h-screen max-w-[1440px] flex-col px-10 md:px-[55.38px]"
             id="main-wrapper"
           >
-            {/* <Navbar /> */}
+            <Navbar />
             <main className="container mx-auto flex-grow py-6">{children}</main>
-            {/* <Footer /> */}
+            <Footer />
             {/* <ThemeAutoSwitch /> */}
           </div>
         </Providers>
