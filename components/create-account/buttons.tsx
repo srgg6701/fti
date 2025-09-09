@@ -18,7 +18,7 @@ export default function Buttons({ messageType, status }: { messageType: string; 
       />
       <ButtonRoundedBlue />
       {urlFirstSegment !== '/login' && urlFirstSegment !== '/logout' && (
-        <p className="mt-[11.5px]">
+        <p className="mt-[11.5px] text-sm">
           {messageType === 'have-you-account' && 'Do you already have an account?'}
           <Link className="ml-1 font-bold" href="/login">
             Log in

@@ -76,7 +76,7 @@ export default function Strategy() {
           </div>
           <div className="flex gap-2.5">
             <Button
-              className="text-primary bg-translusent-light btn-rounded outline-color-15 m-auto mb-[10px] w-[123px] outline"
+              className="bg-translusent-light btn-rounded outline-color-15 m-auto mb-[10px] w-[123px] outline"
               onClick={onSimulation}
             >
               Simulation
