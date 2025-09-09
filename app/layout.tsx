@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 import { Metadata, Viewport } from 'next';
 // TODO: check if we really need this:
 import clsx from 'clsx';
@@ -6,14 +5,14 @@ import clsx from 'clsx';
 import '@/styles/globals.css';
 import '@/styles/xtra.css';
 
-import { siteConfig } from '@/config/site';
-
 import { Providers } from './providers';
 
+import { siteConfig } from '@/config/site';
+
 //import { ThemeAutoSwitch } from '@/app/ThemeAutoSwitch';
-//import { fontSans } from '@/config/fonts';
-//import { Navbar } from '@/components/navbar';
-//import Footer from '@/components/footer';
+import { fontSans } from '@/config/fonts';
+import { Navbar } from '@/components/navbar';
+import Footer from '@/components/footer';
 
 export const metadata: Metadata = {
   title: {
@@ -40,7 +39,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body
         className={clsx(
           'text-foreground bg-background min-h-screen font-sans antialiased',
-        )} /* fontSans.variable, */
+          fontSans.variable,
+        )} /*  */
       >
         <Providers
           themeProps={{
