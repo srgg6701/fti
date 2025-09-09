@@ -6,7 +6,6 @@ const users = [
     email: 'user@example.com',
     password: 'password123',
     username: 'username',
-    // type: 'member',
   },
 ];
 
@@ -28,7 +27,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
-      //type: user.type,
       username: users[0].username,
       email: user.email,
     });

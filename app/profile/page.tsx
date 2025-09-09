@@ -63,10 +63,10 @@ export default function ProfileDraft() {
     }
   };
 
-  function deleteSubscription () {
+  function deleteSubscription() {
     setNotification(true);
   }
-  
+
   function closeActive() {
     setNotification(false);
   }
@@ -86,7 +86,6 @@ export default function ProfileDraft() {
             />
             <div className="flex min-w-0 flex-1 flex-col gap-3">
               <div className="flex flex-wrap items-center gap-2">
-                {/* <Button className="bg-blue-second h-[31px] rounded-[15px]">Active</Button> */}
                 <div className="relative">
                   <span
                     className="cursor-pointer"
@@ -101,7 +100,6 @@ export default function ProfileDraft() {
                     src="/assets/images/cross/cross-light-bolder.svg"
                     onClick={deleteSubscription}
                     width={16}
-                    //className="righ-[5px]·absolute·top-[3.5px]·z-[1]"
                     style={{ position: 'absolute', top: '8px', right: '7px', zIndex: 1 }}
                   />
                   <ButtonRoundedBlue
@@ -187,13 +185,11 @@ export default function ProfileDraft() {
                 onClick={handleSendSupport}
               />
             </div>
-            {/* <Button className="w-full">
-            Send
-          </Button> */}
           </div>
         </section>
       </div>
-      {(notificationIsOpen && <DeletingSubscritpionConfirmation onCloseModal={closeActive} />)|| null}
+      {(notificationIsOpen && <DeletingSubscritpionConfirmation onCloseModal={closeActive} />) ||
+        null}
     </>
   );
 }

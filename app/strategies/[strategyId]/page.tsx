@@ -1,5 +1,4 @@
 'use client';
-//export const metadata = { title: 'Your Strategy' };
 import { Fragment, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from '@heroui/button';

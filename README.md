@@ -1,13 +1,15 @@
 # FTI — Frontend (Next.js)
 
 ## Overview
-Responsive (Mobile First) SPA on Next.js (App Router) representing FinTech industry. Dev-server on Turbopack. Lint/formatting — ESLint + Prettier + Husky. Data loading via fetch/SWR.
+
+* TBC...
 
 ## Look
 
-### Fonts
+### UI settings
 
 * sm: 14px
+* TBC...
 
 ## Tech Stack
 - Next.js 15, React 18, TypeScript
@@ -32,15 +34,12 @@ pnpm lint      # lint + autofixes
 ### Env
 If API endpoints are set via config (`app/config/site.ts`), specify them there. For .env (if needed): create `.env.local` and use via `process.env.*`.
 
-Switch changes pairs depending on role. On logout theme resets to default (`dark`). (Solution: simple and predictable; avoided `useSyncExternalStore` cycles.)
-
 ## Data & Error States
 - Loading via `fetch`/SWR with disabled cache for server calls, in UI — skeleton/empty/error.
 - A common thin client (timeout + retry for GET) and a single `ErrorState`/`EmptyState` components are recommended (see the “Architecture & Trade-offs” section).
 
 ## Accessibility
 - Semantic landmarks: `<header> / <main id="main"> / <footer>`, `<nav aria-label="Main">`, skip-link `href="#main"`.
-- Table (if needed): `table > thead > th[scope="col"]`, rows — `th[scope="row"]` (if applicable).
 - Navigation: `aria-current="page"` on active link.
 - Theme switcher: keyboard accessible (`<input>` by HeroUI), fixed `aria-label`.
 

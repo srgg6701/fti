@@ -1,8 +1,6 @@
 'use client'; // TODO: check if it should be a client component
 import Image from 'next/image';
 
-//import { useAdjustArticleWidth } from '@/hooks/useAdjustArticleWidth';
-//import '@/styles/style-sections.css';
 import HomeSections from '@/components/dataSections';
 
 export default function Home() {
@@ -13,9 +11,6 @@ export default function Home() {
       console.log('Add Strategy');
     }
   }
-
-  //useAdjustArticleWidth();
-
   return (
     <>
       <section className="mx-auto py-[80px]">

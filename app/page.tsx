@@ -23,7 +23,4 @@ export default function Default() {
       <p className="absolute bottom-[80px] text-center">Fintech Trade Innovation</p>
     </div>
   );
-  {
-    /* <Link href="/temp">Go temp!</Link>|<Link href="/profile">Profile</Link> */
-  }
 }

@@ -7,7 +7,7 @@ export async function apiFetch<T>(endpoint: string, options: RequestInit = {}): 
       'Content-Type': 'application/json',
       ...(options.headers || {}),
     },
-    credentials: 'include', // важно для cookie авторизации
+    credentials: 'include',
   });
 
   if (!res.ok) {

@@ -22,16 +22,12 @@ export default function News3() {
         />
         <h2 className="mb-3 text-lg font-semibold">The Future of Bitcoin: Will It Reach</h2>
 
-        {/* В исходнике дальше был мусор из [object Object] — удалено */}
         <div className="prose prose-invert prose-sm max-w-none text-white/80">
-          {/* Текст статьи из макета отсутствует — оставляем контейнер для будущего контента */}
           <p className="text-white/60">
-            {/* Placeholder body (по макету текст не предоставлен) */}
           </p>
         </div>
       </article>
 
-      {/* See also */}
       <section className="mx-auto mt-10 max-w-7xl px-4">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-semibold">See also</h3>

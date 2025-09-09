@@ -79,7 +79,6 @@ export default function PhoneCountryPicker({ value, onChange, className }: Props
         </div>
       )}
 
-      {/* Клик вне — закрыть */}
       {open && (
         <button
           aria-hidden

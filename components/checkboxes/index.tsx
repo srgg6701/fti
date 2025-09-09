@@ -2,7 +2,7 @@ export default function GenerateCheckbox({
   onChange,
   checkedCondition,
   type = 'radio',
-  name, //
+  name,
   option,
 }: {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
