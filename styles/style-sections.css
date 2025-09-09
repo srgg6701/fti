@@ -1,0 +1,62 @@
+section {
+  position: relative;
+}
+.row {
+  display: flex;
+  margin-right: -100vw;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none; /* Firefox */
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none; /* old Edge/IE */
+}
+.row article {
+  background-color: rgba(244, 249, 255, 0.02);
+  border-radius: 15px;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+.row.article-container {
+  overflow-y: hidden;
+}
+.read-more {
+  background-color: #121212;
+  display: inline-block;
+  padding-left: 4px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.read-more span {
+  display: inline-block;
+  font-weight: 700;
+  padding-left: 4px;
+}
+.scroller {
+  position: relative;
+}
+
+.row::-webkit-scrollbar {
+  height: 8px;
+} /* Chrome/Safari/Edge */
+
+.scroller:hover .row {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+}
+.scroller:hover .row::-webkit-scrollbar {
+  height: 8px;
+}
+.scroller:hover .row::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+}
+.scroller:hover .row::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+.scroller:hover .row::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  margin: 0 24px;
+}

@@ -1,14 +1,16 @@
+/* eslint-disable import/no-unresolved */
 import { Metadata, Viewport } from 'next';
 // TODO: check if we really need this:
 import clsx from 'clsx';
 
 import '@/styles/globals.css';
-import '@/styles/xtra2.css';
-import '@/styles/something preposterous.css';
+import '@/styles/xtra.css';
+
+import { siteConfig } from '@/config/site';
+
 import { Providers } from './providers';
 
 //import { ThemeAutoSwitch } from '@/app/ThemeAutoSwitch';
-import { siteConfig } from '@/config/site';
 //import { fontSans } from '@/config/fonts';
 //import { Navbar } from '@/components/navbar';
 //import Footer from '@/components/footer';
