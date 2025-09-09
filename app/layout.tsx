@@ -3,7 +3,7 @@ import { Metadata, Viewport } from 'next';
 import clsx from 'clsx';
 
 import '@/styles/globals.css';
-import '@/styles/xtra.css';
+//import '@/styles/xtra.css';
 import { Providers } from './providers';
 
 //import { ThemeAutoSwitch } from '@/app/ThemeAutoSwitch';
