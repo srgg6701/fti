@@ -3,6 +3,7 @@ import { fixupConfigRules, fixupPluginRules } from "@eslint/compat";
 import react from "eslint-plugin-react";
 import unusedImports from "eslint-plugin-unused-imports";
 import _import from "eslint-plugin-import";
+import importConfig from './import.config.js';
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import jsxA11Y from "eslint-plugin-jsx-a11y";
 import prettier from "eslint-plugin-prettier";
@@ -125,6 +126,8 @@ export default defineConfig([globalIgnores([
             "newlines-between": "always",
         }],
 
+        "import/no-unresolved": ["error", { commonjs: true, amd: true }],
+
         "react/self-closing-comp": "warn",
 
         "react/jsx-sort-props": ["warn", {
@@ -139,13 +142,16 @@ export default defineConfig([globalIgnores([
             prev: "*",
             next: "return",
         }, {
-            blankLine: "always",
-            prev: ["const", "let", "var"],
-            next: "*",
-        }, {
-            blankLine: "any",
-            prev: ["const", "let", "var"],
-            next: ["const", "let", "var"],
-        }],
+                blankLine: "always",
+                prev: ["const", "let", "var"],
+                next: "*",
+            }, {
+                blankLine: "any",
+                prev: ["const", "let", "var"],
+                next: ["const", "let", "var"],
+            }],
     },
-}]);
+
+},
+    importConfig,
+]);
