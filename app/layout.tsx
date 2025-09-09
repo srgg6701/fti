@@ -4,14 +4,17 @@ import clsx from 'clsx';
 
 import '@/styles/globals.css';
 import '@/styles/xtra.css';
-
-import { Providers } from './providers';
+import '@/styles/text-colors.css';
+import '@/styles/bg.css';
+import '@/styles/fonts.css';
 
 import { siteConfig } from '@/config/site';
 //import { ThemeAutoSwitch } from '@/app/ThemeAutoSwitch';
 import { fontSans } from '@/config/fonts';
 import { Navbar } from '@/components/navbar';
 import Footer from '@/components/footer';
+
+import { Providers } from './providers';
 
 export const metadata: Metadata = {
   title: {

@@ -2,11 +2,12 @@
 import Image from 'next/image';
 
 //import Link from 'next/link';
-import { Button } from '@heroui/button';
+//import { Button } from '@heroui/button';
 import { Input } from '@heroui/input';
 import { Textarea } from '@heroui/input';
 import { Switch } from '@heroui/react';
 
+import { ButtonRoundedBlue } from '@/components/button-rounded';
 import SectionHeader from '@/components/sectionsWrapper/sectionHeader';
 import { ButtonRoundedGrey } from '@/components/button-rounded';
 
@@ -62,6 +63,10 @@ export default function ProfileDraft() {
     }
   };
 
+  function closeActive() {
+    console.log('Closing active...');
+  }
+
   return (
     <div className="mx-auto max-w-[550px]">
       {/* Profile header */}
@@ -76,7 +81,31 @@ export default function ProfileDraft() {
           />
           <div className="flex min-w-0 flex-1 flex-col gap-3">
             <div className="flex flex-wrap items-center gap-2">
-              <Button className="bg-blue-second h-[31px] rounded-[15px]">Active</Button>
+              {/* <Button className="bg-blue-second h-[31px] rounded-[15px]">Active</Button> */}
+              <div className="relative">
+                <span
+                  className="cursor-pointer"
+                  style={{ position: 'absolute', top: '3px', left: '12px', zIndex: 1 }}
+                >
+                  Active
+                </span>
+                <Image
+                  alt="Close"
+                  className="cursor-pointer"
+                  height={16}
+                  src="/assets/images/cross/cross-light-bolder.svg"
+                  onClick={closeActive}
+                  width={16}
+                  //className="righ-[5px]·absolute·top-[3.5px]·z-[1]"
+                  style={{ position: 'absolute', top: '8px', right: '7px', zIndex: 1 }}
+                />
+                <ButtonRoundedBlue
+                  bgColor="bg-blue-second"
+                  btnText=""
+                  height="h-[31px]"
+                  width="w-[94px]"
+                />
+              </div>
               <div className="flex flex-col">
                 <span className="text-sm">Standard</span>
                 <span className="text-sm opacity-50">Active until 24.03.2026</span>
@@ -103,10 +132,10 @@ export default function ProfileDraft() {
               />
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
-                  <span>{item.title}</span>
+                  <span className="text-base">{item.title}</span>
                   <span className="text-xs opacity-50">1 day ago</span>
                 </div>
-                <div className="text-sm">{item.desc}</div>
+                <div className="text-sm opacity-80">{item.desc}</div>
               </div>
             </div>
             <div className={`text-sm ${colorizeAmount(item.amount)}`}>{item.amount}</div>
@@ -118,6 +147,7 @@ export default function ProfileDraft() {
         <SectionHeader noLink={true} title="Verification" {...headerParams} />
         <ButtonRoundedGrey
           btnText="Verification page"
+          fontSize="text-base"
           height="h-[45px]"
           width="w-[171px]"
           onClick={handleVerification}
@@ -127,25 +157,34 @@ export default function ProfileDraft() {
       {/* Settings */}
       <section {...sectionParams}>
         <SectionHeader noLink={true} title="Settings" {...headerParams} />
-        <div className="flex items-center justify-between rounded-xl p-4">
-          <span className="text-sm">Dark theme</span>
+        <div className="mb-5 flex items-center justify-between">
+          <span className="text-lg font-semibold">Dark theme</span>
           <Switch defaultSelected size="sm" />
         </div>
-        <div className="mt-3 flex items-center justify-between rounded-xl p-4 text-xs">
-          <span>Fintech Innovation Trade, LLC</span>
-          <span>v1.54.444</span>
+        <div className="flex items-center justify-between">
+          <span className="text-lg font-semibold">Fintech Innovation Trade, LLC</span>
+          <span className="text-sm opacity-80">v1.54.444</span>
         </div>
       </section>
       {/* Support */}
       <section {...sectionParams}>
         <SectionHeader noLink={true} title="Support" {...headerParams} />
-        <p className="mb-3 text-sm">Specify your email address and describe the problem</p>
-        <div className="space-y-3 rounded-xl p-4">
-          <Input className="w-full" placeholder="account@gmail.com" type="email" />
+        <p className="mb-5 text-sm opacity-80">
+          Specify your email address and describe the problem
+        </p>
+        <div className="flex flex-col gap-5">
+          <Input className="w-full max-w-[300px]" placeholder="account@gmail.com" type="email" />
           <Textarea className="w-full" minRows={4} placeholder="Describe the problem..." />
-          <Button className="w-full" onPress={handleSendSupport}>
+          <div className="pb-[56px]">
+            <ButtonRoundedBlue
+              btnText="Send"
+              width="w-full max-w-[300px]"
+              onClick={handleSendSupport}
+            />
+          </div>
+          {/* <Button className="w-full">
             Send
-          </Button>
+          </Button> */}
         </div>
       </section>
     </div>

@@ -2,9 +2,10 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@heroui/button';
 
+import GenerateCheckbox from '@/components/checkboxes';
+
 import PopupWrapper from './popup-wrapper';
 
-import GenerateCheckbox from '@/components/checkboxes';
 import '@/styles/style-popup-slider.css';
 
 interface FilterModalProps {

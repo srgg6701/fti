@@ -1,26 +1,11 @@
 @import 'tailwindcss';
 
-h1 {
-  @apply text-[2rem] font-bold;
-}
-h2 {
-  @apply text-3xl font-bold;
-}
 h2.bigger {
   @apply text-[32px];
-}
-
-h3 {
-
-}
-
-h4 {
-  @apply font-semibold text-[18px];
 }
 h4.regular17 {
   @apply font-normal text-[17px];
 }
-
 header ul.navbar-justify-around {
   @apply justify-around;
 }
@@ -30,40 +15,14 @@ header ul.navbar-justify-around {
 nav > header {
   @apply px-0;
 }
-.bg-blue {
-  @apply bg-[var(--color-blue-canonical)];
-}
-.bg-blue-second {
-  @apply bg-[var(--color-blue-second)];
-}
-.bg-translusent-light {
-  @apply bg-[rgba(244,249,255,0.1)];
-}
-.bg-translusent-extreme {
-  @apply bg-[rgba(244,249,255,0.05)];
-}
 .outline-color-15 {
-  outline-color:rgba(244,249,255,0.15)
+  @apply outline-[rgba(var(--light-color-rgb),0.15)];
 }
 .btn-rounded {
   @apply rounded-[40px];
 }
-.color-blue-canonical {
-  @apply text-[var(--color-blue-canonical)];
-}
-.color-ultra-violet, .error {
-  @apply text-[var(--color-ultra-violet)];
-}
 .blick-rounded {
   @apply rounded-[15px];
-}
-.standard-colored-005-rounded {
-  @apply bg-[rgba(244,249,255,0.05)] rounded-[15px]; 
-}
-.standard-colored-01-rounded, /* TODO: check entries to apply */
-.standard-block-decoration-45,
-.standard-block-decoration-40 {
-  @apply bg-[rgba(244,249,255,0.1)] rounded-[15px]; 
 }
 .standard-block-decoration-45 {
   @apply h-[45px] w-full;
@@ -74,7 +33,6 @@ nav > header {
 .menu-item {
   @apply text-[14px];
 }
-
 
 /* ANIMATIONS */
 #sending-data {

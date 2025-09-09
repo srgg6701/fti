@@ -1,0 +1,9 @@
+@import 'tailwindcss';
+
+.color-blue-canonical {
+  @apply text-[var(--color-blue-canonical)];
+}
+.color-ultra-violet, .error {
+  @apply text-[var(--color-ultra-violet)];
+}
+

@@ -1,6 +1,7 @@
+import ColoredIndicator from '@/components/coloredIndicator';
+
 import UserBlock from './user-block';
 
-import ColoredIndicator from '@/components/coloredIndicator';
 export default function CardMyStrategies({
   username,
   userImg,

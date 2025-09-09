@@ -13,8 +13,6 @@ import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { Input } from '@heroui/input';
 
-import { Icon, menuIcons } from '../icons';
-
 import { checkRouteAside, getUrlSegments } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 //import { ThemeSwitch } from '@/components/theme-switch';
@@ -23,6 +21,8 @@ import { filterData } from '@/components/dataSections';
 import '@/styles/style-navbar.css';
 import SortingModal from '@/components/pop-ups/sorting';
 import FilterModal, { type FilterState } from '@/components/pop-ups/filter';
+
+import { Icon, menuIcons } from '../icons';
 
 export const Navbar = () => {
   // TODO: Check if it makes sense to leave it here:

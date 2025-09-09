@@ -2,9 +2,9 @@
 import { useState } from 'react';
 import { Button } from '@heroui/button';
 
-import PopupWrapper from './popup-wrapper';
-
 import GenerateCheckbox from '@/components/checkboxes';
+
+import PopupWrapper from './popup-wrapper';
 
 interface SortingModalProps {
   isOpen: boolean;

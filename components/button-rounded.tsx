@@ -5,6 +5,7 @@ import React from 'react';
 type ButtonProps = {
   rounded?: string;
   bgColor?: string;
+  fontSize?: string;
   marginClass?: string;
   marginBottom?: string;
   outline?: string;
@@ -18,7 +19,7 @@ type ButtonProps = {
 };
 
 const baseDefaults: Required<
-  Omit<ButtonProps, 'startContent' | 'outline' | 'onPress' | 'onClick'>
+  Omit<ButtonProps, 'fontSize' | 'startContent' | 'outline' | 'onPress' | 'onClick'>
 > = {
   rounded: 'btn-rounded',
   bgColor: 'bg-blue',
@@ -34,6 +35,7 @@ function renderButton(p: ButtonProps) {
   const {
     rounded,
     bgColor,
+    fontSize,
     marginClass,
     marginBottom,
     outline,
@@ -47,7 +49,7 @@ function renderButton(p: ButtonProps) {
 
   return (
     <Button
-      className={`${rounded} ${bgColor} ${marginClass} ${marginBottom} ${outline} ${width} ${height}`}
+      className={`${fontSize} ${rounded} ${bgColor} ${marginClass} ${marginBottom} ${outline} ${width} ${height}`}
       startContent={startContent}
       type={type}
       {...rest}

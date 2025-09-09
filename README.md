@@ -3,6 +3,12 @@
 ## Overview
 Responsive (Mobile First) SPA on Next.js (App Router) representing FinTech industry. Dev-server on Turbopack. Lint/formatting — ESLint + Prettier + Husky. Data loading via fetch/SWR.
 
+## Look
+
+### Fonts
+
+* sm: 14px
+
 ## Tech Stack
 - Next.js 15, React 18, TypeScript
 - Tailwind CSS 4 + HeroUI (UI components/themes)
