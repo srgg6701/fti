@@ -11,6 +11,7 @@ export default function Home() {
       console.log('Add Strategy');
     }
   }
+
   return (
     <>
       <section className="mx-auto py-[80px]">

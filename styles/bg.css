@@ -4,7 +4,10 @@
   @apply bg-[var(--color-blue-canonical)];
 }
 .bg-blue-second {
-  @apply bg-[var(--color-blue-second)];
+  @apply bg-[var(--color-blue-second-rgb)];
+}
+.bg-blue-second-translusent-lignt {
+  @apply bg-[rgba(var(--color-blue-second-rgb),0.1)];
 }
 .bg-translusent-light {
   @apply bg-[rgba(var(--light-color-rgb),0.1)];

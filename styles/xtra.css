@@ -10,7 +10,7 @@ header ul.navbar-justify-around {
   @apply justify-around;
 }
 #main-wrapper > nav {
-  @apply relative block;
+  @apply relative block bg-transparent;
 }
 nav > header {
   @apply px-0;

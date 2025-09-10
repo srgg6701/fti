@@ -1,6 +1,7 @@
 'use client';
-import Image from 'next/image';
 import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { Input } from '@heroui/input';
 import { Textarea } from '@heroui/input';
 import { Switch } from '@heroui/react';
@@ -98,9 +99,9 @@ export default function ProfileDraft() {
                     className="cursor-pointer"
                     height={16}
                     src="/assets/images/cross/cross-light-bolder.svg"
-                    onClick={deleteSubscription}
-                    width={16}
                     style={{ position: 'absolute', top: '8px', right: '7px', zIndex: 1 }}
+                    width={16}
+                    onClick={deleteSubscription}
                   />
                   <ButtonRoundedBlue
                     bgColor="bg-blue-second"
@@ -114,7 +115,7 @@ export default function ProfileDraft() {
                   <span className="text-sm opacity-50">Active until 24.03.2026</span>
                 </div>
               </div>
-              <h2 className="h-[28px] text-[28px]">Joshua</h2>
+              <h2 className="h-[28px] text-[28px]"><Link href="/profile/personal-information?id=dfq125dfe25">Joshua</Link></h2>
             </div>
           </div>
         </section>

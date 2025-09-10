@@ -23,8 +23,7 @@ export default function News3() {
         <h2 className="mb-3 text-lg font-semibold">The Future of Bitcoin: Will It Reach</h2>
 
         <div className="prose prose-invert prose-sm max-w-none text-white/80">
-          <p className="text-white/60">
-          </p>
+          <p className="text-white/60" />
         </div>
       </article>
 

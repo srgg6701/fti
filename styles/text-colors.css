@@ -3,7 +3,12 @@
 .color-blue-canonical {
   @apply text-[var(--color-blue-canonical)];
 }
-.color-ultra-violet, .error {
+.color-blue-secondary {
+  /* @apply text-[rgb(var(--color-blue-second-rgb))]; */
+  color: rgb(var(--color-blue-second-rgb));
+}
+.color-ultra-violet,
+.error {
   @apply text-[var(--color-ultra-violet)];
 }
 
