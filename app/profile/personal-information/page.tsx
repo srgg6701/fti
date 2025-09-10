@@ -1,8 +1,11 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Input } from '@heroui/input';
 import { Button } from '@heroui/button';
+
+import Camera from '@/components/pop-ups/camera';
 
 type PersonalItem = { label: string; value: string };
 
@@ -16,13 +19,27 @@ const personal: PersonalItem[] = [
 ];
 
 export default function PersonalInformation() {
+  const [isCameraOpen, setCameraScreen] = useState<boolean>(false);
+
+  useEffect(() => {
+    document.body.classList.toggle('camera-open', isCameraOpen);
+    document.getElementById('navbar-container')?.classList.toggle('backdrop-blur-lg');
+    const headerText = document.getElementById('page-header');
+    if (headerText) {
+      headerText.textContent = isCameraOpen ? 'Biometrics' : 'Profile';
+    }
+    return () => document.body.classList.remove('camera-open');
+  }, [isCameraOpen]);
+
   const onEdit = () => {
     console.log('on Edit');
   };
 
   const blockParamsClass = 'flex flex-col bg-translusent-extreme blick-rounded gap-5 p-[15px]';
 
-  const RightBlockSecion = ({
+  const btnColorBlue = "text-sm text-medium color-blue-secondary leading-[17px]";
+
+  const RightBlockSection = ({
     height,
     header,
     children,
@@ -42,7 +59,7 @@ export default function PersonalInformation() {
   const IncomeBlock = ({ header, value }: { header: string; value: string }) => (
     <div>
       <div className="mb-2.5 text-xs opacity-60">{header}</div>
-      <Input className="opacity-20" inputMode="text" disabled={true} value={value} />
+      <Input className="opacity-20" disabled={true} inputMode="text" value={value} />
     </div>
   );
 
@@ -51,7 +68,7 @@ export default function PersonalInformation() {
   };
 
   const gotoCam = () => {
-    alert('Go to the camera');
+    setCameraScreen(true);
   };
 
   return (
@@ -91,7 +108,7 @@ export default function PersonalInformation() {
               {
                 height: 'h-[111px]',
                 header: 'Type of activity',
-                child: <Input className="" inputMode="text" disabled={true} value={'Welder'} />,
+                child: <Input className="" disabled={true} inputMode="text" value={'Welder'} />,
               },
               {
                 height: 'h-[235px]',
@@ -106,28 +123,28 @@ export default function PersonalInformation() {
                 header: 'Passport photo',
                 child: (
                   <Button
-                    onClick={addPhoto}
-                    style={{ border: 'dashed 1px rgb(var(--color-blue-second-rgb))' }}
                     className="bg-blue-second-translusent-lignt flex h-[40px] w-[260px] items-center justify-center gap-[10px] rounded-[15px] px-[12px] py-[4px]"
+                    style={{ border: 'dashed 1px rgb(var(--color-blue-second-rgb))' }}
+                    onClick={addPhoto}
                   >
                     <Image
-                      src="/assets/images/icons/paper-clip.svg"
                       alt="Add passport photo"
                       height={15}
+                      src="/assets/images/icons/paper-clip.svg"
                       width={15}
                     />
-                    <span className="text-[17px] leading-[17px]">Add</span>
+                    <span className={btnColorBlue}>Add</span>
                   </Button>
                 ),
               },
             ].map((data, i) => (
-              <RightBlockSecion
+              <RightBlockSection
                 key={`${data.header}-${i}`}
-                height={data.height}
                 header={data.header}
+                height={data.height}
               >
                 {data.child}
-              </RightBlockSecion>
+              </RightBlockSection>
             ))}
           </div>
         </div>
@@ -141,23 +158,27 @@ export default function PersonalInformation() {
         {/* BOTTOM RIGHT BLOCK — Biometrics */}
         <div className="w-full lg:w-870/570 lg:max-w-[300px]">
           <div className="flex flex-col gap-2.5">
-            <RightBlockSecion key="biometrics" height="h-[111px]" header="Biometrics">
+            <RightBlockSection key="biometrics" header="Biometrics" height="h-[111px]">
               <Button
-                onClick={gotoCam}
                 className="bg-blue-second-translusent-lignt flex h-[40px] w-[260px] items-center justify-center gap-[10px] rounded-[15px] px-[12px] py-[4px]"
+                onPress={gotoCam}
               >
                 <Image
-                  src="/assets/images/icons/camera.svg"
                   alt="Add passport photo"
                   height={15}
+                  src="/assets/images/icons/camera.svg"
                   width={15}
                 />
-                <span className="text-[17px] leading-[17px]">Go to the camera</span>
+                <span className={btnColorBlue}>Go to the camera</span>
               </Button>
-            </RightBlockSecion>
+            </RightBlockSection>
           </div>
         </div>
       </section>
+      {(isCameraOpen && (
+        <Camera imgSrc="/assets/images/client-face.jpg" onClose={() => setCameraScreen(false)} />
+      )) ||
+        null}
     </>
   );
 }

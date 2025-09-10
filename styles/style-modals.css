@@ -1,0 +1,14 @@
+body.camera-open #navbar-container {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  z-index: 60 !important; /* above typical overlay z-50 */
+  /* Optional: so that clicks don't go to the header while the modal is open */
+  pointer-events: none;
+}
+
+/* Exit link */
+body.camera-open #menu-container,
+body.camera-open #exit-link {
+  visibility: hidden !important;
+}

@@ -6,7 +6,9 @@ import '@/styles/globals.css';
 import '@/styles/xtra.css';
 import '@/styles/text-colors.css';
 import '@/styles/bg.css';
+import '@/styles/style-modals.css';
 import '@/styles/fonts.css';
+import '@/styles/circular-progress.css';
 
 import { siteConfig } from '@/config/site';
 //import { ThemeAutoSwitch } from '@/app/ThemeAutoSwitch';

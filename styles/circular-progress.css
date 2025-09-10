@@ -1,0 +1,102 @@
+/* ========= Circular progress overlay (mask + dotted ring) =========
+   Требование к разметке SVG:
+   <circle class="dots"   cx="50" cy="50" r="48" pathLength="1" />
+   <circle class="reveal" cx="50" cy="50" r="48" pathLength="1" />
+   (pathLength="1" — важно для нормализации прогресса 0..1)
+*/
+
+/* БАЗОВЫЕ ПАРАМЕТРЫ (по умолчанию) */
+.camera-overlay{
+  /* Геометрия круглого «окна» */
+  --r: 260px;            /* радиус окна */
+  --cx: 50%;             /* центр X */
+  --cy: 50%;             /* центр Y */
+
+  /* Параметры точечного кольца */
+  --ring: 4px;           /* толщина точек (px) */
+  --ring-color: #3B57FF; /* цвет кольца */
+  --start: -90deg;       /* старт сверху (-90deg), 0deg — справа */
+
+  /* «точечность»: доли окружности (0..1), подбери на вкус */
+  --dot: 0.035;          /* длина точки  (доля окружности) */
+  --gap: 0.085;          /* зазор между точками (доля окружности) */
+
+  /* Прогресс (0..1). В демо анимируется, потом можно задавать из JS */
+  --p: 0;
+}
+
+/* —————————————————  МАСКА ФОНА (только круглая «дырка») ————————————————— */
+.camera-overlay .camera-image{
+  position: absolute;
+  inset: 0;
+  z-index: 0;                 /* картинка — самый нижний слой внутри модалки */
+}
+
+.camera-overlay::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;                 /* маска выше картинки, ниже кольца/кнопок */
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at var(--cx) var(--cy),
+      transparent 0 calc(var(--r) - 0.5px),     /* прозрачное окно */
+      rgba(0,0,0,.75) calc(var(--r) - 0.5px)    /* затемнение вокруг */
+      100%
+    );
+}
+
+/* —————————————————  ТОЧЕЧНОЕ КОЛЬЦО (SVG) ————————————————— */
+/* Позиционируем SVG-слой по центру окна */
+.camera-ring{
+  position: absolute;
+  z-index: 2;                 /* выше затемнения, как правило ниже кнопки Back */
+  pointer-events: none;
+  width:  calc(var(--r) * 2);
+  height: calc(var(--r) * 2);
+  left:   calc(var(--cx) - var(--r));
+  top:    calc(var(--cy) - var(--r));
+}
+
+/* Полное «точечное» кольцо — будет отсекаться маской-прогрессом */
+.camera-ring .dots{
+  fill: none;
+  stroke: var(--ring-color);
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke; /* толщина в px при масштабировании */
+  stroke-width: var(--ring);
+  /* повтор точек по всей окружности, в долях окружности (pathLength=1) */
+  stroke-dasharray: var(--dot) var(--gap);
+}
+
+/* Клин-маска «прогресс» 0..θ (θ = --p * 360°), поверх «dots» */
+.camera-ring .reveal{
+  fill: none;
+  stroke: #fff;                     /* цвет маски — белый (пропуск) */
+  vector-effect: non-scaling-stroke;
+  stroke-width: calc(var(--ring) + 2px); /* чуть шире точки, чтобы края не «скалывало» */
+  /* Нормализовано на 1.0, см. pathLength="1" в разметке */
+  stroke-dasharray: calc(var(--p)) 1;
+  stroke-dashoffset: 0;
+  transform-origin: 50% 50%;
+  transform: rotate(var(--start));
+}
+
+/* ———————————————  Демонстрационная анимация (0 → 1 и стоп) ——————————————— */
+@property --p { syntax: "<number>"; inherits: false; initial-value: 0; }
+
+.camera-overlay.progress-on{
+  animation: ring-progress 2.5s linear forwards;
+}
+
+@keyframes ring-progress{
+  to { --p: 1; }
+}
+
+/* ———————————————  Необязательные модификаторы размера/центра ——————————————— */
+.camera-overlay--large { --r: 300px; }
+.camera-overlay--small { --r: 220px; }
+
+.camera-overlay--left  { --cx: 50%;  --cy: 50%; } /* пример: центр по умолчанию */

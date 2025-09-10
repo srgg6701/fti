@@ -115,7 +115,9 @@ export default function ProfileDraft() {
                   <span className="text-sm opacity-50">Active until 24.03.2026</span>
                 </div>
               </div>
-              <h2 className="h-[28px] text-[28px]"><Link href="/profile/personal-information?id=dfq125dfe25">Joshua</Link></h2>
+              <h2 className="h-[28px] text-[28px]">
+                <Link href="/profile/personal-information?id=dfq125dfe25">Joshua</Link>
+              </h2>
             </div>
           </div>
         </section>

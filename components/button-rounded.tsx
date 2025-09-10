@@ -1,6 +1,6 @@
 // TODO: Use this button library everywhere to unify code!
 import { Button } from '@heroui/button';
-import React from 'react';
+import React, { CSSProperties } from 'react';
 
 type ButtonProps = {
   rounded?: string;
@@ -15,12 +15,13 @@ type ButtonProps = {
   btnText?: string;
   startContent?: React.ReactNode;
   type?: 'button' | 'submit' | 'reset';
+  style?: CSSProperties | undefined;
   onPress?: () => void;
   onClick?: () => void;
 };
 
 const baseDefaults: Required<
-  Omit<ButtonProps, 'fontSize' | 'startContent' | 'outline' | 'onPress' | 'onClick'>
+  Omit<ButtonProps, 'fontSize' | 'startContent' | 'outline' | 'onPress' | 'onClick' | 'style'>
 > = {
   rounded: 'btn-rounded',
   bgColor: 'bg-blue',
