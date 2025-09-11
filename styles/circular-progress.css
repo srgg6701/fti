@@ -1,16 +1,23 @@
-/* ГЕОМЕТРИЯ: один источник правды для размеров и центра */
-.camera-overlay { /* ALL CORRECT! */
-  /* Диаметр «дырки»: 90% ширины контейнера, но не больше 760px */
-  --d: min(90vmin, 760px);
+/* GEOMETRY: single source of truth for size and center */
+#camera-overlay {
+  /* ALL CORRECT! */
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  inset: 0;
+  position: fixed;
+  z-index: 50;
+  /* Hole diameter: 90% of the container width, but no more than 760px */
+  --d: min(90vmin, 680px);
   --r: calc(var(--d) / 2);
-  /* Центр (проценты от контейнера) */
+  /* Center (percent values relative to the container) */
   --cx: 50%;
   --cy: 50%;
 
-  /* Диаметр прогресса = +5% от диаметра «дырки» */
+  /* Progress diameter = hole diameter + 5% */
   --d-progress: calc(var(--d) * 1.05);
-} 
-.camera-overlay::before {
+}
+#camera-overlay::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -22,12 +29,22 @@
     rgba(0, 0, 0, 0.75) calc(var(--r) - 0.5px) 100%
   );
 }
-
-/* Контейнер прогресса: размер/позиция из тех же переменных */
-.camera-progress {
-  position: absolute;
-  width: calc(min(90%, 760px) * 1.05);
-  height: calc(min(90%, 760px) * 1.05); 
-  z-index: 2; /* над маской (::before), ниже кнопки */
+/* Progress container: size/position derived from the same variables */
+#camera-progress {
   pointer-events: none;
+  position: absolute;
+  height: 73vh;
+  z-index: 2; /* above the mask (::before), below the button */
+}
+/* height: var(--d-progress); */
+/* width:  var(--d-progress); */
+#svg-wrapper svg {
+  display: block;
+  height: 100%;
+  transform: scale(1.05);
+  width: 100%;
+}
+
+#svg-wrapper {
+  height: 100%;
 }
