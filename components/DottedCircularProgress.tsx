@@ -106,7 +106,7 @@ export default function DottedCircularProgress({
           r="48"
           stroke={color}
           // gap between stroke segments:
-          strokeDasharray={`${dot} ${gap*0.5}`} // dot pattern along the circle
+          strokeDasharray={`${dot} ${gap * 0.5}`} // dot pattern along the circle
           strokeLinecap="round"
           // calculated progress bar thickness
           strokeWidth={ring + 1}

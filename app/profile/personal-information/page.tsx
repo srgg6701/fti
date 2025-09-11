@@ -25,9 +25,11 @@ export default function PersonalInformation() {
     document.body.classList.toggle('camera-open', isCameraOpen);
     document.getElementById('navbar-container')?.classList.toggle('backdrop-blur-lg');
     const headerText = document.getElementById('page-header');
+
     if (headerText) {
       headerText.textContent = isCameraOpen ? 'Biometrics' : 'Profile';
     }
+
     return () => document.body.classList.remove('camera-open');
   }, [isCameraOpen]);
 
@@ -37,7 +39,7 @@ export default function PersonalInformation() {
 
   const blockParamsClass = 'flex flex-col bg-translusent-extreme blick-rounded gap-5 p-[15px]';
 
-  const btnColorBlue = "text-sm text-medium color-blue-secondary leading-[17px]";
+  const btnColorBlue = 'text-sm text-medium color-blue-secondary leading-[17px]';
 
   const RightBlockSection = ({
     height,

@@ -25,7 +25,6 @@ import FilterModal, { type FilterState } from '@/components/pop-ups/filter';
 import { Icon, menuIcons } from '../icons';
 
 export const Navbar = () => {
-
   const navBarContainer = useRef<HTMLElement | null>(null);
 
   // TODO: Check if it makes sense to leave it here:
@@ -197,7 +196,6 @@ export const Navbar = () => {
     </button>
   );
 
-  
   return (
     <>
       {status === 'loading' ? (
@@ -214,7 +212,9 @@ export const Navbar = () => {
           <NavbarContent className="navbar-justify-around basis-1/5 items-center sm:basis-full">
             <div className="block-strategies flex w-full justify-between pt-[40px]">
               <div className="min-w-[240px] min-2xl:flex">
-                <h1 id='page-header' className="mr-[1vw] leading-[27px]">{pageHeader}</h1>
+                <h1 className="mr-[1vw] leading-[27px]" id="page-header">
+                  {pageHeader}
+                </h1>
                 {pageHeader === 'Strategies' && (
                   <div className="flex gap-[5px] max-2xl:-mb-10 max-2xl:translate-y-[20px]">
                     <Input

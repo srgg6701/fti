@@ -5,6 +5,7 @@ export default function UserBlock({
   imgAlt,
   children,
   imgTitle,
+  headerDisplay,
   w = 'md:w-[380px]',
   h = 'md:h-[95px]',
   height = 55,
@@ -18,6 +19,7 @@ export default function UserBlock({
   imgAlt: string;
   children: ReactNode;
   imgTitle?: string;
+  headerDisplay?: string;
   w?: string;
   h?: string;
   height?: number;
@@ -29,7 +31,7 @@ export default function UserBlock({
 }) {
   return (
     <article className={`${h} ${w} ${marginRight} ${padding}`}>
-      <header className={`${mb} ${gap} flex items-center`}>
+      <header className={`${headerDisplay} ${mb} ${gap} flex items-center`}>
         <Image
           alt={imgAlt}
           height={height}

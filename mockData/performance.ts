@@ -1,11 +1,11 @@
-export type PerfItem = {
+/* export type PerfItem = {
   label: string;
   value: string | number;
   change?: string;
   direction?: 'Up' | 'Down';
 };
-
-const perfData: PerfItem[] = [
+ */
+const perfData /* : PerfItem[] */ = [
   { label: 'RISK', value: 5 },
   { label: 'Last Year', value: '$ 324', change: '(3.23%)', direction: 'Up' },
   { label: 'Last Week', value: '$ 64', change: '(1.79%)', direction: 'Up' },

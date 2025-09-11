@@ -1,0 +1,12 @@
+#assets-list li {
+  display: inline-block;
+  line-height: 18px;
+  padding: 11.5px 18.5px;
+}
+#assets-list li button {
+  cursor: pointer;
+}
+
+input[data-slot="input"] {
+  padding: 0 20px;
+}

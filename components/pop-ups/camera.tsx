@@ -2,7 +2,7 @@
 import Image from 'next/image';
 
 import { ButtonRoundedGrey } from '@/components/button-rounded';
-import DottedCircularProgress from '@/components/DottedCircularProgress';
+import DottedCircularProgress from '@/components/dottedCircularProgress';
 
 export default function Camera({ imgSrc, onClose }: { imgSrc: string; onClose: () => void }) {
   return (

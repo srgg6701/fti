@@ -1,6 +1,6 @@
 'use client';
 //import { Switch } from '@heroui/react';
-import DottedCircularProgress from '@/components/DottedCircularProgress';
+import DottedCircularProgress from '@/components/dottedCircularProgress';
 
 export default function TestSwitch() {
   return (

@@ -5,9 +5,10 @@ import { Button } from '@heroui/button';
 
 import UserBlock from '@/components/cards/user-block';
 import Subheaders from '@/components/headers/subheaders';
-import ArrowsUpDown from '@/components/arrows/up-down';
 import DropdownPill from '@/components/dateDropDown';
 import Notification from '@/components/pop-ups/notification';
+import UserBlockSecondary from '@/components/user-block-secondary';
+import AssetsList from '@/components/pop-ups/assets-list';
 import perfData from '@/mockData/performance';
 
 function Collapsible({ open, children }: { open: boolean; children: React.ReactNode }) {
@@ -37,9 +38,13 @@ function Collapsible({ open, children }: { open: boolean; children: React.ReactN
 export default function Strategy() {
   const [openIds, setOpenIds] = useState<string[]>([]);
   const [notificationIsOpen, setNotification] = useState<boolean>(false);
+  const [assetsListIsOpen, setAssetsList] = useState<boolean>(false);
 
   function switchNotification() {
     setNotification(!notificationIsOpen);
+  }
+  function switchAssetsList() {
+    setAssetsList(!assetsListIsOpen);
   }
 
   function handleTextBlock(id: string) {
@@ -52,6 +57,7 @@ export default function Strategy() {
   }
   function onInvest() {
     console.log('onInvest called');
+    setAssetsList(true);
   }
 
   return (
@@ -76,11 +82,11 @@ export default function Strategy() {
           <div className="flex gap-2.5">
             <Button
               className="bg-translusent-light btn-rounded outline-color-15 m-auto mb-[10px] w-[123px] outline"
-              onClick={onSimulation}
+              onPress={onSimulation}
             >
               Simulation
             </Button>
-            <Button className="btn-rounded bg-blue m-auto mb-[10px] w-[90px]" onClick={onInvest}>
+            <Button className="btn-rounded bg-blue m-auto mb-[10px] w-[90px]" onPress={onInvest}>
               Invest
             </Button>
           </div>
@@ -120,17 +126,13 @@ export default function Strategy() {
                 <Fragment key={item.label}>
                   <dt className="text-xs">{item.label}</dt>
                   <dd className="flex h-[18px] items-center gap-1 tabular-nums">
-                    <div className="flex w-full justify-end text-right">
-                      {item.direction && <ArrowsUpDown direction={item.direction} />}
-                      <div className="pl-[5px] text-xs whitespace-nowrap">{item.value}</div>
-                      {item.change && (
-                        <span
-                          className={`${item.direction === 'Up' ? 'color-blue-canonical' : 'color-ultra-violet'} text-xs`}
-                        >
-                          {item.change}
-                        </span>
-                      )}
-                    </div>
+                    {(item.direction && (
+                      <UserBlockSecondary
+                        change={item.change}
+                        direction={item.direction}
+                        value={item.value}
+                      />
+                    )) || <div className="pr-[2px] pl-[5px] text-right text-xs">{item.value}</div>}
                   </dd>
                 </Fragment>
               ))}
@@ -190,6 +192,7 @@ export default function Strategy() {
         </section>
       </div>
       {(notificationIsOpen && <Notification onCloseModal={switchNotification} />) || null}
+      {(assetsListIsOpen && <AssetsList onCloseModal={switchAssetsList} />) || null}
     </>
   );
 }

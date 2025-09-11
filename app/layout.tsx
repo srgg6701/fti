@@ -9,6 +9,7 @@ import '@/styles/bg.css';
 import '@/styles/style-modals.css';
 import '@/styles/fonts.css';
 import '@/styles/circular-progress.css';
+import '@/styles/style-assets-list.css';
 
 import { siteConfig } from '@/config/site';
 //import { ThemeAutoSwitch } from '@/app/ThemeAutoSwitch';
