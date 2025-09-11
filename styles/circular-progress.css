@@ -1,22 +1,31 @@
-/* GEOMETRY: single source of truth for size and center */
+/* === GEOMETRY: one source of truth for size and center === */
 #camera-overlay {
-  /* ALL CORRECT! */
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  inset: 0;
+  /* layout */
   position: fixed;
+  inset: 0;
   z-index: 50;
-  /* Hole diameter: 90% of the container width, but no more than 760px */
-  --d: min(90vmin, 680px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* size model:
+     - base diameter driven by viewport height (matches progress behavior)
+     - capped for very large screens
+  */
+  --base-d: 72dvh;          /* same logic you liked on #camera-progress */
+  --max-d: 680px;           /* hard cap */
+  --d: min(var(--base-d), var(--max-d));
   --r: calc(var(--d) / 2);
-  /* Center (percent values relative to the container) */
+
+  /* center (relative to overlay) */
   --cx: 50%;
   --cy: 50%;
 
-  /* Progress diameter = hole diameter + 5% */
-  --d-progress: calc(var(--d) * 1.05);
+  /* progress ring is +5% larger than the hole */
+  --d-progress: calc(var(--d) * 1.08);
 }
+
+/* dark overlay with a circular transparent window */
 #camera-overlay::before {
   content: '';
   position: absolute;
@@ -26,25 +35,26 @@
   background: radial-gradient(
     circle at var(--cx) var(--cy),
     transparent 0 calc(var(--r) - 0.95px),
-    rgba(0, 0, 0, 0.75) calc(var(--r) - 0.5px) 100%
+    rgba(0, 0, 0, 0.9) calc(var(--r) - 0.5px) 100%
   );
 }
-/* Progress container: size/position derived from the same variables */
+
+/* progress container: centered by parent flex, sized from the same variables */
 #camera-progress {
+  position: relative;         /* stays in flex flow and centers */
+  z-index: 2;                 /* above mask, below buttons */
   pointer-events: none;
-  position: absolute;
-  height: 73vh;
-  z-index: 2; /* above the mask (::before), below the button */
-}
-/* height: var(--d-progress); */
-/* width:  var(--d-progress); */
-#svg-wrapper svg {
-  display: block;
-  height: 100%;
-  transform: scale(1.05);
-  width: 100%;
+  width:  var(--d-progress);
+  height: var(--d-progress);
 }
 
+/* make SVG fully fill the container */
 #svg-wrapper {
+  width: 100%;
+  height: 100%;
+}
+#svg-wrapper svg {
+  display: block;
+  width: 100%;
   height: 100%;
 }

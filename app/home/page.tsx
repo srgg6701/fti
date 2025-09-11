@@ -8,6 +8,7 @@ export default function Home() {
     if (window) {
       window.alert('Add Strategy');
     } else {
+      // eslint-disable-next-line no-console
       console.log('Add Strategy');
     }
   }

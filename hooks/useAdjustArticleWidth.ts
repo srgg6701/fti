@@ -1,5 +1,6 @@
 import { useLayoutEffect } from 'react';
 
+// INFO: this script manages horizontal visible space, that "overflows" window's width
 export function useAdjustArticleWidth() {
   useLayoutEffect(() => {
     if (typeof window === 'undefined') return;

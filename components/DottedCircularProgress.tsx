@@ -50,6 +50,7 @@ export default function DottedCircularProgress({
   const id = useId(); // ensure a unique mask id per component instance
   const [p, setP] = useState(() => clamp01(progress));
 
+  //TODO: reference progress calculation to real data loading as if comes
   useEffect(() => {
     if (!animate) {
       // Determinate mode: follow `progress` prop

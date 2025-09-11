@@ -6,6 +6,7 @@ type SectionDataProps<T> = {
   title: string;
   seeAllHref?: string;
   height?: number | string; // 327 | "20rem" | "327px"
+  noHeader?: boolean;
   rowClassName?: string;
   sectionClassName?: string;
   getKey?: (item: T, index: number) => React.Key;
@@ -16,6 +17,7 @@ export function SectionData<T>({
   title,
   seeAllHref = '/#',
   height,
+  noHeader = false,
   rowClassName = '',
   sectionClassName = '',
   getKey,
@@ -28,7 +30,7 @@ export function SectionData<T>({
 
   return (
     <section className={`scroller w-full ${sectionClassName}`}>
-      <SectionHeader seeAllHref={seeAllHref} title={title} />
+      {!noHeader && <SectionHeader seeAllHref={seeAllHref} title={title} />}
       <div className={`row article-container ${rowClassName}`} style={style}>
         {data.map((item, i) => (
           <React.Fragment key={getKey?.(item, i) ?? i}>{renderItem(item, i)}</React.Fragment>

@@ -9,6 +9,7 @@ const CardNews = ({
   text,
   marginRight = 'mr-[10px]',
   padding = 'p-5',
+  xtraClasses,
 }: {
   username: string;
   userImg: string;
@@ -18,8 +19,9 @@ const CardNews = ({
   text: string;
   marginRight?: string;
   padding?: string;
+  xtraClasses?: string;
 }) => (
-  <article className={`md:h-[376px] md:w-[320px] ${marginRight} ${padding} flex flex-col gap-5`}>
+  <article className={`md:h-[376px] md:w-[320px] ${marginRight} ${padding} flex flex-col gap-5 ${xtraClasses}`}>
     <header className="flex items-center justify-between">
       <div className="flex items-center gap-2">
         <Image alt="title" height={30} src={`/assets/images/users/${userImg}`} width={30} />
