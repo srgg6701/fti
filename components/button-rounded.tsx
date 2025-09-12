@@ -9,6 +9,7 @@ type ButtonProps = {
   fontColor?: string;
   marginClass?: string;
   marginBottom?: string;
+  maxW?: string;
   outline?: string;
   height?: string;
   width?: string;
@@ -21,7 +22,10 @@ type ButtonProps = {
 };
 
 const baseDefaults: Required<
-  Omit<ButtonProps, 'fontSize' | 'startContent' | 'outline' | 'onPress' | 'onClick' | 'style'>
+  Omit<
+    ButtonProps,
+    'fontSize' | 'maxW' | 'startContent' | 'outline' | 'onPress' | 'onClick' | 'style'
+  >
 > = {
   rounded: 'btn-rounded',
   bgColor: 'bg-blue',
@@ -42,6 +46,7 @@ function renderButton(p: ButtonProps) {
     fontSize,
     marginClass,
     marginBottom,
+    maxW,
     outline,
     height,
     width,
@@ -53,7 +58,7 @@ function renderButton(p: ButtonProps) {
 
   return (
     <Button
-      className={`${fontSize} ${rounded} ${bgColor} ${fontColor} ${marginClass} ${marginBottom} ${outline} ${width} ${height}`}
+      className={`${fontSize} ${rounded} ${bgColor} ${fontColor} ${marginClass} ${marginBottom} ${maxW} ${outline} ${width} ${height}`}
       startContent={startContent}
       type={type}
       {...rest}

@@ -6,22 +6,14 @@ import Image from 'next/image';
 import AssetsData from '@/mockData/assets-data';
 import UserBlock from '@/components/cards/user-block';
 import PopupWrapper from '@/components/pop-ups/popup-wrapper';
-
-import UserBlockSecondary from '../user-block-secondary';
+import PopupHeader from '@/components/pop-ups/styled-popup-header';
+import UserBlockSecondary from '@/components/user-block-secondary';
 export default function AssetsList({ onCloseModal }: { onCloseModal: () => void }) {
   const [activeAsset, setActiveAsset] = useState<string>('All');
 
   return (
-    <PopupWrapper h="[640px]" w="[460px]">
+    <PopupWrapper deeper={true} h="[640px]" w="[460px]" onClose={onCloseModal}>
       <div className="relative flex flex-col gap-5">
-        <Image
-          alt="Close pop-up"
-          className="fixed top-[90px] right-[60px]"
-          height={36}
-          src="/assets/images/cross/cross-light.svg"
-          width={36}
-          onClick={onCloseModal}
-        />
         <Image
           alt="Search"
           className="absolute top-[74px] left-[13px] z-10"
@@ -29,7 +21,7 @@ export default function AssetsList({ onCloseModal }: { onCloseModal: () => void 
           src="/assets/images/service/search-white.svg"
           width={10}
         />
-        <h2 className="h-[39px] text-[32px] font-black">Assets list</h2>
+        <PopupHeader>Asset list</PopupHeader>
         <div>
           <Input
             classNames={{

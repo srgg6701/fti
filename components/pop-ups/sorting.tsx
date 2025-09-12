@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { Button } from '@heroui/button';
 
 import GenerateCheckbox from '@/components/checkboxes';
-
-import PopupWrapper from './popup-wrapper';
+import PopupWrapper from '@/components/pop-ups/popup-wrapper';
+import PopupHeader, { Subheader } from '@/components/pop-ups/styled-popup-header';
 
 interface SortingModalProps {
   isOpen: boolean;
@@ -40,11 +40,11 @@ export default function SortingModal({
   };
 
   return (
-    <PopupWrapper h="[357px]" w="[380px]" onClose={onClose}>
+    <PopupWrapper deeper={true} h="[357px]" w="[380px]" onClose={onClose}>
       {/* Header */}
       <div className="mb-6">
-        <h2 className="bigger mb-2.5">Sorting</h2>
-        <p className="text-sm text-white/80">Select the sort type</p>
+        <PopupHeader>Sorting</PopupHeader>
+        <Subheader>Select the sort type</Subheader>
       </div>
       {/* Sort Options */}
       <div className="mb-8 space-y-4">

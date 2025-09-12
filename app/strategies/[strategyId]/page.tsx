@@ -1,5 +1,6 @@
 'use client';
 import { Fragment, useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@heroui/button';
 
@@ -9,6 +10,7 @@ import DropdownPill from '@/components/dateDropDown';
 import Notification from '@/components/pop-ups/notification';
 import UserBlockSecondary from '@/components/user-block-secondary';
 import AssetsList from '@/components/pop-ups/assets-list';
+import Backtesting from '@/components/pop-ups/backtesting';
 import perfData from '@/mockData/performance';
 
 function Collapsible({ open, children }: { open: boolean; children: React.ReactNode }) {
@@ -39,6 +41,17 @@ export default function Strategy() {
   const [openIds, setOpenIds] = useState<string[]>([]);
   const [notificationIsOpen, setNotification] = useState<boolean>(false);
   const [assetsListIsOpen, setAssetsList] = useState<boolean>(false);
+  // TODO: remove after clarifying the way of opening Backtesting modal
+  const params = useSearchParams();
+  const backtestingOpen = params.get('backtesting');
+
+  console.log({ backtestingOpen, params });
+
+  const [isBacktestingOpen, setBacktestingOpen] = useState<string | null>(backtestingOpen);
+
+  function swtchBacktesting() {
+    setBacktestingOpen(null);
+  }
 
   function switchNotification() {
     setNotification(!notificationIsOpen);
@@ -132,7 +145,11 @@ export default function Strategy() {
                         direction={item.direction}
                         value={item.value}
                       />
-                    )) || <div className="pr-[2px] pl-[5px] text-right text-xs">{item.value}</div>}
+                    )) || (
+                      <div className="w-full pr-[2px] pl-[5px] text-right text-xs">
+                        {item.value}
+                      </div>
+                    )}
                   </dd>
                 </Fragment>
               ))}
@@ -193,6 +210,7 @@ export default function Strategy() {
       </div>
       {(notificationIsOpen && <Notification onCloseModal={switchNotification} />) || null}
       {(assetsListIsOpen && <AssetsList onCloseModal={switchAssetsList} />) || null}
+      {(isBacktestingOpen && <Backtesting onClose={swtchBacktesting} />) || null}
     </>
   );
 }

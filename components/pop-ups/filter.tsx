@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@heroui/button';
 
 import GenerateCheckbox from '@/components/checkboxes';
+import PopupHeader, { Subheader } from '@/components/pop-ups/styled-popup-header';
 
 import PopupWrapper from './popup-wrapper';
 
@@ -95,78 +96,90 @@ export default function FilterModal({
     }
   };
 
+  interface RadioBlockProps {
+    header: string;
+    dataArray: {
+      value: string;
+      label: string;
+    }[];
+    checkedCondition: FilterState['growthType'] | FilterState['strategyType'];
+    dataType: 'growthType' | 'strategyType';
+  }
+
+  const txtLeftSemibold = 'text-left font-semibold';
+  const atz = 'absolute -top-3 z-1';
+
+  const RadioBlock = ({ header, dataArray, checkedCondition, dataType }: RadioBlockProps) => (
+    <div className="mb-8">
+      <h3 className={`mb-4 ${txtLeftSemibold}`}>{header}</h3>
+      <div className="space-y-3">
+        {dataArray.map((option) => (
+          <GenerateCheckbox
+            key={option.value}
+            checkedCondition={checkedCondition}
+            name="growthType"
+            option={option}
+            type="radio"
+            onChange={(e) => {
+              onRadioSelect(dataType, option.value);
+              updateFilter(dataType, e.currentTarget);
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+
   const sliderPosition = filters.winningRatio;
 
   return (
-    <PopupWrapper h="[673px]" w="[380px]" onClose={onClose}>
+    <PopupWrapper deeper={true} h="[673px]" w="[380px]" onClose={onClose}>
       {/* Header */}
       <div className="mb-8">
-        <h2 className="mb-2 text-2xl font-bold text-white">Filter</h2>
-        <p className="text-sm text-white/70">Select the types of filtering</p>
+        <PopupHeader>Filter</PopupHeader>
+        <Subheader>Select the types of filtering</Subheader>
       </div>
       {/* Type of growth */}
-      <div className="mb-8">
-        <h3 className="mb-4 text-lg font-semibold text-white">Type of growth</h3>
-        <div className="space-y-3">
-          {growthOptions.map((option) => (
-            <GenerateCheckbox
-              key={option.value}
-              checkedCondition={filters.growthType}
-              name="growthType"
-              option={option}
-              type="radio"
-              onChange={(e) => {
-                onRadioSelect('growthType', e.target.value);
-                updateFilter('growthType', e.target);
-              }}
-            />
-          ))}
-        </div>
-      </div>
+      <RadioBlock
+        checkedCondition={filters.growthType}
+        dataArray={growthOptions}
+        dataType="growthType"
+        header="Type of growth"
+      />
       {/* Type of strategy */}
-      <div className="mb-8">
-        <h3 className="mb-4 text-lg font-semibold text-white">Type of strategy</h3>
-        <div className="space-y-3">
-          {strategyOptions.map((option) => (
-            <GenerateCheckbox
-              key={option.value}
-              checkedCondition={filters.strategyType}
-              name="strategyType"
-              option={option}
-              type="radio"
-              onChange={(e) => {
-                onRadioSelect('strategyType', e.target.value);
-                updateFilter('strategyType', e.target);
-              }}
-            />
-          ))}
-        </div>
-      </div>
+      <RadioBlock
+        checkedCondition={filters.strategyType}
+        dataArray={growthOptions}
+        dataType="strategyType"
+        header="Type of strategy"
+      />
       {/* The winning ratio outline-dotted outline-1 */}
-      <div className="pr-[25px] pl-[16px]">
-        <h3 className="h-[144px] text-lg font-semibold">The winning ratio</h3>
-        <div className="relative mt-[-55px] mb-[55px] flex">
-          <span className="absolute -top-3 left-[-16px] z-1">1</span>
-          <span className="absolute -top-3 right-[-25px] z-1">100</span>
-          <input
-            className="custom-slider h-[1px] w-full cursor-pointer appearance-none rounded-lg bg-white/20"
-            max="100"
-            min="1"
-            style={{
-              background: `linear-gradient(to right, #3B57FF 0%, #3B57FF ${sliderPosition}%, rgba(255,255,255,0.2) ${sliderPosition}%, rgba(255,255,255,0.2) 100%)`,
-            }}
-            type="range"
-            value={filters.winningRatio}
-            onChange={(e) => updateFilter('winningRatio', e.target)}
-          />
-          <div
-            className="pointer-events-none absolute -top-[50px] z-1"
-            style={{ left: `${filters.posIndicator}px` }}
-          >
-            <div className="min-w-[38px] rounded-full bg-[rgba(244,249,255,0.05)] px-3 py-1 text-center">
-              <span className="text-center text-sm font-medium text-white">
-                {filters.winningRatio}
-              </span>
+      <div>
+        <h3 className={`h-[144px] ${txtLeftSemibold}`}>The winning ratio</h3>
+        <div className="pr-[25px] pl-[16px]">
+          <div className="relative mt-[-55px] mb-[55px] flex">
+            <span className={`${atz} left-[-16px]`}>1</span>
+            <span className={`${atz} right-[-25px]`}>100</span>
+            <input
+              className="custom-slider h-[1px] w-full cursor-pointer appearance-none rounded-lg bg-white/20"
+              max="100"
+              min="1"
+              style={{
+                background: `linear-gradient(to right, #3B57FF 0%, #3B57FF ${sliderPosition}%, rgba(255,255,255,0.2) ${sliderPosition}%, rgba(255,255,255,0.2) 100%)`,
+              }}
+              type="range"
+              value={filters.winningRatio}
+              onChange={(e) => updateFilter('winningRatio', e.target)}
+            />
+            <div
+              className="pointer-events-none absolute -top-[50px] z-1"
+              style={{ left: `${filters.posIndicator}px` }}
+            >
+              <div className="min-w-[38px] rounded-full bg-[rgba(244,249,255,0.05)] px-3 py-1 text-center">
+                <span className="text-center text-sm font-medium text-white">
+                  {filters.winningRatio}
+                </span>
+              </div>
             </div>
           </div>
         </div>

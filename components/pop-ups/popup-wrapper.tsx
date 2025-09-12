@@ -1,13 +1,16 @@
 import { ReactNode } from 'react';
+import Image from 'next/image';
 
 export default function PopupWrapper({
   children,
   onClose,
+  deeper,
   h,
   w,
 }: {
   children: ReactNode;
   onClose?: () => void;
+  deeper?: boolean;
   h: string;
   w: string;
 }) {
@@ -17,12 +20,27 @@ export default function PopupWrapper({
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         role="button"
-        onClick={onClose}
+        onClick={onClose} // alternative close button. Usually presents if deeper prop is not passed
       />
       <div
         className={`bg-translusent-extreme relative flex h-${h} w-${w} flex-col justify-between overflow-y-auto rounded-lg p-10 shadow-2xl`}
       >
-        {children}
+        {deeper ? (
+          <>
+            <Image
+              alt="Close pop-up"
+              className="fixed top-[90px] right-[60px]"
+              height={36}
+              src="/assets/images/cross/cross-light.svg"
+              width={36}
+              onClick={onClose}
+            />
+            {/* m-[-10px]  */}
+            <div className="flex flex-col justify-center text-center">{children}</div>
+          </>
+        ) : (
+          children
+        )}
       </div>
     </div>
   );

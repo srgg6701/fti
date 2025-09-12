@@ -13,14 +13,14 @@
 
 ## Tech Stack
 - Next.js 15, React 18, TypeScript
-- Tailwind CSS 4 + HeroUI (UI components/themes)
+- Tailwind CSS 4 / tailwind styled components / HeroUI (UI components/themes)
 - Zustand (user state), SWR (cache/refetch)
 - next-themes (theme switching)
 - ESLint/Prettier/Husky/lint-staged (code quality)
 
 ## Prerequisites
 - Node.js 20+ (LTS)
-- pnpm 9+
+- pnpm 9+ (preferably)
 
 ## Setup
 ```bash
