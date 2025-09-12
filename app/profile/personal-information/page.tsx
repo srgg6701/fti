@@ -160,24 +160,26 @@ export default function PersonalInformation() {
         {/* BOTTOM RIGHT BLOCK — Biometrics 
         FIXME: uncomment following block (remove false condition)
         */}
-        {false && <div className="w-full lg:w-870/570 lg:max-w-[300px]">
-          <div className="flex flex-col gap-2.5">
-            <RightBlockSection key="biometrics" header="Biometrics" height="h-[111px]">
-              <Button
-                className="bg-blue-second-translusent-lignt flex h-[40px] w-[260px] items-center justify-center gap-[10px] rounded-[15px] px-[12px] py-[4px]"
-                onPress={gotoCam}
-              >
-                <Image
-                  alt="Add passport photo"
-                  height={15}
-                  src="/assets/images/icons/camera.svg"
-                  width={15}
-                />
-                <span className={btnColorBlue}>Go to the camera</span>
-              </Button>
-            </RightBlockSection>
+        {false && (
+          <div className="w-full lg:w-870/570 lg:max-w-[300px]">
+            <div className="flex flex-col gap-2.5">
+              <RightBlockSection key="biometrics" header="Biometrics" height="h-[111px]">
+                <Button
+                  className="bg-blue-second-translusent-lignt flex h-[40px] w-[260px] items-center justify-center gap-[10px] rounded-[15px] px-[12px] py-[4px]"
+                  onPress={gotoCam}
+                >
+                  <Image
+                    alt="Add passport photo"
+                    height={15}
+                    src="/assets/images/icons/camera.svg"
+                    width={15}
+                  />
+                  <span className={btnColorBlue}>Go to the camera</span>
+                </Button>
+              </RightBlockSection>
+            </div>
           </div>
-        </div>}
+        )}
       </section>
       {(isCameraOpen && (
         <Camera imgSrc="/assets/images/client-face.jpg" onClose={() => setCameraScreen(false)} />

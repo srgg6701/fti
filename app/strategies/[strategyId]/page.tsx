@@ -46,9 +46,9 @@ export default function Strategy() {
   const params = useSearchParams();
   const backtestingOpen = params.get('backtesting');
   const addAccountOpen = params.get('account');
-  
+
   console.log({ backtestingOpen, addAccountOpen, params });
-  
+
   const [isBacktestingOpen, setBacktestingOpen] = useState<string | null>(backtestingOpen);
   const [idAddAccountIsOpen, setAddAccount] = useState<string | null>(addAccountOpen);
 

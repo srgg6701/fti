@@ -1,6 +1,5 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Button } from '@heroui/button';
 
 import { ButtonRoundedBlue } from '@/components/button-rounded';
 import GenerateCheckbox from '@/components/checkboxes';
@@ -186,7 +185,7 @@ export default function FilterModal({
         </div>
       </div>
       {/* Apply Button */}
-      <ButtonRoundedBlue btnText='Apply' />
+      <ButtonRoundedBlue btnText="Apply" />
     </PopupWrapper>
   );
 }

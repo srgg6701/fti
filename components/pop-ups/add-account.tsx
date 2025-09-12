@@ -1,7 +1,7 @@
 'use client';
 import { Select, SelectItem } from '@heroui/select';
 import { Input } from '@heroui/input';
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 
 import { ButtonRoundedBlue } from '@/components/button-rounded';
 import PopupWrapper from '@/components/pop-ups/popup-wrapper';
@@ -13,7 +13,6 @@ const brokers = [
 ];
 
 export default function AddAccountModal({ onClose }: { onClose: () => void }) {
-
   const [activeSection, setActiveSection] = useState<'roboforex' | 'binance' | null>(null);
 
   function handleSelect(type: string) {
@@ -59,9 +58,9 @@ export default function AddAccountModal({ onClose }: { onClose: () => void }) {
               ].map((data) => (
                 <Input
                   key={data.value}
+                  classNames={{ inputWrapper: 'rounded-[15px]  h-[45px]' }}
                   placeholder={data.value}
                   type={data.type}
-                  classNames={{ inputWrapper: 'rounded-[15px]  h-[45px]' }}
                 />
               ))}
             </div>
@@ -77,15 +76,17 @@ export default function AddAccountModal({ onClose }: { onClose: () => void }) {
               ].map((data) => (
                 <Input
                   key={data.value}
+                  classNames={{ inputWrapper: 'rounded-[15px]  h-[45px]' }}
                   placeholder={data.value}
                   type={data.type}
-                  classNames={{ inputWrapper: 'rounded-[15px]  h-[45px]' }}
                 />
               ))}
             </div>
           </div>
         )}
-        {activeSection && <ButtonRoundedBlue onClick={() => addAccount(activeSection)} btnText="Add" />}
+        {activeSection && (
+          <ButtonRoundedBlue btnText="Add" onClick={() => addAccount(activeSection)} />
+        )}
       </div>
     </PopupWrapper>
   );
