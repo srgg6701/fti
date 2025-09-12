@@ -157,8 +157,10 @@ export default function PersonalInformation() {
           <div className={blockParamsClass} />
         </div>
 
-        {/* BOTTOM RIGHT BLOCK — Biometrics */}
-        <div className="w-full lg:w-870/570 lg:max-w-[300px]">
+        {/* BOTTOM RIGHT BLOCK — Biometrics 
+        FIXME: uncomment following block (remove false condition)
+        */}
+        {false && <div className="w-full lg:w-870/570 lg:max-w-[300px]">
           <div className="flex flex-col gap-2.5">
             <RightBlockSection key="biometrics" header="Biometrics" height="h-[111px]">
               <Button
@@ -175,7 +177,7 @@ export default function PersonalInformation() {
               </Button>
             </RightBlockSection>
           </div>
-        </div>
+        </div>}
       </section>
       {(isCameraOpen && (
         <Camera imgSrc="/assets/images/client-face.jpg" onClose={() => setCameraScreen(false)} />

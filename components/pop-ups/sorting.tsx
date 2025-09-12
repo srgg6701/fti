@@ -40,7 +40,7 @@ export default function SortingModal({
   };
 
   return (
-    <PopupWrapper deeper={true} h="[357px]" w="[380px]" onClose={onClose}>
+    <PopupWrapper deeper={true} h="357px" reducePb={true} w="380px" onClose={onClose}>
       {/* Header */}
       <div className="mb-6">
         <PopupHeader>Sorting</PopupHeader>

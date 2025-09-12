@@ -7,6 +7,12 @@ const config = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}"
   ],
+  safelist: [
+    'max-w-52',
+    'max-w-72',
+    'max-w-sm',
+    'max-w-lg',
+  ],
   theme: {
     extend: {
       fontFamily: {

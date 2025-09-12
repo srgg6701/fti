@@ -12,7 +12,7 @@ export default function AssetsList({ onCloseModal }: { onCloseModal: () => void 
   const [activeAsset, setActiveAsset] = useState<string>('All');
 
   return (
-    <PopupWrapper deeper={true} h="[640px]" w="[460px]" onClose={onCloseModal}>
+    <PopupWrapper deeper={true} h="640px" w="460px" onClose={onCloseModal}>
       <div className="relative flex flex-col gap-5">
         <Image
           alt="Search"

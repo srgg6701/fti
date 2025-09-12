@@ -5,7 +5,7 @@ import Image from 'next/image';
 import PopupWrapper from './popup-wrapper';
 export default function Notification({ onCloseModal }: { onCloseModal: () => void }) {
   return (
-    <PopupWrapper deeper={true} h="[85px]" w="[220px]" onClose={onCloseModal}>
+    <PopupWrapper deeper={true} h="85px" w="220px" onClose={onCloseModal}>
       <Image
         alt="New Assed Added!"
         className="mx-auto mb-[5px]"

@@ -10,6 +10,7 @@ import DropdownPill from '@/components/dateDropDown';
 import Notification from '@/components/pop-ups/notification';
 import UserBlockSecondary from '@/components/user-block-secondary';
 import AssetsList from '@/components/pop-ups/assets-list';
+import AddAccount from '@/components/pop-ups/add-account';
 import Backtesting from '@/components/pop-ups/backtesting';
 import perfData from '@/mockData/performance';
 
@@ -41,18 +42,24 @@ export default function Strategy() {
   const [openIds, setOpenIds] = useState<string[]>([]);
   const [notificationIsOpen, setNotification] = useState<boolean>(false);
   const [assetsListIsOpen, setAssetsList] = useState<boolean>(false);
-  // TODO: remove after clarifying the way of opening Backtesting modal
+  // TODO: remove after clarifying the way of opening Backtesting and Add Account modals
   const params = useSearchParams();
   const backtestingOpen = params.get('backtesting');
-
-  console.log({ backtestingOpen, params });
-
+  const addAccountOpen = params.get('account');
+  
+  console.log({ backtestingOpen, addAccountOpen, params });
+  
   const [isBacktestingOpen, setBacktestingOpen] = useState<string | null>(backtestingOpen);
+  const [idAddAccountIsOpen, setAddAccount] = useState<string | null>(addAccountOpen);
+
+  // ******************************************************************
 
   function swtchBacktesting() {
     setBacktestingOpen(null);
   }
-
+  function swtchAddAccount() {
+    setAddAccount(null);
+  }
   function switchNotification() {
     setNotification(!notificationIsOpen);
   }
@@ -211,6 +218,7 @@ export default function Strategy() {
       {(notificationIsOpen && <Notification onCloseModal={switchNotification} />) || null}
       {(assetsListIsOpen && <AssetsList onCloseModal={switchAssetsList} />) || null}
       {(isBacktestingOpen && <Backtesting onClose={swtchBacktesting} />) || null}
+      {(idAddAccountIsOpen && <AddAccount onClose={swtchAddAccount} />) || null}
     </>
   );
 }

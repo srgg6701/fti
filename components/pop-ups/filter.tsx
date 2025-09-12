@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@heroui/button';
 
+import { ButtonRoundedBlue } from '@/components/button-rounded';
 import GenerateCheckbox from '@/components/checkboxes';
 import PopupHeader, { Subheader } from '@/components/pop-ups/styled-popup-header';
 
@@ -133,7 +134,7 @@ export default function FilterModal({
   const sliderPosition = filters.winningRatio;
 
   return (
-    <PopupWrapper deeper={true} h="[673px]" w="[380px]" onClose={onClose}>
+    <PopupWrapper deeper={true} h="673px" reducePb={true} w="380px" onClose={onClose}>
       {/* Header */}
       <div className="mb-8">
         <PopupHeader>Filter</PopupHeader>
@@ -185,9 +186,7 @@ export default function FilterModal({
         </div>
       </div>
       {/* Apply Button */}
-      <Button className="btn-rounded bg-blue h-10 w-full" onClick={handleApply}>
-        Apply here
-      </Button>
+      <ButtonRoundedBlue btnText='Apply' />
     </PopupWrapper>
   );
 }

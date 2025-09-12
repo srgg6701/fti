@@ -88,12 +88,7 @@ export default function ProfileDraft() {
             <div className="flex min-w-0 flex-1 flex-col gap-3">
               <div className="flex flex-wrap items-center gap-2">
                 <div className="relative">
-                  <span
-                    className="cursor-pointer"
-                    style={{ position: 'absolute', top: '3px', left: '12px', zIndex: 1 }}
-                  >
-                    Active
-                  </span>
+                  <button className="h-[31px] absolute top-[1px] left-[12px] z-1 rounded-[15px]">Active</button>
                   <Image
                     alt="Close"
                     className="cursor-pointer"

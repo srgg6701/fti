@@ -42,7 +42,7 @@ function AccountCard() {
 
 export default function Backtesting({ onClose }: { onClose: () => void }) {
   return (
-    <PopupWrapper deeper={true} h="[85px]" w="[220px]" onClose={onClose}>
+    <PopupWrapper deeper={true} h="85px" reducePb={true} w="220px" onClose={onClose}>
       <div className="flex flex-col gap-5">
         <PopupHeader>Backtesting</PopupHeader>
         {/* Row 1 */}
