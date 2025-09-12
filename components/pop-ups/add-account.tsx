@@ -3,14 +3,11 @@ import { Select, SelectItem } from '@heroui/select';
 import { Input } from '@heroui/input';
 import { useState } from 'react';
 
+import brokers from '@/mockData/brokers-list';
 import { ButtonRoundedBlue } from '@/components/button-rounded';
 import PopupWrapper from '@/components/pop-ups/popup-wrapper';
 import PopupHeader, { Header4Left } from '@/components/pop-ups/styled-popup-header';
-
-const brokers = [
-  { key: 'roboforex', label: 'RoboForex MT4' },
-  { key: 'binance', label: 'Binance' },
-];
+import { selectStyle, inputStyleInner } from '@/components/pop-ups/style-variables';
 
 export default function AddAccountModal({ onClose }: { onClose: () => void }) {
   const [activeSection, setActiveSection] = useState<'roboforex' | 'binance' | null>(null);
@@ -35,7 +32,7 @@ export default function AddAccountModal({ onClose }: { onClose: () => void }) {
           <Header4Left>Choose a broker</Header4Left>
           <Select
             classNames={{
-              trigger: 'mt-2.5 !rounded-[15px] h-[45px] mb-2.5 w-full',
+              trigger: selectStyle,
             }}
             id="choose-broker"
             placeholder="Broker's name"
@@ -50,15 +47,10 @@ export default function AddAccountModal({ onClose }: { onClose: () => void }) {
           <div>
             <div className="flex flex-col gap-2.5">
               <Header4Left>Enter the data</Header4Left>
-              {[
-                { value: 'MT4/MT5', type: 'text' },
-                { value: 'Server', type: 'text' },
-                { value: 'Login', type: 'text' },
-                { value: 'Password', type: 'password' },
-              ].map((data) => (
+              {brokers[0].data.map((data) => (
                 <Input
                   key={data.value}
-                  classNames={{ inputWrapper: 'rounded-[15px]  h-[45px]' }}
+                  classNames={{ inputWrapper: inputStyleInner }}
                   placeholder={data.value}
                   type={data.type}
                 />
@@ -70,13 +62,10 @@ export default function AddAccountModal({ onClose }: { onClose: () => void }) {
           <div>
             <div className="flex flex-col gap-2.5">
               <Header4Left>Enter the key</Header4Left>
-              {[
-                { value: 'API key', type: 'text' },
-                { value: 'Secret key', type: 'text' },
-              ].map((data) => (
+              {brokers[1].data.map((data) => (
                 <Input
                   key={data.value}
-                  classNames={{ inputWrapper: 'rounded-[15px]  h-[45px]' }}
+                  classNames={{ inputWrapper: inputStyleInner }}
                   placeholder={data.value}
                   type={data.type}
                 />

@@ -1,20 +1,13 @@
 'use client';
 
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Divider,
-  Input,
-  Select,
-  SelectItem,
-  Avatar,
-} from '@heroui/react';
+import { Card, CardHeader, CardBody, CardFooter, Divider, Input, Avatar } from '@heroui/react';
+import { Select, SelectItem } from '@heroui/select';
+import { ReactElement } from 'react';
 
-import PopupHeader from '@/components/pop-ups/styled-popup-header';
+import brokers from '@/mockData/brokers-list';
+import PopupHeader, { Header4Left } from '@/components/pop-ups/styled-popup-header';
 import { ButtonRoundedBlue } from '@/components/button-rounded';
+import { selectStyle, inputStyle } from '@/components/pop-ups/style-variables';
 
 import PopupWrapper from './popup-wrapper';
 
@@ -40,52 +33,78 @@ function AccountCard() {
   );
 }
 
+function MainBlock({ children }: { children: ReactElement }) {
+  return <div className="flex w-1/2 flex-col gap-5">{children}</div>;
+}
+
+function InnerBlock({ header4, children }: { header4: string; children: ReactElement }) {
+  return (
+    <div>
+      <Header4Left>{header4}</Header4Left>
+      {children}
+    </div>
+  );
+}
+
 export default function Backtesting({ onClose }: { onClose: () => void }) {
   return (
-    <PopupWrapper deeper={true} h="85px" reducePb={true} w="220px" onClose={onClose}>
-      <div className="flex flex-col gap-5">
+    <PopupWrapper deeper={true} h="630px" reducePb={true} w="700px" onClose={onClose}>
+      <div className="flex w-[620px] flex-col gap-5">
         <PopupHeader>Backtesting</PopupHeader>
-        {/* Row 1 */}
-        <div style={{ display: 'flex' }}>
-          <div style={{ flex: 1 }}>
-            <Input label="Enter the amount" placeholder="$000" />
-          </div>
-          <div style={{ flex: 1 }}>
-            <Input label="Choose a broker" placeholder="Broker's name" />
-          </div>
+        <div className="flex w-full gap-5">
+          <MainBlock>
+            <>
+              <InnerBlock header4="Enter the amount">
+                <Input classNames={{ inputWrapper: inputStyle }} placeholder="$000" />
+              </InnerBlock>
+              <InnerBlock header4="For how long">
+                <Select
+                  classNames={{
+                    trigger: selectStyle,
+                  }}
+                  id="for-how-long"
+                  placeholder="choose value"
+                  onChange={(e) => console.log('value for how long', e.target.value)}
+                >
+                  <SelectItem key="1d">1 Day</SelectItem>
+                </Select>
+              </InnerBlock>
+              <InnerBlock header4="Select an account">
+                <AccountCard />
+              </InnerBlock>
+            </>
+          </MainBlock>
+          <MainBlock>
+            <>
+              <InnerBlock header4="Choose a broker">
+                <Select
+                  classNames={{
+                    trigger: selectStyle,
+                  }}
+                  id="choose-broker"
+                  placeholder="Broker's name"
+                  onChange={(e) => console.log('value for broker chosen', e.target.value)}
+                >
+                  {brokers.map((broker) => (
+                    <SelectItem key={broker.key}>{broker.label}</SelectItem>
+                  ))}
+                </Select>
+              </InnerBlock>
+              <InnerBlock header4="Choose a risk">
+                <Select
+                  classNames={{
+                    trigger: selectStyle,
+                  }}>
+                  {[1,2,3,4].map(risk => <SelectItem key={risk}>{risk}</SelectItem>)}
+                </Select>
+              </InnerBlock>
+              <div>
+                <Header4Left>&nbsp;</Header4Left>
+                <AccountCard />
+              </div>
+            </>
+          </MainBlock>
         </div>
-
-        {/* Row 2 */}
-        <div style={{ display: 'flex' }}>
-          <div style={{ flex: 1 }}>
-            <Select label="For how long" placeholder="1 Day">
-              <SelectItem key="1d">1 Day</SelectItem>
-            </Select>
-          </div>
-          <div style={{ flex: 1 }}>
-            <Input label="Choose a risk" placeholder="4" />
-          </div>
-        </div>
-
-        {/* Accounts header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span>Select an account</span>
-          <Button size="sm" variant="flat">
-            Add
-          </Button>
-        </div>
-
-        {/* Accounts (2/2) */}
-        <div style={{ display: 'flex', flex: 1 }}>
-          <div style={{ flex: 1 }}>
-            <AccountCard />
-          </div>
-          <div style={{ flex: 1 }}>
-            <AccountCard />
-          </div>
-        </div>
-
-        {/* Bottom button */}
         <ButtonRoundedBlue btnText="Simulation" maxW="max-w-[300px]" />
       </div>
     </PopupWrapper>
