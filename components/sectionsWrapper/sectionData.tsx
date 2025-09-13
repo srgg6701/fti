@@ -3,8 +3,8 @@ import React from 'react';
 import SectionHeader from '@/components/sectionsWrapper/sectionHeader';
 type SectionDataProps<T> = {
   data: T[];
-  title: string;
-  seeAllHref?: string;
+  title?: string;
+  seeAllHref?: string | undefined;
   height?: number | string; // 327 | "20rem" | "327px"
   noHeader?: boolean;
   rowClassName?: string;
@@ -30,7 +30,7 @@ export function SectionData<T>({
 
   return (
     <section className={`scroller w-full ${sectionClassName}`}>
-      {!noHeader && <SectionHeader seeAllHref={seeAllHref} title={title} />}
+      {!noHeader && <SectionHeader seeAllHref={seeAllHref} title={title || ''} />}
       <div className={`row article-container ${rowClassName}`} style={style}>
         {data.map((item, i) => (
           <React.Fragment key={getKey?.(item, i) ?? i}>{renderItem(item, i)}</React.Fragment>

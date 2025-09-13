@@ -12,11 +12,11 @@ export default function Backtesting({
 }) {
   return (
     <BacktestingInvest
+      addAccount={addAccount}
       popupHeader="Backtesting"
       onClose={onClose}
       onRemove={onRemove}
       onSimulation={onSimulation}
-      addAccount={addAccount}
     />
   );
 }
