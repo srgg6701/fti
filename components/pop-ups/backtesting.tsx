@@ -3,7 +3,7 @@
 import { Card, CardHeader, CardBody, CardFooter, Input, Avatar } from '@heroui/react';
 import Image from 'next/image';
 import { Select, SelectItem } from '@heroui/select';
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 
 import brokers from '@/mockData/brokers-list';
 import PopupHeader, { Header4Left } from '@/components/pop-ups/styled-popup-header';
@@ -14,7 +14,7 @@ import PopupWrapper from './popup-wrapper';
 
 function AccountCard({ onRemove }: { onRemove: () => void }) {
   return (
-    <Card className="bg-translusent-extreme relative mt-2.5 rounded-[15px] p-2 pb-3">
+    <Card className="bg-translusent-extreme relative mt-2.5 rounded-[15px] p-2 pb-5">
       <button className="absolute top-4 right-3 z-11 cursor-pointer" onClick={onRemove}>
         <Image
           alt="Close card, remove account"
@@ -66,9 +66,17 @@ function MainBlock({ children }: { children: ReactElement }) {
   return <div className="flex w-1/2 flex-col gap-5 text-left">{children}</div>;
 }
 
-function InnerBlock({ header4, children }: { header4: string; children: ReactElement }) {
+function InnerBlock({
+  header4,
+  children,
+  id,
+}: {
+  header4: string;
+  children: ReactElement;
+  id?: string;
+}) {
   return (
-    <div>
+    <div id={`${id || ''}`}>
       <Header4Left>{header4}</Header4Left>
       {children}
     </div>
@@ -78,12 +86,36 @@ function InnerBlock({ header4, children }: { header4: string; children: ReactEle
 export default function Backtesting({
   onClose,
   onRemove,
+  onSimulation,
   addAccount,
 }: {
   onClose: () => void;
   onRemove: () => void;
+  onSimulation: () => void;
   addAccount: () => void;
 }) {
+  const [value, setValue] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const MIN = 1500;
+
+  function parseAmount(s: string) {
+    // strip $ , spaces etc.
+    const n = Number(s.replace(/[^\d.]/g, ''));
+
+    return Number.isFinite(n) ? n : NaN;
+  }
+  const validate = () => {
+    const n = parseAmount(value);
+
+    if (!Number.isFinite(n)) {
+      setError('Enter a valid amount');
+    } else if (n < MIN) {
+      setError('The minimum amount is $1,500');
+    } else {
+      setError(null);
+    }
+  };
+
   return (
     <PopupWrapper deeper={true} h="630px" reducePb={true} w="700px" onClose={onClose}>
       <div className="flex w-[620px] flex-col gap-5">
@@ -91,8 +123,19 @@ export default function Backtesting({
         <div className="flex w-full gap-5">
           <MainBlock>
             <>
-              <InnerBlock header4="Enter the amount">
-                <Input classNames={{ inputWrapper: inputStyle }} placeholder="$000" />
+              <InnerBlock header4="Enter the amount" id="enter-amount">
+                <Input
+                  classNames={{
+                    inputWrapper: inputStyle,
+                    errorMessage: 'error text-sm absolute top-2',
+                  }}
+                  errorMessage={error ?? undefined}
+                  isInvalid={!!error}
+                  placeholder="$1.500"
+                  value={value}
+                  onBlur={validate}
+                  onValueChange={setValue}
+                />
               </InnerBlock>
               <InnerBlock header4="For how long">
                 <Select
@@ -155,7 +198,14 @@ export default function Backtesting({
             </>
           </MainBlock>
         </div>
-        <ButtonRoundedBlue btnText="Simulation" maxW="max-w-[300px]" />
+        <ButtonRoundedBlue
+          btnText="Simulation"
+          maxW="max-w-[300px]"
+          onPress={() => {
+            onClose?.();
+            onSimulation?.();
+          }}
+        />
       </div>
     </PopupWrapper>
   );

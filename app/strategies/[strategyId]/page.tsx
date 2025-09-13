@@ -225,7 +225,12 @@ export default function Strategy() {
       {(notificationIsOpen && <Notification onCloseModal={switchNotification} />) || null}
       {(assetsListIsOpen && <AssetsList onCloseModal={switchAssetsList} />) || null}
       {(isBacktestingOpen && (
-        <Backtesting addAccount={addAddAccount} onClose={swtchBacktesting} onRemove={onRemove} />
+        <Backtesting
+          addAccount={addAddAccount}
+          onClose={swtchBacktesting}
+          onRemove={onRemove}
+          onSimulation={switchNotification}
+        />
       )) ||
         null}
       {(idAddAccountIsOpen && <AddAccount onClose={swtchAddAccount} />) || null}

@@ -12,3 +12,7 @@ body.camera-open #menu-container,
 body.camera-open #exit-link {
   visibility: hidden !important;
 }
+
+#enter-amount [data-slot="helper-wrapper"] {
+  margin-top: -8px;
+}
