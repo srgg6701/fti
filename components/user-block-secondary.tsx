@@ -1,4 +1,5 @@
 import ArrowsUpDown from '@/components/arrows/up-down';
+import { setArrowColor } from '@/styles/style-variables';
 export default function UserBlockSecondary({
   direction,
   value, // dynamics[0]
@@ -16,13 +17,7 @@ export default function UserBlockSecondary({
     <div className={`flex w-full ${wrapperJustify} text-right`}>
       {direction && <ArrowsUpDown direction={direction} />}
       <div className={`px-[5px] ${changeTextSize} whitespace-nowrap`}>{value}</div>
-      {
-        <span
-          className={`${direction === 'Up' ? 'color-blue-canonical' : 'color-ultra-violet'} ${changeTextSize}`}
-        >
-          {`(${change})`}
-        </span>
-      }
+      {<span className={`${setArrowColor(direction)} ${changeTextSize}`}>{`(${change})`}</span>}
     </div>
   );
 }

@@ -7,7 +7,7 @@ import brokers from '@/mockData/brokers-list';
 import { ButtonRoundedBlue } from '@/components/button-rounded';
 import PopupWrapper from '@/components/pop-ups/popup-wrapper';
 import PopupHeader, { Header4Left } from '@/components/pop-ups/styled-popup-header';
-import { selectStyle, inputStyleInner } from '@/components/pop-ups/style-variables';
+import { selectStyle, inputStyleInner } from '@/styles/style-variables';
 
 export default function AddAccountModal({ onClose }: { onClose: () => void }) {
   const [activeSection, setActiveSection] = useState<'roboforex' | 'binance' | null>(null);

@@ -45,17 +45,24 @@ export default function Strategy() {
   // TODO: remove after clarifying the way of opening Backtesting and Add Account modals
   const params = useSearchParams();
   const backtestingOpen = params.get('backtesting');
-  const addAccountOpen = params.get('account');
+  //const addAccountOpen = params.get('account');
 
-  console.log({ backtestingOpen, addAccountOpen, params });
+  console.log({ backtestingOpen, params });
 
   const [isBacktestingOpen, setBacktestingOpen] = useState<string | null>(backtestingOpen);
-  const [idAddAccountIsOpen, setAddAccount] = useState<string | null>(addAccountOpen);
+  const [idAddAccountIsOpen, setAddAccount] = useState<boolean | null>(null);
 
   // ******************************************************************
 
+  function addAddAccount() {
+    setAddAccount(true);
+    setBacktestingOpen(null);
+  }
   function swtchBacktesting() {
     setBacktestingOpen(null);
+  }
+  function onRemove() {
+    alert('Remove account or what?');
   }
   function swtchAddAccount() {
     setAddAccount(null);
@@ -217,7 +224,10 @@ export default function Strategy() {
       </div>
       {(notificationIsOpen && <Notification onCloseModal={switchNotification} />) || null}
       {(assetsListIsOpen && <AssetsList onCloseModal={switchAssetsList} />) || null}
-      {(isBacktestingOpen && <Backtesting onClose={swtchBacktesting} />) || null}
+      {(isBacktestingOpen && (
+        <Backtesting addAccount={addAddAccount} onClose={swtchBacktesting} onRemove={onRemove} />
+      )) ||
+        null}
       {(idAddAccountIsOpen && <AddAccount onClose={swtchAddAccount} />) || null}
     </>
   );
