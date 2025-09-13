@@ -60,3 +60,42 @@ section {
   border-radius: 999px;
   margin: 0 24px;
 }
+
+/* styles for vertical scroll */
+.scroller.vertical {
+  position: fixed;
+}
+
+.row.is-vertical {
+  display: block;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.row.is-vertical::-webkit-scrollbar {
+  width: 8px;
+}
+
+.row.is-vertical > * { scroll-snap-align: start; }
+
+.scroller:hover .row.is-vertical {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(255,255,255,.35) transparent;
+}
+.scroller:hover .row.is-vertical::-webkit-scrollbar {
+  width: 8px;
+}
+.scroller:hover .row.is-vertical::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.35);
+  border-radius: 999px;
+}
+.scroller:hover .row.is-vertical::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,.5);
+}
+.scroller:hover .row.is-vertical::-webkit-scrollbar-track {
+  background: rgba(255,255,255,.06);
+  border-radius: 999px;
+  margin: 24px 0;
+}

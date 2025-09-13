@@ -18,11 +18,12 @@ import { siteConfig } from '@/config/site';
 //import { ThemeSwitch } from '@/components/theme-switch';
 import { useUserStore } from '@/lib/store/userStore';
 import { filterData } from '@/components/dataSections';
-import '@/styles/style-navbar.css';
 import SortingModal from '@/components/pop-ups/sorting';
 import FilterModal, { type FilterState } from '@/components/pop-ups/filter';
+import notifications from '@/mockData/notifications';
 
 import { Icon, menuIcons } from '../icons';
+import '@/styles/style-navbar.css';
 
 export const Navbar = () => {
   const navBarContainer = useRef<HTMLElement | null>(null);
@@ -31,8 +32,10 @@ export const Navbar = () => {
   const { isAuthenticated } = useUserStore();
   const urlFirstSegment = getUrlSegments(usePathname, 1);
   const urlSecondSegment = getUrlSegments(usePathname, 2);
+
   const [search_text, setSearch] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [isNotificationsOpen, setNotifications] = useState(false);
   // SORT
   const [isSortingOpen, setIsSortingOpen] = useState(false);
   const [currentSort, setCurrentSort] = useState('alphabetical');
@@ -128,18 +131,22 @@ export const Navbar = () => {
     </>
   );
 
-  const Exit = ({ className }: { className?: string }) => (
-    <Link className={className || ''} href="/logout" id="exit-link">
+  const Exit = ({ className, onClick }: { className?: string; onClick: () => void }) => (
+    <div className={className || ''} id="exit-link">
       <Image
-        alt="Exit"
+        alt="Show notifications"
         className="mr-3 inline-block"
         height="16"
         src="/assets/images/icons/bell.png"
         style={{ height: '16px' }}
+        title="Show notifications"
         width="16"
+        onClick={onClick}
       />
-      <strong className="menu-item color-ultra-violet whitespace-nowrap">Exit</strong>
-    </Link>
+      <Link className="menu-item color-ultra-violet whitespace-nowrap" href="/logout">
+        Exit
+      </Link>
+    </div>
   );
 
   async function getData() {
@@ -196,6 +203,31 @@ export const Navbar = () => {
     </button>
   );
 
+  const Notifications = ({ onClick }: { onClick: () => void }) => (
+    <aside className="scroller vertical top-0 right-0 z-40 h-full w-[460px] bg-[#030303]">
+      <button className="fixed top-10 right-10 z-42 cursor-pointer" onClick={onClick}>
+        <Image
+          alt="Close pop-up"
+          height={36}
+          src="/assets/images/cross/cross-light.svg"
+          width={36}
+        />
+      </button>
+      <div className="row is-vertical h-full max-w-[460px] overflow-y-auto px-10">
+        <h3 className="aside mb-[30px] pt-20 pb-5">Notifications</h3>
+        {notifications.map((note) => (
+          <div key={note.id} className="[scroll-snap-align:start] py-2.5">
+            <div className="flex gap-2.5">
+              <div>{note.title}</div>
+              <div className="opacity-30">{note.timeAgo}</div>
+            </div>
+            <div className="opacity-50">{note.preview}</div>
+          </div>
+        ))}
+      </div>
+    </aside>
+  );
+
   return (
     <>
       {status === 'loading' ? (
@@ -245,7 +277,7 @@ export const Navbar = () => {
                 {/* <ThemeSwitch /> */}
               </div>
               <div className="hidden items-center lg:flex">
-                <Exit />
+                <Exit onClick={() => setNotifications(!isNotificationsOpen)} />
               </div>
             </div>
           </NavbarContent>
@@ -261,7 +293,7 @@ export const Navbar = () => {
               <ul className="mx-4 mt-2 flex flex-col gap-2">
                 {menuList()}
                 <li className="flex list-none items-center">
-                  <Exit className="py-2" />
+                  <Exit className="py-2" onClick={() => setNotifications(!isNotificationsOpen)} />
                 </li>
               </ul>
             </NavbarMenu>
@@ -285,6 +317,7 @@ export const Navbar = () => {
         }}
         onClose={() => setIsFilterOpen(false)}
       />
+      {isNotificationsOpen && <Notifications onClick={() => setNotifications(false)} />}
     </>
   );
 };

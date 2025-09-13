@@ -14,7 +14,7 @@ const allStrategies = [
     chartImg: 'home/top-performing/graph1.svg',
     brokerCode: 54354535341,
     brokerName: 'Roboforex',
-    status: 'Verifying',
+    status: 'Verifying...',
   },
   {
     brokerImg: 'green-fur.png',

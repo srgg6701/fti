@@ -3,6 +3,9 @@
 h2.bigger {
   @apply text-[32px];
 }
+h3.aside {
+  @apply font-semibold text-[28px] h-[33px];
+}
 h4.regular17 {
   @apply font-normal text-[17px];
 }
