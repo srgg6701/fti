@@ -12,6 +12,7 @@ import UserBlockSecondary from '@/components/user-block-secondary';
 import AssetsList from '@/components/pop-ups/assets-list';
 import AddAccount from '@/components/pop-ups/add-account';
 import Backtesting from '@/components/pop-ups/backtesting';
+import Invest from '@/components/pop-ups/invest';
 import perfData from '@/mockData/performance';
 
 function Collapsible({ open, children }: { open: boolean; children: React.ReactNode }) {
@@ -45,11 +46,12 @@ export default function Strategy() {
   // TODO: remove after clarifying the way of opening Backtesting and Add Account modals
   const params = useSearchParams();
   const backtestingOpen = params.get('backtesting');
-  //const addAccountOpen = params.get('account');
+  const investOpen = params.get('invest');
 
   console.log({ backtestingOpen, params });
 
   const [isBacktestingOpen, setBacktestingOpen] = useState<string | null>(backtestingOpen);
+  const [isInvestOpen, setInvestOpen] = useState<string | null>(investOpen);
   const [idAddAccountIsOpen, setAddAccount] = useState<boolean | null>(null);
 
   // ******************************************************************
@@ -60,6 +62,9 @@ export default function Strategy() {
   }
   function swtchBacktesting() {
     setBacktestingOpen(null);
+  }
+  function swtchInvest() {
+    setInvestOpen(null);
   }
   function onRemove() {
     alert('Remove account or what?');
@@ -228,6 +233,15 @@ export default function Strategy() {
         <Backtesting
           addAccount={addAddAccount}
           onClose={swtchBacktesting}
+          onRemove={onRemove}
+          onSimulation={switchNotification}
+        />
+      )) ||
+        null}
+      {(isInvestOpen && (
+        <Invest
+          addAccount={addAddAccount}
+          onClose={swtchInvest}
           onRemove={onRemove}
           onSimulation={switchNotification}
         />

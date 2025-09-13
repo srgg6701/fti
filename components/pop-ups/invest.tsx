@@ -1,5 +1,5 @@
 import BacktestingInvest from '@/components/pop-ups/backtesting-invest';
-export default function Backtesting({
+export default function Invest({
   onClose,
   onRemove,
   onSimulation,
@@ -12,7 +12,7 @@ export default function Backtesting({
 }) {
   return (
     <BacktestingInvest
-      popupHeader="Backtesting"
+      popupHeader="Invest"
       onClose={onClose}
       onRemove={onRemove}
       onSimulation={onSimulation}
