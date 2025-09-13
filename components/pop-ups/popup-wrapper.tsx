@@ -17,7 +17,7 @@ export default function PopupWrapper({
   w: string;
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className={`fixed inset-0 z-50 flex items-center justify-center h-[${h}] w-[${w}]`}>
       {/* Overlay layer */}
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
@@ -25,7 +25,7 @@ export default function PopupWrapper({
         onClick={onClose}
       />
       <div
-        className={`bg-translusent-extreme relative flex h-[${h}] w-[${w}] justify-between overflow-y-auto rounded-[15px] p-10 ${reducePb && 'pb-[30px]'} shadow-2xl`}
+        className={`bg-translusent-extreme relative flex justify-between overflow-y-auto rounded-[15px] p-10 ${reducePb && 'pb-[30px]'} shadow-2xl`}
       >
         {deeper ? (
           <>

@@ -13,6 +13,7 @@ import AssetsList from '@/components/pop-ups/assets-list';
 import AddAccount from '@/components/pop-ups/add-account';
 import Backtesting from '@/components/pop-ups/backtesting';
 import Invest from '@/components/pop-ups/invest';
+import Notice from '@/components/pop-ups/notice';
 import perfData from '@/mockData/performance';
 
 function Collapsible({ open, children }: { open: boolean; children: React.ReactNode }) {
@@ -43,16 +44,19 @@ export default function Strategy() {
   const [openIds, setOpenIds] = useState<string[]>([]);
   const [notificationIsOpen, setNotification] = useState<boolean>(false);
   const [assetsListIsOpen, setAssetsList] = useState<boolean>(false);
+
   // TODO: remove after clarifying the way of opening Backtesting and Add Account modals
   const params = useSearchParams();
   const backtestingOpen = params.get('backtesting');
   const investOpen = params.get('invest');
+  const noticeOpen = params.get('notice');
 
   console.log({ backtestingOpen, params });
 
   const [isBacktestingOpen, setBacktestingOpen] = useState<string | null>(backtestingOpen);
   const [isInvestOpen, setInvestOpen] = useState<string | null>(investOpen);
-  const [idAddAccountIsOpen, setAddAccount] = useState<boolean | null>(null);
+  const [isAddAccountIsOpen, setAddAccount] = useState<boolean | null>(null);
+  const [isNoticeIsOpen, setNotice] = useState<string | null>(noticeOpen);
 
   // ******************************************************************
 
@@ -60,18 +64,23 @@ export default function Strategy() {
     setAddAccount(true);
     setBacktestingOpen(null);
   }
-  function swtchBacktesting() {
+  // - closers -
+  function closeNotice() {
+    setNotice(null);
+  }
+  function closeBacktesting() {
     setBacktestingOpen(null);
   }
-  function swtchInvest() {
+  function closeInvest() {
     setInvestOpen(null);
   }
   function onRemove() {
     alert('Remove account or what?');
   }
-  function swtchAddAccount() {
+  function closeAddAccount() {
     setAddAccount(null);
   }
+  // - switchers -
   function switchNotification() {
     setNotification(!notificationIsOpen);
   }
@@ -232,7 +241,7 @@ export default function Strategy() {
       {(isBacktestingOpen && (
         <Backtesting
           addAccount={addAddAccount}
-          onClose={swtchBacktesting}
+          onClose={closeBacktesting}
           onRemove={onRemove}
           onSimulation={switchNotification}
         />
@@ -241,13 +250,14 @@ export default function Strategy() {
       {(isInvestOpen && (
         <Invest
           addAccount={addAddAccount}
-          onClose={swtchInvest}
+          onClose={closeInvest}
           onRemove={onRemove}
           onSimulation={switchNotification}
         />
       )) ||
         null}
-      {(idAddAccountIsOpen && <AddAccount onClose={swtchAddAccount} />) || null}
+      {(isAddAccountIsOpen && <AddAccount onClose={closeAddAccount} />) || null}
+      {(isNoticeIsOpen && <Notice onClose={closeNotice} />) || null}
     </>
   );
 }

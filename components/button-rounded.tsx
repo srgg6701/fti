@@ -12,6 +12,7 @@ type ButtonProps = {
   maxW?: string;
   outline?: string;
   height?: string;
+  padding?: string;
   width?: string;
   btnText?: string;
   startContent?: React.ReactNode;
@@ -24,7 +25,7 @@ type ButtonProps = {
 const baseDefaults: Required<
   Omit<
     ButtonProps,
-    'fontSize' | 'maxW' | 'startContent' | 'outline' | 'onPress' | 'onClick' | 'style'
+    'fontSize' | 'maxW' | 'padding' | 'startContent' | 'outline' | 'onPress' | 'onClick' | 'style'
   >
 > = {
   rounded: 'btn-rounded',
@@ -48,6 +49,7 @@ function renderButton(p: ButtonProps) {
     marginBottom,
     maxW,
     outline,
+    padding,
     height,
     width,
     btnText,
@@ -58,7 +60,7 @@ function renderButton(p: ButtonProps) {
 
   return (
     <Button
-      className={`${fontSize} ${rounded} ${bgColor} ${fontColor} ${marginClass} ${marginBottom} ${maxW} ${outline} ${width} ${height}`}
+      className={`${fontSize} ${rounded} ${bgColor} ${fontColor} ${padding} ${marginClass} ${marginBottom} ${maxW} ${outline} ${width} ${height}`}
       startContent={startContent}
       type={type}
       {...rest}

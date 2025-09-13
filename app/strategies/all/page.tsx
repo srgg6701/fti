@@ -1,5 +1,7 @@
+'use client';
 import CardShared from '@/components/cards/card-shared';
 import { SectionData } from '@/components/sectionsWrapper/sectionData';
+import { useAdjustArticleWidth } from '@/hooks/useAdjustArticleWidth';
 
 const allStrategies = [
   {
@@ -26,6 +28,8 @@ const allStrategies = [
 ];
 
 export default function AllStrategies() {
+  useAdjustArticleWidth();
+
   return (
     <div className="mt-[80px] mb-[56px] flex flex-col gap-[5rem]">
       <SectionData
@@ -43,7 +47,8 @@ export default function AllStrategies() {
             status={d.status}
           />
         )}
-        rowClassName="w-full flex-wrap gap-y-2.5"
+        // to cancel horizontal scroll, add 'flex-wrap':
+        rowClassName="w-full gap-y-2.5"
         seeAllHref="/top"
       />
     </div>
