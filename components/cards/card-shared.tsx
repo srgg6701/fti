@@ -1,4 +1,6 @@
 import Image from 'next/image';
+
+import UserImage from '@/components/userImage';
 const CardShared = ({
   username,
   userImg,
@@ -14,7 +16,7 @@ const CardShared = ({
   padding = 'p-5',
 }: {
   username?: string;
-  userImg?: string;
+  userImg: string;
   timeFrame?: string;
   chartImg: string;
   roi?: number;
@@ -30,7 +32,7 @@ const CardShared = ({
     <header className="mb-5 flex items-center gap-3">
       {username ? (
         <>
-          <Image alt="User" height="55" src={`/assets/images/users/${userImg}`} width="55" />
+          <UserImage height={55} title="User" userImg={userImg} width={55} />
           <div className="flex flex-col">
             <span className="text-sm font-medium">{username}</span>
             <span className="text-xs text-white/60">TimeFrame: {timeFrame}</span>
@@ -42,9 +44,9 @@ const CardShared = ({
             <Image
               alt="Broker"
               className="mr-5"
-              height="55"
+              height={55}
               src={`/assets/images/exchange/${brokerImg}`}
-              width="55"
+              width={55}
             />
             <div className="flex flex-col py-[7px]">
               <span className="text-base font-medium">{brokerCode}</span>

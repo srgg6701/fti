@@ -40,7 +40,7 @@ function Collapsible({ open, children }: { open: boolean; children: React.ReactN
   );
 }
 
-export default function Strategy() {
+export default function StrategyId() {
   const [openIds, setOpenIds] = useState<string[]>([]);
   const [notificationIsOpen, setNotification] = useState<boolean>(false);
   const [assetsListIsOpen, setAssetsList] = useState<boolean>(false);

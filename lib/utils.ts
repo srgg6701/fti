@@ -163,3 +163,52 @@ export const getUrlSegments = (path: () => string, segment: number) => {
 
   return `/${pathArray[segment]}`;
 };
+
+// clampText.ts
+export function clampText(
+  raw: string,
+  {
+    max = 70,
+    min = 50,
+    suffix = '…', // what to append
+    stripHtml = true, // cut out tags
+  }: { max?: number; min?: number; suffix?: string; stripHtml?: boolean } = {},
+): string {
+  if (!raw) return '';
+
+  let text = String(raw);
+
+  if (stripHtml) {
+    // removing tags
+    text = text.replace(/<[^>]*>/g, '');
+  }
+
+  // \s normalization
+  text = text.replace(/\s+/g, ' ').trim();
+
+  if (text.length <= max) return text;
+
+  // cutting off
+  const punct = /[.!?…,:;—-]/g;
+  const cutoff = text.lastIndexOf(' ', max);
+  let cut = cutoff > 0 ? cutoff : max;
+
+  // attempt to improve
+  const matchPunct = [...text.slice(0, max).matchAll(punct)].pop();
+
+  if (matchPunct && matchPunct.index! >= (min ?? 0)) {
+    cut = Math.max(cut, matchPunct.index! + 1);
+  }
+
+  // ensure the string's sufficient length
+  if (cut < min) {
+    const nextSpace = text.indexOf(' ', max);
+
+    if (nextSpace !== -1) cut = nextSpace;
+  }
+
+  const head = text.slice(0, cut).trim();
+
+  // control if we need suffics
+  return head.length < text.length ? head.replace(/[,.!?:;—-]+$/, '') + suffix : head;
+}

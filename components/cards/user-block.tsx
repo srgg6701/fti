@@ -1,10 +1,10 @@
 import { ReactNode } from 'react';
-import Image from 'next/image';
+
+import UserImage from '@/components/userImage';
 export default function UserBlock({
   userImg,
-  imgAlt,
+  imgAlt = '',
   children,
-  imgTitle,
   headerDisplay,
   w = 'md:w-[380px]',
   h = 'md:h-[95px]',
@@ -18,7 +18,6 @@ export default function UserBlock({
   userImg: string;
   imgAlt: string;
   children: ReactNode;
-  imgTitle?: string;
   headerDisplay?: string;
   w?: string;
   h?: string;
@@ -32,13 +31,7 @@ export default function UserBlock({
   return (
     <article className={`${h} ${w} ${marginRight} ${padding}`}>
       <header className={`${headerDisplay} ${mb} ${gap} flex items-center`}>
-        <Image
-          alt={imgAlt}
-          height={height}
-          src={`/assets/images/users/${userImg}`}
-          title={imgTitle}
-          width={width}
-        />
+        <UserImage height={height} title={imgAlt} userImg={userImg} width={width} />
         {children}
       </header>
     </article>
