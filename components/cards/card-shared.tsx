@@ -3,7 +3,7 @@ import Image from 'next/image';
 import UserImage from '@/components/userImage';
 const CardShared = ({
   username,
-  userImg,
+  userImg = '',
   timeFrame,
   chartImg,
   roi = 51.25,
@@ -16,7 +16,7 @@ const CardShared = ({
   padding = 'p-5',
 }: {
   username?: string;
-  userImg: string;
+  userImg?: string;
   timeFrame?: string;
   chartImg: string;
   roi?: number;
