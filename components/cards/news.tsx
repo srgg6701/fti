@@ -21,7 +21,7 @@ const CardNews = ({
   userImg: string;
   date: string;
   img: string;
-  slug: string;
+  slug?: string;
   title: string;
   text: string;
   marginRight?: string;
