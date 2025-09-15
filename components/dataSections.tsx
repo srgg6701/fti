@@ -3,11 +3,12 @@ import DataMyStrategies from '@/mockData/dataMyStrategies';
 import DataTopPerforming from '@/mockData/dataTopPerforming';
 import DataNews from '@/mockData/dataNews';
 import { SectionData } from '@/components/sectionsWrapper/sectionData';
-import '@/styles/style-sections.css';
 import { useAdjustArticleWidth } from '@/hooks/useAdjustArticleWidth';
 import CardMyStrategies from '@/components/cards/my-strategies';
 import CardShared from '@/components/cards/card-shared';
 import CardNews from '@/components/cards/news';
+import { clampText } from '@/lib/utils';
+import '@/styles/style-sections.css';
 
 //TODO: temporal solution, DataTopPerforming should be changed to real data obtained from server
 const DataWorldLeaders = [...DataTopPerforming];
@@ -78,7 +79,7 @@ export default function HomeSections({ section }: { section: string }) {
               key={i}
               date={d.date}
               img={d.img}
-              text={d.text}
+              text={clampText(d.text)}
               title={d.title}
               userImg={d.userImg}
               username={d.username}

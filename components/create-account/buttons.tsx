@@ -6,7 +6,13 @@ import Image from 'next/image';
 import { ButtonRoundedGrey, ButtonRoundedBlue } from '@/components/button-rounded';
 import { getUrlSegments } from '@/lib/utils';
 
-export default function Buttons({ messageType, status }: { messageType: string; status?: string }) {
+type ButtonsProps = {
+  messageType: string;
+  status?: string;
+  type: 'button' | 'submit' | 'reset' | undefined;
+};
+
+export default function Buttons({ messageType, status, type }: ButtonsProps) {
   const urlFirstSegment = getUrlSegments(usePathname, 1);
 
   return (
@@ -16,7 +22,7 @@ export default function Buttons({ messageType, status }: { messageType: string; 
           <Image alt="Google" height={18} src="/assets/images/icons/google.svg" width={18} />
         }
       />
-      <ButtonRoundedBlue />
+      <ButtonRoundedBlue type={type} />
       {urlFirstSegment !== '/login' && urlFirstSegment !== '/logout' && (
         <p className="mt-[11.5px] text-sm">
           {messageType === 'have-you-account' && 'Do you already have an account?'}

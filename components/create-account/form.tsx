@@ -20,7 +20,7 @@ export default function FormWrapper({ onSubmit, status, messageType, header, chi
       >
         <Header header={header} messageType={messageType[0]} />
         <div className="relative mx-auto flex w-full max-w-[300px] flex-col">{children}</div>
-        <Buttons messageType={messageType[1]} status={status} />
+        <Buttons type="submit" messageType={messageType[1]} status={status} />
       </Form>
     </section>
   );
