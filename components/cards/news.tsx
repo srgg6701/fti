@@ -52,8 +52,8 @@ const CardNews = ({
         </h3>
         <p className="relative text-sm">
           <span className="opacity-80">{text}</span>
-          <Link className="read-more" href="/news/news11">
-            <span className="text-blue-600/100"> read more</span>
+          <Link className="read-more" href={`/news/${slug}`}>
+            <span className="color-blue-secondary"> read more</span>
           </Link>
         </p>
       </div>

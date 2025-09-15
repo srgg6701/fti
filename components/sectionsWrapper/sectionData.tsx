@@ -9,6 +9,7 @@ type SectionDataProps<T> = {
   noHeader?: boolean;
   rowClassName?: string;
   sectionClassName?: string;
+  horizontalLayout: boolean;
   getKey?: (item: T, index: number) => React.Key;
   renderItem: (item: T, index: number) => React.ReactNode; // вместо children
 };
@@ -20,6 +21,7 @@ export function SectionData<T>({
   noHeader = false,
   rowClassName = '',
   sectionClassName = '',
+  horizontalLayout = true,
   getKey,
   renderItem,
 }: SectionDataProps<T>) {
@@ -29,7 +31,9 @@ export function SectionData<T>({
       : undefined;
 
   return (
-    <section className={`scroller w-full ${sectionClassName}`}>
+    <section
+      className={`${horizontalLayout ? 'scroller w-full' : 'w-[320px]'}${sectionClassName && ' ' + sectionClassName}`}
+    >
       {!noHeader && <SectionHeader seeAllHref={seeAllHref} title={title || ''} />}
       <div className={`row article-container ${rowClassName}`} style={style}>
         {data.map((item, i) => (

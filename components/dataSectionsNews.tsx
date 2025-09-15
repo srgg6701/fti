@@ -28,6 +28,7 @@ function selectTargetNews(data: IDataNews[], slug: SelectedNews['slug']) {
 export default function DataSectionNews({ slug }: SelectedNews) {
   const [newsData, setNewsData] = useState<IDataNews[] | []>([]);
   const [actualNews, setSelectedNews] = useState<IDataNews | null>(null);
+  const [horizontalLayout, setLayoutHorizontal] = useState(true);
 
   async function fetchNews() {
     // реальный запрос к серверу (пока отключён)
@@ -68,9 +69,11 @@ export default function DataSectionNews({ slug }: SelectedNews) {
   }, [actualNews]);
 
   return (
-    <div className="mt-[80px] mb-[56px] flex flex-col gap-[5rem]">
+    <div className={`mt-[80px] mb-[80px] flex${horizontalLayout ? 'flex-col' : ''} gap-[5rem]`}>
       {actualNews && (
-        <div className="m-auto flex w-full max-w-[550px] flex-col gap-10">
+        <div
+          className={`flex flex-col gap-10${horizontalLayout ? 'm-auto max-w-[550px]' : '-mr-[400px] pr-[400px]'} w-full`}
+        >
           <UserBlockNews
             date={actualNews.date}
             title={actualNews.title}
@@ -79,20 +82,38 @@ export default function DataSectionNews({ slug }: SelectedNews) {
           />
           <Image
             alt={actualNews.title}
-            className="rounded-[15px]"
+            className={`rounded-[15px]${!horizontalLayout ? 'mx-auto' : ''}`}
             height={394}
             src={`/assets/images/news/target-news/${actualNews.img}`}
             width={550}
           />
           <div>
-            <h2 className="mb-5 !text-2xl leading-7 font-semibold">{actualNews.title}</h2>
-            <div className="text-sm">{formatTextToParagraphs(actualNews.text)}</div>
+            <h2 className="mb-5 !text-2xl leading-7 font-semibold">
+              <button
+                className="cursor-pointer text-left hover:opacity-60"
+                onClick={() => setLayoutHorizontal(!horizontalLayout)}
+              >
+                {actualNews.title}
+              </button>
+            </h2>
+            <div
+              className={`relative text-sm${horizontalLayout ? 'max-h-80 overflow-hidden' : ''}`}
+            >
+              {formatTextToParagraphs(actualNews.text)}
+              <button
+                className="color-blue-secondary absolute right-0 bottom-0 cursor-pointer"
+                onClick={() => setLayoutHorizontal(!horizontalLayout)}
+              >
+                <span className="font-medium">{`show ${horizontalLayout ? 'more' : 'less'} ...`}</span>
+              </button>
+            </div>
           </div>
         </div>
       )}
       <SectionData
         data={newsData}
         getKey={(d, i) => `${d.title}-${i}`}
+        horizontalLayout={horizontalLayout}
         noHeader={true}
         renderItem={(d, i) => (
           <CardNews
