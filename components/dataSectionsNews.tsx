@@ -69,10 +69,10 @@ export default function DataSectionNews({ slug }: SelectedNews) {
   }, [actualNews]);
 
   return (
-    <div className={`mt-[80px] mb-[80px] flex${horizontalLayout ? 'flex-col' : ''} gap-[5rem]`}>
+    <div className={`mt-[80px] mb-[80px] flex ${horizontalLayout ? 'flex-col' : ''} gap-[5rem]`}>
       {actualNews && (
         <div
-          className={`flex flex-col gap-10${horizontalLayout ? 'm-auto max-w-[550px]' : '-mr-[400px] pr-[400px]'} w-full`}
+          className={`flex flex-col gap-10 ${horizontalLayout ? 'm-auto max-w-[550px]' : '-mr-[400px] pr-[400px]'} w-full`}
         >
           <UserBlockNews
             date={actualNews.date}
@@ -82,7 +82,7 @@ export default function DataSectionNews({ slug }: SelectedNews) {
           />
           <Image
             alt={actualNews.title}
-            className={`rounded-[15px]${!horizontalLayout ? 'mx-auto' : ''}`}
+            className={`rounded-[15px] ${!horizontalLayout ? 'mx-auto' : ''}`}
             height={394}
             src={`/assets/images/news/target-news/${actualNews.img}`}
             width={550}
@@ -97,7 +97,7 @@ export default function DataSectionNews({ slug }: SelectedNews) {
               </button>
             </h2>
             <div
-              className={`relative text-sm${horizontalLayout ? 'max-h-80 overflow-hidden' : ''}`}
+              className={`relative text-sm ${horizontalLayout ? 'max-h-80 overflow-hidden' : ''}`}
             >
               {formatTextToParagraphs(actualNews.text)}
               <button
