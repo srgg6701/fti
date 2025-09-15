@@ -9,7 +9,7 @@ type SectionDataProps<T> = {
   noHeader?: boolean;
   rowClassName?: string;
   sectionClassName?: string;
-  horizontalLayout: boolean;
+  horizontalLayout?: boolean;
   getKey?: (item: T, index: number) => React.Key;
   renderItem: (item: T, index: number) => React.ReactNode; // вместо children
 };
