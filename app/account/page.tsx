@@ -113,7 +113,7 @@ export default function ProfileDraft() {
                 </div>
               </div>
               <h2 className="h-[28px] text-[28px]">
-                <Link href="/profile/personal-information?id=dfq125dfe25">Joshua</Link>
+                <Link href="/account/personal-information?id=dfq125dfe25">Joshua</Link>
               </h2>
             </div>
           </div>

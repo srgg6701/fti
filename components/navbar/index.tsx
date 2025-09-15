@@ -71,9 +71,6 @@ export const Navbar = () => {
       pageHeader = 'News';
       break;
     case '/account':
-      pageHeader = 'Account';
-      break;
-    case '/profile':
       pageHeader = 'Profile';
       break;
     case '/frame':

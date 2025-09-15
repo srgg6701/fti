@@ -52,26 +52,26 @@ export default function StrategyId() {
 
   console.log({ backtestingOpen, params });
 
-  const [isBacktestingOpen, setBacktestingOpen] = useState<string | null>(backtestingOpen);
-  const [isInvestOpen, setInvestOpen] = useState<string | null>(investOpen);
+  const [isBacktestingOpen, setBacktestingOpen] = useState<boolean>(!!backtestingOpen);
+  const [isInvestOpen, setInvestOpen] = useState<boolean>(!!investOpen);
   /* const [isAddAccountIsOpen, setAddAccount] = useState<boolean | null>(null); */
-  const [isNoticeIsOpen, setNotice] = useState<string | null>(noticeOpen);
+  const [isNoticeIsOpen, setNotice] = useState<boolean>(!!noticeOpen);
 
   // ******************************************************************
 
   function setBacktesting() {
     //setAddAccount(true);
-    setBacktestingOpen(null);
+    setBacktestingOpen(false);
   }
   // - closers -
   function closeNotice() {
-    setNotice(null);
+    setNotice(false);
   }
   function closeBacktesting() {
-    setBacktestingOpen(null);
+    setBacktestingOpen(false);
   }
   function closeInvest() {
-    setInvestOpen(null);
+    setInvestOpen(false);
   }
   function onRemove() {
     alert('Remove account or what?');
@@ -89,12 +89,14 @@ export default function StrategyId() {
   }
 
   function onSimulation() {
+    setBacktestingOpen(true);
     console.log('onSimulation called');
-    setNotification(true);
+    //setNotification(true);
   }
   function onInvest() {
+    setInvestOpen(true);
     console.log('onInvest called');
-    setAssetsList(true);
+    setInvestOpen(true);
   }
 
   return (
