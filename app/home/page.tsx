@@ -1,16 +1,15 @@
 'use client'; // TODO: check if it should be a client component
 import Image from 'next/image';
+import { useState } from 'react';
 
 import HomeSections from '@/components/dataSections';
+import AddAccount from '@/components/pop-ups/add-account';
 
 export default function Home() {
-  function addStrategy() {
-    if (window) {
-      window.alert('Add Strategy');
-    } else {
-      // eslint-disable-next-line no-console
-      console.log('Add Strategy');
-    }
+  const [isAddAccountIsOpen, setAddAccount] = useState<boolean | null>(null);
+
+  function addAddAccount() {
+    setAddAccount(true);
   }
 
   return (
@@ -19,7 +18,7 @@ export default function Home() {
         <div className="mx-auto flex w-full max-w-[370px] flex-col text-center">
           <h2 className="text-lg font-medium">You don&apos;t have any strategies at the moment</h2>
           <div className="my-[10px]">Add your first strategy</div>
-          <button className="text-center" onClick={addStrategy}>
+          <button className="text-center" onClick={addAddAccount}>
             <Image
               alt="Add your first strategy"
               className="mx-auto"
@@ -31,6 +30,7 @@ export default function Home() {
         </div>
       </section>
       <HomeSections section="home" />
+      {(isAddAccountIsOpen && <AddAccount onClose={() => setAddAccount(null)} />) || null}
     </>
   );
 }

@@ -70,8 +70,8 @@ export const Navbar = () => {
     case '/news':
       pageHeader = 'News';
       break;
-    case '/accounts':
-      pageHeader = 'Accounts';
+    case '/account':
+      pageHeader = 'Account';
       break;
     case '/profile':
       pageHeader = 'Profile';

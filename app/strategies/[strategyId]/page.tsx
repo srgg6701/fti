@@ -10,7 +10,6 @@ import DropdownPill from '@/components/dateDropDown';
 import Notification from '@/components/pop-ups/notification';
 import UserBlockSecondary from '@/components/user-block-secondary';
 import AssetsList from '@/components/pop-ups/assets-list';
-import AddAccount from '@/components/pop-ups/add-account';
 import Backtesting from '@/components/pop-ups/backtesting';
 import Invest from '@/components/pop-ups/invest';
 import Notice from '@/components/pop-ups/notice';
@@ -55,13 +54,13 @@ export default function StrategyId() {
 
   const [isBacktestingOpen, setBacktestingOpen] = useState<string | null>(backtestingOpen);
   const [isInvestOpen, setInvestOpen] = useState<string | null>(investOpen);
-  const [isAddAccountIsOpen, setAddAccount] = useState<boolean | null>(null);
+  /* const [isAddAccountIsOpen, setAddAccount] = useState<boolean | null>(null); */
   const [isNoticeIsOpen, setNotice] = useState<string | null>(noticeOpen);
 
   // ******************************************************************
 
-  function addAddAccount() {
-    setAddAccount(true);
+  function setBacktesting() {
+    //setAddAccount(true);
     setBacktestingOpen(null);
   }
   // - closers -
@@ -76,9 +75,6 @@ export default function StrategyId() {
   }
   function onRemove() {
     alert('Remove account or what?');
-  }
-  function closeAddAccount() {
-    setAddAccount(null);
   }
   // - switchers -
   function switchNotification() {
@@ -240,7 +236,7 @@ export default function StrategyId() {
       {(assetsListIsOpen && <AssetsList onCloseModal={switchAssetsList} />) || null}
       {(isBacktestingOpen && (
         <Backtesting
-          addAccount={addAddAccount}
+          addAccount={setBacktesting}
           onClose={closeBacktesting}
           onRemove={onRemove}
           onSimulation={switchNotification}
@@ -249,14 +245,13 @@ export default function StrategyId() {
         null}
       {(isInvestOpen && (
         <Invest
-          addAccount={addAddAccount}
+          addAccount={setBacktesting}
           onClose={closeInvest}
           onRemove={onRemove}
           onSimulation={switchNotification}
         />
       )) ||
         null}
-      {(isAddAccountIsOpen && <AddAccount onClose={closeAddAccount} />) || null}
       {(isNoticeIsOpen && <Notice onClose={closeNotice} />) || null}
     </>
   );
