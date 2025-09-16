@@ -1,4 +1,5 @@
 'use client';
+
 import { useState, useEffect, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@heroui/input';
@@ -7,6 +8,7 @@ import Form from '@/components/create-account/form';
 import { useUserStore } from '@/lib/store/userStore';
 import ErrMess from '@/components/errMess';
 import { apiFetch } from '@/lib/api';
+import LoginResponse from '@/types/auth';
 
 export default function LoginPage() {
   const loginUser = useUserStore((state) => state.login);
@@ -31,46 +33,36 @@ export default function LoginPage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setErrMess(null);
-
-    if (!email || !password /*  || !otp */) {
+    if (!email || !password) {
       setErrMess('Please fill in all fields.');
 
       return;
     }
 
-    //setIsLoading(true);
-
-    type loginResponse = {
-      success: boolean;
-      message: string;
-      token: string;
-      user: {
-        id: number;
-        email: string;
-        username: string;
-        default_language_id: number;
-        start_page: string;
-        is_ban: boolean;
-        tour_step: number;
-      };
-    };
-
     try {
-      const { success, message, token, user }: loginResponse = await apiFetch('/auth/login', {
+      const resp: LoginResponse = await apiFetch('/auth/login', {
         method: 'POST',
         body: JSON.stringify({ email, password }),
       });
 
-      setStatus('success');
-      console.log('%cLogin is successful', 'color: green', { success, message, token, user });
-      // store user email and isAuthenticated in sessionStorage and Cookies
-      loginUser(user.email);
-      router.push('/home');
+      if (resp?.success) {
+        loginUser(resp.user.email); // твой Zustand
+        const next =
+          new URLSearchParams(window.location.search).get('next') ||
+          sessionStorage.getItem('reauth_from') ||
+          '/home';
+
+        sessionStorage.removeItem('reauth_from');
+        router.replace(next);
+
+        return;
+      }
+      setErrMess('Login failed.'); // запасной вариант
     } catch (err) {
-      setErrMess('Network error. Please try again later');
-      console.error('Network error:', err);
+      setErrMess('Network or auth error. Please try again.');
+      // eslint-disable-next-line no-console
+      console.error(err);
     } finally {
-      //setIsLoading(false);
       setTimeout(() => setStatus('idle'), 1000);
     }
   };

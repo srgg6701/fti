@@ -1,23 +1,29 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-/* let authToken: string | null = null; // можно заменить на Zustand
-
-export function setAuthToken(token: string | null) {
-  authToken = token;
-} */
-
 export async function apiFetch<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const res = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(options.headers || {}),
-    },
     credentials: 'include',
+    headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+    ...options,
   });
 
+  // handle problematic session
+  if (res.status === 401) {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('reauth_from', window.location.pathname);
+      window.location.href = '/'; // redirect to the entry point
+    }
+    throw new Error('Unauthorized');
+  }
+
   if (!res.ok) {
-    throw new Error(`API error: ${res.status}`);
+    // for server's messages if there are any
+    let details = '';
+
+    try {
+      details = JSON.stringify(await res.json());
+    } catch {}
+    throw new Error(`API error: ${res.status}${details ? ` ${details}` : ''}`);
   }
 
   return res.json();

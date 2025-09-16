@@ -140,7 +140,7 @@ export const Navbar = () => {
         width="16"
         onClick={onClick}
       />
-      <Link className="menu-item color-ultra-violet whitespace-nowrap" href="/logout">
+      <Link className="menu-item color-ultra-violet font-bold whitespace-nowrap" href="/logout">
         Exit
       </Link>
     </div>
