@@ -1,23 +1,28 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+function toApiPath(endpoint: string) {
+  // принимаем '/auth/login' или '/api/auth/login' — оба варианта ок
+  if (endpoint.startsWith('/api/')) return endpoint;
+
+  return endpoint.startsWith('/') ? `/api${endpoint}` : `/api/${endpoint}`;
+}
 
 export async function apiFetch<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const res = await fetch(`${API_URL}${endpoint}`, {
+  const res = await fetch(toApiPath(endpoint), {
     credentials: 'include',
     headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
     ...options,
   });
 
-  // handle problematic session
   if (res.status === 401) {
     if (typeof window !== 'undefined') {
-      sessionStorage.setItem('reauth_from', window.location.pathname);
-      window.location.href = '/'; // redirect to the entry point
+      const from = window.location.pathname + window.location.search;
+
+      sessionStorage.setItem('reauth_from', from);
+      window.location.href = '/login'; // согласовано с middleware
     }
     throw new Error('Unauthorized');
   }
 
   if (!res.ok) {
-    // for server's messages if there are any
     let details = '';
 
     try {
@@ -26,5 +31,5 @@ export async function apiFetch<T>(endpoint: string, options: RequestInit = {}): 
     throw new Error(`API error: ${res.status}${details ? ` ${details}` : ''}`);
   }
 
-  return res.json();
+  return res.json() as Promise<T>;
 }

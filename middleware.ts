@@ -2,16 +2,12 @@ import type { NextRequest } from 'next/server';
 
 import { NextResponse } from 'next/server';
 
-const PROTECTED = [
-  /^\/(home|portfolio(_balancer)?|terminal|trading_history|new_follower|add_forex_account|new_provider)(\/|$)/,
-];
-
 export function middleware(req: NextRequest) {
-  const { pathname, search } = req.nextUrl;
-
-  if (!PROTECTED.some((r) => r.test(pathname))) return NextResponse.next();
+  // если есть кука — пускаем
   if (req.cookies.has('jwt')) return NextResponse.next();
 
+  // иначе — на /login с возвратом
+  const { pathname, search } = req.nextUrl;
   const url = req.nextUrl.clone();
 
   url.pathname = '/login';
@@ -20,15 +16,24 @@ export function middleware(req: NextRequest) {
   return NextResponse.redirect(url);
 }
 
+// защищаем только нужные роуты + их подпути
 export const config = {
   matcher: [
     '/home',
+    '/home/:path*',
     '/portfolio',
+    '/portfolio/:path*',
     '/portfolio_balancer',
+    '/portfolio_balancer/:path*',
     '/terminal',
+    '/terminal/:path*',
     '/trading_history',
+    '/trading_history/:path*',
     '/new_follower',
+    '/new_follower/:path*',
     '/add_forex_account',
+    '/add_forex_account/:path*',
     '/new_provider',
+    '/new_provider/:path*',
   ],
 };

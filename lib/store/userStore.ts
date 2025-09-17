@@ -1,12 +1,13 @@
+// lib/store/userStore.ts
 import { create } from 'zustand';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';           // ❌ Убираем
 
 interface UserState {
   isAuthenticated: boolean;
   email: string | null;
   login: (email: string) => void;
   logout: () => void;
-  initializeUser: () => void;
+  initializeUser: () => Promise<void>; // ⬅ асинхронная, мягкая проверка
 }
 
 export const useUserStore = create<UserState>((set) => ({
@@ -14,48 +15,32 @@ export const useUserStore = create<UserState>((set) => ({
   email: null,
 
   login: (email) => {
+    // Сервер уже поставил HTTP-only cookie `jwt`; этого достаточно.
     set({ isAuthenticated: true, email });
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem('isAuthenticated', 'true');
-      sessionStorage.setItem('email', email);
-
-      Cookies.set('isAuthenticated', 'true', {
-        expires: 1,
-        secure: process.env.NODE_ENV === 'production',
-      });
-    }
+    // ❌ никаких sessionStorage/небезопасных кук
   },
 
   logout: () => {
     set({ isAuthenticated: false, email: null });
-
-    if (typeof window !== 'undefined') {
-      sessionStorage.removeItem('isAuthenticated');
-      sessionStorage.removeItem('email');
-
-      Cookies.remove('isAuthenticated');
-    }
+    // опционально: вызвать fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
+    // и игнорировать ответ — middleware дальше всё защитит
   },
 
-  initializeUser: () => {
-    if (typeof window !== 'undefined') {
-      const isAuthenticatedSession = sessionStorage.getItem('isAuthenticated') === 'true';
-      const emailSession = sessionStorage.getItem('email');
+  initializeUser: async () => {
+    try {
+      // мягкая проверка без авто-редиректа (не используем apiFetch, чтобы не прыгать на /login на публичных страницах)
+      const res = await fetch('/api/auth/me', { credentials: 'include' });
 
-      const isAuthenticatedCookie = Cookies.get('isAuthenticated') === 'true';
+      if (!res.ok) {
+        set({ isAuthenticated: false, email: null });
 
-      if (isAuthenticatedSession && emailSession) {
-        set({
-          isAuthenticated: true,
-          email: emailSession,
-        });
-      } else if (isAuthenticatedCookie) {
-        set({
-          isAuthenticated: true,
-          email: null,
-        });
-        sessionStorage.setItem('isAuthenticated', 'true');
+        return;
       }
+      const data: { user?: { email?: string } } = await res.json();
+
+      set({ isAuthenticated: true, email: data.user?.email ?? null });
+    } catch {
+      set({ isAuthenticated: false, email: null });
     }
   },
 }));

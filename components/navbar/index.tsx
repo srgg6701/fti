@@ -21,8 +21,7 @@ import { filterData } from '@/components/dataSections';
 import SortingModal from '@/components/pop-ups/sorting';
 import FilterModal, { type FilterState } from '@/components/pop-ups/filter';
 import notifications from '@/mockData/notifications';
-
-import { Icon, menuIcons } from '../icons';
+import { Icon, menuIcons } from '@/components/icons';
 import '@/styles/style-navbar.css';
 
 export const Navbar = () => {
@@ -70,8 +69,11 @@ export const Navbar = () => {
     case '/news':
       pageHeader = 'News';
       break;
-    case '/account':
+    case '/profile':
       pageHeader = 'Profile';
+      break;
+    case '/accounts':
+      pageHeader = 'Accounts';
       break;
     case '/frame':
       pageHeader = 'Frame';
@@ -98,35 +100,33 @@ export const Navbar = () => {
       break;
   }
 
-  const items = siteConfig.navItems; /* .filter((item) => {
-    if (item.protected && !isAuthenticated) return false;
-    if (item.label === 'Logout' && !isAuthenticated) return false;
-    return true;
-  }) */
+  const items = siteConfig.navItems;
 
-  const menuList = () => (
-    <>
-      {items.map((item) => {
-        const iconName = item.href.split('/')[1] as keyof typeof menuIcons;
+  const menuList = () => {
+    return (
+      <>
+        {items.map((item) => {
+          const iconName = item.href.split('/')[1] as keyof typeof menuIcons;
 
-        return (
-          <li key={item.href} className="flex list-none items-center">
-            <Link
-              aria-current={urlFirstSegment === item.href ? 'page' : undefined}
-              className={`menu-item flex items-center gap-3 ${urlFirstSegment === item.href ? '' : 'opacity-60 hover:opacity-100'}`}
-              href={item.href}
-            >
-              {Icon({
-                ...menuIcons[iconName],
-                color: 'white', // TODO: make color self-customizing
-              })}
-              <span>{item.label}</span>
-            </Link>
-          </li>
-        );
-      })}
-    </>
-  );
+          return (
+            <li key={item.href} className="flex list-none items-center">
+              <Link
+                aria-current={urlFirstSegment === item.href ? 'page' : undefined}
+                className={`menu-item flex items-center gap-3 ${urlFirstSegment === item.href ? '' : 'opacity-60 hover:opacity-100'}`}
+                href={item.href}
+              >
+                {Icon({
+                  ...menuIcons[iconName],
+                  color: 'white', // TODO: make color self-customizing
+                })}
+                <span>{item.label}</span>
+              </Link>
+            </li>
+          );
+        })}
+      </>
+    );
+  };
 
   const Exit = ({ className, onClick }: { className?: string; onClick: () => void }) => (
     <div className={className || ''} id="exit-link">

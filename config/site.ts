@@ -20,15 +20,20 @@ export const siteConfig = {
       protected: true,
     },
     {
+      label: 'Pricing',
+      href: '/pricing',
+      protected: false,
+    },
+    {
       label: 'News',
       href: '/news',
       protected: true,
     },
-    {
+    /* {
       label: 'Account',
       href: '/account',
       protected: true,
-    },
+    } ,*/
     /* {
       label: 'Logout',
       href: '/logout',

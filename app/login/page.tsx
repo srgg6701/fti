@@ -46,7 +46,7 @@ export default function LoginPage() {
       });
 
       if (resp?.success) {
-        loginUser(resp.user.email); // твой Zustand
+        loginUser(resp.user.email); // Zustand
         const next =
           new URLSearchParams(window.location.search).get('next') ||
           sessionStorage.getItem('reauth_from') ||
