@@ -1,14 +1,15 @@
 'use client';
 
-import { Card, CardHeader, CardBody, CardFooter, Input, Avatar } from '@heroui/react';
 import Image from 'next/image';
-import { Select, SelectItem } from '@heroui/select';
 import { ReactElement, useState } from 'react';
-
+import { Card, CardHeader, CardBody, CardFooter, Avatar } from '@heroui/react';
+import { Select, SelectItem } from '@heroui/select';
 import brokers from '@/mockData/brokers-list';
 import PopupHeader, { Header4Left } from '@/components/pop-ups/styled-popup-header';
+import FormElementWrapper from '@/components/pop-ups/form-elements/form-element-wrapper';
+import FormElementInput from '@/components/pop-ups/form-elements/form-element-input';
 import { ButtonRoundedBlue } from '@/components/button-rounded';
-import { selectStyle, inputStyle } from '@/styles/style-variables';
+import { selectStyle } from '@/styles/style-variables';
 
 import PopupWrapper from './popup-wrapper';
 
@@ -66,23 +67,6 @@ function MainBlock({ children }: { children: ReactElement }) {
   return <div className="flex w-1/2 flex-col gap-5 text-left">{children}</div>;
 }
 
-function InnerBlock({
-  header4,
-  children,
-  id,
-}: {
-  header4: string;
-  children: ReactElement;
-  id?: string;
-}) {
-  return (
-    <div id={`${id || ''}`}>
-      <Header4Left>{header4}</Header4Left>
-      {children}
-    </div>
-  );
-}
-
 export default function BacktestingInvest({
   popupHeader,
   onClose,
@@ -96,27 +80,6 @@ export default function BacktestingInvest({
   onSimulation: () => void;
   addAccount: () => void;
 }) {
-  const [value, setValue] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const MIN = 1500;
-
-  function parseAmount(s: string) {
-    // strip $ , spaces etc.
-    const n = Number(s.replace(/[^\d.]/g, ''));
-
-    return Number.isFinite(n) ? n : NaN;
-  }
-  const validate = () => {
-    const n = parseAmount(value);
-
-    if (!Number.isFinite(n)) {
-      setError('Enter a valid amount');
-    } else if (n < MIN) {
-      setError('The minimum amount is $1,500');
-    } else {
-      setError(null);
-    }
-  };
 
   return (
     <PopupWrapper deeper={true} h="630px" reducePb={true} w="700px" onClose={onClose}>
@@ -125,21 +88,10 @@ export default function BacktestingInvest({
         <div className="flex w-full gap-5">
           <MainBlock>
             <>
-              <InnerBlock header4="Enter the amount" id="enter-amount">
-                <Input
-                  classNames={{
-                    inputWrapper: inputStyle,
-                    errorMessage: 'error text-sm absolute top-2',
-                  }}
-                  errorMessage={error ?? undefined}
-                  isInvalid={!!error}
-                  placeholder="$1.500"
-                  value={value}
-                  onBlur={validate}
-                  onValueChange={setValue}
-                />
-              </InnerBlock>
-              <InnerBlock header4="For how long">
+              <FormElementWrapper header4="Enter the amount" id="enter-amount">
+                <FormElementInput />
+              </FormElementWrapper>
+              <FormElementWrapper header4="For how long">
                 <Select
                   classNames={{
                     trigger: selectStyle,
@@ -150,9 +102,9 @@ export default function BacktestingInvest({
                 >
                   <SelectItem key="1d">1 Day</SelectItem>
                 </Select>
-              </InnerBlock>
+              </FormElementWrapper>
               <div className="relative text-left">
-                <InnerBlock header4="Select an account">
+                <FormElementWrapper header4="Select an account">
                   <>
                     <button
                       className="color-blue-canonical absolute top-0.5 ml-[18px] font-semibold underline"
@@ -162,13 +114,13 @@ export default function BacktestingInvest({
                     </button>
                     <AccountCard onRemove={onRemove} />
                   </>
-                </InnerBlock>
+                </FormElementWrapper>
               </div>
             </>
           </MainBlock>
           <MainBlock>
             <>
-              <InnerBlock header4="Choose a broker">
+              <FormElementWrapper header4="Choose a broker">
                 <Select
                   classNames={{
                     trigger: selectStyle,
@@ -181,8 +133,8 @@ export default function BacktestingInvest({
                     <SelectItem key={broker.key}>{broker.label}</SelectItem>
                   ))}
                 </Select>
-              </InnerBlock>
-              <InnerBlock header4="Choose a risk">
+              </FormElementWrapper>
+              <FormElementWrapper header4="Choose a risk">
                 <Select
                   classNames={{
                     trigger: selectStyle,
@@ -192,7 +144,7 @@ export default function BacktestingInvest({
                     <SelectItem key={risk}>{risk}</SelectItem>
                   ))}
                 </Select>
-              </InnerBlock>
+              </FormElementWrapper>
               <div>
                 <Header4Left>&nbsp;</Header4Left>
                 <AccountCard onRemove={onRemove} />

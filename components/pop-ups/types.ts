@@ -2,29 +2,47 @@ export type FilterActions = {
   setFilters: React.Dispatch<React.SetStateAction<FilterState>>;
 };
 
-export interface FilterModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onApply: (filters: FilterState) => void;
-  initialFilters?: FilterState;
+export interface ModalType {
+  type: 'backtesting' | 'invest';
 }
 
-export interface FilterState {
+export interface FilterModalProps extends ModalType {
+  isOpen?: boolean;
+  onClose: () => void;
+  onApply?: (filters: FilterState) => void;
+  initialBoxValues?: FilterStateTop;
+}
+
+export type DataType = 'growthType' | 'strategyType';
+
+export type FilterStateTop = {
   growthType: 'all' | 'raising' | 'downgrading';
   strategyType: 'stocks' | 'crypto';
-  winningRatio: number;
-  posIndicator?: number;
-}
+};
 
-export interface RadioBlockProps {
+export type FilterStateBottom = {
+  winningRatio: number;
+  posIndicator: number;
+};
+
+export type FilterState = FilterStateTop & FilterStateBottom;
+
+export type LabelMap = {
+  growthType: 'All' | 'Raising' | 'Downgrading';
+  strategyType: 'Stocks' | 'Crypto';
+};
+
+export type Option<T extends DataType> = {
+  value: FilterStateTop[T];
+  label: LabelMap[T];
+};
+
+
+export interface RadioBlockProps<T extends DataType> {
   header: string;
   textStyle: string;
-  dataArray: {
-    value: string;
-    label: string;
-  }[];
-  checkedCondition: FilterState['growthType'] | FilterState['strategyType'];
-  dataType: 'growthType' | 'strategyType';
-  updateFilter: Function;
-  setFilters: FilterActions['setFilters'];
+  dataType: T;
+  dataArray: Option<T>[];
+  checkedCondition: FilterStateTop[T];
+  updateFilter: Function /* (key: T, value: FilterStateTop[T]) => void */;
 }
