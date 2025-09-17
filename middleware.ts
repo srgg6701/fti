@@ -19,18 +19,21 @@ export function middleware(req: NextRequest) {
 // защищаем только нужные роуты + их подпути
 export const config = {
   matcher: [
+    '/accounts  ',
     '/home',
     '/home/:path*',
     '/portfolio',
     '/portfolio/:path*',
     '/portfolio_balancer',
     '/portfolio_balancer/:path*',
+    '/profile',
+    '/profile/:path*',
+    '/strategies',
+    '/strategies/:path*',
     '/terminal',
     '/terminal/:path*',
     '/trading_history',
     '/trading_history/:path*',
-    '/new_follower',
-    '/new_follower/:path*',
     '/add_forex_account',
     '/add_forex_account/:path*',
     '/new_provider',

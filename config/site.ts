@@ -3,6 +3,7 @@ export type SiteConfig = typeof siteConfig;
 export const siteConfig = {
   name: 'Fintech Trade Innovation',
   description: 'App for fintech services',
+  // items order matters since it defines the menu's order appearance
   navItems: [
     {
       label: 'Home',
