@@ -1,5 +1,6 @@
+import type { /* FilterActions,  */ FilterStateBottom } from './pop-ups/types';
+
 import { Dispatch, SetStateAction } from 'react';
-import type { FilterActions, FilterStateBottom } from './pop-ups/types';
 
 const SValues = ({ val, offset }: { val: number; offset: string }) => (
   <span className={`absolute -top-3 z-1 ${offset}`}>{val}</span>

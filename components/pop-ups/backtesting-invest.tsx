@@ -1,9 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import { ReactElement, useState } from 'react';
+import { ReactElement } from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Avatar } from '@heroui/react';
 import { Select, SelectItem } from '@heroui/select';
+
 import brokers from '@/mockData/brokers-list';
 import PopupHeader, { Header4Left } from '@/components/pop-ups/styled-popup-header';
 import FormElementWrapper from '@/components/pop-ups/form-elements/form-element-wrapper';
@@ -80,7 +81,6 @@ export default function BacktestingInvest({
   onSimulation: () => void;
   addAccount: () => void;
 }) {
-
   return (
     <PopupWrapper deeper={true} h="630px" reducePb={true} w="700px" onClose={onClose}>
       <div className="flex w-[620px] flex-col gap-5">

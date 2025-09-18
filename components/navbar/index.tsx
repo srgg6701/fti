@@ -19,7 +19,7 @@ import { siteConfig } from '@/config/site';
 import { useUserStore } from '@/lib/store/userStore';
 import { filterData } from '@/components/dataSections';
 import SortingModal from '@/components/pop-ups/sorting';
-import FilterModal, { type FilterState } from '@/components/pop-ups/filter';
+import FilterModal /* , { type FilterState } */ from '@/components/pop-ups/filter';
 import notifications from '@/mockData/notifications';
 import { Icon, menuIcons } from '@/components/icons';
 import '@/styles/style-navbar.css';
@@ -40,12 +40,12 @@ export const Navbar = () => {
   const [currentSort, setCurrentSort] = useState('alphabetical');
   // FILTER
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [filters, setFilters] = useState<FilterState>({
+  /* const [filters, setFilters] = useState<FilterState>({
     growthType: 'all',
     strategyType: 'stocks',
     winningRatio: 1,
     posIndicator: 0,
-  });
+  }); */
 
   if (checkRouteAside(urlFirstSegment)) return null;
 
@@ -306,12 +306,11 @@ export const Navbar = () => {
         onClose={() => setIsSortingOpen(false)}
       />
       <FilterModal
-        initialFilters={filters}
         isOpen={isFilterOpen}
-        onApply={(newFilters) => {
+        /* onApply={(newFilters) => {
           setFilters(newFilters);
           // Ваша логика фильтрации
-        }}
+        }} */
         onClose={() => setIsFilterOpen(false)}
       />
       {isNotificationsOpen && <Notifications onClick={() => setNotifications(false)} />}

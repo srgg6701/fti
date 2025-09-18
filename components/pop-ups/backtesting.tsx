@@ -1,7 +1,6 @@
 //import BacktestingInvest from '@/components/pop-ups/backtesting-invest';
-import FilterModal from './filter';
 export default function Backtesting({ onClose }: { onClose: () => void }) {
-  return true;//<FilterModal type="backtesting" onClose={onClose} />;
+  return true; //<FilterModal type="backtesting" onClose={onClose} />;
 }
 /* export default function Backtesting({
   onClose,

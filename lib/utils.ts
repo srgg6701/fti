@@ -1,19 +1,19 @@
 export type EmailValidation =
   | { valid: true }
   | {
-    valid: false;
-    reason:
-    | 'empty'
-    | 'too_long'
-    | 'at'
-    | 'local_too_long'
-    | 'local_chars'
-    | 'local_dots'
-    | 'domain_length'
-    | 'no_tld'
-    | 'domain_label'
-    | 'tld';
-  };
+      valid: false;
+      reason:
+        | 'empty'
+        | 'too_long'
+        | 'at'
+        | 'local_too_long'
+        | 'local_chars'
+        | 'local_dots'
+        | 'domain_length'
+        | 'no_tld'
+        | 'domain_label'
+        | 'tld';
+    };
 
 export function validateEmail(email: string): EmailValidation {
   const e = email.trim();
@@ -56,21 +56,21 @@ export function validateEmail(email: string): EmailValidation {
 export type PasswordValidation =
   | { valid: true }
   | {
-    valid: false;
-    reason:
-    | 'empty'
-    | 'too_short'
-    | 'too_long'
-    | 'whitespace'
-    | 'invalid_char'
-    | 'lower'
-    | 'upper'
-    | 'digit'
-    | 'symbol'
-    | 'repeat'
-    | 'sequence'
-    | 'common';
-  };
+      valid: false;
+      reason:
+        | 'empty'
+        | 'too_short'
+        | 'too_long'
+        | 'whitespace'
+        | 'invalid_char'
+        | 'lower'
+        | 'upper'
+        | 'digit'
+        | 'symbol'
+        | 'repeat'
+        | 'sequence'
+        | 'common';
+    };
 
 type Opts = {
   min?: number; // default 8
@@ -221,7 +221,6 @@ export function parseAmount(s: string) {
 }
 
 export function validateValue(value: string, MIN: number, setError: Function) {
-
   const n = parseAmount(value);
 
   if (!Number.isFinite(n)) {
@@ -231,4 +230,4 @@ export function validateValue(value: string, MIN: number, setError: Function) {
   } else {
     setError(null);
   }
-};
+}

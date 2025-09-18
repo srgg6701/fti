@@ -6,11 +6,16 @@ export interface ModalType {
   type: 'backtesting' | 'invest';
 }
 
-export interface FilterModalProps extends ModalType {
+export interface CommonModal {
   isOpen?: boolean;
   onClose: () => void;
-  onApply?: (filters: FilterState) => void;
-  initialBoxValues?: FilterStateTop;
+}
+
+export interface FilterModalProps extends ModalType, CommonModal {}
+
+export interface SortingModalProps extends CommonModal {
+  onApply: (sortType: string) => void;
+  currentSort?: string;
 }
 
 export type DataType = 'growthType' | 'strategyType';
@@ -37,12 +42,9 @@ export type Option<T extends DataType> = {
   label: LabelMap[T];
 };
 
-
 export interface RadioBlockProps<T extends DataType> {
   header: string;
   textStyle: string;
-  dataType: T;
   dataArray: Option<T>[];
-  checkedCondition: FilterStateTop[T];
-  updateFilter: Function /* (key: T, value: FilterStateTop[T]) => void */;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
