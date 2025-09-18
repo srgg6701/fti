@@ -6,7 +6,7 @@ import HomeSections from '@/components/dataSections';
 import AddAccount from '@/components/pop-ups/add-account';
 
 export default function Home() {
-  const [isAddAccountIsOpen, setAddAccount] = useState<boolean | null>(null);
+  const [isAddAccountOpen, setAddAccount] = useState<boolean | null>(null);
 
   function addAddAccount() {
     setAddAccount(true);
@@ -30,7 +30,7 @@ export default function Home() {
         </div>
       </section>
       <HomeSections section="home" />
-      {(isAddAccountIsOpen && <AddAccount onClose={() => setAddAccount(null)} />) || null}
+      {(isAddAccountOpen && <AddAccount onClose={() => setAddAccount(null)} />) || null}
     </>
   );
 }

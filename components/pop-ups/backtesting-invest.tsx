@@ -1,5 +1,5 @@
 'use client';
-
+// FIXME: remove this file if you don't need it anymore
 import Image from 'next/image';
 import { ReactElement } from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Avatar } from '@heroui/react';
