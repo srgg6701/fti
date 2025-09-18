@@ -17,7 +17,7 @@ export default function PopupWrapper({
   w: string;
 }) {
   return (
-    <div className={`fixed inset-0 z-50 flex items-center justify-center`}>
+    <div className={`popup-wrapper fixed inset-0 z-50 flex items-center justify-center`}>
       {/* Overlay layer */}
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"

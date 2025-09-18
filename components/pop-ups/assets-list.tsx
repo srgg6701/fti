@@ -8,11 +8,17 @@ import UserBlock from '@/components/cards/user-block';
 import PopupWrapper from '@/components/pop-ups/popup-wrapper';
 import PopupHeader from '@/components/pop-ups/styled-popup-header';
 import UserBlockSecondary from '@/components/user-block-secondary';
-export default function AssetsList({ onCloseModal }: { onCloseModal: () => void }) {
+
+import { CommonModal } from './types';
+export default function AssetsList({ isOpen, onClose }: CommonModal) {
   const [activeAsset, setActiveAsset] = useState<string>('All');
 
+  if (!isOpen) {
+    return;
+  }
+
   return (
-    <PopupWrapper deeper={true} h="640px" w="460px" onClose={onCloseModal}>
+    <PopupWrapper deeper={true} h="640px" w="460px" onClose={onClose}>
       <div className="relative flex flex-col gap-5">
         <Image
           alt="Search"

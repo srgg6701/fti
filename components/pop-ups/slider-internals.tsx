@@ -74,14 +74,10 @@ export default function SliderInternals({
   };
 
   return (
-    <>
-      <span>
-        <div className="mb-8">
-          <PopupHeader>{header}</PopupHeader>
-          {subheader && <Subheader>{subheader}</Subheader>}
-        </div>
-        {children(injected)}
-      </span>
+    <div className="flex flex-col gap-5 text-left">
+      <PopupHeader>{header}</PopupHeader>
+      {subheader && <Subheader>{subheader}</Subheader>}
+      {children(injected)}
       <div>
         <h3 className={`h-[144px] ${txtLeftSemibold}`}>{slider_header}</h3>
         <Slider
@@ -93,6 +89,6 @@ export default function SliderInternals({
           winningRatio={filters?.winningRatio || 1}
         />
       </div>
-    </>
+    </div>
   );
 }

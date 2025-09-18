@@ -1,18 +1,12 @@
 'use client';
 import { Fragment, useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@heroui/button';
 
 import UserBlock from '@/components/cards/user-block';
 import Subheaders from '@/components/headers/subheaders';
 import DropdownPill from '@/components/dateDropDown';
-import Notification from '@/components/pop-ups/notification';
 import UserBlockSecondary from '@/components/user-block-secondary';
-import AssetsList from '@/components/pop-ups/assets-list';
-import Backtesting from '@/components/pop-ups/backtesting';
-import Invest from '@/components/pop-ups/invest';
-import Notice from '@/components/pop-ups/notice';
 import perfData from '@/mockData/performance';
 
 function Collapsible({ open, children }: { open: boolean; children: React.ReactNode }) {
@@ -41,25 +35,10 @@ function Collapsible({ open, children }: { open: boolean; children: React.ReactN
 
 export default function StrategyId() {
   const [openIds, setOpenIds] = useState<string[]>([]);
-  const [notificationIsOpen, setNotification] = useState<boolean>(false);
-  const [assetsListIsOpen, setAssetsList] = useState<boolean>(false);
-
-  // TODO: remove after clarifying the way of opening Backtesting and Add Account modals
-  const params = useSearchParams();
-  const backtestingOpen = params.get('backtesting');
-  const investOpen = params.get('invest');
-  const noticeOpen = params.get('notice');
-
-  console.log({ backtestingOpen, params });
-
-  const [isBacktestingOpen, setBacktestingOpen] = useState<boolean>(!!backtestingOpen);
-  const [isInvestOpen, setInvestOpen] = useState<boolean>(!!investOpen);
-  /* const [isAddAccountIsOpen, setAddAccount] = useState<boolean | null>(null); */
-  const [isNoticeIsOpen, setNotice] = useState<boolean>(!!noticeOpen);
 
   // ******************************************************************
 
-  function setBacktesting() {
+  /* function setBacktesting() {
     //setAddAccount(true);
     setBacktestingOpen(false);
   }
@@ -75,28 +54,29 @@ export default function StrategyId() {
   }
   function onRemove() {
     alert('Remove account or what?');
-  }
+  } */
   // - switchers -
-  function switchNotification() {
+  /* function switchNotification() {
     setNotification(!notificationIsOpen);
   }
   function switchAssetsList() {
     setAssetsList(!assetsListIsOpen);
-  }
+  } */
 
   function handleTextBlock(id: string) {
     setOpenIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
   }
 
+  // TODO: Clarify if this function has relftions to onSimulation in backtesting.tsx
   function onSimulation() {
-    setBacktestingOpen(true);
-    console.log('onSimulation called');
-    //setNotification(true);
+    alert('On simulation');
+    console.log('Simulation started');
   }
+
+  // TODO: Clarify if this function has relftions to onSimulation in invest.tsx
   function onInvest() {
-    setInvestOpen(true);
-    console.log('onInvest called');
-    setInvestOpen(true);
+    alert('On invest');
+    console.log('Invest started');
   }
 
   return (
@@ -234,27 +214,6 @@ export default function StrategyId() {
           })}
         </section>
       </div>
-      {(notificationIsOpen && <Notification onCloseModal={switchNotification} />) || null}
-      {(assetsListIsOpen && <AssetsList onCloseModal={switchAssetsList} />) || null}
-      {(isBacktestingOpen && (
-        <Backtesting
-          addAccount={setBacktesting}
-          onClose={closeBacktesting}
-          onRemove={onRemove}
-          onSimulation={switchNotification}
-        />
-      )) ||
-        null}
-      {(isInvestOpen && (
-        <Invest
-          addAccount={setBacktesting}
-          onClose={closeInvest}
-          onRemove={onRemove}
-          onSimulation={switchNotification}
-        />
-      )) ||
-        null}
-      {(isNoticeIsOpen && <Notice onClose={closeNotice} />) || null}
     </>
   );
 }

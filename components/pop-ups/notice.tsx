@@ -3,8 +3,13 @@ import Image from 'next/image';
 
 import PopupWrapper from '@/components/pop-ups/popup-wrapper';
 import { ButtonRoundedBlue } from '@/components/button-rounded';
+import { CommonModal } from '@/components/pop-ups/types';
 
-export default function Notice({ onClose }: { onClose: () => void }) {
+export default function Notice({ isOpen, onClose }: CommonModal) {
+  if (!isOpen) {
+    return;
+  }
+
   return (
     <PopupWrapper deeper={true} h="185px" w="330px" onClose={onClose}>
       <div className="-m-2.5">

@@ -3,9 +3,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import PopupWrapper from './popup-wrapper';
-export default function Notification({ onCloseModal }: { onCloseModal: () => void }) {
+import { CommonModal } from './types';
+export default function Notification({ isOpen, onClose }: CommonModal) {
+  if (!isOpen) return;
+
   return (
-    <PopupWrapper deeper={true} h="85px" w="220px" onClose={onCloseModal}>
+    <PopupWrapper deeper={true} h="85px" w="220px" onClose={onClose}>
       <Image
         alt="New Assed Added!"
         className="mx-auto mb-[5px]"

@@ -15,7 +15,7 @@ export const Header4Center = tw.h4<Header4Props>`
 `;
 
 export const Header4Left = tw.h4<Header4Props>`
-  text-left inline-block
+  w-full text-left inline-block
   ${(p) => (p.$limit ? `max-w-${p.$limit}` : '')}
 `;
 

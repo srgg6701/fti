@@ -9,7 +9,7 @@ import {
 import Link from 'next/link';
 // FIXME: clarify if we can get rid from clsx and remove if we can
 //import clsx from 'clsx';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { Input } from '@heroui/input';
 
@@ -19,10 +19,16 @@ import { siteConfig } from '@/config/site';
 import { useUserStore } from '@/lib/store/userStore';
 import { filterData } from '@/components/dataSections';
 import SortingModal from '@/components/pop-ups/sorting';
-import FilterModal /* , { type FilterState } */ from '@/components/pop-ups/filter';
+import FilterModal from '@/components/pop-ups/filter';
+import Backtesting from '@/components/pop-ups/backtesting';
+import Notification from '@/components/pop-ups/notification';
+import Notice from '@/components/pop-ups/notice';
 import notifications from '@/mockData/notifications';
 import { Icon, menuIcons } from '@/components/icons';
+
 import '@/styles/style-navbar.css';
+import AssetsList from '../pop-ups/assets-list';
+import Invest from '../pop-ups/invest';
 
 export const Navbar = () => {
   const navBarContainer = useRef<HTMLElement | null>(null);
@@ -31,6 +37,23 @@ export const Navbar = () => {
   const { isAuthenticated } = useUserStore();
   const urlFirstSegment = getUrlSegments(usePathname, 1);
   const urlSecondSegment = getUrlSegments(usePathname, 2);
+
+  // TODO: remove after clarifying the way of opening Backtesting and Add Account modals
+  const params = useSearchParams();
+  const backtestingOpen = params.get('backtesting');
+  const investOpen = params.get('invest');
+  const noticeOpen = params.get('notice');
+  const notificationOpen = params.get('notification');
+  const assetListOpen = params.get('asset-list');
+
+  const [isNotificationOpen, setNotificationOpen] = useState<boolean>(!!notificationOpen);
+  const [isAssetsListOpen, setAssetsListOpen] = useState<boolean>(!!assetListOpen);
+
+  /*const [isAddAccountIsOpen, setAddAccount] = useState<boolean | null>(null); */
+  const [isNoticeIsOpen, setNoticeOpen] = useState<boolean>(!!noticeOpen);
+
+  const [isBacktestingOpen, setBacktestingOpen] = useState<boolean>(!!backtestingOpen);
+  const [isInvestOpen, setInvestOpen] = useState<boolean>(!!investOpen);
 
   const [search_text, setSearch] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -297,6 +320,9 @@ export const Navbar = () => {
           )}
         </HeroUINavbar>
       )}
+      {/* Notifications: Left vertical panel*/}
+      {isNotificationsOpen && <Notifications onClick={() => setNotifications(false)} />}
+
       <SortingModal
         currentSort={currentSort}
         isOpen={isSortingOpen}
@@ -313,7 +339,11 @@ export const Navbar = () => {
         }} */
         onClose={() => setIsFilterOpen(false)}
       />
-      {isNotificationsOpen && <Notifications onClick={() => setNotifications(false)} />}
+      <Backtesting isOpen={isBacktestingOpen} onClose={() => setBacktestingOpen(false)} />
+      <Invest isOpen={isInvestOpen} onClose={() => setInvestOpen(false)} />
+      <Notification isOpen={isNotificationOpen} onClose={() => setNotificationOpen(false)} />
+      <AssetsList isOpen={isAssetsListOpen} onClose={() => setAssetsListOpen(false)} />
+      <Notice isOpen={isNoticeIsOpen} onClose={() => setNoticeOpen(false)} />
     </>
   );
 };
