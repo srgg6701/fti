@@ -16,7 +16,7 @@ type Header4Props = {
 const headerHeader4 = (p: Header4Props) => `
   ${p.$limitW ? `max-w-${p.$limitW}` : ''}
   ${p.$limitH ? `max-h-${p.$limitH}` : ''}
-  ${p.$mBottom ? `mb-${p.$mBottom}` : 'mb-5'}
+  ${p.$mBottom ? `mb-${p.$mBottom}` : ''}
   ${p.$h ? `h-${p.$h}` : 'mx-auto'}
   ${p.$size ? p.$size : 'text-base'}
 `;

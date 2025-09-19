@@ -113,6 +113,9 @@ export const Navbar = () => {
     case '/news3':
       pageHeader = 'News 3';
       break;
+    case '/referral-system':
+      pageHeader = 'Referral system';
+      break;
     case '/tariffplan':
       pageHeader = 'Tariff Plan';
       break;
@@ -154,18 +157,26 @@ export const Navbar = () => {
     );
   };
 
-  const Exit = ({ className, onClick }: { className?: string; onClick: () => void }) => (
+  const MenuRightSide = ({ className, onClick }: { className?: string; onClick: () => void }) => (
     <div className={className || ''} id="exit-link">
       <Image
         alt="Show notifications"
-        className="mr-3 inline-block"
-        height="16"
+        className="mr-5 inline-block"
+        height="20"
         src="/assets/images/icons/bell.png"
-        style={{ height: '16px' }}
         title="Show notifications"
-        width="16"
+        width="20"
         onClick={onClick}
       />
+      <Link className="mr-10 inline-block" href="/profile">
+        <Image
+          alt="Account"
+          height="24"
+          src="/assets/images/icons/user-account.svg"
+          title="Your account"
+          width="24"
+        />
+      </Link>
       <Link className="menu-item color-ultra-violet font-bold whitespace-nowrap" href="/logout">
         Exit
       </Link>
@@ -300,7 +311,10 @@ export const Navbar = () => {
                 {/* <ThemeSwitch /> */}
               </div>
               <div className="hidden items-center lg:flex">
-                <Exit onClick={() => setNotifications(!isNotificationsOpen)} />
+                <MenuRightSide
+                  className="flex"
+                  onClick={() => setNotifications(!isNotificationsOpen)}
+                />
               </div>
             </div>
           </NavbarContent>
@@ -316,7 +330,10 @@ export const Navbar = () => {
               <ul className="mx-4 mt-2 flex flex-col gap-2">
                 {menuList()}
                 <li className="flex list-none items-center">
-                  <Exit className="py-2" onClick={() => setNotifications(!isNotificationsOpen)} />
+                  <MenuRightSide
+                    className="py-2"
+                    onClick={() => setNotifications(!isNotificationsOpen)}
+                  />
                 </li>
               </ul>
             </NavbarMenu>
