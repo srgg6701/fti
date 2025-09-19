@@ -67,6 +67,7 @@ function renderButton(p: ButtonProps) {
     btnImageParams,
     startContent,
     type,
+    style,
     ...rest // (onClick/onPress/aria-*)
   } = { ...baseDefaults, ...p };
 
@@ -74,6 +75,7 @@ function renderButton(p: ButtonProps) {
     <Button
       className={`${fontSize} ${rounded} ${bgColor} ${fontColor} ${padding} ${marginClass} ${marginBottom} ${maxW} ${outline} ${width} ${height}`}
       startContent={startContent}
+      style={style}
       type={type}
       {...rest}
     >
