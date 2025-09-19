@@ -11,7 +11,7 @@ export default function DeletingSubscritpionConfirmation({
 }) {
   return (
     <PopupWrapper deeper={true} h="268px" reducePb={true} w="421px" onClose={onCloseModal}>
-      <Header4Center $limit="52">Confirm the deletion of the subscription</Header4Center>
+      <Header4Center $limitW="52">Confirm the deletion of the subscription</Header4Center>
       <ButtonRoundedBlue
         btnText="No, I want to keep my subscription"
         marginBottom="mb-2.5"

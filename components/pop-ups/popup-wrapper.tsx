@@ -8,6 +8,7 @@ export default function PopupWrapper({
   reducePb,
   h,
   w,
+  innerPadding = true,
 }: {
   children: ReactNode;
   onClose?: () => void;
@@ -15,6 +16,7 @@ export default function PopupWrapper({
   reducePb?: boolean;
   h: string;
   w: string;
+  innerPadding?: boolean;
 }) {
   return (
     <div className={`popup-wrapper fixed inset-0 z-50 flex items-center justify-center`}>
@@ -25,7 +27,7 @@ export default function PopupWrapper({
         onClick={onClose}
       />
       <div
-        className={`bg-translusent-extreme relative flex justify-between overflow-y-auto rounded-[15px] p-10 ${reducePb && 'pb-[30px]'} h-[${h}] w-[${w}] shadow-2xl`}
+        className={`bg-translusent-extreme relative flex justify-between overflow-y-auto rounded-[15px] ${innerPadding ? 'p-10' : ''} ${reducePb && 'pb-[30px]'} h-[${h}] w-[${w}] shadow-2xl`}
       >
         {deeper ? (
           <>

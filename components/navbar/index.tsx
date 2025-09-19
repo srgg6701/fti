@@ -23,6 +23,7 @@ import FilterModal from '@/components/pop-ups/filter';
 import Backtesting from '@/components/pop-ups/backtesting';
 import Notification from '@/components/pop-ups/notification';
 import Notice from '@/components/pop-ups/notice';
+import InviteFriends from '@/components/pop-ups/invite-friends';
 import notifications from '@/mockData/notifications';
 import { Icon, menuIcons } from '@/components/icons';
 
@@ -45,15 +46,17 @@ export const Navbar = () => {
   const noticeOpen = params.get('notice');
   const notificationOpen = params.get('notification');
   const assetListOpen = params.get('asset-list');
+  const inviteOpen = params.get('invite');
 
   const [isNotificationOpen, setNotificationOpen] = useState<boolean>(!!notificationOpen);
   const [isAssetsListOpen, setAssetsListOpen] = useState<boolean>(!!assetListOpen);
 
   /*const [isAddAccountIsOpen, setAddAccount] = useState<boolean | null>(null); */
-  const [isNoticeIsOpen, setNoticeOpen] = useState<boolean>(!!noticeOpen);
+  const [isNoticeOpen, setNoticeOpen] = useState<boolean>(!!noticeOpen);
 
   const [isBacktestingOpen, setBacktestingOpen] = useState<boolean>(!!backtestingOpen);
   const [isInvestOpen, setInvestOpen] = useState<boolean>(!!investOpen);
+  const [isInviteOpen, setInviteOpen] = useState<boolean>(!!inviteOpen);
 
   const [search_text, setSearch] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -343,7 +346,8 @@ export const Navbar = () => {
       <Invest isOpen={isInvestOpen} onClose={() => setInvestOpen(false)} />
       <Notification isOpen={isNotificationOpen} onClose={() => setNotificationOpen(false)} />
       <AssetsList isOpen={isAssetsListOpen} onClose={() => setAssetsListOpen(false)} />
-      <Notice isOpen={isNoticeIsOpen} onClose={() => setNoticeOpen(false)} />
+      <Notice isOpen={isNoticeOpen} onClose={() => setNoticeOpen(false)} />
+      <InviteFriends isOpen={isInviteOpen} onClose={() => setInviteOpen(false)} />
     </>
   );
 };

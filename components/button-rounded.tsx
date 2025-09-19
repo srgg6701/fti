@@ -1,6 +1,7 @@
 // TODO: Use this button library everywhere to unify code!
-import { Button } from '@heroui/button';
 import React, { CSSProperties } from 'react';
+import Image from 'next/image';
+import { Button } from '@heroui/button';
 
 type ButtonProps = {
   rounded?: string;
@@ -15,6 +16,15 @@ type ButtonProps = {
   padding?: string;
   width?: string;
   btnText?: string;
+  btnImageParams?: {
+    src: string;
+    alt: string;
+    height: number;
+    width: number;
+    className?: string;
+    title?: string;
+    style?: CSSProperties;
+  } | null;
   startContent?: React.ReactNode;
   type?: 'button' | 'submit' | 'reset';
   style?: CSSProperties | undefined;
@@ -36,6 +46,7 @@ const baseDefaults: Required<
   height: 'h-10',
   width: 'w-full',
   btnText: 'Button',
+  btnImageParams: null,
   type: 'button',
 };
 
@@ -53,6 +64,7 @@ function renderButton(p: ButtonProps) {
     height,
     width,
     btnText,
+    btnImageParams,
     startContent,
     type,
     ...rest // (onClick/onPress/aria-*)
@@ -65,7 +77,20 @@ function renderButton(p: ButtonProps) {
       type={type}
       {...rest}
     >
-      {btnText}
+      <>
+        {btnImageParams && (
+          <Image
+            alt={btnImageParams.alt}
+            className={btnImageParams.className}
+            height={btnImageParams.height}
+            src={btnImageParams.src}
+            style={btnImageParams.style}
+            title={btnImageParams.title || btnImageParams.alt}
+            width={btnImageParams.width}
+          />
+        )}
+        <span>{btnText}</span>
+      </>
     </Button>
   );
 }
