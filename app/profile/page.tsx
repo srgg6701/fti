@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Input } from '@heroui/input';
@@ -44,6 +45,7 @@ const billingData = [
 ];
 
 export default function ProfileDraft() {
+  const router = useRouter();
   const [notificationIsOpen, setNotification] = useState<boolean>(false);
   // Handlers (placeholders)
   const handleVerification = () => {
@@ -77,7 +79,7 @@ export default function ProfileDraft() {
       <div className="mx-auto max-w-[550px]">
         {/* Profile header */}
         <section {...sectionParams}>
-          <div className="mx-auto flex flex-wrap gap-4">
+          <div className="mx-auto flex flex-wrap items-center gap-4">
             <Image
               alt="avatar"
               className="h-[120px] w-[120px] rounded-2xl object-cover"
@@ -86,35 +88,29 @@ export default function ProfileDraft() {
               width={120}
             />
             <div className="flex min-w-0 flex-1 flex-col gap-3">
-              <div className="flex flex-wrap items-center gap-2">
-                <div className="relative">
-                  <button className="absolute top-[1px] left-[12px] z-1 h-[31px] rounded-[15px]">
-                    Active
-                  </button>
-                  <Image
-                    alt="Close"
-                    className="cursor-pointer"
-                    height={16}
-                    src="/assets/images/cross/cross-light-bolder.svg"
-                    style={{ position: 'absolute', top: '8px', right: '7px', zIndex: 1 }}
-                    width={16}
-                    onClick={deleteSubscription}
-                  />
-                  <ButtonRoundedBlue
-                    bgColor="bg-blue-second"
-                    btnText=""
-                    height="h-[31px]"
-                    width="w-[94px]"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-sm">Standard</span>
-                  <span className="text-sm opacity-50">Active until 24.03.2026</span>
-                </div>
+              <div className="flex flex-col items-center gap-2.5">
+                <h2 className="h-[28px] text-[28px]">
+                  <Link href="/account/personal-information?id=dfq125dfe25">Joshua</Link>
+                </h2>
+                <ButtonRoundedBlue
+                  bgColor="bg-light"
+                  btnImageParams={{
+                    src: 'assets/images/icons/tariff-plan-black.svg',
+                    alt: 'Tariff plan',
+                    height: 13.67,
+                    width: 13.67,
+                    className: 'ml-2.5',
+                  }}
+                  btnText="Tariff plan"
+                  fontColor="text-[#030303]"
+                  fontSize="text-sm"
+                  height="!h-[27px]"
+                  padding="!px-[10px] !py-[5px]"
+                  textBeforeImage={true}
+                  width="min-w-[112px]"
+                  onClick={() => router.push('/tariffplan')}
+                />
               </div>
-              <h2 className="h-[28px] text-[28px]">
-                <Link href="/account/personal-information?id=dfq125dfe25">Joshua</Link>
-              </h2>
             </div>
           </div>
         </section>

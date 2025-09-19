@@ -9,10 +9,14 @@
 .bg-blue-second-translusent-lignt {
   @apply bg-[rgba(var(--color-blue-second-rgb),0.1)];
 }
+.bg-light {
+   @apply bg-[rgb(var(--light-color-rgb))];
+}
 .bg-translusent-light {
   @apply bg-[rgba(var(--light-color-rgb),0.1)];
 }
-.bg-translusent-extreme {
+.bg-translucent-extreme,
+.bg-translucent-extreme-hover:hover {
   @apply bg-[rgba(var(--light-color-rgb),0.05)];
 }
 .standard-colored-005-rounded {

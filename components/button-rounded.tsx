@@ -25,6 +25,7 @@ type ButtonProps = {
     title?: string;
     style?: CSSProperties;
   } | null;
+  textBeforeImage?: true | null;
   startContent?: React.ReactNode;
   type?: 'button' | 'submit' | 'reset';
   style?: CSSProperties | undefined;
@@ -47,6 +48,7 @@ const baseDefaults: Required<
   width: 'w-full',
   btnText: 'Button',
   btnImageParams: null,
+  textBeforeImage: null,
   type: 'button',
 };
 
@@ -65,6 +67,7 @@ function renderButton(p: ButtonProps) {
     width,
     btnText,
     btnImageParams,
+    textBeforeImage,
     startContent,
     type,
     style,
@@ -80,6 +83,7 @@ function renderButton(p: ButtonProps) {
       {...rest}
     >
       <>
+        {textBeforeImage && <span>{btnText}</span>}
         {btnImageParams && (
           <Image
             alt={btnImageParams.alt}
@@ -91,7 +95,7 @@ function renderButton(p: ButtonProps) {
             width={btnImageParams.width}
           />
         )}
-        <span>{btnText}</span>
+        {!textBeforeImage && <span>{btnText}</span>}
       </>
     </Button>
   );

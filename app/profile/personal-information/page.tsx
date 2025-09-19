@@ -37,7 +37,7 @@ export default function PersonalInformation() {
     console.log('on Edit');
   };
 
-  const blockParamsClass = 'flex flex-col bg-translusent-extreme blick-rounded gap-5 p-[15px]';
+  const blockParamsClass = 'flex flex-col bg-translucent-extreme blick-rounded gap-5 p-[15px]';
 
   const btnColorBlue = 'text-sm text-medium color-blue-secondary leading-[17px]';
 

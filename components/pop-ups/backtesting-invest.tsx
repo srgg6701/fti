@@ -16,7 +16,7 @@ import PopupWrapper from './popup-wrapper';
 
 function AccountCard({ onRemove }: { onRemove: () => void }) {
   return (
-    <Card className="bg-translusent-extreme relative mt-2.5 rounded-[15px] p-2 pb-5">
+    <Card className="bg-translucent-extreme relative mt-2.5 rounded-[15px] p-2 pb-5">
       <button className="absolute top-4 right-3 z-11 cursor-pointer" onClick={onRemove}>
         <Image
           alt="Close card, remove account"

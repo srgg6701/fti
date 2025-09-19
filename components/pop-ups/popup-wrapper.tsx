@@ -27,7 +27,7 @@ export default function PopupWrapper({
         onClick={onClose}
       />
       <div
-        className={`bg-translusent-extreme relative flex justify-between overflow-y-auto rounded-[15px] ${innerPadding ? 'p-10' : ''} ${reducePb && 'pb-[30px]'} h-[${h}] w-[${w}] shadow-2xl`}
+        className={`bg-translucent-extreme relative flex justify-between overflow-y-auto rounded-[15px] ${innerPadding ? 'p-10' : ''} ${reducePb && 'pb-[30px]'} h-[${h}] w-[${w}] shadow-2xl`}
       >
         {deeper ? (
           <>
