@@ -22,14 +22,14 @@ import SortingModal from "@/components/pop-ups/sorting";
 import FilterModal from "@/components/pop-ups/filter";
 import Backtesting from "@/components/pop-ups/backtesting";
 import Notification from "@/components/pop-ups/notification";
+import AssetsList from "@/components/pop-ups/assets-list";
+import Trades from "@/components/pop-ups/trades";
 import Notice from "@/components/pop-ups/notice";
 import InviteFriends from "@/components/pop-ups/invite-friends";
 import notifications from "@/mockData/notifications";
-import { Icon, menuIcons } from "@/components/icons";
-
-import "@/styles/style-navbar.css";
-import AssetsList from "@/components/pop-ups/assets-list";
 import Invest from "@/components/pop-ups/invest";
+import { Icon, menuIcons } from "@/components/icons";
+import "@/styles/style-navbar.css";
 
 export const Navbar = () => {
   const navBarContainer = useRef<HTMLElement | null>(null);
@@ -45,6 +45,7 @@ export const Navbar = () => {
   const investOpen = params.get("invest");
   const noticeOpen = params.get("notice");
   const notificationOpen = params.get("notification");
+  const tradeOpen = params.get("trade");
   const assetListOpen = params.get("asset-list");
   const inviteOpen = params.get("invite");
 
@@ -52,6 +53,7 @@ export const Navbar = () => {
     useState<boolean>(!!notificationOpen);
   const [isAssetsListOpen, setAssetsListOpen] =
     useState<boolean>(!!assetListOpen);
+  const [isTradeOpen, setTradeOpen] = useState<boolean>(!!tradeOpen);
 
   /*const [isAddAccountIsOpen, setAddAccount] = useState<boolean | null>(null); */
   const [isNoticeOpen, setNoticeOpen] = useState<boolean>(!!noticeOpen);
@@ -410,6 +412,7 @@ export const Navbar = () => {
         isOpen={isAssetsListOpen}
         onClose={() => setAssetsListOpen(false)}
       />
+      <Trades isOpen={isTradeOpen} onClose={() => setTradeOpen(false)} />
       <Notice isOpen={isNoticeOpen} onClose={() => setNoticeOpen(false)} />
       <InviteFriends
         isOpen={isInviteOpen}

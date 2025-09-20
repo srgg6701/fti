@@ -1,6 +1,6 @@
 <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <ellipse cx="26.6665" cy="13.3336" rx="13.3334" ry="13.3336" fill="url(#pattern0_147_1379)"/>
-<path d="M13.333 13.6992C20.4184 13.6992 26.167 19.4726 26.167 26.5996C26.1669 33.7265 20.4183 39.5 13.333 39.5C6.24789 39.4998 0.500069 33.7264 0.5 26.5996C0.5 19.4728 6.24785 13.6995 13.333 13.6992Z" fill="url(#pattern1_147_1379)" stroke="white"/>
+<path d="M13.333 13.6992C20.4184 13.6992 26.167 19.4726 26.167 26.5996C26.1669 33.7265 20.4183 39.5 13.333 39.5C6.24789 39.4998 0.500069 33.7264 0.5 26.5996C0.5 19.4728 6.24785 13.6995 13.333 13.6992Z" fill="url(#pattern1_147_1379)" stroke="none"/>
 <defs>
 <pattern id="pattern0_147_1379" patternContentUnits="objectBoundingBox" width="1" height="1">
 <use xlink:href="#image0_147_1379" transform="scale(0.00125001)"/>
