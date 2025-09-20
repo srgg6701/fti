@@ -5,7 +5,7 @@ import { Input } from "@heroui/input";
 
 import Form from "@/components/create-account/form";
 import ErrMess from "@/components/errMess";
-import { validateEmail } from "@/lib/utils";
+import { validateEmail, setInvalidEmailMessage } from "@/lib/utils";
 
 export default function CreateAccount() {
   const [email, setEmail] = useState("");
@@ -25,40 +25,8 @@ export default function CreateAccount() {
     const emailValid = validateEmail(email);
 
     if (!emailValid.valid) {
-      let errMess = "";
+      const errMess = setInvalidEmailMessage(emailValid.reason);
 
-      switch (emailValid.reason) {
-        case "too_long":
-          errMess = "Too long email";
-          break;
-        case "at":
-          errMess = "'@' is missed";
-          break;
-        case "local_too_long":
-          errMess = "You put too many characters before '@'";
-          break;
-        case "local_chars":
-          errMess = "You used invalid characters";
-          break;
-        case "local_dots":
-          errMess = "You used '.' in wrong position or with wrong sequence";
-          break;
-        case "domain_length":
-          errMess = "You put too less characters after '@'";
-          break;
-        case "no_tld":
-          errMess = "Wrong value after '@'";
-          break;
-        case "domain_label":
-          errMess = "Wrong characters after '@'";
-          break;
-        case "tld":
-          errMess = "Wrong domain ending";
-          break;
-        default:
-          errMess = "Please, enter your email";
-          break;
-      }
       setErrMess(errMess);
 
       return;

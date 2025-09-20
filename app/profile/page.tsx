@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,10 +7,13 @@ import { Input } from "@heroui/input";
 import { Textarea } from "@heroui/input";
 import { Switch } from "@heroui/react";
 
+import { Form } from "@heroui/form";
 import { ButtonRoundedBlue } from "@/components/button-rounded";
 import DeletingSubscritpionConfirmation from "@/components/pop-ups/deletingSubscriptionConfirmation";
 import SectionHeader from "@/components/sectionsWrapper/sectionHeader";
 import { ButtonRoundedGrey } from "@/components/button-rounded";
+import { validateEmail, setInvalidEmailMessage } from "@/lib/utils";
+import ErrMess from "@/components/errMess";
 
 const headerParams = {
   h: "h-[33px]",
@@ -44,11 +47,14 @@ const billingData = [
   },
 ];
 
-export default function ProfileDraft() {
+export default function Profile() {
   const router = useRouter();
   const [notificationIsOpen, setNotification] = useState<boolean>(false);
 
   const [isUpdateOpen, setUpdateOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<string>("idle");
+  const [errMess, setErrMess] = useState<string | null>(null);
 
   const handleTariffBtn = () => {
     setUpdateOpen(!isUpdateOpen);
@@ -59,8 +65,39 @@ export default function ProfileDraft() {
     console.log("Handling verification...");
     window.alert("Handling verification...");
   };
-  const handleToggleDark = (checked: boolean) => {};
-  const handleSendSupport = () => {};
+
+  //const handleToggleDark = (checked: boolean) => {};
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    setErrMess(null);
+    if (!email) {
+      setErrMess("Please enter your email");
+
+      return;
+    }
+    const emailValid = validateEmail(email);
+
+    if (!emailValid.valid) {
+      const errMess = setInvalidEmailMessage(emailValid.reason);
+
+      setErrMess(errMess);
+
+      return;
+    }
+    try {
+      setStatus("loading");
+
+      /****** send request to the endpoint to get the confirmation code ******/
+
+      await new Promise((r) => setTimeout(r, 600));
+      setStatus("success");
+      alert("Set page to go!");
+      //router.push(`/create-account/set-password?email=${email}`);
+    } catch {
+      setStatus("error");
+    }
+  }
 
   const colorizeAmount = (amount: string): string | undefined => {
     switch (amount[0]) {
@@ -73,9 +110,9 @@ export default function ProfileDraft() {
     }
   };
 
-  function deleteSubscription() {
+  /* function deleteSubscription() {
     setNotification(true);
-  }
+  } */
 
   function closeActive() {
     setNotification(false);
@@ -121,9 +158,9 @@ export default function ProfileDraft() {
                   {isUpdateOpen && (
                     <div className="standard-colored-005-rounded absolute top-0 right-[-240px] p-5">
                       <h5 className="text-sm font-medium">Standard</h5>
-                      <p className="mb-5 opacity-50">Active until 24.03.2026</p>
+                      <p className="mb-5 text-xs opacity-50">Active until 24.03.2026</p>
                       <button
-                        className="relative h-10 w-[190px] cursor-pointer rounded-[40px] bg-gradient-to-r from-[#101BC3] to-[#FF33A6]"
+                        className="relative z-2 h-10 w-[190px] cursor-pointer rounded-[40px] bg-gradient-to-r from-[#101BC3] to-[#FF33A6]"
                         onClick={() => router.push("/tariffplan")}
                       >
                         <span className="pr-[12.5px]">Update the plan</span>
@@ -200,15 +237,26 @@ export default function ProfileDraft() {
             Specify your email address and describe the problem
           </p>
           <div className="flex flex-col gap-5">
-            <Input className="w-full max-w-[300px]" placeholder="account@gmail.com" type="email" />
-            <Textarea className="w-full" minRows={4} placeholder="Describe the problem..." />
-            <div className="pb-[56px]">
-              <ButtonRoundedBlue
-                btnText="Send"
-                width="w-full max-w-[300px]"
-                onClick={handleSendSupport}
+            <Form
+              className={`flex h-full max-h-[570px] w-full max-w-[328px] flex-col justify-center`}
+              onSubmit={handleSubmit}
+            >
+              <Input
+                className="w-full max-w-[300px]"
+                classNames={{
+                  input: "placeholder:opacity-30",
+                }}
+                inputMode="email"
+                placeholder="account@gmail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
-            </div>
+              <ErrMess error={errMess} />
+              <Textarea className="w-full" minRows={4} placeholder="Describe the problem..." />
+              <div className="pb-[56px]">
+                <ButtonRoundedBlue btnText="Send" type="submit" width="w-full max-w-[300px]" />
+              </div>
+            </Form>
           </div>
         </section>
       </div>

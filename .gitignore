@@ -40,6 +40,8 @@ bun.lockb
 
 .favorites.json
 .sources
+.eslint.js
+.prettierrc.js
 
 .env.*
 

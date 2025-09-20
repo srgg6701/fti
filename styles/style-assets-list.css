@@ -8,5 +8,8 @@
 }
 
 input[data-slot="input"] {
+  padding: 0 2px;
+}
+input[data-slot="input"][type="search"] {
   padding: 0 20px;
 }

@@ -1,7 +1,7 @@
 import { Input } from "@heroui/react";
 import { useState } from "react";
 
-import { validateValue } from "@/lib/utils";
+import { validateMinNumberValue } from "@/lib/utils";
 import { inputStyle } from "@/styles/style-variables";
 
 export default function FormElementInput({
@@ -25,7 +25,7 @@ export default function FormElementInput({
       isInvalid={!!error}
       placeholder={placeholder}
       value={value}
-      onBlur={() => validateValue(value, MIN, setError)}
+      onBlur={() => validateMinNumberValue(value, MIN, setError)}
       onValueChange={setValue}
     />
   );

@@ -220,7 +220,7 @@ export function parseAmount(s: string) {
   return Number.isFinite(n) ? n : NaN;
 }
 
-export function validateValue(value: string, MIN: number, setError: Function) {
+export function validateMinNumberValue(value: string, MIN: number, setError: Function) {
   const n = parseAmount(value);
 
   if (!Number.isFinite(n)) {
@@ -230,4 +230,43 @@ export function validateValue(value: string, MIN: number, setError: Function) {
   } else {
     setError(null);
   }
+}
+
+export function setInvalidEmailMessage(reason: string): string {
+  let errMess = "";
+
+  switch (reason) {
+    case "too_long":
+      errMess = "Too long email";
+      break;
+    case "at":
+      errMess = "'@' is missed";
+      break;
+    case "local_too_long":
+      errMess = "You put too many characters before '@'";
+      break;
+    case "local_chars":
+      errMess = "You used invalid characters";
+      break;
+    case "local_dots":
+      errMess = "You used '.' in wrong position or with wrong sequence";
+      break;
+    case "domain_length":
+      errMess = "You put too less characters after '@'";
+      break;
+    case "no_tld":
+      errMess = "Wrong value after '@'";
+      break;
+    case "domain_label":
+      errMess = "Wrong characters after '@'";
+      break;
+    case "tld":
+      errMess = "Wrong domain ending";
+      break;
+    default:
+      errMess = "Please, enter your email";
+      break;
+  }
+
+  return errMess;
 }
