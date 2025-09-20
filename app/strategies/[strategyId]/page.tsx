@@ -1,13 +1,17 @@
 "use client";
 import { Fragment, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@heroui/button";
+import { Select, SelectItem, SharedSelection } from "@heroui/react";
 
 import UserBlock from "@/components/cards/user-block";
 import Subheaders from "@/components/headers/subheaders";
 import DropdownPill from "@/components/dateDropDown";
 import UserBlockSecondary from "@/components/user-block-secondary";
 import perfData from "@/mockData/performance";
+import FormElementWrapper from "@/components/pop-ups/form-elements/form-element-wrapper";
+import { selectStyle } from "@/styles/style-variables";
 
 function Collapsible({
   open,
@@ -40,39 +44,20 @@ function Collapsible({
 }
 
 export default function StrategyId() {
+  const searchParam = useSearchParams();
+  const stopTrading = searchParam.get("stop-trading");
+
   const [openIds, setOpenIds] = useState<string[]>([]);
-
-  // ******************************************************************
-
-  /* function setBacktesting() {
-    //setAddAccount(true);
-    setBacktestingOpen(false);
-  }
-  // - closers -
-  function closeNotice() {
-    setNotice(false);
-  }
-  function closeBacktesting() {
-    setBacktestingOpen(false);
-  }
-  function closeInvest() {
-    setInvestOpen(false);
-  }
-  function onRemove() {
-    alert('Remove account or what?');
-  } */
-  // - switchers -
-  /* function switchNotification() {
-    setNotification(!notificationIsOpen);
-  }
-  function switchAssetsList() {
-    setAssetsList(!assetsListIsOpen);
-  } */
 
   function handleTextBlock(id: string) {
     setOpenIds((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
+  }
+
+  function chooseRisk(e: SharedSelection) {
+    alert("Risk chosen: " + e.currentKey);
+    console.log("chooseRisk", e.currentKey);
   }
 
   // TODO: Clarify if this function has relftions to onSimulation in backtesting.tsx
@@ -107,18 +92,34 @@ export default function StrategyId() {
             </p>
           </div>
           <div className="flex gap-2.5">
-            <Button
-              className="bg-translusent-light btn-rounded outline-color-15 m-auto mb-[10px] w-[123px] outline"
-              onPress={onSimulation}
-            >
-              Simulation
-            </Button>
-            <Button
-              className="btn-rounded bg-blue m-auto mb-[10px] w-[90px]"
-              onPress={onInvest}
-            >
-              Invest
-            </Button>
+            {stopTrading ? (
+              <div className="mb-[10px]">
+                <button className="color-ultra-violet leading-10 mr-2.5 font-semibold w-[140px]">
+                  Stop Trading
+                </button>
+                <Button
+                  className="btn-rounded bg-blue m-auto w-[78px]"
+                  onPress={onInvest}
+                >
+                  Save
+                </Button>
+              </div>
+            ) : (
+              <>
+                <Button
+                  className="bg-translusent-light btn-rounded outline-color-15 m-auto mb-[10px] w-[123px] outline"
+                  onPress={onSimulation}
+                >
+                  Simulation
+                </Button>
+                <Button
+                  className="btn-rounded bg-blue m-auto mb-[10px] w-[90px]"
+                  onPress={onInvest}
+                >
+                  Invest
+                </Button>
+              </>
+            )}
           </div>
         </section>
         <section className="mb-2.5 flex justify-between gap-2.5 max-sm:flex-wrap">
@@ -175,66 +176,83 @@ export default function StrategyId() {
                 </Fragment>
               ))}
             </dl>
+            {stopTrading && (
+              <FormElementWrapper header4="Choose a risk" wrapperClass="mt-5">
+                <Select
+                  classNames={{
+                    trigger: selectStyle,
+                  }}
+                  placeholder="Select risk"
+                  onSelectionChange={chooseRisk}
+                >
+                  {["1", "2", "3", "4"].map((risk) => (
+                    <SelectItem key={risk}>{risk}</SelectItem>
+                  ))}
+                </Select>
+              </FormElementWrapper>
+            )}
           </div>
         </section>
-        <section className="standard-colored-005-rounded p-5">
-          <h4 className="mb-5 h-[21px]">Details</h4>
-          {[
-            { header: "2025", subheader: "$ 32 (1.23%)", direction: "Up" },
-            { header: "2024", subheader: "$ 32 (1.23%)", direction: "Up" },
-            { header: "2023", subheader: "$ 674 (16.29%)", direction: "Up" },
-          ].map((data, i) => {
-            const itemId = `${data.header}-${i}`;
-            const open = openIds.includes(itemId);
+        {!stopTrading && (
+          <section className="standard-colored-005-rounded p-5">
+            <h4 className="mb-5 h-[21px]">Details</h4>
+            {[
+              { header: "2025", subheader: "$ 32 (1.23%)", direction: "Up" },
+              { header: "2024", subheader: "$ 32 (1.23%)", direction: "Up" },
+              { header: "2023", subheader: "$ 674 (16.29%)", direction: "Up" },
+            ].map((data, i) => {
+              const itemId = `${data.header}-${i}`;
+              const open = openIds.includes(itemId);
 
-            return (
-              <div key={itemId}>
-                <div
-                  className="mb-2.5 flex h-[23px] justify-between"
-                  role="button"
-                  onClick={() => handleTextBlock(itemId)}
-                >
-                  <Subheaders
-                    direction={data.direction}
-                    h="regular17 mr-1.25"
-                    header={data.header}
-                    sSize="text-sm"
-                    subheader={data.subheader}
-                  />
-                  <Image
-                    alt="Click to Expand / Collaps"
-                    height={9}
-                    src="/assets/images/icons/arrows/arrow_down.png"
-                    style={{
-                      height: "9px",
-                      transform: `rotate(${open ? 180 : 0}deg)`,
-                    }}
-                    width={14}
-                  />
-                </div>
-                <Collapsible open={openIds.includes(itemId)}>
-                  <div className="absolute top-[20%] left-[30%] z-2 flex flex-col gap-[5px] p-2.5">
-                    <div className="text-xs">April 23</div>
-                    <div>
-                      <Subheaders
-                        direction="Up"
-                        header="$ 1432"
-                        subheader="$ 324 (3.23%)"
-                      />
-                    </div>
+              return (
+                <div key={itemId}>
+                  <div
+                    className="mb-2.5 flex h-[23px] justify-between"
+                    role="button"
+                    onClick={() => handleTextBlock(itemId)}
+                  >
+                    <Subheaders
+                      direction={data.direction}
+                      h="regular17 mr-1.25"
+                      header={data.header}
+                      sSize="text-sm"
+                      subheader={data.subheader}
+                    />
+                    <Image
+                      alt="Click to Expand / Collaps"
+                      height={9}
+                      src="/assets/images/icons/arrows/arrow_down.png"
+                      style={{
+                        height: "9px",
+                        transform: `rotate(${open ? 180 : 0}deg)`,
+                      }}
+                      width={14}
+                    />
                   </div>
-                  <Image
-                    alt="Graph dynamics"
-                    className="max-w-[100%]"
-                    height={157}
-                    src="/assets/images/charts/strategies/strategy-graph-inside.svg"
-                    width={840}
-                  />
-                </Collapsible>
-              </div>
-            );
-          })}
-        </section>
+                  <Collapsible open={openIds.includes(itemId)}>
+                    <div className="absolute top-[20%] left-[30%] z-2 flex flex-col gap-[5px] p-2.5">
+                      <div className="text-xs">April 23</div>
+                      <div>
+                        <Subheaders
+                          direction="Up"
+                          header="$ 1432"
+                          subheader="$ 324 (3.23%)"
+                        />
+                      </div>
+                    </div>
+                    <Image
+                      alt="Graph dynamics"
+                      className="max-w-[100%]"
+                      height={157}
+                      src="/assets/images/charts/strategies/strategy-graph-inside.svg"
+                      width={840}
+                    />
+                  </Collapsible>
+                </div>
+              );
+            })}
+          </section>
+        )}
       </div>
     </>
   );

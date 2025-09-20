@@ -43,7 +43,10 @@ export default function BacktestingPanel() {
       <div style={{ display: "flex" }}>
         <div style={{ flex: 1 }}>
           <Select label="For how long" placeholder="1 Day">
-            <SelectItem key="1d">1 Day</SelectItem>
+            <SelectItem key="1d">1</SelectItem>
+            <SelectItem key="2d">2</SelectItem>
+            <SelectItem key="3d">3</SelectItem>
+            <SelectItem key="1d">4</SelectItem>
           </Select>
         </div>
         <div style={{ flex: 1 }}>
