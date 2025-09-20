@@ -16,7 +16,9 @@ export default function Home() {
     <>
       <section className="mx-auto py-[80px]">
         <div className="mx-auto flex w-full max-w-[370px] flex-col text-center">
-          <h2 className="text-lg font-medium">You don&apos;t have any strategies at the moment</h2>
+          <h2 className="text-lg font-medium">
+            You don&apos;t have any strategies at the moment
+          </h2>
           <div className="my-[10px]">Add your first strategy</div>
           <button className="text-center" onClick={addAddAccount}>
             <Image
@@ -30,7 +32,10 @@ export default function Home() {
         </div>
       </section>
       <HomeSections section="home" />
-      {(isAddAccountOpen && <AddAccount onClose={() => setAddAccount(null)} />) || null}
+      {(isAddAccountOpen && (
+        <AddAccount onClose={() => setAddAccount(null)} />
+      )) ||
+        null}
     </>
   );
 }

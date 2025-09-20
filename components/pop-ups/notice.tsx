@@ -28,7 +28,12 @@ export default function Notice({ isOpen, onClose }: CommonModal) {
           <span className="opacity-50">to trading account</span> YYYY.{" "}
           <span className="opacity-50">Reason</span> VVVV.
         </p>
-        <ButtonRoundedBlue btnText="Ok" marginBottom="0" maxW="max-w-[18px]" padding="p-5" />
+        <ButtonRoundedBlue
+          btnText="Ok"
+          marginBottom="0"
+          maxW="max-w-[18px]"
+          padding="p-5"
+        />
       </div>
     </PopupWrapper>
   );

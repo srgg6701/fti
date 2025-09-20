@@ -1,5 +1,11 @@
 import Image from "next/image";
-export default function ArrowsUpDown({ direction, alt = "" }: { direction: string; alt?: string }) {
+export default function ArrowsUpDown({
+  direction,
+  alt = "",
+}: {
+  direction: string;
+  alt?: string;
+}) {
   return (
     <Image
       alt={alt}

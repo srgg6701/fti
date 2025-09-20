@@ -9,7 +9,13 @@ export default function InviteFriends({ isOpen, onClose }: CommonModal) {
   }
 
   return (
-    <PopupWrapper deeper={true} h="430px" innerPadding={false} w="380px" onClose={onClose}>
+    <PopupWrapper
+      deeper={true}
+      h="430px"
+      innerPadding={false}
+      w="380px"
+      onClose={onClose}
+    >
       <InviteBase onClose={onClose} />
     </PopupWrapper>
   );

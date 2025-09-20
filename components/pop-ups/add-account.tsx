@@ -6,11 +6,15 @@ import { useState } from "react";
 import brokers from "@/mockData/brokers-list";
 import { ButtonRoundedBlue } from "@/components/button-rounded";
 import PopupWrapper from "@/components/pop-ups/popup-wrapper";
-import PopupHeader, { Header4Left } from "@/components/pop-ups/styled-popup-header";
+import PopupHeader, {
+  Header4Left,
+} from "@/components/pop-ups/styled-popup-header";
 import { selectStyle, inputStyleInner } from "@/styles/style-variables";
 
 export default function AddAccountModal({ onClose }: { onClose: () => void }) {
-  const [activeSection, setActiveSection] = useState<"roboforex" | "binance" | null>(null);
+  const [activeSection, setActiveSection] = useState<
+    "roboforex" | "binance" | null
+  >(null);
 
   function handleSelect(type: string) {
     console.log("handleSelect", type);
@@ -24,7 +28,13 @@ export default function AddAccountModal({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <PopupWrapper deeper={true} h="426px" reducePb={true} w="380px" onClose={onClose}>
+    <PopupWrapper
+      deeper={true}
+      h="426px"
+      reducePb={true}
+      w="380px"
+      onClose={onClose}
+    >
       {/* Header */}
       <div className="flex flex-col gap-5 text-left">
         <PopupHeader>Add account</PopupHeader>
@@ -74,7 +84,10 @@ export default function AddAccountModal({ onClose }: { onClose: () => void }) {
           </div>
         )}
         {activeSection && (
-          <ButtonRoundedBlue btnText="Add" onClick={() => addAccount(activeSection)} />
+          <ButtonRoundedBlue
+            btnText="Add"
+            onClick={() => addAccount(activeSection)}
+          />
         )}
       </div>
     </PopupWrapper>

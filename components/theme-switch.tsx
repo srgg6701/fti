@@ -14,7 +14,10 @@ export interface ThemeSwitchProps {
   classNames?: SwitchProps["classNames"];
 }
 
-export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className, classNames }) => {
+export const ThemeSwitch: FC<ThemeSwitchProps> = ({
+  className,
+  classNames,
+}) => {
   const { theme, setTheme } = useTheme();
   const isSSR = useIsSSR();
   //const { userType } = useUserStore();
@@ -33,7 +36,14 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className, classNames }) => 
     if (newTheme) setTheme(newTheme);
   }, [theme, setTheme /* , userType */]);
 
-  const { Component, slots, isSelected, getBaseProps, getInputProps, getWrapperProps } = useSwitch({
+  const {
+    Component,
+    slots,
+    isSelected,
+    getBaseProps,
+    getInputProps,
+    getWrapperProps,
+  } = useSwitch({
     isSelected:
       /* (!userType && theme === 'light') ||
       (userType === 'member' && theme === 'memberLight') ||
@@ -87,7 +97,11 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className, classNames }) => 
           ),
         })}
       >
-        {!isSelected || isSSR ? <SunFilledIcon size={22} /> : <MoonFilledIcon size={22} />}
+        {!isSelected || isSSR ? (
+          <SunFilledIcon size={22} />
+        ) : (
+          <MoonFilledIcon size={22} />
+        )}
       </div>
     </Component>
   );

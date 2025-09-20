@@ -9,7 +9,13 @@ import DropdownPill from "@/components/dateDropDown";
 import UserBlockSecondary from "@/components/user-block-secondary";
 import perfData from "@/mockData/performance";
 
-function Collapsible({ open, children }: { open: boolean; children: React.ReactNode }) {
+function Collapsible({
+  open,
+  children,
+}: {
+  open: boolean;
+  children: React.ReactNode;
+}) {
   const [shouldRender, setShouldRender] = useState(open);
 
   useEffect(() => {
@@ -64,7 +70,9 @@ export default function StrategyId() {
   } */
 
   function handleTextBlock(id: string) {
-    setOpenIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+    setOpenIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
   }
 
   // TODO: Clarify if this function has relftions to onSimulation in backtesting.tsx
@@ -105,7 +113,10 @@ export default function StrategyId() {
             >
               Simulation
             </Button>
-            <Button className="btn-rounded bg-blue m-auto mb-[10px] w-[90px]" onPress={onInvest}>
+            <Button
+              className="btn-rounded bg-blue m-auto mb-[10px] w-[90px]"
+              onPress={onInvest}
+            >
               Invest
             </Button>
           </div>
@@ -113,7 +124,11 @@ export default function StrategyId() {
         <section className="mb-2.5 flex justify-between gap-2.5 max-sm:flex-wrap">
           <div className="standard-colored-005-rounded flex flex-col p-5">
             <div className="flex justify-between">
-              <Subheaders direction="Up" header="$ 1432" subheader="$ 324 (3.23%)" />
+              <Subheaders
+                direction="Up"
+                header="$ 1432"
+                subheader="$ 324 (3.23%)"
+              />
               <DropdownPill
                 items={[
                   { label: "1 Week", value: "1week" },
@@ -190,7 +205,10 @@ export default function StrategyId() {
                     alt="Click to Expand / Collaps"
                     height={9}
                     src="/assets/images/icons/arrows/arrow_down.png"
-                    style={{ height: "9px", transform: `rotate(${open ? 180 : 0}deg)` }}
+                    style={{
+                      height: "9px",
+                      transform: `rotate(${open ? 180 : 0}deg)`,
+                    }}
                     width={14}
                   />
                 </div>
@@ -198,7 +216,11 @@ export default function StrategyId() {
                   <div className="absolute top-[20%] left-[30%] z-2 flex flex-col gap-[5px] p-2.5">
                     <div className="text-xs">April 23</div>
                     <div>
-                      <Subheaders direction="Up" header="$ 1432" subheader="$ 324 (3.23%)" />
+                      <Subheaders
+                        direction="Up"
+                        header="$ 1432"
+                        subheader="$ 324 (3.23%)"
+                      />
                     </div>
                   </div>
                   <Image

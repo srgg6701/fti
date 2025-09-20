@@ -31,7 +31,12 @@ export default function UserBlock({
   return (
     <article className={`${h} ${w} ${marginRight} ${padding}`}>
       <header className={`${headerDisplay} ${mb} ${gap} flex items-center`}>
-        <UserImage height={height} title={imgAlt} userImg={userImg} width={width} />
+        <UserImage
+          height={height}
+          title={imgAlt}
+          userImg={userImg}
+          width={width}
+        />
         {children}
       </header>
     </article>

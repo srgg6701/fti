@@ -11,7 +11,11 @@ export default function Frame256() {
       {/* Заголовок секции */}
       <header className="flex items-center justify-between gap-4 border-b border-white/10 px-4 py-3">
         <h2 className="text-xl font-semibold text-white">Notifications</h2>
-        <img alt="Frame692381" className="h-6 w-auto" src="/images-temp/Frame256/frame692381.svg" />
+        <img
+          alt="Frame692381"
+          className="h-6 w-auto"
+          src="/images-temp/Frame256/frame692381.svg"
+        />
       </header>
 
       {/* Лента уведомлений */}

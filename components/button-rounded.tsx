@@ -36,7 +36,14 @@ type ButtonProps = {
 const baseDefaults: Required<
   Omit<
     ButtonProps,
-    "fontSize" | "maxW" | "padding" | "startContent" | "outline" | "onPress" | "onClick" | "style"
+    | "fontSize"
+    | "maxW"
+    | "padding"
+    | "startContent"
+    | "outline"
+    | "onPress"
+    | "onClick"
+    | "style"
   >
 > = {
   rounded: "btn-rounded",
@@ -104,7 +111,8 @@ function renderButton(p: ButtonProps) {
 type PresetProps = Partial<ButtonProps>;
 
 function makeButton(preset: PresetProps) {
-  const PresetButton: React.FC<PresetProps> = (props) => renderButton({ ...preset, ...props });
+  const PresetButton: React.FC<PresetProps> = (props) =>
+    renderButton({ ...preset, ...props });
 
   return PresetButton;
 }

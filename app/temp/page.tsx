@@ -16,7 +16,14 @@ import * as React from "react";
 
 export default function BacktestingPanel() {
   return (
-    <div style={{ width: 700, height: 630, display: "flex", flexDirection: "column" }}>
+    <div
+      style={{
+        width: 700,
+        height: 630,
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <h1>Backtesting</h1>
 
       {/* Row 1 */}
@@ -48,7 +55,13 @@ export default function BacktestingPanel() {
       <div style={{ height: 20 }} />
 
       {/* Accounts header */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
         <span>Select an account</span>
         <Button size="sm" variant="flat">
           Add

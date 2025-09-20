@@ -34,7 +34,13 @@ export default function Invest({ isOpen, onClose }: CommonModal) {
 
   return (
     <>
-      <PopupWrapper deeper={true} h="519px" reducePb={true} w="380px" onClose={onClose}>
+      <PopupWrapper
+        deeper={true}
+        h="519px"
+        reducePb={true}
+        w="380px"
+        onClose={onClose}
+      >
         <SliderInternals header="Invest" slider_header="Choose a risk">
           {({ txtLeftSemibold }) => (
             <>
@@ -57,7 +63,9 @@ export default function Invest({ isOpen, onClose }: CommonModal) {
                 </Header4Left>
                 <Select classNames={{ trigger: selectStyle }}>
                   {allStrategies.map((acc) => (
-                    <SelectItem key={acc.brokerCode}>{acc.brokerName}</SelectItem>
+                    <SelectItem key={acc.brokerCode}>
+                      {acc.brokerName}
+                    </SelectItem>
                   ))}
                 </Select>
               </div>
@@ -66,7 +74,10 @@ export default function Invest({ isOpen, onClose }: CommonModal) {
         </SliderInternals>
         <ButtonRoundedBlue btnText="Invest" onClick={onInvest} />
       </PopupWrapper>
-      {(isAddAccountOpen && <AddAccount onClose={() => setAddAccount(null)} />) || null}
+      {(isAddAccountOpen && (
+        <AddAccount onClose={() => setAddAccount(null)} />
+      )) ||
+        null}
     </>
   );
 }

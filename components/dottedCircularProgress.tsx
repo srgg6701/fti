@@ -81,7 +81,11 @@ export default function DottedCircularProgress({
       <svg aria-hidden="true" viewBox="0 0 100 100">
         <defs>
           {/* Reveal mask "sector" 0..θ: white shows, black hides */}
-          <mask id={`${id}-reveal`} maskContentUnits="userSpaceOnUse" maskUnits="userSpaceOnUse">
+          <mask
+            id={`${id}-reveal`}
+            maskContentUnits="userSpaceOnUse"
+            maskUnits="userSpaceOnUse"
+          >
             <rect fill="#000" height="100" width="100" x="0" y="0" />
             <circle
               cx="50"

@@ -5,7 +5,9 @@ export default function Verification() {
       {/* Personal info card */}
       <section className="rounded-2xl border border-white/10 bg-white/5 p-5 md:col-span-7">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-medium text-white">Personal information</h2>
+          <h2 className="text-lg font-medium text-white">
+            Personal information
+          </h2>
           <button className="rounded-lg border border-white/15 px-3 py-1.5 text-xs text-white/80 hover:bg-white/10">
             To change
           </button>
@@ -13,19 +15,27 @@ export default function Verification() {
 
         <dl className="grid gap-4 sm:grid-cols-2">
           <div>
-            <dt className="text-xs tracking-wide text-white/50 uppercase">Full name</dt>
+            <dt className="text-xs tracking-wide text-white/50 uppercase">
+              Full name
+            </dt>
             <dd className="mt-1 text-sm text-white">Ivanov Inav Ivanovich</dd>
           </div>
           <div>
-            <dt className="text-xs tracking-wide text-white/50 uppercase">Gender</dt>
+            <dt className="text-xs tracking-wide text-white/50 uppercase">
+              Gender
+            </dt>
             <dd className="mt-1 text-sm text-white">Man</dd>
           </div>
           <div>
-            <dt className="text-xs tracking-wide text-white/50 uppercase">Date of birth</dt>
+            <dt className="text-xs tracking-wide text-white/50 uppercase">
+              Date of birth
+            </dt>
             <dd className="mt-1 text-sm text-white">17.10.1999</dd>
           </div>
           <div>
-            <dt className="text-xs tracking-wide text-white/50 uppercase">Country of residence</dt>
+            <dt className="text-xs tracking-wide text-white/50 uppercase">
+              Country of residence
+            </dt>
             <dd className="mt-1 text-sm text-white">Russia</dd>
           </div>
           <div>
@@ -35,8 +45,12 @@ export default function Verification() {
             <dd className="mt-1 text-sm text-white">Russia</dd>
           </div>
           <div className="sm:col-span-2">
-            <dt className="text-xs tracking-wide text-white/50 uppercase">Residential address</dt>
-            <dd className="mt-1 text-sm text-white">Moskow, Marshala Tyhachevskogo</dd>
+            <dt className="text-xs tracking-wide text-white/50 uppercase">
+              Residential address
+            </dt>
+            <dd className="mt-1 text-sm text-white">
+              Moskow, Marshala Tyhachevskogo
+            </dd>
           </div>
         </dl>
       </section>
@@ -60,7 +74,9 @@ export default function Verification() {
               <div className="mt-1 text-sm text-white">$236</div>
             </div>
             <div>
-              <div className="text-xs tracking-wide text-white/50 uppercase">For the last year</div>
+              <div className="text-xs tracking-wide text-white/50 uppercase">
+                For the last year
+              </div>
               <div className="mt-1 text-sm text-white">$2856</div>
             </div>
           </div>

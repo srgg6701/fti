@@ -22,7 +22,10 @@ export default function SectionHeader({
     <div className={`${mb} ${h} flex items-center justify-start gap-5`}>
       <h2 className={`${textSize} ${textWeight}`}>{title}</h2>
       {(!noLink && (
-        <Link className={`${linkSize} underline hover:text-white`} href={seeAllHref}>
+        <Link
+          className={`${linkSize} underline hover:text-white`}
+          href={seeAllHref}
+        >
           See all
         </Link>
       )) ||

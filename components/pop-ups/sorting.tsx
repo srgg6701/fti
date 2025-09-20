@@ -6,7 +6,9 @@ import { Button } from "@heroui/button";
 import { RadioGroup, Radio } from "@heroui/react";
 
 import PopupWrapper from "@/components/pop-ups/popup-wrapper";
-import PopupHeader, { Subheader } from "@/components/pop-ups/styled-popup-header";
+import PopupHeader, {
+  Subheader,
+} from "@/components/pop-ups/styled-popup-header";
 
 import { SortingModalProps } from "./types";
 
@@ -37,7 +39,13 @@ export default function SortingModal({
   };
 
   return (
-    <PopupWrapper deeper={true} h="357px" reducePb={true} w="380px" onClose={onClose}>
+    <PopupWrapper
+      deeper={true}
+      h="357px"
+      reducePb={true}
+      w="380px"
+      onClose={onClose}
+    >
       <div className="mb-6">
         <PopupHeader>Sorting</PopupHeader>
         <Subheader>Select the sort type</Subheader>

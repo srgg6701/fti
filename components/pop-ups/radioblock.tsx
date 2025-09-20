@@ -1,4 +1,8 @@
-import type { DataType, Option, RadioBlockProps } from "@/components/pop-ups/types";
+import type {
+  DataType,
+  Option,
+  RadioBlockProps,
+} from "@/components/pop-ups/types";
 
 import { RadioGroup, Radio } from "@heroui/react";
 

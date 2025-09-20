@@ -21,7 +21,10 @@ export default function formatTextToParagraphs(text: string, opts: FOpts = {}) {
     const lines = par.split("\n");
 
     return (
-      <p key={i} className={`${paraClass} ${i < paragraphs.length - 1 ? paraGapClass : ""}`}>
+      <p
+        key={i}
+        className={`${paraClass} ${i < paragraphs.length - 1 ? paraGapClass : ""}`}
+      >
         {lines.map((line, j) =>
           j === 0 ? (
             line

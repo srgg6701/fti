@@ -44,7 +44,8 @@ export default function Header({
             <li>digit and</li>
             <li>symbol</li>
           </ul>
-          No spaces, ASCII only. Avoid common passwords, 3+ repeats, and sequences.
+          No spaces, ASCII only. Avoid common passwords, 3+ repeats, and
+          sequences.
         </div>
       )}
     </header>

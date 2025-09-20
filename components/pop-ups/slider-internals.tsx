@@ -1,8 +1,13 @@
-import type { FilterState, FilterStateBottom } from "@/components/pop-ups/types";
+import type {
+  FilterState,
+  FilterStateBottom,
+} from "@/components/pop-ups/types";
 
 import { useEffect, useState } from "react";
 
-import PopupHeader, { Subheader } from "@/components/pop-ups/styled-popup-header";
+import PopupHeader, {
+  Subheader,
+} from "@/components/pop-ups/styled-popup-header";
 import Slider from "@/components/slider";
 
 type InjectedProps = {
@@ -60,7 +65,9 @@ export default function SliderInternals({
     } else {
       setFilters((prev) => ({
         ...prev,
-        [key]: target.value as FilterState["growthType"] | FilterState["strategyType"],
+        [key]: target.value as
+          | FilterState["growthType"]
+          | FilterState["strategyType"],
       }));
     }
   };

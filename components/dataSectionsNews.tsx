@@ -69,7 +69,9 @@ export default function DataSectionNews({ slug }: SelectedNews) {
   }, [actualNews]);
 
   return (
-    <div className={`mt-[80px] mb-[80px] flex ${horizontalLayout ? "flex-col" : ""} gap-[5rem]`}>
+    <div
+      className={`mt-[80px] mb-[80px] flex ${horizontalLayout ? "flex-col" : ""} gap-[5rem]`}
+    >
       {actualNews && (
         <div
           className={`flex flex-col gap-10 ${horizontalLayout ? "m-auto max-w-[550px]" : "-mr-[400px] pr-[400px]"} w-full`}

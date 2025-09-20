@@ -23,7 +23,9 @@ export default function PersonalInformation() {
 
   useEffect(() => {
     document.body.classList.toggle("camera-open", isCameraOpen);
-    document.getElementById("navbar-container")?.classList.toggle("backdrop-blur-lg");
+    document
+      .getElementById("navbar-container")
+      ?.classList.toggle("backdrop-blur-lg");
     const headerText = document.getElementById("page-header");
 
     if (headerText) {
@@ -37,9 +39,11 @@ export default function PersonalInformation() {
     console.log("on Edit");
   };
 
-  const blockParamsClass = "flex flex-col bg-translucent-extreme blick-rounded gap-5 p-[15px]";
+  const blockParamsClass =
+    "flex flex-col bg-translucent-extreme blick-rounded gap-5 p-[15px]";
 
-  const btnColorBlue = "text-sm text-medium color-blue-secondary leading-[17px]";
+  const btnColorBlue =
+    "text-sm text-medium color-blue-secondary leading-[17px]";
 
   const RightBlockSection = ({
     height,
@@ -58,10 +62,21 @@ export default function PersonalInformation() {
     </div>
   );
 
-  const IncomeBlock = ({ header, value }: { header: string; value: string }) => (
+  const IncomeBlock = ({
+    header,
+    value,
+  }: {
+    header: string;
+    value: string;
+  }) => (
     <div>
       <div className="mb-2.5 text-xs opacity-60">{header}</div>
-      <Input className="opacity-20" disabled={true} inputMode="text" value={value} />
+      <Input
+        className="opacity-20"
+        disabled={true}
+        inputMode="text"
+        value={value}
+      />
     </div>
   );
 
@@ -95,7 +110,9 @@ export default function PersonalInformation() {
             <div className="flex flex-col gap-5">
               {personal.map((it) => (
                 <div key={it.label} className="">
-                  <div className="mb-[5px] h-[17px] text-xs opacity-60">{it.label}</div>
+                  <div className="mb-[5px] h-[17px] text-xs opacity-60">
+                    {it.label}
+                  </div>
                   <div className="h-[23px] text-sm">{it.value}</div>
                 </div>
               ))}
@@ -110,14 +127,29 @@ export default function PersonalInformation() {
               {
                 height: "h-[111px]",
                 header: "Type of activity",
-                child: <Input className="" disabled={true} inputMode="text" value={"Welder"} />,
+                child: (
+                  <Input
+                    className=""
+                    disabled={true}
+                    inputMode="text"
+                    value={"Welder"}
+                  />
+                ),
               },
               {
                 height: "h-[235px]",
                 header: "Income",
                 child: [
-                  <IncomeBlock key="period1" header="For the last month" value="$236" />,
-                  <IncomeBlock key="period2" header="For the last year" value="2856" />,
+                  <IncomeBlock
+                    key="period1"
+                    header="For the last month"
+                    value="$236"
+                  />,
+                  <IncomeBlock
+                    key="period2"
+                    header="For the last year"
+                    value="2856"
+                  />,
                 ],
               },
               {
@@ -126,7 +158,9 @@ export default function PersonalInformation() {
                 child: (
                   <Button
                     className="bg-blue-second-translusent-lignt flex h-[40px] w-[260px] items-center justify-center gap-[10px] rounded-[15px] px-[12px] py-[4px]"
-                    style={{ border: "dashed 1px rgb(var(--color-blue-second-rgb))" }}
+                    style={{
+                      border: "dashed 1px rgb(var(--color-blue-second-rgb))",
+                    }}
                     onClick={addPhoto}
                   >
                     <Image
@@ -163,7 +197,11 @@ export default function PersonalInformation() {
         {false && (
           <div className="w-full lg:w-870/570 lg:max-w-[300px]">
             <div className="flex flex-col gap-2.5">
-              <RightBlockSection key="biometrics" header="Biometrics" height="h-[111px]">
+              <RightBlockSection
+                key="biometrics"
+                header="Biometrics"
+                height="h-[111px]"
+              >
                 <Button
                   className="bg-blue-second-translusent-lignt flex h-[40px] w-[260px] items-center justify-center gap-[10px] rounded-[15px] px-[12px] py-[4px]"
                   onPress={gotoCam}
@@ -182,7 +220,10 @@ export default function PersonalInformation() {
         )}
       </section>
       {(isCameraOpen && (
-        <Camera imgSrc="/assets/images/client-face.jpg" onClose={() => setCameraScreen(false)} />
+        <Camera
+          imgSrc="/assets/images/client-face.jpg"
+          onClose={() => setCameraScreen(false)}
+        />
       )) ||
         null}
     </>

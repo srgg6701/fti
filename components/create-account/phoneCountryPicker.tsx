@@ -10,7 +10,11 @@ type Props = {
   className?: string;
 };
 
-export default function PhoneCountryPicker({ value, onChange, className }: Props) {
+export default function PhoneCountryPicker({
+  value,
+  onChange,
+  className,
+}: Props) {
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
   const selected = value ?? COUNTRIES[0];
@@ -22,7 +26,9 @@ export default function PhoneCountryPicker({ value, onChange, className }: Props
 
     return COUNTRIES.filter(
       (c) =>
-        c.name.toLowerCase().includes(s) || c.code.toLowerCase().includes(s) || c.dial.includes(s),
+        c.name.toLowerCase().includes(s) ||
+        c.code.toLowerCase().includes(s) ||
+        c.dial.includes(s),
     );
   }, [q]);
 
@@ -69,7 +75,10 @@ export default function PhoneCountryPicker({ value, onChange, className }: Props
                     setQ("");
                   }}
                 >
-                  <span aria-hidden className={`fi fis fi-${c.code.toLowerCase()}`} />
+                  <span
+                    aria-hidden
+                    className={`fi fis fi-${c.code.toLowerCase()}`}
+                  />
                   <span className="text-white/90">{c.name}</span>
                   <span className="ml-auto text-white/60">{c.dial}</span>
                 </button>

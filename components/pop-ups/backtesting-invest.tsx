@@ -6,7 +6,9 @@ import { Card, CardHeader, CardBody, CardFooter, Avatar } from "@heroui/react";
 import { Select, SelectItem } from "@heroui/select";
 
 import brokers from "@/mockData/brokers-list";
-import PopupHeader, { Header4Left } from "@/components/pop-ups/styled-popup-header";
+import PopupHeader, {
+  Header4Left,
+} from "@/components/pop-ups/styled-popup-header";
 import FormElementWrapper from "@/components/pop-ups/form-elements/form-element-wrapper";
 import FormElementInput from "@/components/pop-ups/form-elements/form-element-input";
 import { ButtonRoundedBlue } from "@/components/button-rounded";
@@ -17,7 +19,10 @@ import PopupWrapper from "./popup-wrapper";
 function AccountCard({ onRemove }: { onRemove: () => void }) {
   return (
     <Card className="bg-translucent-extreme relative mt-2.5 rounded-[15px] p-2 pb-5">
-      <button className="absolute top-4 right-3 z-11 cursor-pointer" onClick={onRemove}>
+      <button
+        className="absolute top-4 right-3 z-11 cursor-pointer"
+        onClick={onRemove}
+      >
         <Image
           alt="Close card, remove account"
           height={16}
@@ -31,7 +36,11 @@ function AccountCard({ onRemove }: { onRemove: () => void }) {
         <div className="pt-5 pb-[3px]">
           <div className="mb-2 text-sm leading-3.5">Brokers used</div>
           <div className="flex pl-1.5">
-            {["face-male-spectacles", "user-joshua", "face-male-all-orange"].map((img) => (
+            {[
+              "face-male-spectacles",
+              "user-joshua",
+              "face-male-all-orange",
+            ].map((img) => (
               <Avatar
                 key={img}
                 classNames={{
@@ -48,7 +57,10 @@ function AccountCard({ onRemove }: { onRemove: () => void }) {
           { label: "Deposit", rotate: "" },
           { label: "Bring out", rotate: "180" },
         ].map((block) => (
-          <div key={block.label} className="color-blue-secondary flex text-sm font-medium">
+          <div
+            key={block.label}
+            className="color-blue-secondary flex text-sm font-medium"
+          >
             <Image
               alt={block.label}
               className={`mr-[5px] ${block.rotate && `rotate-${block.rotate}`}`}
@@ -82,7 +94,13 @@ export default function BacktestingInvest({
   addAccount: () => void;
 }) {
   return (
-    <PopupWrapper deeper={true} h="630px" reducePb={true} w="700px" onClose={onClose}>
+    <PopupWrapper
+      deeper={true}
+      h="630px"
+      reducePb={true}
+      w="700px"
+      onClose={onClose}
+    >
       <div className="flex w-[620px] flex-col gap-5">
         <PopupHeader>{popupHeader}</PopupHeader>
         <div className="flex w-full gap-5">
@@ -98,7 +116,9 @@ export default function BacktestingInvest({
                   }}
                   id="for-how-long"
                   placeholder="Choose value"
-                  onChange={(e) => console.log("value for how long", e.target.value)}
+                  onChange={(e) =>
+                    console.log("value for how long", e.target.value)
+                  }
                 >
                   <SelectItem key="1d">1 Day</SelectItem>
                 </Select>
@@ -127,7 +147,9 @@ export default function BacktestingInvest({
                   }}
                   id="choose-broker"
                   placeholder="Broker's name"
-                  onChange={(e) => console.log("value for broker chosen", e.target.value)}
+                  onChange={(e) =>
+                    console.log("value for broker chosen", e.target.value)
+                  }
                 >
                   {brokers.map((broker) => (
                     <SelectItem key={broker.key}>{broker.label}</SelectItem>

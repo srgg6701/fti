@@ -2,7 +2,10 @@
 import { useRouter } from "next/navigation";
 
 import { ButtonRoundedBlue } from "@/components/button-rounded";
-import { Header4Center, Header4Left } from "@/components/pop-ups/styled-popup-header";
+import {
+  Header4Center,
+  Header4Left,
+} from "@/components/pop-ups/styled-popup-header";
 
 type ProgramCondProps = {
   refSyst?: boolean;
@@ -12,27 +15,35 @@ type ProgramCondProps = {
 const ProgramCond = () => (
   <div className="py-5">
     <Header4Left className="font-medium">Program conditions</Header4Left>
-    <h6 className="mt-[21px] mb-2.5 text-sm opacity-80">1. How does it work?</h6>
+    <h6 className="mt-[21px] mb-2.5 text-sm opacity-80">
+      1. How does it work?
+    </h6>
     <p className="text-xs opacity-50">
-      Our referral program allows you and your friends to earn rewards for recommending our app. You
-      share your unique link (or code) with friends. When they meet the necessary condition, you
-      both receive bonuses.
+      Our referral program allows you and your friends to earn rewards for
+      recommending our app. You share your unique link (or code) with friends.
+      When they meet the necessary condition, you both receive bonuses.
     </p>
-    <h6 className="mt-[21px] mb-2.5 text-sm opacity-80">2. Program participants</h6>
+    <h6 className="mt-[21px] mb-2.5 text-sm opacity-80">
+      2. Program participants
+    </h6>
     <ul className="list-disc pl-5 text-xs opacity-50">
       <li className="">
-        Anyone with an active account on the application can participate in the program.
+        Anyone with an active account on the application can participate in the
+        program.
       </li>
       <li className="">
-        The program is intended for personal, non-commercial use. It is prohibited to post referral
-        links on platforms for mass distribution (coupons, discount aggregators, etc.) without our
-        written consent.
+        The program is intended for personal, non-commercial use. It is
+        prohibited to post referral links on platforms for mass distribution
+        (coupons, discount aggregators, etc.) without our written consent.
       </li>
     </ul>
   </div>
 );
 
-export default function InviteFriendsContent({ refSyst = false, onClose }: ProgramCondProps) {
+export default function InviteFriendsContent({
+  refSyst = false,
+  onClose,
+}: ProgramCondProps) {
   const router = useRouter();
   const goAndClose = () => {
     if (onClose) onClose();

@@ -19,7 +19,9 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // TODO: unify this for all cases
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
   const [errMess, setErrMess] = useState<string | null>(null);
   // const [isLoading, setIsLoading] = useState(false);
 

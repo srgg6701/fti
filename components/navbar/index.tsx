@@ -28,8 +28,8 @@ import notifications from "@/mockData/notifications";
 import { Icon, menuIcons } from "@/components/icons";
 
 import "@/styles/style-navbar.css";
-import AssetsList from "../pop-ups/assets-list";
-import Invest from "../pop-ups/invest";
+import AssetsList from "@/components/pop-ups/assets-list";
+import Invest from "@/components/pop-ups/invest";
 
 export const Navbar = () => {
   const navBarContainer = useRef<HTMLElement | null>(null);
@@ -48,18 +48,23 @@ export const Navbar = () => {
   const assetListOpen = params.get("asset-list");
   const inviteOpen = params.get("invite");
 
-  const [isNotificationOpen, setNotificationOpen] = useState<boolean>(!!notificationOpen);
-  const [isAssetsListOpen, setAssetsListOpen] = useState<boolean>(!!assetListOpen);
+  const [isNotificationOpen, setNotificationOpen] =
+    useState<boolean>(!!notificationOpen);
+  const [isAssetsListOpen, setAssetsListOpen] =
+    useState<boolean>(!!assetListOpen);
 
   /*const [isAddAccountIsOpen, setAddAccount] = useState<boolean | null>(null); */
   const [isNoticeOpen, setNoticeOpen] = useState<boolean>(!!noticeOpen);
 
-  const [isBacktestingOpen, setBacktestingOpen] = useState<boolean>(!!backtestingOpen);
+  const [isBacktestingOpen, setBacktestingOpen] =
+    useState<boolean>(!!backtestingOpen);
   const [isInvestOpen, setInvestOpen] = useState<boolean>(!!investOpen);
   const [isInviteOpen, setInviteOpen] = useState<boolean>(!!inviteOpen);
 
   const [search_text, setSearch] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
   const [isNotificationsOpen, setNotifications] = useState(false);
   // SORT
   const [isSortingOpen, setIsSortingOpen] = useState(false);
@@ -140,7 +145,9 @@ export const Navbar = () => {
           return (
             <li key={item.href} className="flex list-none items-center">
               <Link
-                aria-current={urlFirstSegment === item.href ? "page" : undefined}
+                aria-current={
+                  urlFirstSegment === item.href ? "page" : undefined
+                }
                 className={`menu-item flex items-center gap-3 ${urlFirstSegment === item.href ? "" : "opacity-60 hover:opacity-100"}`}
                 href={item.href}
               >
@@ -157,7 +164,13 @@ export const Navbar = () => {
     );
   };
 
-  const MenuRightSide = ({ className, onClick }: { className?: string; onClick: () => void }) => (
+  const MenuRightSide = ({
+    className,
+    onClick,
+  }: {
+    className?: string;
+    onClick: () => void;
+  }) => (
     <div className={className || ""} id="exit-link">
       <Image
         alt="Show notifications"
@@ -177,7 +190,10 @@ export const Navbar = () => {
           width="24"
         />
       </Link>
-      <Link className="menu-item color-ultra-violet font-bold whitespace-nowrap" href="/logout">
+      <Link
+        className="menu-item color-ultra-violet font-bold whitespace-nowrap"
+        href="/logout"
+      >
         Exit
       </Link>
     </div>
@@ -233,13 +249,21 @@ export const Navbar = () => {
       type="button"
       onClick={onClick}
     >
-      <Image alt={alt} height={14} src={`/assets/images/service/${action}.svg`} width={14} />
+      <Image
+        alt={alt}
+        height={14}
+        src={`/assets/images/service/${action}.svg`}
+        width={14}
+      />
     </button>
   );
 
   const Notifications = ({ onClick }: { onClick: () => void }) => (
     <aside className="scroller vertical top-0 right-0 z-40 h-full w-[460px] bg-[#030303]">
-      <button className="fixed top-10 right-10 z-42 cursor-pointer" onClick={onClick}>
+      <button
+        className="fixed top-10 right-10 z-42 cursor-pointer"
+        onClick={onClick}
+      >
         <Image
           alt="Close pop-up"
           height={36}
@@ -265,7 +289,9 @@ export const Navbar = () => {
   return (
     <>
       {status === "loading" ? (
-        <div className="mb-[-4] bg-blue-200 p-4 text-black">Data is loading...</div>
+        <div className="mb-[-4] bg-blue-200 p-4 text-black">
+          Data is loading...
+        </div>
       ) : (
         <HeroUINavbar
           ref={navBarContainer}
@@ -282,7 +308,14 @@ export const Navbar = () => {
                   {pageHeader}
                 </h1>
                 {pageHeader === "Strategies" && (
-                  <div className="flex gap-[5px] max-2xl:-mb-10 max-2xl:translate-y-[20px]">
+                  <div className="flex gap-[5px] max-2xl:-mb-10 max-2xl:translate-y-[20px] relative">
+                    <Image
+                      alt="Search"
+                      className="absolute top-[15px] left-[13px] z-10"
+                      height={10}
+                      src="/assets/images/service/search-white.svg"
+                      width={10}
+                    />
                     <Input
                       className="standard-block-decoration-40"
                       placeholder="Enter your search request"
@@ -322,7 +355,10 @@ export const Navbar = () => {
           <NavbarContent className="basis-1 pl-4 lg:hidden" justify="end">
             {/* <ThemeSwitch /> */}
             {isAuthenticated && (
-              <NavbarMenuToggle aria-controls="main-menu" aria-label="Open menu" />
+              <NavbarMenuToggle
+                aria-controls="main-menu"
+                aria-label="Open menu"
+              />
             )}
           </NavbarContent>
           {isAuthenticated && (
@@ -341,7 +377,9 @@ export const Navbar = () => {
         </HeroUINavbar>
       )}
       {/* Notifications: Left vertical panel*/}
-      {isNotificationsOpen && <Notifications onClick={() => setNotifications(false)} />}
+      {isNotificationsOpen && (
+        <Notifications onClick={() => setNotifications(false)} />
+      )}
 
       <SortingModal
         currentSort={currentSort}
@@ -359,12 +397,24 @@ export const Navbar = () => {
         }} */
         onClose={() => setIsFilterOpen(false)}
       />
-      <Backtesting isOpen={isBacktestingOpen} onClose={() => setBacktestingOpen(false)} />
+      <Backtesting
+        isOpen={isBacktestingOpen}
+        onClose={() => setBacktestingOpen(false)}
+      />
       <Invest isOpen={isInvestOpen} onClose={() => setInvestOpen(false)} />
-      <Notification isOpen={isNotificationOpen} onClose={() => setNotificationOpen(false)} />
-      <AssetsList isOpen={isAssetsListOpen} onClose={() => setAssetsListOpen(false)} />
+      <Notification
+        isOpen={isNotificationOpen}
+        onClose={() => setNotificationOpen(false)}
+      />
+      <AssetsList
+        isOpen={isAssetsListOpen}
+        onClose={() => setAssetsListOpen(false)}
+      />
       <Notice isOpen={isNoticeOpen} onClose={() => setNoticeOpen(false)} />
-      <InviteFriends isOpen={isInviteOpen} onClose={() => setInviteOpen(false)} />
+      <InviteFriends
+        isOpen={isInviteOpen}
+        onClose={() => setInviteOpen(false)}
+      />
     </>
   );
 };

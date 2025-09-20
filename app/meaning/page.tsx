@@ -62,7 +62,11 @@ export default function Meaning() {
         <div className="flex items-center gap-3">
           {/* Search (как в макете: иконка + текст) */}
           <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2">
-            <img alt="Search2381" className="h-4 w-4" src="/images-temp/7d56aadffa44.svg" />
+            <img
+              alt="Search2381"
+              className="h-4 w-4"
+              src="/images-temp/7d56aadffa44.svg"
+            />
             <span className="text-sm text-white/60">Search</span>
           </div>
 
@@ -72,7 +76,9 @@ export default function Meaning() {
               <div
                 key={f}
                 className={`rounded-full px-3 py-1 text-xs ${
-                  i === 0 ? "bg-white/10 text-white" : "border border-white/10 text-white/70"
+                  i === 0
+                    ? "bg-white/10 text-white"
+                    : "border border-white/10 text-white/70"
                 }`}
               >
                 {f}
@@ -85,7 +91,10 @@ export default function Meaning() {
       {/* Cards */}
       <div className="grid grid-cols-1 gap-4 px-4 py-4 md:grid-cols-2 lg:grid-cols-3">
         {items.map((it, idx) => (
-          <article key={idx} className="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <article
+            key={idx}
+            className="rounded-2xl border border-white/10 bg-white/5 p-4"
+          >
             <div className="flex items-center gap-3">
               <img
                 alt="image2381"
@@ -94,7 +103,9 @@ export default function Meaning() {
               />
               <div className="flex flex-col">
                 <span className="text-sm text-white/90">username</span>
-                <span className="text-[11px] tracking-wide text-white/50 uppercase">{it.tag}</span>
+                <span className="text-[11px] tracking-wide text-white/50 uppercase">
+                  {it.tag}
+                </span>
               </div>
 
               <div className="ml-auto flex items-center gap-2">
@@ -105,9 +116,21 @@ export default function Meaning() {
 
             {/* мини-граф как в макете: три слоя */}
             <div className="mt-3 flex items-center gap-2">
-              <img alt="Vector2381" className="h-3 w-auto" src={it.vectors.v1} />
-              <img alt="Vector22381" className="h-3 w-auto" src={it.vectors.v2} />
-              <img alt="Ellipse22381" className="h-2 w-2" src={it.vectors.dot} />
+              <img
+                alt="Vector2381"
+                className="h-3 w-auto"
+                src={it.vectors.v1}
+              />
+              <img
+                alt="Vector22381"
+                className="h-3 w-auto"
+                src={it.vectors.v2}
+              />
+              <img
+                alt="Ellipse22381"
+                className="h-2 w-2"
+                src={it.vectors.dot}
+              />
             </div>
           </article>
         ))}

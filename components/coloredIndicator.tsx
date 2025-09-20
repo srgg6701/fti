@@ -7,7 +7,9 @@ export default function coloredIndicator({
   direction: string;
 }) {
   return (
-    <span className={`flex gap-1 ${direction === "Up" ? "text-blue-600" : "color-ultra-violet"}`}>
+    <span
+      className={`flex gap-1 ${direction === "Up" ? "text-blue-600" : "color-ultra-violet"}`}
+    >
       <ArrowsUpDown direction={direction} />
       <span>
         $ {data[0]} ({data[1]}%)

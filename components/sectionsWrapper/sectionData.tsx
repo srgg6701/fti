@@ -34,10 +34,14 @@ export function SectionData<T>({
     <section
       className={`${horizontalLayout ? "scroller w-full" : "w-[320px]"}${sectionClassName && " " + sectionClassName}`}
     >
-      {!noHeader && <SectionHeader seeAllHref={seeAllHref} title={title || ""} />}
+      {!noHeader && (
+        <SectionHeader seeAllHref={seeAllHref} title={title || ""} />
+      )}
       <div className={`row article-container ${rowClassName}`} style={style}>
         {data.map((item, i) => (
-          <React.Fragment key={getKey?.(item, i) ?? i}>{renderItem(item, i)}</React.Fragment>
+          <React.Fragment key={getKey?.(item, i) ?? i}>
+            {renderItem(item, i)}
+          </React.Fragment>
         ))}
       </div>
     </section>

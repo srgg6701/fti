@@ -11,7 +11,13 @@ type Props = {
   children: React.ReactNode;
 };
 
-export default function FormWrapper({ onSubmit, status, messageType, header, children }: Props) {
+export default function FormWrapper({
+  onSubmit,
+  status,
+  messageType,
+  header,
+  children,
+}: Props) {
   return (
     <section className="relative m-auto flex h-full w-full items-center justify-center">
       <Form
@@ -19,7 +25,9 @@ export default function FormWrapper({ onSubmit, status, messageType, header, chi
         onSubmit={onSubmit}
       >
         <Header header={header} messageType={messageType[0]} />
-        <div className="relative mx-auto flex w-full max-w-[300px] flex-col">{children}</div>
+        <div className="relative mx-auto flex w-full max-w-[300px] flex-col">
+          {children}
+        </div>
         <Buttons messageType={messageType[1]} status={status} type="submit" />
       </Form>
     </section>

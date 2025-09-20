@@ -6,8 +6,8 @@ import Link from "next/link";
 import { Input } from "@heroui/input";
 import { Textarea } from "@heroui/input";
 import { Switch } from "@heroui/react";
-
 import { Form } from "@heroui/form";
+
 import { ButtonRoundedBlue } from "@/components/button-rounded";
 import DeletingSubscritpionConfirmation from "@/components/pop-ups/deletingSubscriptionConfirmation";
 import SectionHeader from "@/components/sectionsWrapper/sectionHeader";
@@ -18,6 +18,9 @@ import ErrMess from "@/components/errMess";
 const headerParams = {
   h: "h-[33px]",
   mb: "mb-5",
+  textSize: "!text-[28px]",
+  textWeight: "!font-semibold",
+
   seeAllHref: "/#",
 };
 const verticalOffset = "pt-[var(--offset-80)]";
@@ -38,7 +41,12 @@ const billingData = [
     desc: "Payment for the standard service",
     amount: "$ 324",
   },
-  { img: "payment_error", title: "Adding funds", desc: "Insufficient funds", amount: "- $ 324" },
+  {
+    img: "payment_error",
+    title: "Adding funds",
+    desc: "Insufficient funds",
+    amount: "- $ 324",
+  },
   {
     img: "plus",
     title: "Adding funds",
@@ -53,6 +61,7 @@ export default function Profile() {
 
   const [isUpdateOpen, setUpdateOpen] = useState(false);
   const [email, setEmail] = useState("");
+  // FIXME: use it or remove
   const [status, setStatus] = useState<string>("idle");
   const [errMess, setErrMess] = useState<string | null>(null);
 
@@ -64,6 +73,10 @@ export default function Profile() {
   const handleVerification = () => {
     console.log("Handling verification...");
     window.alert("Handling verification...");
+  };
+
+  const goReferralPage = () => {
+    router.push("/referral-system");
   };
 
   //const handleToggleDark = (checked: boolean) => {};
@@ -134,7 +147,9 @@ export default function Profile() {
             <div className="flex min-w-0 flex-1 flex-col gap-3">
               <div className="flex flex-col items-center gap-2.5">
                 <h2 className="h-[28px] text-[28px]">
-                  <Link href="/account/personal-information?id=dfq125dfe25">Joshua</Link>
+                  <Link href="/account/personal-information?id=dfq125dfe25">
+                    Joshua
+                  </Link>
                 </h2>
                 <div className="relative">
                   <ButtonRoundedBlue
@@ -158,7 +173,9 @@ export default function Profile() {
                   {isUpdateOpen && (
                     <div className="standard-colored-005-rounded absolute top-0 right-[-240px] p-5">
                       <h5 className="text-sm font-medium">Standard</h5>
-                      <p className="mb-5 text-xs opacity-50">Active until 24.03.2026</p>
+                      <p className="mb-5 text-xs opacity-50">
+                        Active until 24.03.2026
+                      </p>
                       <button
                         className="relative z-2 h-10 w-[190px] cursor-pointer rounded-[40px] bg-gradient-to-r from-[#101BC3] to-[#FF33A6]"
                         onClick={() => router.push("/tariffplan")}
@@ -202,7 +219,9 @@ export default function Profile() {
                   <div className="text-sm opacity-80">{item.desc}</div>
                 </div>
               </div>
-              <div className={`text-sm ${colorizeAmount(item.amount)}`}>{item.amount}</div>
+              <div className={`text-sm ${colorizeAmount(item.amount)}`}>
+                {item.amount}
+              </div>
             </div>
           ))}
         </section>
@@ -226,9 +245,26 @@ export default function Profile() {
             <Switch defaultSelected size="sm" />
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-lg font-semibold">Fintech Innovation Trade, LLC</span>
+            <span className="text-lg font-semibold">
+              Fintech Innovation Trade, LLC
+            </span>
             <span className="text-sm opacity-80">v1.54.444</span>
           </div>
+        </section>
+        <section className={verticalOffset}>
+          <SectionHeader
+            noLink={true}
+            title="Referral system"
+            {...headerParams}
+          />
+          <ButtonRoundedGrey
+            btnText="Referral system page"
+            fontSize="text-base"
+            height="h-[45px]"
+            width="w-[204px]"
+            onClick={goReferralPage}
+            onPress={goReferralPage}
+          />
         </section>
         {/* Support */}
         <section {...sectionParams}>
@@ -236,9 +272,9 @@ export default function Profile() {
           <p className="mb-5 text-sm opacity-80">
             Specify your email address and describe the problem
           </p>
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col">
             <Form
-              className={`flex h-full max-h-[570px] w-full max-w-[328px] flex-col justify-center`}
+              className={`flex flex-col h-full w-full justify-center gap-5`}
               onSubmit={handleSubmit}
             >
               <Input
@@ -251,16 +287,30 @@ export default function Profile() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <ErrMess error={errMess} />
-              <Textarea className="w-full" minRows={4} placeholder="Describe the problem..." />
+              <ErrMess error={errMess} mx="mx-0" my="my-[-10px]" />
+              <Textarea
+                className="w-full"
+                classNames={{
+                  input: "placeholder:opacity-30",
+                }}
+                minRows={4}
+                placeholder="Describe the problem..."
+              />
               <div className="pb-[56px]">
-                <ButtonRoundedBlue btnText="Send" type="submit" width="w-full max-w-[300px]" />
+                <ButtonRoundedBlue
+                  btnText="Send"
+                  height="h-[45px]"
+                  type="submit"
+                  width="w-full w-[300px]"
+                />
               </div>
             </Form>
           </div>
         </section>
       </div>
-      {(notificationIsOpen && <DeletingSubscritpionConfirmation onCloseModal={closeActive} />) ||
+      {(notificationIsOpen && (
+        <DeletingSubscritpionConfirmation onCloseModal={closeActive} />
+      )) ||
         null}
     </>
   );

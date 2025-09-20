@@ -33,7 +33,9 @@ export default function Footer() {
         </div>
         <div className="text-center text-sm tracking-[-0.4px] opacity-60">
           <div>Copyright © 2025 TenWeb. All rights reserved.</div>
-          <div>Address: 40 E Main St, Suite 721, Newark, DE 19711, United States</div>
+          <div>
+            Address: 40 E Main St, Suite 721, Newark, DE 19711, United States
+          </div>
         </div>
       </div>
     </footer>

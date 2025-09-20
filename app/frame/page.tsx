@@ -4,7 +4,11 @@ export default function Frame() {
     <section className="w-full">
       {/* Верхняя полоска/шапка */}
       <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
-        <img alt="Vector2385" className="h-6 w-auto" src="/images-temp/Frame/vector2385.svg" />
+        <img
+          alt="Vector2385"
+          className="h-6 w-auto"
+          src="/images-temp/Frame/vector2385.svg"
+        />
         <div className="flex items-center gap-3">
           <img
             alt="Vector2385"
@@ -17,7 +21,9 @@ export default function Frame() {
 
       {/* Центр экрана — слоган/бренд */}
       <div className="grid place-items-center px-4 py-16">
-        <p className="text-base tracking-wide text-white/70">fintech trade innovation</p>
+        <p className="text-base tracking-wide text-white/70">
+          fintech trade innovation
+        </p>
       </div>
     </section>
   );

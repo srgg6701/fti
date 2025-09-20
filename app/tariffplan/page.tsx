@@ -1,5 +1,8 @@
 "use client";
-import { ButtonRoundedBlue, ButtonRoundedGrey } from "@/components/button-rounded";
+import {
+  ButtonRoundedBlue,
+  ButtonRoundedGrey,
+} from "@/components/button-rounded";
 
 export default function Tariffplan() {
   const plans = [
@@ -34,7 +37,9 @@ export default function Tariffplan() {
   return (
     <div className="w-full pt-20 pb-[56px]">
       <section className="flex flex-col items-center pb-10">
-        <h2 className="pb-2.5 !text-[28px] leading-[33px] font-semibold">Choose a data plan</h2>
+        <h2 className="pb-2.5 !text-[28px] leading-[33px] font-semibold">
+          Choose a data plan
+        </h2>
         <p className="max-w-[207px] text-center text-sm leading-[17px] opacity-80">
           Choose the most suitable tariff plan for yourself
         </p>
@@ -65,7 +70,8 @@ export default function Tariffplan() {
                 <span className="text-base font-medium">{p.period}</span>
               </div>
               <p className="text-sm leading-[17px] opacity-80">
-                The service uses a database characteristics, scenarios and interactions
+                The service uses a database characteristics, scenarios and
+                interactions
               </p>
             </div>
             {p.name === "Standard" ? (

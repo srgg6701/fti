@@ -32,7 +32,13 @@ export default function FilterModal({ isOpen, onClose }: CommonModal) {
   };
 
   return (
-    <PopupWrapper deeper={true} h="673px" reducePb={true} w="380px" onClose={onClose}>
+    <PopupWrapper
+      deeper={true}
+      h="673px"
+      reducePb={true}
+      w="380px"
+      onClose={onClose}
+    >
       <SliderInternals
         header="Filter"
         slider_header="The winning ratio"

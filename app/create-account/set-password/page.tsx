@@ -16,7 +16,9 @@ export default function SetPassword() {
 
   const [password, setPassword] = useState("");
   const [password_confirmation, setPasswordConfirmation] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
   const [errMess, setErrMess] = useState<string | null>(null);
   //const [isLoading, setIsLoading] = useState(false);
 

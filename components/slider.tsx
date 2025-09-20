@@ -42,7 +42,9 @@ export default function Slider({
           style={{ left: `${posIndicator}px` }}
         >
           <div className="min-w-[38px] rounded-full bg-[rgba(244,249,255,0.05)] px-3 py-1 text-center">
-            <span className="text-center text-sm font-medium text-white">{winningRatio}</span>
+            <span className="text-center text-sm font-medium text-white">
+              {winningRatio}
+            </span>
           </div>
         </div>
       </div>

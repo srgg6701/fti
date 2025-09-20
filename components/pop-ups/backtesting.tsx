@@ -21,7 +21,13 @@ export default function Backtesting({ isOpen, onClose }: CommonModal) {
   };
 
   return (
-    <PopupWrapper deeper={true} h="396px" reducePb={true} w="380px" onClose={onClose}>
+    <PopupWrapper
+      deeper={true}
+      h="396px"
+      reducePb={true}
+      w="380px"
+      onClose={onClose}
+    >
       <SliderInternals header="Backtesting" slider_header="Choose a risk">
         {({ txtLeftSemibold }) => (
           <FormElementWrapper header4="Enter the amount" id="enter-amount">

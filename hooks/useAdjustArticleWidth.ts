@@ -6,7 +6,9 @@ export function useAdjustArticleWidth() {
     if (typeof window === "undefined") return;
 
     const main = document.querySelector<HTMLElement>("main");
-    const overlay = document.querySelector<HTMLElement>("[data-overlay-container]");
+    const overlay = document.querySelector<HTMLElement>(
+      "[data-overlay-container]",
+    );
 
     if (!main) return;
 

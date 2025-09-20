@@ -17,10 +17,14 @@ export default function Default() {
         <LogoFTI className="m-auto max-w-[100%]" />
         <div>
           <div className="first-loader mt-[80px] h-[1px] bg-[#F4F9FF]" />
-          <div className="font-rubik m-auto mt-[20px] text-center font-semibold">Loading...</div>
+          <div className="font-rubik m-auto mt-[20px] text-center font-semibold">
+            Loading...
+          </div>
         </div>
       </div>
-      <p className="absolute bottom-[80px] text-center">Fintech Trade Innovation</p>
+      <p className="absolute bottom-[80px] text-center">
+        Fintech Trade Innovation
+      </p>
     </div>
   );
 }

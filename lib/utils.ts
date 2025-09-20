@@ -23,7 +23,8 @@ export function validateEmail(email: string): EmailValidation {
 
   const at = e.indexOf("@");
 
-  if (at <= 0 || at !== e.lastIndexOf("@")) return { valid: false, reason: "at" };
+  if (at <= 0 || at !== e.lastIndexOf("@"))
+    return { valid: false, reason: "at" };
 
   const local = e.slice(0, at);
   const domain = e.slice(at + 1);
@@ -34,7 +35,8 @@ export function validateEmail(email: string): EmailValidation {
   if (local.startsWith(".") || local.endsWith(".") || local.includes(".."))
     return { valid: false, reason: "local_dots" };
 
-  if (domain.length < 3 || domain.length > 253) return { valid: false, reason: "domain_length" };
+  if (domain.length < 3 || domain.length > 253)
+    return { valid: false, reason: "domain_length" };
 
   const labels = domain.split(".");
 
@@ -42,7 +44,8 @@ export function validateEmail(email: string): EmailValidation {
 
   const labelRe = /^(?!-)[A-Za-z0-9-]{1,63}(?<!-)$/;
 
-  if (!labels.every((l) => labelRe.test(l))) return { valid: false, reason: "domain_label" };
+  if (!labels.every((l) => labelRe.test(l)))
+    return { valid: false, reason: "domain_label" };
 
   const tld = labels[labels.length - 1];
 
@@ -80,7 +83,10 @@ type Opts = {
   disallow?: string[];
 };
 
-export function validatePassword(pw: string, opts: Opts = {}): PasswordValidation {
+export function validatePassword(
+  pw: string,
+  opts: Opts = {},
+): PasswordValidation {
   const {
     min = 8,
     max = 128,
@@ -105,14 +111,17 @@ export function validatePassword(pw: string, opts: Opts = {}): PasswordValidatio
   if (p.length < min) return { valid: false, reason: "too_short" };
   if (p.length > max) return { valid: false, reason: "too_long" };
 
-  if (!allowSpaces && /\s/.test(p)) return { valid: false, reason: "whitespace" };
-  if (!allowUnicode && /[^\x20-\x7E]/.test(p)) return { valid: false, reason: "invalid_char" }; // только ASCII
+  if (!allowSpaces && /\s/.test(p))
+    return { valid: false, reason: "whitespace" };
+  if (!allowUnicode && /[^\x20-\x7E]/.test(p))
+    return { valid: false, reason: "invalid_char" }; // только ASCII
 
   if (!/[a-z]/.test(p)) return { valid: false, reason: "lower" };
   if (!/[A-Z]/.test(p)) return { valid: false, reason: "upper" };
   if (!/\d/.test(p)) return { valid: false, reason: "digit" };
   // ASCII-punctuation as a symbok
-  if (!/[!@#$%^&*()\-_=+\[\]{};:'",.<>/?\\|`~]/.test(p)) return { valid: false, reason: "symbol" };
+  if (!/[!@#$%^&*()\-_=+\[\]{};:'",.<>/?\\|`~]/.test(p))
+    return { valid: false, reason: "symbol" };
 
   // 3+ the same
   if (/(.)\1{2,}/.test(p)) return { valid: false, reason: "repeat" };
@@ -146,7 +155,8 @@ export function validatePassword(pw: string, opts: Opts = {}): PasswordValidatio
 
   if (isSeq(p)) return { valid: false, reason: "sequence" };
 
-  if (disallow.includes(p.toLowerCase())) return { valid: false, reason: "common" };
+  if (disallow.includes(p.toLowerCase()))
+    return { valid: false, reason: "common" };
 
   return { valid: true };
 }
@@ -210,7 +220,9 @@ export function clampText(
   const head = text.slice(0, cut).trim();
 
   // control if we need suffics
-  return head.length < text.length ? head.replace(/[,.!?:;—-]+$/, "") + suffix : head;
+  return head.length < text.length
+    ? head.replace(/[,.!?:;—-]+$/, "") + suffix
+    : head;
 }
 
 export function parseAmount(s: string) {
@@ -220,7 +232,11 @@ export function parseAmount(s: string) {
   return Number.isFinite(n) ? n : NaN;
 }
 
-export function validateMinNumberValue(value: string, MIN: number, setError: Function) {
+export function validateMinNumberValue(
+  value: string,
+  MIN: number,
+  setError: Function,
+) {
   const n = parseAmount(value);
 
   if (!Number.isFinite(n)) {

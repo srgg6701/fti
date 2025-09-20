@@ -31,10 +31,12 @@ export default function AssetsList({ isOpen, onClose }: CommonModal) {
         <div>
           <Input
             classNames={{
-              inputWrapper: "rounded-[15px] overflow-hidden mb-2.5 w-[380px] max-w-full",
+              inputWrapper:
+                "rounded-[15px] overflow-hidden mb-2.5 w-[380px] max-w-full",
             }}
             id="assets-list-search"
             placeholder="Search"
+            type="search"
           />
           <ul
             className="outline-color-15 standard-block-decoration-40 bg-default-100 flex w-[380px] max-w-full justify-between outline"
@@ -51,7 +53,10 @@ export default function AssetsList({ isOpen, onClose }: CommonModal) {
                 key={item.type}
                 className={`rounded-[15px] ${item.type === activeAsset && "bg-translusent-light"}`}
               >
-                <button className="text-sm" onClick={() => setActiveAsset(item.type)}>
+                <button
+                  className="text-sm"
+                  onClick={() => setActiveAsset(item.type)}
+                >
                   {item.type}
                 </button>
               </li>
@@ -59,7 +64,10 @@ export default function AssetsList({ isOpen, onClose }: CommonModal) {
           </ul>
         </div>
         {AssetsData.map((udata, index) => {
-          if (activeAsset !== "All" && activeAsset.toLowerCase() !== udata.asset) {
+          if (
+            activeAsset !== "All" &&
+            activeAsset.toLowerCase() !== udata.asset
+          ) {
             return null;
           }
 
@@ -96,7 +104,9 @@ export default function AssetsList({ isOpen, onClose }: CommonModal) {
                         src={`/assets/images/charts/${
                           udata.direction === "Up" ? "blue" : "purple"
                         }.svg`}
-                        style={{ transform: `${udata.direction === "Down" && "rotateY(180deg)"}` }}
+                        style={{
+                          transform: `${udata.direction === "Down" && "rotateY(180deg)"}`,
+                        }}
                         width={28}
                       />
                     </div>

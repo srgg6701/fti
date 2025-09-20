@@ -19,7 +19,9 @@ export default function PopupWrapper({
   innerPadding?: boolean;
 }) {
   return (
-    <div className={`popup-wrapper fixed inset-0 z-50 flex items-center justify-center`}>
+    <div
+      className={`popup-wrapper fixed inset-0 z-50 flex items-center justify-center`}
+    >
       {/* Overlay layer */}
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
@@ -40,7 +42,9 @@ export default function PopupWrapper({
               onClick={onClose}
             />
             {/* m-[-10px]  */}
-            <div className="flex w-full flex-col justify-center text-center">{children}</div>
+            <div className="flex w-full flex-col justify-center text-center">
+              {children}
+            </div>
           </>
         ) : (
           children

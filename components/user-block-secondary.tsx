@@ -16,8 +16,14 @@ export default function UserBlockSecondary({
   return (
     <div className={`flex w-full ${wrapperJustify} text-right`}>
       {direction && <ArrowsUpDown direction={direction} />}
-      <div className={`px-[5px] ${changeTextSize} whitespace-nowrap`}>{value}</div>
-      {<span className={`${setArrowColor(direction)} ${changeTextSize}`}>{`(${change})`}</span>}
+      <div className={`px-[5px] ${changeTextSize} whitespace-nowrap`}>
+        {value}
+      </div>
+      {
+        <span
+          className={`${setArrowColor(direction)} ${changeTextSize}`}
+        >{`(${change})`}</span>
+      }
     </div>
   );
 }

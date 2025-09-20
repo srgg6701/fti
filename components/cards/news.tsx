@@ -34,7 +34,13 @@ const CardNews = ({
     <article
       className={`md:h-[376px] md:w-[320px] ${marginRight} ${padding} flex flex-col gap-5 ${xtraClasses}`}
     >
-      <UserBlockNews date={date} slug={slug} title={title} userImg={userImg} username={username} />
+      <UserBlockNews
+        date={date}
+        slug={slug}
+        title={title}
+        userImg={userImg}
+        username={username}
+      />
       <div className="flex h-[180] w-[280] items-center overflow-hidden rounded-[16px]">
         <Image
           alt={title}
@@ -46,7 +52,10 @@ const CardNews = ({
       </div>
       <div className="p-4 text-left">
         <h3 className="mb-[10px] text-lg leading-[1.2] font-semibold">
-          <button className="cursor-pointer text-left" onClick={() => router.push(`/news/${slug}`)}>
+          <button
+            className="cursor-pointer text-left"
+            onClick={() => router.push(`/news/${slug}`)}
+          >
             {title}
           </button>
         </h3>

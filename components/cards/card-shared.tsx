@@ -35,7 +35,9 @@ const CardShared = ({
           <UserImage height={55} title="User" userImg={userImg} width={55} />
           <div className="flex flex-col">
             <span className="text-sm font-medium">{username}</span>
-            <span className="text-xs text-white/60">TimeFrame: {timeFrame}</span>
+            <span className="text-xs text-white/60">
+              TimeFrame: {timeFrame}
+            </span>
           </div>
         </>
       ) : (
@@ -71,7 +73,12 @@ const CardShared = ({
       )}
     </header>
     <div className="mb-4 h-[158px] w-[312px]">
-      <Image alt="Chart1" height={158} src={`/assets/images/charts/${chartImg}`} width={312} />
+      <Image
+        alt="Chart1"
+        height={158}
+        src={`/assets/images/charts/${chartImg}`}
+        width={312}
+      />
     </div>
     {username && (
       <footer className="flex items-center justify-end gap-3 text-xs font-bold text-white/70">
