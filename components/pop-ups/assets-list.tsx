@@ -1,17 +1,17 @@
-'use client';
-import { useState } from 'react';
-import { Input } from '@heroui/input';
-import Image from 'next/image';
+"use client";
+import { useState } from "react";
+import { Input } from "@heroui/input";
+import Image from "next/image";
 
-import AssetsData from '@/mockData/assets-data';
-import UserBlock from '@/components/cards/user-block';
-import PopupWrapper from '@/components/pop-ups/popup-wrapper';
-import PopupHeader from '@/components/pop-ups/styled-popup-header';
-import UserBlockSecondary from '@/components/user-block-secondary';
+import AssetsData from "@/mockData/assets-data";
+import UserBlock from "@/components/cards/user-block";
+import PopupWrapper from "@/components/pop-ups/popup-wrapper";
+import PopupHeader from "@/components/pop-ups/styled-popup-header";
+import UserBlockSecondary from "@/components/user-block-secondary";
 
-import { CommonModal } from './types';
+import { CommonModal } from "./types";
 export default function AssetsList({ isOpen, onClose }: CommonModal) {
-  const [activeAsset, setActiveAsset] = useState<string>('All');
+  const [activeAsset, setActiveAsset] = useState<string>("All");
 
   if (!isOpen) {
     return;
@@ -31,7 +31,7 @@ export default function AssetsList({ isOpen, onClose }: CommonModal) {
         <div>
           <Input
             classNames={{
-              inputWrapper: 'rounded-[15px] overflow-hidden mb-2.5 w-[380px] max-w-full',
+              inputWrapper: "rounded-[15px] overflow-hidden mb-2.5 w-[380px] max-w-full",
             }}
             id="assets-list-search"
             placeholder="Search"
@@ -41,15 +41,15 @@ export default function AssetsList({ isOpen, onClose }: CommonModal) {
             id="assets-list"
           >
             {[
-              { type: 'All' },
-              { type: 'Strategy' },
-              { type: 'Stock' },
-              { type: 'Crypto' },
-              { type: 'Forex' },
+              { type: "All" },
+              { type: "Strategy" },
+              { type: "Stock" },
+              { type: "Crypto" },
+              { type: "Forex" },
             ].map((item) => (
               <li
                 key={item.type}
-                className={`rounded-[15px] ${item.type === activeAsset && 'bg-translusent-light'}`}
+                className={`rounded-[15px] ${item.type === activeAsset && "bg-translusent-light"}`}
               >
                 <button className="text-sm" onClick={() => setActiveAsset(item.type)}>
                   {item.type}
@@ -59,7 +59,7 @@ export default function AssetsList({ isOpen, onClose }: CommonModal) {
           </ul>
         </div>
         {AssetsData.map((udata, index) => {
-          if (activeAsset !== 'All' && activeAsset.toLowerCase() !== udata.asset) {
+          if (activeAsset !== "All" && activeAsset.toLowerCase() !== udata.asset) {
             return null;
           }
 
@@ -94,9 +94,9 @@ export default function AssetsList({ isOpen, onClose }: CommonModal) {
                         alt="Asset graph"
                         height={14.5}
                         src={`/assets/images/charts/${
-                          udata.direction === 'Up' ? 'blue' : 'purple'
+                          udata.direction === "Up" ? "blue" : "purple"
                         }.svg`}
-                        style={{ transform: `${udata.direction === 'Down' && 'rotateY(180deg)'}` }}
+                        style={{ transform: `${udata.direction === "Down" && "rotateY(180deg)"}` }}
                         width={28}
                       />
                     </div>

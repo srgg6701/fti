@@ -1,26 +1,26 @@
-'use client';
-import { useState } from 'react';
-import { Button } from '@heroui/button';
+"use client";
+import { useState } from "react";
+import { Button } from "@heroui/button";
 
 //import GenerateCheckbox from '@/.sources/checkboxes';
-import { RadioGroup, Radio } from '@heroui/react';
+import { RadioGroup, Radio } from "@heroui/react";
 
-import PopupWrapper from '@/components/pop-ups/popup-wrapper';
-import PopupHeader, { Subheader } from '@/components/pop-ups/styled-popup-header';
+import PopupWrapper from "@/components/pop-ups/popup-wrapper";
+import PopupHeader, { Subheader } from "@/components/pop-ups/styled-popup-header";
 
-import { SortingModalProps } from './types';
+import { SortingModalProps } from "./types";
 
 const sortOptions = [
-  { value: 'alphabetical', label: 'Alphabetically A-Z' },
-  { value: 'creation-date', label: 'By creation date' },
-  { value: 'profit-level', label: 'By profit level' },
+  { value: "alphabetical", label: "Alphabetically A-Z" },
+  { value: "creation-date", label: "By creation date" },
+  { value: "profit-level", label: "By profit level" },
 ];
 
 export default function SortingModal({
   isOpen,
   onClose,
   onApply,
-  currentSort = 'alphabetical',
+  currentSort = "alphabetical",
 }: SortingModalProps) {
   const [selectedSort, setSelectedSort] = useState(currentSort);
 
@@ -33,7 +33,7 @@ export default function SortingModal({
   // Stub handler for radio selection side-effects
   const onChange = (value: string) => {
     // no-op stub; replace with analytics/telemetry or side-effects if needed
-    console.debug('Radio selected:', value);
+    console.debug("Radio selected:", value);
   };
 
   return (

@@ -1,4 +1,4 @@
-import { SVGProps } from 'react';
+import { SVGProps } from "react";
 // TODO clarify if we need currency
 interface Currency {
   id: string;

@@ -1,9 +1,9 @@
-import type { FilterState, FilterStateBottom } from '@/components/pop-ups/types';
+import type { FilterState, FilterStateBottom } from "@/components/pop-ups/types";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import PopupHeader, { Subheader } from '@/components/pop-ups/styled-popup-header';
-import Slider from '@/components/slider';
+import PopupHeader, { Subheader } from "@/components/pop-ups/styled-popup-header";
+import Slider from "@/components/slider";
 
 type InjectedProps = {
   txtLeftSemibold: string;
@@ -33,7 +33,7 @@ export default function SliderInternals({
   }, []);
 
   const updateFilter = (key: keyof FilterState, target: HTMLInputElement) => {
-    if (key === 'winningRatio') {
+    if (key === "winningRatio") {
       const value = parseInt(target.value, 10);
       const pos = target.getBoundingClientRect();
       const actualWidth = pos.width - 30;
@@ -60,13 +60,13 @@ export default function SliderInternals({
     } else {
       setFilters((prev) => ({
         ...prev,
-        [key]: target.value as FilterState['growthType'] | FilterState['strategyType'],
+        [key]: target.value as FilterState["growthType"] | FilterState["strategyType"],
       }));
     }
   };
 
   const sliderPosition = filters.winningRatio;
-  const txtLeftSemibold = 'text-left font-semibold';
+  const txtLeftSemibold = "text-left font-semibold";
 
   const injected: InjectedProps = {
     txtLeftSemibold,

@@ -1,9 +1,9 @@
-export const metadata = { title: 'Frame256' };
+export const metadata = { title: "Frame256" };
 export default function Frame256() {
   // мок-данные из макета — одинаковые карточки
   const items = Array.from({ length: 16 }, () => ({
     title: "Last week's news",
-    time: '1 day ago',
+    time: "1 day ago",
   }));
 
   return (

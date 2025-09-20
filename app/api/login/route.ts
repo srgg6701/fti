@@ -1,16 +1,16 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 // Mock user data
 const users = [
   {
-    email: 'user@example.com',
-    password: 'password123',
-    username: 'username',
+    email: "user@example.com",
+    password: "password123",
+    username: "username",
   },
 ];
 
 export async function POST(req: Request) {
-  console.log('API POST');
+  console.log("API POST");
   try {
     const { email, password } = await req.json();
 
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     console.log({ user, users });
 
     if (!user) {
-      return NextResponse.json({ error: 'Invalid email and/or password.' }, { status: 401 });
+      return NextResponse.json({ error: "Invalid email and/or password." }, { status: 401 });
     }
 
     return NextResponse.json({
@@ -31,8 +31,8 @@ export async function POST(req: Request) {
       email: user.email,
     });
   } catch (error) {
-    console.log('actual error', error);
+    console.log("actual error", error);
 
-    return NextResponse.json({ error: 'Server error. Please try again later.' }, { status: 500 });
+    return NextResponse.json({ error: "Server error. Please try again later." }, { status: 500 });
   }
 }

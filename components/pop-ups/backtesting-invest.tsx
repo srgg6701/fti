@@ -1,18 +1,18 @@
-'use client';
+"use client";
 // FIXME: remove this file if you don't need it anymore
-import Image from 'next/image';
-import { ReactElement } from 'react';
-import { Card, CardHeader, CardBody, CardFooter, Avatar } from '@heroui/react';
-import { Select, SelectItem } from '@heroui/select';
+import Image from "next/image";
+import { ReactElement } from "react";
+import { Card, CardHeader, CardBody, CardFooter, Avatar } from "@heroui/react";
+import { Select, SelectItem } from "@heroui/select";
 
-import brokers from '@/mockData/brokers-list';
-import PopupHeader, { Header4Left } from '@/components/pop-ups/styled-popup-header';
-import FormElementWrapper from '@/components/pop-ups/form-elements/form-element-wrapper';
-import FormElementInput from '@/components/pop-ups/form-elements/form-element-input';
-import { ButtonRoundedBlue } from '@/components/button-rounded';
-import { selectStyle } from '@/styles/style-variables';
+import brokers from "@/mockData/brokers-list";
+import PopupHeader, { Header4Left } from "@/components/pop-ups/styled-popup-header";
+import FormElementWrapper from "@/components/pop-ups/form-elements/form-element-wrapper";
+import FormElementInput from "@/components/pop-ups/form-elements/form-element-input";
+import { ButtonRoundedBlue } from "@/components/button-rounded";
+import { selectStyle } from "@/styles/style-variables";
 
-import PopupWrapper from './popup-wrapper';
+import PopupWrapper from "./popup-wrapper";
 
 function AccountCard({ onRemove }: { onRemove: () => void }) {
   return (
@@ -31,11 +31,11 @@ function AccountCard({ onRemove }: { onRemove: () => void }) {
         <div className="pt-5 pb-[3px]">
           <div className="mb-2 text-sm leading-3.5">Brokers used</div>
           <div className="flex pl-1.5">
-            {['face-male-spectacles', 'user-joshua', 'face-male-all-orange'].map((img) => (
+            {["face-male-spectacles", "user-joshua", "face-male-all-orange"].map((img) => (
               <Avatar
                 key={img}
                 classNames={{
-                  base: 'relative z-0 -ml-1.5 w-[30px] h-[30px] min-w-[30px] min-h-[30px]',
+                  base: "relative z-0 -ml-1.5 w-[30px] h-[30px] min-w-[30px] min-h-[30px]",
                 }}
                 src={`/assets/images/users/${img}.svg`}
               />
@@ -45,8 +45,8 @@ function AccountCard({ onRemove }: { onRemove: () => void }) {
       </CardBody>
       <CardFooter className="h-[17px] gap-10 py-0">
         {[
-          { label: 'Deposit', rotate: '' },
-          { label: 'Bring out', rotate: '180' },
+          { label: "Deposit", rotate: "" },
+          { label: "Bring out", rotate: "180" },
         ].map((block) => (
           <div key={block.label} className="color-blue-secondary flex text-sm font-medium">
             <Image
@@ -98,7 +98,7 @@ export default function BacktestingInvest({
                   }}
                   id="for-how-long"
                   placeholder="Choose value"
-                  onChange={(e) => console.log('value for how long', e.target.value)}
+                  onChange={(e) => console.log("value for how long", e.target.value)}
                 >
                   <SelectItem key="1d">1 Day</SelectItem>
                 </Select>
@@ -127,7 +127,7 @@ export default function BacktestingInvest({
                   }}
                   id="choose-broker"
                   placeholder="Broker's name"
-                  onChange={(e) => console.log('value for broker chosen', e.target.value)}
+                  onChange={(e) => console.log("value for broker chosen", e.target.value)}
                 >
                   {brokers.map((broker) => (
                     <SelectItem key={broker.key}>{broker.label}</SelectItem>

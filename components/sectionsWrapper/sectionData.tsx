@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import SectionHeader from '@/components/sectionsWrapper/sectionHeader';
+import SectionHeader from "@/components/sectionsWrapper/sectionHeader";
 type SectionDataProps<T> = {
   data: T[];
   title?: string;
@@ -16,25 +16,25 @@ type SectionDataProps<T> = {
 export function SectionData<T>({
   data,
   title,
-  seeAllHref = '/#',
+  seeAllHref = "/#",
   height,
   noHeader = false,
-  rowClassName = '',
-  sectionClassName = '',
+  rowClassName = "",
+  sectionClassName = "",
   horizontalLayout = true,
   getKey,
   renderItem,
 }: SectionDataProps<T>) {
   const style =
     height !== undefined
-      ? { height: typeof height === 'number' ? `${height}px` : height }
+      ? { height: typeof height === "number" ? `${height}px` : height }
       : undefined;
 
   return (
     <section
-      className={`${horizontalLayout ? 'scroller w-full' : 'w-[320px]'}${sectionClassName && ' ' + sectionClassName}`}
+      className={`${horizontalLayout ? "scroller w-full" : "w-[320px]"}${sectionClassName && " " + sectionClassName}`}
     >
-      {!noHeader && <SectionHeader seeAllHref={seeAllHref} title={title || ''} />}
+      {!noHeader && <SectionHeader seeAllHref={seeAllHref} title={title || ""} />}
       <div className={`row article-container ${rowClassName}`} style={style}>
         {data.map((item, i) => (
           <React.Fragment key={getKey?.(item, i) ?? i}>{renderItem(item, i)}</React.Fragment>

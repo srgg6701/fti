@@ -1,11 +1,11 @@
-import Link from 'next/link';
+import Link from "next/link";
 export default function SectionHeader({
   title,
-  textSize = 'text-lg',
-  linkSize = 'text-sm',
-  textWeight = 'font-semibold',
+  textSize = "text-lg",
+  linkSize = "text-sm",
+  textWeight = "font-semibold",
   h,
-  mb = 'mb-4',
+  mb = "mb-4",
   seeAllHref,
   noLink,
 }: {

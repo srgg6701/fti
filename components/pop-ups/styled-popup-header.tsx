@@ -1,24 +1,24 @@
 // TODO: Check to unify ALL the pop-ups
-import tw from 'tailwind-styled-components';
+import tw from "tailwind-styled-components";
 
 export default tw.h2`
   h-[39px] !text-[32px] text-left font-black
 `;
 
 type Header4Props = {
-  $limitW?: '52' | '72' | 'sm' | 'lg';
-  $limitH?: '52' | '72' | 'sm' | 'lg';
+  $limitW?: "52" | "72" | "sm" | "lg";
+  $limitH?: "52" | "72" | "sm" | "lg";
   $h?: string;
   $mBottom?: string;
   $size?: string;
 };
 
 const headerHeader4 = (p: Header4Props) => `
-  ${p.$limitW ? `max-w-${p.$limitW}` : ''}
-  ${p.$limitH ? `max-h-${p.$limitH}` : ''}
-  ${p.$mBottom ? `mb-${p.$mBottom}` : ''}
-  ${p.$h ? `h-${p.$h}` : 'mx-auto'}
-  ${p.$size ? p.$size : 'text-base'}
+  ${p.$limitW ? `max-w-${p.$limitW}` : ""}
+  ${p.$limitH ? `max-h-${p.$limitH}` : ""}
+  ${p.$mBottom ? `mb-${p.$mBottom}` : ""}
+  ${p.$h ? `h-${p.$h}` : "mx-auto"}
+  ${p.$size ? p.$size : "text-base"}
 `;
 
 export const Header4Center = tw.h4<Header4Props>`

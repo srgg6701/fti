@@ -1,9 +1,9 @@
-import Image from 'next/image';
+import Image from "next/image";
 
-import UserImage from '@/components/userImage';
+import UserImage from "@/components/userImage";
 const CardShared = ({
   username,
-  userImg = '',
+  userImg = "",
   timeFrame,
   chartImg,
   roi = 51.25,
@@ -12,8 +12,8 @@ const CardShared = ({
   brokerName,
   brokerCode,
   status,
-  marginRight = 'mr-[10px]',
-  padding = 'p-5',
+  marginRight = "mr-[10px]",
+  padding = "p-5",
 }: {
   username?: string;
   userImg?: string;
@@ -56,13 +56,13 @@ const CardShared = ({
           </div>
           <div
             className={`pt-[9px] text-xs ${
-              status === 'Successfully'
-                ? 'color-blue-canonical'
-                : status === 'Invalid password'
-                  ? 'color-ultra-violet'
-                  : status === 'Verifying'
-                    ? 'opacity-20'
-                    : ''
+              status === "Successfully"
+                ? "color-blue-canonical"
+                : status === "Invalid password"
+                  ? "color-ultra-violet"
+                  : status === "Verifying"
+                    ? "opacity-20"
+                    : ""
             }`}
           >
             {status}

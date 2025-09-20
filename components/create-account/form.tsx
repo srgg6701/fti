@@ -1,8 +1,8 @@
-'use client';
-import { Form } from '@heroui/form';
+"use client";
+import { Form } from "@heroui/form";
 
-import Header from '@/components/create-account/header';
-import Buttons from '@/components/create-account/buttons';
+import Header from "@/components/create-account/header";
+import Buttons from "@/components/create-account/buttons";
 type Props = {
   onSubmit?: React.FormEventHandler<HTMLFormElement>;
   status: string;

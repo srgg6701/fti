@@ -1,9 +1,9 @@
-'use client';
-import React, { useEffect } from 'react';
-import Link from 'next/link';
-import { Button } from '@heroui/button';
+"use client";
+import React, { useEffect } from "react";
+import Link from "next/link";
+import { Button } from "@heroui/button";
 
-import { useUserStore } from '@/lib/store/userStore';
+import { useUserStore } from "@/lib/store/userStore";
 
 export default function LogoutPage() {
   const logoutUser = useUserStore((state) => state.logout);

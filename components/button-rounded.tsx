@@ -1,7 +1,7 @@
 // TODO: Use this button library everywhere to unify code!
-import React, { CSSProperties } from 'react';
-import Image from 'next/image';
-import { Button } from '@heroui/button';
+import React, { CSSProperties } from "react";
+import Image from "next/image";
+import { Button } from "@heroui/button";
 
 type ButtonProps = {
   rounded?: string;
@@ -27,7 +27,7 @@ type ButtonProps = {
   } | null;
   textBeforeImage?: true | null;
   startContent?: React.ReactNode;
-  type?: 'button' | 'submit' | 'reset';
+  type?: "button" | "submit" | "reset";
   style?: CSSProperties | undefined;
   onPress?: () => void;
   onClick?: () => void;
@@ -36,20 +36,20 @@ type ButtonProps = {
 const baseDefaults: Required<
   Omit<
     ButtonProps,
-    'fontSize' | 'maxW' | 'padding' | 'startContent' | 'outline' | 'onPress' | 'onClick' | 'style'
+    "fontSize" | "maxW" | "padding" | "startContent" | "outline" | "onPress" | "onClick" | "style"
   >
 > = {
-  rounded: 'btn-rounded',
-  bgColor: 'bg-blue',
-  fontColor: 'inherit',
-  marginClass: 'm-auto',
-  marginBottom: 'mb-[10px]',
-  height: 'h-10',
-  width: 'w-full',
-  btnText: 'Button',
+  rounded: "btn-rounded",
+  bgColor: "bg-blue",
+  fontColor: "inherit",
+  marginClass: "m-auto",
+  marginBottom: "mb-[10px]",
+  height: "h-10",
+  width: "w-full",
+  btnText: "Button",
   btnImageParams: null,
   textBeforeImage: null,
-  type: 'button',
+  type: "button",
 };
 
 function renderButton(p: ButtonProps) {
@@ -110,12 +110,12 @@ function makeButton(preset: PresetProps) {
 }
 
 export const ButtonRoundedGrey = makeButton({
-  bgColor: 'bg-translusent-light',
-  btnText: 'Register with Google',
-  outline: 'outline outline-color-15',
+  bgColor: "bg-translusent-light",
+  btnText: "Register with Google",
+  outline: "outline outline-color-15",
 });
 
 export const ButtonRoundedBlue = makeButton({
-  bgColor: 'bg-blue',
-  btnText: 'Complete!',
+  bgColor: "bg-blue",
+  btnText: "Complete!",
 });

@@ -1,8 +1,8 @@
-'use client';
-import HomeSections from '@/components/dataSections';
-import HomeStrategiesGraph from '@/mockData/graphs/home-strategies';
-import DropdownPill from '@/components/dateDropDown';
-import ColoredIndicator from '@/components/coloredIndicator';
+"use client";
+import HomeSections from "@/components/dataSections";
+import HomeStrategiesGraph from "@/mockData/graphs/home-strategies";
+import DropdownPill from "@/components/dateDropDown";
+import ColoredIndicator from "@/components/coloredIndicator";
 
 export default function Home() {
   return (
@@ -20,19 +20,19 @@ export default function Home() {
           <div className="jus flex justify-between">
             <div className="flex gap-2.5">
               <span className="font-semibold">Graph</span>
-              <ColoredIndicator data={['32', '1.23']} direction="Up" />
+              <ColoredIndicator data={["32", "1.23"]} direction="Up" />
             </div>
             <div>
               <DropdownPill
                 items={[
-                  { label: '1 Week', value: '1week' },
-                  { label: '1 Month', value: '1month' },
-                  { label: '6 Months', value: '6month' },
-                  { label: '1 Year', value: '1year' },
-                  { label: '2 Years', value: '2years' },
-                  { label: '3 Years', value: '3years' },
+                  { label: "1 Week", value: "1week" },
+                  { label: "1 Month", value: "1month" },
+                  { label: "6 Months", value: "6month" },
+                  { label: "1 Year", value: "1year" },
+                  { label: "2 Years", value: "2years" },
+                  { label: "3 Years", value: "3years" },
                 ]}
-                onSelect={(item) => console.log('selected:', item)}
+                onSelect={(item) => console.log("selected:", item)}
               />
             </div>
           </div>

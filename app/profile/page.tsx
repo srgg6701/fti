@@ -1,66 +1,73 @@
-'use client';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Input } from '@heroui/input';
-import { Textarea } from '@heroui/input';
-import { Switch } from '@heroui/react';
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { Input } from "@heroui/input";
+import { Textarea } from "@heroui/input";
+import { Switch } from "@heroui/react";
 
-import { ButtonRoundedBlue } from '@/components/button-rounded';
-import DeletingSubscritpionConfirmation from '@/components/pop-ups/deletingSubscriptionConfirmation';
-import SectionHeader from '@/components/sectionsWrapper/sectionHeader';
-import { ButtonRoundedGrey } from '@/components/button-rounded';
+import { ButtonRoundedBlue } from "@/components/button-rounded";
+import DeletingSubscritpionConfirmation from "@/components/pop-ups/deletingSubscriptionConfirmation";
+import SectionHeader from "@/components/sectionsWrapper/sectionHeader";
+import { ButtonRoundedGrey } from "@/components/button-rounded";
 
 const headerParams = {
-  h: 'h-[33px]',
-  mb: 'mb-5',
-  seeAllHref: '/#',
+  h: "h-[33px]",
+  mb: "mb-5",
+  seeAllHref: "/#",
 };
-const verticalOffset = 'pt-[var(--offset-80)]';
+const verticalOffset = "pt-[var(--offset-80)]";
 const sectionParams = {
   className: `flex flex-col ${verticalOffset}`,
 };
 
 const billingData = [
   {
-    img: 'plus',
-    title: 'Adding funds',
-    desc: 'Deposit from the account **** 5423',
-    amount: '+ $ 324',
+    img: "plus",
+    title: "Adding funds",
+    desc: "Deposit from the account **** 5423",
+    amount: "+ $ 324",
   },
   {
-    img: 'payment_success',
-    title: 'Payment',
-    desc: 'Payment for the standard service',
-    amount: '$ 324',
+    img: "payment_success",
+    title: "Payment",
+    desc: "Payment for the standard service",
+    amount: "$ 324",
   },
-  { img: 'payment_error', title: 'Adding funds', desc: 'Insufficient funds', amount: '- $ 324' },
+  { img: "payment_error", title: "Adding funds", desc: "Insufficient funds", amount: "- $ 324" },
   {
-    img: 'plus',
-    title: 'Adding funds',
-    desc: 'Deposit from the account **** 5423',
-    amount: '+ $ 324',
+    img: "plus",
+    title: "Adding funds",
+    desc: "Deposit from the account **** 5423",
+    amount: "+ $ 324",
   },
 ];
 
 export default function ProfileDraft() {
   const router = useRouter();
   const [notificationIsOpen, setNotification] = useState<boolean>(false);
+
+  const [isUpdateOpen, setUpdateOpen] = useState(false);
+
+  const handleTariffBtn = () => {
+    setUpdateOpen(!isUpdateOpen);
+  };
+
   // Handlers (placeholders)
   const handleVerification = () => {
-    console.log('Handling verification...');
-    window.alert('Handling verification...');
+    console.log("Handling verification...");
+    window.alert("Handling verification...");
   };
   const handleToggleDark = (checked: boolean) => {};
   const handleSendSupport = () => {};
 
   const colorizeAmount = (amount: string): string | undefined => {
     switch (amount[0]) {
-      case '+':
-        return 'color-blue-canonical';
-      case '-':
-        return 'color-ultra-violet';
+      case "+":
+        return "color-blue-canonical";
+      case "-":
+        return "color-ultra-violet";
       default:
         break;
     }
@@ -92,24 +99,45 @@ export default function ProfileDraft() {
                 <h2 className="h-[28px] text-[28px]">
                   <Link href="/account/personal-information?id=dfq125dfe25">Joshua</Link>
                 </h2>
-                <ButtonRoundedBlue
-                  bgColor="bg-light"
-                  btnImageParams={{
-                    src: 'assets/images/icons/tariff-plan-black.svg',
-                    alt: 'Tariff plan',
-                    height: 13.67,
-                    width: 13.67,
-                    className: 'ml-2.5',
-                  }}
-                  btnText="Tariff plan"
-                  fontColor="text-[#030303]"
-                  fontSize="text-sm"
-                  height="!h-[27px]"
-                  padding="!px-[10px] !py-[5px]"
-                  textBeforeImage={true}
-                  width="min-w-[112px]"
-                  onClick={() => router.push('/tariffplan')}
-                />
+                <div className="relative">
+                  <ButtonRoundedBlue
+                    bgColor={`bg-light ${isUpdateOpen && "opacity-20"}`}
+                    btnImageParams={{
+                      src: "assets/images/icons/tariff-plan-black.svg",
+                      alt: "Tariff plan",
+                      height: 13.67,
+                      width: 13.67,
+                      className: "ml-2.5",
+                    }}
+                    btnText="Tariff plan"
+                    fontColor="text-[#030303]"
+                    fontSize="text-sm"
+                    height="!h-[27px]"
+                    padding="!px-[10px] !py-[5px]"
+                    textBeforeImage={true}
+                    width="min-w-[112px]"
+                    onClick={handleTariffBtn}
+                  />
+                  {isUpdateOpen && (
+                    <div className="standard-colored-005-rounded absolute top-0 right-[-240px] p-5">
+                      <h5 className="text-sm font-medium">Standard</h5>
+                      <p className="mb-5 opacity-50">Active until 24.03.2026</p>
+                      <button
+                        className="relative h-10 w-[190px] cursor-pointer rounded-[40px] bg-gradient-to-r from-[#101BC3] to-[#FF33A6]"
+                        onClick={() => router.push("/tariffplan")}
+                      >
+                        <span className="pr-[12.5px]">Update the plan</span>
+                        <Image
+                          alt="Tariff plan"
+                          className="absolute top-[12.5px] right-5"
+                          height={15}
+                          src="/assets/images/icons/tariff-plan-white.svg"
+                          width={15}
+                        />
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

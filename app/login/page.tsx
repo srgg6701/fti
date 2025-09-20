@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useState, useEffect, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
-import { Input } from '@heroui/input';
+import { useState, useEffect, FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { Input } from "@heroui/input";
 
-import Form from '@/components/create-account/form';
-import { useUserStore } from '@/lib/store/userStore';
-import ErrMess from '@/components/errMess';
-import { apiFetch } from '@/lib/api';
-import LoginResponse from '@/types/auth';
+import Form from "@/components/create-account/form";
+import { useUserStore } from "@/lib/store/userStore";
+import ErrMess from "@/components/errMess";
+import { apiFetch } from "@/lib/api";
+import LoginResponse from "@/types/auth";
 
 export default function LoginPage() {
   const loginUser = useUserStore((state) => state.login);
@@ -16,17 +16,17 @@ export default function LoginPage() {
 
   const router = useRouter();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   // TODO: unify this for all cases
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errMess, setErrMess] = useState<string | null>(null);
   // const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.push('/home');
-      console.log('User is authenticated');
+      router.push("/home");
+      console.log("User is authenticated");
     }
   }, [isAuthenticated, router]);
 
@@ -34,43 +34,43 @@ export default function LoginPage() {
     e.preventDefault();
     setErrMess(null);
     if (!email || !password) {
-      setErrMess('Please fill in all fields.');
+      setErrMess("Please fill in all fields.");
 
       return;
     }
 
     try {
-      const resp: LoginResponse = await apiFetch('/auth/login', {
-        method: 'POST',
+      const resp: LoginResponse = await apiFetch("/auth/login", {
+        method: "POST",
         body: JSON.stringify({ email, password }),
       });
 
       if (resp?.success) {
         loginUser(resp.user.email); // Zustand
         const next =
-          new URLSearchParams(window.location.search).get('next') ||
-          sessionStorage.getItem('reauth_from') ||
-          '/home';
+          new URLSearchParams(window.location.search).get("next") ||
+          sessionStorage.getItem("reauth_from") ||
+          "/home";
 
-        sessionStorage.removeItem('reauth_from');
+        sessionStorage.removeItem("reauth_from");
         router.replace(next);
 
         return;
       }
-      setErrMess('Login failed.'); // запасной вариант
+      setErrMess("Login failed."); // запасной вариант
     } catch (err) {
-      setErrMess('Network or auth error. Please try again.');
+      setErrMess("Network or auth error. Please try again.");
       // eslint-disable-next-line no-console
       console.error(err);
     } finally {
-      setTimeout(() => setStatus('idle'), 1000);
+      setTimeout(() => setStatus("idle"), 1000);
     }
   };
 
   return (
     <Form
       header="Login to your account"
-      messageType={['provide-your-email', 'have-you-account']}
+      messageType={["provide-your-email", "have-you-account"]}
       status={status}
       onSubmit={handleSubmit}
     >

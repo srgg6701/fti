@@ -1,35 +1,35 @@
-'use client';
-import { useState, useRef } from 'react';
+"use client";
+import { useState, useRef } from "react";
 import {
   Navbar as HeroUINavbar,
   NavbarContent,
   NavbarMenu,
   NavbarMenuToggle,
-} from '@heroui/navbar';
-import Link from 'next/link';
+} from "@heroui/navbar";
+import Link from "next/link";
 // FIXME: clarify if we can get rid from clsx and remove if we can
 //import clsx from 'clsx';
-import { usePathname, useSearchParams } from 'next/navigation';
-import Image from 'next/image';
-import { Input } from '@heroui/input';
+import { usePathname, useSearchParams } from "next/navigation";
+import Image from "next/image";
+import { Input } from "@heroui/input";
 
-import { checkRouteAside, getUrlSegments } from '@/lib/utils';
-import { siteConfig } from '@/config/site';
+import { checkRouteAside, getUrlSegments } from "@/lib/utils";
+import { siteConfig } from "@/config/site";
 //import { ThemeSwitch } from '@/components/theme-switch';
-import { useUserStore } from '@/lib/store/userStore';
-import { filterData } from '@/components/dataSections';
-import SortingModal from '@/components/pop-ups/sorting';
-import FilterModal from '@/components/pop-ups/filter';
-import Backtesting from '@/components/pop-ups/backtesting';
-import Notification from '@/components/pop-ups/notification';
-import Notice from '@/components/pop-ups/notice';
-import InviteFriends from '@/components/pop-ups/invite-friends';
-import notifications from '@/mockData/notifications';
-import { Icon, menuIcons } from '@/components/icons';
+import { useUserStore } from "@/lib/store/userStore";
+import { filterData } from "@/components/dataSections";
+import SortingModal from "@/components/pop-ups/sorting";
+import FilterModal from "@/components/pop-ups/filter";
+import Backtesting from "@/components/pop-ups/backtesting";
+import Notification from "@/components/pop-ups/notification";
+import Notice from "@/components/pop-ups/notice";
+import InviteFriends from "@/components/pop-ups/invite-friends";
+import notifications from "@/mockData/notifications";
+import { Icon, menuIcons } from "@/components/icons";
 
-import '@/styles/style-navbar.css';
-import AssetsList from '../pop-ups/assets-list';
-import Invest from '../pop-ups/invest';
+import "@/styles/style-navbar.css";
+import AssetsList from "../pop-ups/assets-list";
+import Invest from "../pop-ups/invest";
 
 export const Navbar = () => {
   const navBarContainer = useRef<HTMLElement | null>(null);
@@ -41,12 +41,12 @@ export const Navbar = () => {
 
   // TODO: remove after clarifying the way of opening Backtesting and Add Account modals
   const params = useSearchParams();
-  const backtestingOpen = params.get('backtesting');
-  const investOpen = params.get('invest');
-  const noticeOpen = params.get('notice');
-  const notificationOpen = params.get('notification');
-  const assetListOpen = params.get('asset-list');
-  const inviteOpen = params.get('invite');
+  const backtestingOpen = params.get("backtesting");
+  const investOpen = params.get("invest");
+  const noticeOpen = params.get("notice");
+  const notificationOpen = params.get("notification");
+  const assetListOpen = params.get("asset-list");
+  const inviteOpen = params.get("invite");
 
   const [isNotificationOpen, setNotificationOpen] = useState<boolean>(!!notificationOpen);
   const [isAssetsListOpen, setAssetsListOpen] = useState<boolean>(!!assetListOpen);
@@ -58,12 +58,12 @@ export const Navbar = () => {
   const [isInvestOpen, setInvestOpen] = useState<boolean>(!!investOpen);
   const [isInviteOpen, setInviteOpen] = useState<boolean>(!!inviteOpen);
 
-  const [search_text, setSearch] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [search_text, setSearch] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [isNotificationsOpen, setNotifications] = useState(false);
   // SORT
   const [isSortingOpen, setIsSortingOpen] = useState(false);
-  const [currentSort, setCurrentSort] = useState('alphabetical');
+  const [currentSort, setCurrentSort] = useState("alphabetical");
   // FILTER
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   /* const [filters, setFilters] = useState<FilterState>({
@@ -75,55 +75,55 @@ export const Navbar = () => {
 
   if (checkRouteAside(urlFirstSegment)) return null;
 
-  let pageHeader = '';
+  let pageHeader = "";
 
   switch (urlFirstSegment) {
-    case '/home':
-      pageHeader = 'Home';
+    case "/home":
+      pageHeader = "Home";
       break;
-    case '/people':
-      pageHeader = 'People';
+    case "/people":
+      pageHeader = "People";
       break;
-    case '/strategies':
-      if (urlSecondSegment?.includes('strategy')) {
-        pageHeader = 'Strategy';
-        console.log('pageHeader', pageHeader);
+    case "/strategies":
+      if (urlSecondSegment?.includes("strategy")) {
+        pageHeader = "Strategy";
+        console.log("pageHeader", pageHeader);
         break;
       }
-      pageHeader = 'Strategies';
+      pageHeader = "Strategies";
       break;
-    case '/news':
-      pageHeader = 'News';
+    case "/news":
+      pageHeader = "News";
       break;
-    case '/profile':
-      pageHeader = 'Profile';
+    case "/profile":
+      pageHeader = "Profile";
       break;
-    case '/accounts':
-      pageHeader = 'Accounts';
+    case "/accounts":
+      pageHeader = "Accounts";
       break;
-    case '/frame':
-      pageHeader = 'Frame';
+    case "/frame":
+      pageHeader = "Frame";
       break;
-    case '/frame256':
-      pageHeader = 'Frame 256';
+    case "/frame256":
+      pageHeader = "Frame 256";
       break;
-    case '/meaning':
-      pageHeader = 'Meaning';
+    case "/meaning":
+      pageHeader = "Meaning";
       break;
-    case '/news3':
-      pageHeader = 'News 3';
+    case "/news3":
+      pageHeader = "News 3";
       break;
-    case '/referral-system':
-      pageHeader = 'Referral system';
+    case "/referral-system":
+      pageHeader = "Referral system";
       break;
-    case '/tariffplan':
-      pageHeader = 'Tariff Plan';
+    case "/tariffplan":
+      pageHeader = "Tariff Plan";
       break;
-    case '/update':
-      pageHeader = 'Update';
+    case "/update":
+      pageHeader = "Update";
       break;
-    case '/verification':
-      pageHeader = 'Verification';
+    case "/verification":
+      pageHeader = "Verification";
       break;
     default:
       break;
@@ -135,18 +135,18 @@ export const Navbar = () => {
     return (
       <>
         {items.map((item) => {
-          const iconName = item.href.split('/')[1] as keyof typeof menuIcons;
+          const iconName = item.href.split("/")[1] as keyof typeof menuIcons;
 
           return (
             <li key={item.href} className="flex list-none items-center">
               <Link
-                aria-current={urlFirstSegment === item.href ? 'page' : undefined}
-                className={`menu-item flex items-center gap-3 ${urlFirstSegment === item.href ? '' : 'opacity-60 hover:opacity-100'}`}
+                aria-current={urlFirstSegment === item.href ? "page" : undefined}
+                className={`menu-item flex items-center gap-3 ${urlFirstSegment === item.href ? "" : "opacity-60 hover:opacity-100"}`}
                 href={item.href}
               >
                 {Icon({
                   ...menuIcons[iconName],
-                  color: 'white', // TODO: make color self-customizing
+                  color: "white", // TODO: make color self-customizing
                 })}
                 <span>{item.label}</span>
               </Link>
@@ -158,7 +158,7 @@ export const Navbar = () => {
   };
 
   const MenuRightSide = ({ className, onClick }: { className?: string; onClick: () => void }) => (
-    <div className={className || ''} id="exit-link">
+    <div className={className || ""} id="exit-link">
       <Image
         alt="Show notifications"
         className="mr-5 inline-block"
@@ -184,8 +184,8 @@ export const Navbar = () => {
   );
 
   async function getData() {
-    console.log('Get data...');
-    setStatus('loading');
+    console.log("Get data...");
+    setStatus("loading");
     try {
       /* await apiFetch('/auth/search', {
         method: 'GET',
@@ -193,18 +193,18 @@ export const Navbar = () => {
         }); */
       /****** send request to the endpoint to get the confirmation code ******/
       await new Promise((r) => setTimeout(r, 3500));
-      console.log('Get data...');
-      setStatus('success');
+      console.log("Get data...");
+      setStatus("success");
       //router.push('/login');
     } catch (e) {
       //setStatus('error');
     } finally {
-      setTimeout(() => setStatus('idle'), 1000);
+      setTimeout(() => setStatus("idle"), 1000);
     }
   }
 
   const filterDataEnter: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       getData();
       //e.preventDefault(); // если нужно отменить сабмит формы
       filterData(`Enter: filtered data by ${search_text}`);
@@ -264,7 +264,7 @@ export const Navbar = () => {
 
   return (
     <>
-      {status === 'loading' ? (
+      {status === "loading" ? (
         <div className="mb-[-4] bg-blue-200 p-4 text-black">Data is loading...</div>
       ) : (
         <HeroUINavbar
@@ -281,7 +281,7 @@ export const Navbar = () => {
                 <h1 className="mr-[1vw] leading-[27px]" id="page-header">
                   {pageHeader}
                 </h1>
-                {pageHeader === 'Strategies' && (
+                {pageHeader === "Strategies" && (
                   <div className="flex gap-[5px] max-2xl:-mb-10 max-2xl:translate-y-[20px]">
                     <Input
                       className="standard-block-decoration-40"

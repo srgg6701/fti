@@ -1,8 +1,8 @@
-'use client';
-import { useRouter } from 'next/navigation';
+"use client";
+import { useRouter } from "next/navigation";
 
-import { ButtonRoundedBlue } from '@/components/button-rounded';
-import { Header4Center, Header4Left } from '@/components/pop-ups/styled-popup-header';
+import { ButtonRoundedBlue } from "@/components/button-rounded";
+import { Header4Center, Header4Left } from "@/components/pop-ups/styled-popup-header";
 
 type ProgramCondProps = {
   refSyst?: boolean;
@@ -36,7 +36,7 @@ export default function InviteFriendsContent({ refSyst = false, onClose }: Progr
   const router = useRouter();
   const goAndClose = () => {
     if (onClose) onClose();
-    router.push('/referral-system');
+    router.push("/referral-system");
   };
 
   return (
@@ -58,16 +58,16 @@ export default function InviteFriendsContent({ refSyst = false, onClose }: Progr
       <div className="flex">
         <ButtonRoundedBlue
           btnImageParams={{
-            alt: 'Invite friends!',
+            alt: "Invite friends!",
             className: `mr-2.5`,
             height: 16,
             width: 17,
-            src: '/assets/images/icons/sharing.svg',
+            src: "/assets/images/icons/sharing.svg",
           }}
           btnText="Invite friends"
           height="h-[45px]"
           marginBottom="0"
-          marginClass={`${refSyst && 'ml-auto'}`}
+          marginClass={`${refSyst && "ml-auto"}`}
           padding="p-5"
           width="w-[300px]"
         />

@@ -1,13 +1,13 @@
-'use client';
-import { Fragment, useState, useEffect } from 'react';
-import Image from 'next/image';
-import { Button } from '@heroui/button';
+"use client";
+import { Fragment, useState, useEffect } from "react";
+import Image from "next/image";
+import { Button } from "@heroui/button";
 
-import UserBlock from '@/components/cards/user-block';
-import Subheaders from '@/components/headers/subheaders';
-import DropdownPill from '@/components/dateDropDown';
-import UserBlockSecondary from '@/components/user-block-secondary';
-import perfData from '@/mockData/performance';
+import UserBlock from "@/components/cards/user-block";
+import Subheaders from "@/components/headers/subheaders";
+import DropdownPill from "@/components/dateDropDown";
+import UserBlockSecondary from "@/components/user-block-secondary";
+import perfData from "@/mockData/performance";
 
 function Collapsible({ open, children }: { open: boolean; children: React.ReactNode }) {
   const [shouldRender, setShouldRender] = useState(open);
@@ -24,7 +24,7 @@ function Collapsible({ open, children }: { open: boolean; children: React.ReactN
   return (
     <div
       className={`relative overflow-hidden transition-[max-height,opacity,margin] duration-300 ${
-        open ? 'mb-5 max-h-40 opacity-100' : 'mb-0 max-h-0 opacity-0'
+        open ? "mb-5 max-h-40 opacity-100" : "mb-0 max-h-0 opacity-0"
       }`}
       onTransitionEnd={handleEnd}
     >
@@ -69,14 +69,14 @@ export default function StrategyId() {
 
   // TODO: Clarify if this function has relftions to onSimulation in backtesting.tsx
   function onSimulation() {
-    alert('On simulation');
-    console.log('Simulation started');
+    alert("On simulation");
+    console.log("Simulation started");
   }
 
   // TODO: Clarify if this function has relftions to onSimulation in invest.tsx
   function onInvest() {
-    alert('On invest');
-    console.log('Invest started');
+    alert("On invest");
+    console.log("Invest started");
   }
 
   return (
@@ -116,14 +116,14 @@ export default function StrategyId() {
               <Subheaders direction="Up" header="$ 1432" subheader="$ 324 (3.23%)" />
               <DropdownPill
                 items={[
-                  { label: '1 Week', value: '1week' },
-                  { label: '1 Month', value: '1month' },
-                  { label: '6 Months', value: '6month' },
-                  { label: '1 Year', value: '1year' },
-                  { label: '2 Years', value: '2years' },
-                  { label: '3 Years', value: '3years' },
+                  { label: "1 Week", value: "1week" },
+                  { label: "1 Month", value: "1month" },
+                  { label: "6 Months", value: "6month" },
+                  { label: "1 Year", value: "1year" },
+                  { label: "2 Years", value: "2years" },
+                  { label: "3 Years", value: "3years" },
                 ]}
-                onSelect={(item) => console.log('selected:', item)}
+                onSelect={(item) => console.log("selected:", item)}
               />
             </div>
             <Image
@@ -165,9 +165,9 @@ export default function StrategyId() {
         <section className="standard-colored-005-rounded p-5">
           <h4 className="mb-5 h-[21px]">Details</h4>
           {[
-            { header: '2025', subheader: '$ 32 (1.23%)', direction: 'Up' },
-            { header: '2024', subheader: '$ 32 (1.23%)', direction: 'Up' },
-            { header: '2023', subheader: '$ 674 (16.29%)', direction: 'Up' },
+            { header: "2025", subheader: "$ 32 (1.23%)", direction: "Up" },
+            { header: "2024", subheader: "$ 32 (1.23%)", direction: "Up" },
+            { header: "2023", subheader: "$ 674 (16.29%)", direction: "Up" },
           ].map((data, i) => {
             const itemId = `${data.header}-${i}`;
             const open = openIds.includes(itemId);
@@ -190,7 +190,7 @@ export default function StrategyId() {
                     alt="Click to Expand / Collaps"
                     height={9}
                     src="/assets/images/icons/arrows/arrow_down.png"
-                    style={{ height: '9px', transform: `rotate(${open ? 180 : 0}deg)` }}
+                    style={{ height: "9px", transform: `rotate(${open ? 180 : 0}deg)` }}
                     width={14}
                   />
                 </div>

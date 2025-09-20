@@ -1,11 +1,11 @@
-'use client';
-import { usePathname } from 'next/navigation';
-import Link from 'next/link';
+"use client";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
-import { getUrlSegments } from '@/lib/utils';
-import { LogoFTI } from '@/components/icons';
-import { siteConfig } from '@/config/site';
-import { checkRouteAside } from '@/lib/utils';
+import { getUrlSegments } from "@/lib/utils";
+import { LogoFTI } from "@/components/icons";
+import { siteConfig } from "@/config/site";
+import { checkRouteAside } from "@/lib/utils";
 
 export default function Footer() {
   const urlFirstSegment = getUrlSegments(usePathname, 1);
@@ -20,7 +20,7 @@ export default function Footer() {
           {siteConfig.navItems.map((item) => (
             <Link
               key={item.href}
-              className={`${urlFirstSegment === item.href ? '' : 'opacity-60 hover:opacity-100'} block`}
+              className={`${urlFirstSegment === item.href ? "" : "opacity-60 hover:opacity-100"} block`}
               href={item.href}
             >
               {item.label}

@@ -1,15 +1,15 @@
-'use client';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import Image from 'next/image';
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import Image from "next/image";
 
-import { ButtonRoundedGrey, ButtonRoundedBlue } from '@/components/button-rounded';
-import { getUrlSegments } from '@/lib/utils';
+import { ButtonRoundedGrey, ButtonRoundedBlue } from "@/components/button-rounded";
+import { getUrlSegments } from "@/lib/utils";
 
 type ButtonsProps = {
   messageType: string;
   status?: string;
-  type: 'button' | 'submit' | 'reset' | undefined;
+  type: "button" | "submit" | "reset" | undefined;
 };
 
 export default function Buttons({ messageType, status, type }: ButtonsProps) {
@@ -23,15 +23,15 @@ export default function Buttons({ messageType, status, type }: ButtonsProps) {
         }
       />
       <ButtonRoundedBlue type={type} />
-      {urlFirstSegment !== '/login' && urlFirstSegment !== '/logout' && (
+      {urlFirstSegment !== "/login" && urlFirstSegment !== "/logout" && (
         <p className="mt-[11.5px] text-sm">
-          {messageType === 'have-you-account' && 'Do you already have an account?'}
+          {messageType === "have-you-account" && "Do you already have an account?"}
           <Link className="ml-1 font-bold" href="/login">
             Log in
           </Link>
         </p>
       )}
-      {status === 'error' && (
+      {status === "error" && (
         <p className="text-sm text-red-400" role="alert">
           Something went wrong. Try again.
         </p>

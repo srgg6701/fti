@@ -1,14 +1,14 @@
-'use client';
-import { useRouter } from 'next/navigation';
+"use client";
+import { useRouter } from "next/navigation";
 
-import { LogoFTI } from '@/components/icons';
+import { LogoFTI } from "@/components/icons";
 
 export default function Default() {
   const router = useRouter();
   const tm = setTimeout(() => {
     clearTimeout(tm);
-    console.log('Will redirect to the create account');
-    router.replace('/create-account');
+    console.log("Will redirect to the create account");
+    router.replace("/create-account");
   }, 4000);
 
   return (

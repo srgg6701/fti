@@ -1,23 +1,23 @@
-import type { CommonModal } from '@/components/pop-ups/types';
+import type { CommonModal } from "@/components/pop-ups/types";
 
-import { ChangeEvent } from 'react';
+import { ChangeEvent } from "react";
 
-import { ButtonRoundedBlue } from '@/components/button-rounded';
-import PopupWrapper from '@/components/pop-ups/popup-wrapper';
-import SliderInternals from '@/components/pop-ups/slider-internals';
+import { ButtonRoundedBlue } from "@/components/button-rounded";
+import PopupWrapper from "@/components/pop-ups/popup-wrapper";
+import SliderInternals from "@/components/pop-ups/slider-internals";
 
-import FormElementInput from './form-elements/form-element-input';
-import FormElementWrapper from './form-elements/form-element-wrapper';
+import FormElementInput from "./form-elements/form-element-input";
+import FormElementWrapper from "./form-elements/form-element-wrapper";
 
 export default function Backtesting({ isOpen, onClose }: CommonModal) {
   if (!isOpen) {
     return;
   }
   const onSimulation = () => {
-    console.log('Simulation started');
+    console.log("Simulation started");
   };
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log('onChange, e:', e);
+    console.log("onChange, e:", e);
   };
 
   return (

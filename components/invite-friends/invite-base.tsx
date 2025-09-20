@@ -1,6 +1,6 @@
-import InviteFriendsContent from '@/components/invite-friends';
+import InviteFriendsContent from "@/components/invite-friends";
 
-import InviteImage from './invite-image';
+import InviteImage from "./invite-image";
 
 export default function InviteBase({ onClose }: { onClose?: () => void }) {
   return (

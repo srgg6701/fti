@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 type Item = { label: string; value: string; disabled?: boolean };
 
@@ -10,7 +10,7 @@ export default function DropdownPill({
   onChange,
   width = 86,
   height = 21,
-  className = '',
+  className = "",
   onSelect,
 }: {
   items: Item[];
@@ -22,7 +22,7 @@ export default function DropdownPill({
   onSelect?: (item: any) => void;
 }) {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(defaultValue ?? items[0]?.value ?? '');
+  const [value, setValue] = useState(defaultValue ?? items[0]?.value ?? "");
   const selected = items.find((i) => i.value === value);
 
   return (
@@ -34,17 +34,17 @@ export default function DropdownPill({
         style={{
           height,
           borderRadius: height / 2,
-          background: 'rgba(244,249,255,0.05)',
-          color: '#F4F9FF',
+          background: "rgba(244,249,255,0.05)",
+          color: "#F4F9FF",
         }}
         type="button"
         onClick={() => setOpen((o) => !o)}
       >
         <span className="text-sm leading-none whitespace-nowrap">
-          {selected?.label ?? 'Select'}
+          {selected?.label ?? "Select"}
         </span>
         <svg
-          className={`transition-transform ${open ? 'rotate-180' : ''}`}
+          className={`transition-transform ${open ? "rotate-180" : ""}`}
           height="12"
           viewBox="0 0 12 12"
           width="12"
@@ -74,10 +74,10 @@ export default function DropdownPill({
                     aria-selected={isSel}
                     className={`w-full px-3 py-1.5 text-left text-[12px] text-white ${
                       it.disabled
-                        ? 'cursor-not-allowed opacity-50'
+                        ? "cursor-not-allowed opacity-50"
                         : isSel
-                          ? 'bg-white/15'
-                          : 'hover:bg-white/10'
+                          ? "bg-white/15"
+                          : "hover:bg-white/10"
                     }`}
                     disabled={it.disabled}
                     role="option"

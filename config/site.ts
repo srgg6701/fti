@@ -1,33 +1,33 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: 'Fintech Trade Innovation',
-  description: 'App for fintech services',
+  name: "Fintech Trade Innovation",
+  description: "App for fintech services",
   // items order matters since it defines the menu's order appearance
   navItems: [
     {
-      label: 'Home',
-      href: '/home',
+      label: "Home",
+      href: "/home",
       protected: true,
     },
     {
-      label: 'People',
-      href: '/people',
+      label: "People",
+      href: "/people",
       protected: true,
     },
     {
-      label: 'Strategies',
-      href: '/strategies',
+      label: "Strategies",
+      href: "/strategies",
       protected: true,
     },
     {
-      label: 'Pricing',
-      href: '/pricing',
+      label: "Pricing",
+      href: "/pricing",
       protected: false,
     },
     {
-      label: 'News',
-      href: '/news',
+      label: "News",
+      href: "/news",
       protected: true,
     },
     /* {
@@ -43,7 +43,7 @@ export const siteConfig = {
   ],
 };
 
-const endpoint = 'https://653fb0ea9e8bd3be29e10cd4.mockapi.io/api/v1/';
+const endpoint = "https://653fb0ea9e8bd3be29e10cd4.mockapi.io/api/v1/";
 const endpointCurrencies = `${endpoint}currencies/`;
 const endpointBalances = `${endpoint}people/`;
 

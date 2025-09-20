@@ -1,34 +1,34 @@
-'use client';
-import { ButtonRoundedBlue, ButtonRoundedGrey } from '@/components/button-rounded';
+"use client";
+import { ButtonRoundedBlue, ButtonRoundedGrey } from "@/components/button-rounded";
 
 export default function Tariffplan() {
   const plans = [
     {
-      name: 'Standard',
-      badge: 'Popular',
-      price: '$50.99',
-      period: '1 month',
-      cta: 'Buy',
+      name: "Standard",
+      badge: "Popular",
+      price: "$50.99",
+      period: "1 month",
+      cta: "Buy",
     },
     {
       name: "Let's discuss it",
       badge: null,
-      price: 'Contractual',
-      period: '1 month',
-      cta: 'Buy',
+      price: "Contractual",
+      period: "1 month",
+      cta: "Buy",
     },
   ];
 
   const btnProps = {
-    btnText: 'Buy',
-    height: 'h-[45px]',
+    btnText: "Buy",
+    height: "h-[45px]",
   };
 
   const onClickBlue = () => {
-    console.log('Blue');
+    console.log("Blue");
   };
   const onClickGrey = () => {
-    console.log('Grey');
+    console.log("Grey");
   };
 
   return (
@@ -68,7 +68,7 @@ export default function Tariffplan() {
                 The service uses a database characteristics, scenarios and interactions
               </p>
             </div>
-            {p.name === 'Standard' ? (
+            {p.name === "Standard" ? (
               <ButtonRoundedBlue {...btnProps} onClick={onClickBlue} />
             ) : (
               <ButtonRoundedGrey {...btnProps} onClick={onClickGrey} />

@@ -1,14 +1,14 @@
-'use client';
-import DataMyStrategies from '@/mockData/dataMyStrategies';
-import DataTopPerforming from '@/mockData/dataTopPerforming';
-import DataNews from '@/mockData/dataNews';
-import { SectionData } from '@/components/sectionsWrapper/sectionData';
-import { useAdjustArticleWidth } from '@/hooks/useAdjustArticleWidth';
-import CardMyStrategies from '@/components/cards/my-strategies';
-import CardShared from '@/components/cards/card-shared';
-import CardNews from '@/components/cards/news';
-import { clampText } from '@/lib/utils';
-import '@/styles/style-sections.css';
+"use client";
+import DataMyStrategies from "@/mockData/dataMyStrategies";
+import DataTopPerforming from "@/mockData/dataTopPerforming";
+import DataNews from "@/mockData/dataNews";
+import { SectionData } from "@/components/sectionsWrapper/sectionData";
+import { useAdjustArticleWidth } from "@/hooks/useAdjustArticleWidth";
+import CardMyStrategies from "@/components/cards/my-strategies";
+import CardShared from "@/components/cards/card-shared";
+import CardNews from "@/components/cards/news";
+import { clampText } from "@/lib/utils";
+import "@/styles/style-sections.css";
 
 //TODO: temporal solution, DataTopPerforming should be changed to real data obtained from server
 const DataWorldLeaders = [...DataTopPerforming];
@@ -30,7 +30,7 @@ export default function HomeSections({ section }: { section: string }) {
 
   return (
     <div className="mt-[80px] mb-[56px] flex flex-col gap-[5rem]">
-      {section === 'home/strategies' && (
+      {section === "home/strategies" && (
         <SectionData
           data={DataMyStrategies}
           getKey={(d, i) => `${d.username}-${i}`}
@@ -49,7 +49,7 @@ export default function HomeSections({ section }: { section: string }) {
           title="My Strategies"
         />
       )}
-      {(section === 'home' || section === 'home/strategies') && (
+      {(section === "home" || section === "home/strategies") && (
         <SectionData
           data={DataTopPerforming}
           getKey={(d, i) => `${d.timeFrame}-${i}`}
@@ -69,7 +69,7 @@ export default function HomeSections({ section }: { section: string }) {
           title="Top Performing"
         />
       )}
-      {(section === 'home' || section === 'home/strategies') && (
+      {(section === "home" || section === "home/strategies") && (
         <SectionData
           data={DataNews}
           getKey={(d, i) => `${d.title}-${i}`}
@@ -89,7 +89,7 @@ export default function HomeSections({ section }: { section: string }) {
           title="DataNews"
         />
       )}
-      {section === 'strategies' && (
+      {section === "strategies" && (
         <>
           <SectionData
             data={DataWorldLeaders}

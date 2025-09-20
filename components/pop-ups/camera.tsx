@@ -1,15 +1,15 @@
-'use client';
-import Image from 'next/image';
+"use client";
+import Image from "next/image";
 
-import { ButtonRoundedGrey } from '@/components/button-rounded';
-import DottedCircularProgress from '@/components/dottedCircularProgress';
+import { ButtonRoundedGrey } from "@/components/button-rounded";
+import DottedCircularProgress from "@/components/dottedCircularProgress";
 
 export default function Camera({ imgSrc, onClose }: { imgSrc: string; onClose: () => void }) {
   return (
     <div id="camera-overlay">
       <ButtonRoundedGrey
         btnText="Back"
-        style={{ position: 'absolute', top: '40px', right: '60px', zIndex: 3, width: '79px' }}
+        style={{ position: "absolute", top: "40px", right: "60px", zIndex: 3, width: "79px" }}
         onPress={onClose}
       />
 

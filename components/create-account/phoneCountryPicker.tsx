@@ -1,8 +1,8 @@
-'use client';
-import { useMemo, useState } from 'react';
+"use client";
+import { useMemo, useState } from "react";
 
-import 'flag-icons/css/flag-icons.min.css';
-import { type Country, COUNTRIES } from '@/lib/phones';
+import "flag-icons/css/flag-icons.min.css";
+import { type Country, COUNTRIES } from "@/lib/phones";
 
 type Props = {
   value?: Country;
@@ -12,7 +12,7 @@ type Props = {
 
 export default function PhoneCountryPicker({ value, onChange, className }: Props) {
   const [open, setOpen] = useState(false);
-  const [q, setQ] = useState('');
+  const [q, setQ] = useState("");
   const selected = value ?? COUNTRIES[0];
 
   const filtered = useMemo(() => {
@@ -27,7 +27,7 @@ export default function PhoneCountryPicker({ value, onChange, className }: Props
   }, [q]);
 
   return (
-    <div className={`relative ${className ?? ''} mr-[5px] w-[60px]`}>
+    <div className={`relative ${className ?? ""} mr-[5px] w-[60px]`}>
       {/* trigger */}
       <button
         className="blick-rounded bg-translusent-light flex w-full items-center gap-3"
@@ -40,7 +40,7 @@ export default function PhoneCountryPicker({ value, onChange, className }: Props
         />
         <span
           className="ml-[28px] block text-white"
-          style={{ transform: 'rotate(90deg) scale(0.8, 1.1)' }}
+          style={{ transform: "rotate(90deg) scale(0.8, 1.1)" }}
         >
           &gt;
         </span>
@@ -65,8 +65,8 @@ export default function PhoneCountryPicker({ value, onChange, className }: Props
                   onClick={() => {
                     onChange?.(c);
                     setOpen(false);
-                    console.log('c', c);
-                    setQ('');
+                    console.log("c", c);
+                    setQ("");
                   }}
                 >
                   <span aria-hidden className={`fi fis fi-${c.code.toLowerCase()}`} />

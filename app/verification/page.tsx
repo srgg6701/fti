@@ -1,4 +1,4 @@
-export const metadata = { title: 'Verification' };
+export const metadata = { title: "Verification" };
 export default function Verification() {
   return (
     <div className="mx-auto grid w-full gap-6 pb-10 md:grid-cols-12">

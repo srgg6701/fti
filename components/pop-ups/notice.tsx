@@ -1,9 +1,9 @@
-'use client';
-import Image from 'next/image';
+"use client";
+import Image from "next/image";
 
-import PopupWrapper from '@/components/pop-ups/popup-wrapper';
-import { ButtonRoundedBlue } from '@/components/button-rounded';
-import { CommonModal } from '@/components/pop-ups/types';
+import PopupWrapper from "@/components/pop-ups/popup-wrapper";
+import { ButtonRoundedBlue } from "@/components/button-rounded";
+import { CommonModal } from "@/components/pop-ups/types";
 
 export default function Notice({ isOpen, onClose }: CommonModal) {
   if (!isOpen) {
@@ -24,8 +24,8 @@ export default function Notice({ isOpen, onClose }: CommonModal) {
           <span>Notice</span>
         </h4>
         <p className="my-[15px] max-w-[300px] text-sm">
-          <span className="opacity-50">You cannot connect strategy</span> XXX{' '}
-          <span className="opacity-50">to trading account</span> YYYY.{' '}
+          <span className="opacity-50">You cannot connect strategy</span> XXX{" "}
+          <span className="opacity-50">to trading account</span> YYYY.{" "}
           <span className="opacity-50">Reason</span> VVVV.
         </p>
         <ButtonRoundedBlue btnText="Ok" marginBottom="0" maxW="max-w-[18px]" padding="p-5" />

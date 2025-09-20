@@ -1,34 +1,34 @@
-'use client';
+"use client";
 
-import type { CommonModal, Option } from '@/components/pop-ups/types';
+import type { CommonModal, Option } from "@/components/pop-ups/types";
 
-import PopupWrapper from '@/components/pop-ups/popup-wrapper';
-import RadioBlock from '@/components/pop-ups/radioblock';
-import { ButtonRoundedBlue } from '@/components/button-rounded';
-import SliderInternals from '@/components/pop-ups/slider-internals';
+import PopupWrapper from "@/components/pop-ups/popup-wrapper";
+import RadioBlock from "@/components/pop-ups/radioblock";
+import { ButtonRoundedBlue } from "@/components/button-rounded";
+import SliderInternals from "@/components/pop-ups/slider-internals";
 
-import '@/styles/style-popup-slider.css';
-import { ChangeEvent } from 'react';
+import "@/styles/style-popup-slider.css";
+import { ChangeEvent } from "react";
 
 export default function FilterModal({ isOpen, onClose }: CommonModal) {
   if (!isOpen) return null;
 
-  const growthOptions: Option<'growthType'>[] = [
-    { value: 'all', label: 'All' },
-    { value: 'raising', label: 'Raising' },
-    { value: 'downgrading', label: 'Downgrading' },
+  const growthOptions: Option<"growthType">[] = [
+    { value: "all", label: "All" },
+    { value: "raising", label: "Raising" },
+    { value: "downgrading", label: "Downgrading" },
   ];
 
-  const strategyOptions: Option<'strategyType'>[] = [
-    { value: 'stocks', label: 'Stocks' },
-    { value: 'crypto', label: 'Crypto' },
+  const strategyOptions: Option<"strategyType">[] = [
+    { value: "stocks", label: "Stocks" },
+    { value: "crypto", label: "Crypto" },
   ];
   const handleApply = () => {
     onClose();
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log('onChange, e:', e);
+    console.log("onChange, e:", e);
   };
 
   return (

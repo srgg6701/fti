@@ -1,15 +1,15 @@
-'use client';
-import { useState, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
-import { Input } from '@heroui/input';
+"use client";
+import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { Input } from "@heroui/input";
 
-import Form from '@/components/create-account/form';
-import ErrMess from '@/components/errMess';
-import { validateEmail } from '@/lib/utils';
+import Form from "@/components/create-account/form";
+import ErrMess from "@/components/errMess";
+import { validateEmail } from "@/lib/utils";
 
 export default function CreateAccount() {
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<string>('idle');
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<string>("idle");
   // 'idle' | 'loading' | 'success' | 'error'
   const [errMess, setErrMess] = useState<string | null>(null);
   const router = useRouter();
@@ -18,45 +18,45 @@ export default function CreateAccount() {
     e.preventDefault();
     setErrMess(null);
     if (!email) {
-      setErrMess('Please enter your email');
+      setErrMess("Please enter your email");
 
       return;
     }
     const emailValid = validateEmail(email);
 
     if (!emailValid.valid) {
-      let errMess = '';
+      let errMess = "";
 
       switch (emailValid.reason) {
-        case 'too_long':
-          errMess = 'Too long email';
+        case "too_long":
+          errMess = "Too long email";
           break;
-        case 'at':
+        case "at":
           errMess = "'@' is missed";
           break;
-        case 'local_too_long':
+        case "local_too_long":
           errMess = "You put too many characters before '@'";
           break;
-        case 'local_chars':
-          errMess = 'You used invalid characters';
+        case "local_chars":
+          errMess = "You used invalid characters";
           break;
-        case 'local_dots':
+        case "local_dots":
           errMess = "You used '.' in wrong position or with wrong sequence";
           break;
-        case 'domain_length':
+        case "domain_length":
           errMess = "You put too less characters after '@'";
           break;
-        case 'no_tld':
+        case "no_tld":
           errMess = "Wrong value after '@'";
           break;
-        case 'domain_label':
+        case "domain_label":
           errMess = "Wrong characters after '@'";
           break;
-        case 'tld':
-          errMess = 'Wrong domain ending';
+        case "tld":
+          errMess = "Wrong domain ending";
           break;
         default:
-          errMess = 'Please, enter your email';
+          errMess = "Please, enter your email";
           break;
       }
       setErrMess(errMess);
@@ -64,23 +64,23 @@ export default function CreateAccount() {
       return;
     }
     try {
-      setStatus('loading');
+      setStatus("loading");
 
       /****** send request to the endpoint to get the confirmation code ******/
 
       await new Promise((r) => setTimeout(r, 600));
-      setStatus('success');
+      setStatus("success");
       router.push(`/create-account/set-password?email=${email}`);
     } catch {
-      setStatus('error');
+      setStatus("error");
     } finally {
-      setTimeout(() => setStatus('idle'), 1000);
+      setTimeout(() => setStatus("idle"), 1000);
     }
   }
 
   return (
     <Form
-      messageType={['provide-your-email', 'have-you-account']}
+      messageType={["provide-your-email", "have-you-account"]}
       status={status}
       onSubmit={handleSubmit}
     >

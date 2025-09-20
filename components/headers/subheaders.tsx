@@ -1,15 +1,15 @@
-import { CSSProperties } from 'react';
+import { CSSProperties } from "react";
 
-import ArrowsUpDown from '@/components/arrows/up-down';
+import ArrowsUpDown from "@/components/arrows/up-down";
 export default function Subheaders({
   header,
   subheader,
   direction,
-  h = 'h-[21px]',
-  hSize = '',
-  sSize = 'text-sm',
-  gap = 'gap-[5px]',
-  leading = 'leading-[21px]',
+  h = "h-[21px]",
+  hSize = "",
+  sSize = "text-sm",
+  gap = "gap-[5px]",
+  leading = "leading-[21px]",
   position,
   style,
 }: {
@@ -29,7 +29,7 @@ export default function Subheaders({
       <h4 className={`${h} ${hSize}`}>{header}</h4>
       <ArrowsUpDown direction={direction} />
       <div
-        className={`${direction === 'Up' ? 'color-blue-canonical' : 'color-ultra-violet'} ${sSize}`}
+        className={`${direction === "Up" ? "color-blue-canonical" : "color-ultra-violet"} ${sSize}`}
       >
         {subheader}
       </div>

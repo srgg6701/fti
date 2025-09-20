@@ -1,19 +1,19 @@
-import type { CommonModal } from '@/components/pop-ups/types';
+import type { CommonModal } from "@/components/pop-ups/types";
 
-import { ChangeEvent, useState } from 'react';
-import Image from 'next/image';
-import { Select, SelectItem } from '@heroui/react';
+import { ChangeEvent, useState } from "react";
+import Image from "next/image";
+import { Select, SelectItem } from "@heroui/react";
 
-import allStrategies from '@/mockData/accounts';
-import { ButtonRoundedBlue } from '@/components/button-rounded';
-import PopupWrapper from '@/components/pop-ups/popup-wrapper';
-import SliderInternals from '@/components/pop-ups/slider-internals';
-import { Header4Left } from '@/components/pop-ups/styled-popup-header';
-import { selectStyle } from '@/styles/style-variables';
+import allStrategies from "@/mockData/accounts";
+import { ButtonRoundedBlue } from "@/components/button-rounded";
+import PopupWrapper from "@/components/pop-ups/popup-wrapper";
+import SliderInternals from "@/components/pop-ups/slider-internals";
+import { Header4Left } from "@/components/pop-ups/styled-popup-header";
+import { selectStyle } from "@/styles/style-variables";
 
-import FormElementInput from './form-elements/form-element-input';
-import FormElementWrapper from './form-elements/form-element-wrapper';
-import AddAccount from './add-account';
+import FormElementInput from "./form-elements/form-element-input";
+import FormElementWrapper from "./form-elements/form-element-wrapper";
+import AddAccount from "./add-account";
 
 export default function Invest({ isOpen, onClose }: CommonModal) {
   const [isAddAccountOpen, setAddAccount] = useState<boolean | null>(null);
@@ -26,10 +26,10 @@ export default function Invest({ isOpen, onClose }: CommonModal) {
     return;
   }
   const onInvest = () => {
-    console.log('Invest started');
+    console.log("Invest started");
   };
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log('onChange, e:', e);
+    console.log("onChange, e:", e);
   };
 
   return (
@@ -50,7 +50,7 @@ export default function Invest({ isOpen, onClose }: CommonModal) {
                       className="mx-auto cursor-pointer"
                       height="20"
                       src="/assets/images/cross/cross-blue-small.svg"
-                      style={{ margin: '5px auto -5px 10px' }}
+                      style={{ margin: "5px auto -5px 10px" }}
                       width="20"
                     />
                   </button>

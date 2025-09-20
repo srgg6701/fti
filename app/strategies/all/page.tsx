@@ -1,8 +1,8 @@
-'use client';
-import CardShared from '@/components/cards/card-shared';
-import { SectionData } from '@/components/sectionsWrapper/sectionData';
-import { useAdjustArticleWidth } from '@/hooks/useAdjustArticleWidth';
-import allStrategies from '@/mockData/accounts';
+"use client";
+import CardShared from "@/components/cards/card-shared";
+import { SectionData } from "@/components/sectionsWrapper/sectionData";
+import { useAdjustArticleWidth } from "@/hooks/useAdjustArticleWidth";
+import allStrategies from "@/mockData/accounts";
 
 // TODO: clarify is this all strategies or accounts
 export default function AllStrategies() {

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 export default function News3() {
   return (
     <div className="min-h-screen bg-[#0B0F14] text-white">

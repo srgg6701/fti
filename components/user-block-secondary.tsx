@@ -1,11 +1,11 @@
-import ArrowsUpDown from '@/components/arrows/up-down';
-import { setArrowColor } from '@/styles/style-variables';
+import ArrowsUpDown from "@/components/arrows/up-down";
+import { setArrowColor } from "@/styles/style-variables";
 export default function UserBlockSecondary({
   direction,
   value, // dynamics[0]
   change, // dynamics[1]
-  wrapperJustify = 'justify-end',
-  changeTextSize = 'text-xs',
+  wrapperJustify = "justify-end",
+  changeTextSize = "text-xs",
 }: {
   direction: string;
   value: string;

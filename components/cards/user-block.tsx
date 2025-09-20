@@ -1,19 +1,19 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
-import UserImage from '@/components/userImage';
+import UserImage from "@/components/userImage";
 export default function UserBlock({
   userImg,
-  imgAlt = '',
+  imgAlt = "",
   children,
   headerDisplay,
-  w = 'md:w-[380px]',
-  h = 'md:h-[95px]',
+  w = "md:w-[380px]",
+  h = "md:h-[95px]",
   height = 55,
   width = 55,
-  marginRight = 'mr-[10px]',
-  padding = 'p-5',
-  mb = 'mb-5',
-  gap = 'gap-3',
+  marginRight = "mr-[10px]",
+  padding = "p-5",
+  mb = "mb-5",
+  gap = "gap-3",
 }: {
   userImg: string;
   imgAlt: string;

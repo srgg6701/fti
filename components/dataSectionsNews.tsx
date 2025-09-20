@@ -1,23 +1,23 @@
-'use client';
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
+"use client";
+import { useState, useEffect } from "react";
+import Image from "next/image";
 
 // INFO:temporal measure, remove as we have real data
-import DataNews, { type IDataNews } from '@/mockData/dataNews';
+import DataNews, { type IDataNews } from "@/mockData/dataNews";
 // ----------------------------------------------------
-import { SectionData } from '@/components/sectionsWrapper/sectionData';
-import CardNews from '@/components/cards/news';
-import UserBlockNews from '@/components/cards/user-block-news';
-import { clampText } from '@/lib/utils';
-import formatTextToParagraphs from '@/components/formatText';
-import '@/styles/style-sections.css';
+import { SectionData } from "@/components/sectionsWrapper/sectionData";
+import CardNews from "@/components/cards/news";
+import UserBlockNews from "@/components/cards/user-block-news";
+import { clampText } from "@/lib/utils";
+import formatTextToParagraphs from "@/components/formatText";
+import "@/styles/style-sections.css";
 
 type SelectedNews = {
   id?: number;
   slug?: string;
 };
 
-function selectTargetNews(data: IDataNews[], slug: SelectedNews['slug']) {
+function selectTargetNews(data: IDataNews[], slug: SelectedNews["slug"]) {
   const news = data.find((data) => `/${data.slug}` === slug);
 
   if (news) {
@@ -53,7 +53,7 @@ export default function DataSectionNews({ slug }: SelectedNews) {
     if (slug && newsData.length > 0) {
       const targetNews = selectTargetNews(newsData, slug);
 
-      console.log('targetNews', targetNews);
+      console.log("targetNews", targetNews);
       if (targetNews) {
         setSelectedNews(targetNews);
       }
@@ -62,17 +62,17 @@ export default function DataSectionNews({ slug }: SelectedNews) {
 
   //
   useEffect(() => {
-    console.log('actualNews is absent', actualNews);
+    console.log("actualNews is absent", actualNews);
     if (actualNews) {
-      console.log('actualNews', actualNews);
+      console.log("actualNews", actualNews);
     }
   }, [actualNews]);
 
   return (
-    <div className={`mt-[80px] mb-[80px] flex ${horizontalLayout ? 'flex-col' : ''} gap-[5rem]`}>
+    <div className={`mt-[80px] mb-[80px] flex ${horizontalLayout ? "flex-col" : ""} gap-[5rem]`}>
       {actualNews && (
         <div
-          className={`flex flex-col gap-10 ${horizontalLayout ? 'm-auto max-w-[550px]' : '-mr-[400px] pr-[400px]'} w-full`}
+          className={`flex flex-col gap-10 ${horizontalLayout ? "m-auto max-w-[550px]" : "-mr-[400px] pr-[400px]"} w-full`}
         >
           <UserBlockNews
             date={actualNews.date}
@@ -82,7 +82,7 @@ export default function DataSectionNews({ slug }: SelectedNews) {
           />
           <Image
             alt={actualNews.title}
-            className={`rounded-[15px] ${!horizontalLayout ? 'mx-auto' : ''}`}
+            className={`rounded-[15px] ${!horizontalLayout ? "mx-auto" : ""}`}
             height={394}
             src={`/assets/images/news/target-news/${actualNews.img}`}
             width={550}
@@ -97,14 +97,14 @@ export default function DataSectionNews({ slug }: SelectedNews) {
               </button>
             </h2>
             <div
-              className={`relative text-sm ${horizontalLayout ? 'max-h-80 overflow-hidden' : ''}`}
+              className={`relative text-sm ${horizontalLayout ? "max-h-80 overflow-hidden" : ""}`}
             >
               {formatTextToParagraphs(actualNews.text)}
               <button
                 className="color-blue-secondary absolute right-0 bottom-0 cursor-pointer"
                 onClick={() => setLayoutHorizontal(!horizontalLayout)}
               >
-                <span className="font-medium">{`show ${horizontalLayout ? 'more' : 'less'} ...`}</span>
+                <span className="font-medium">{`show ${horizontalLayout ? "more" : "less"} ...`}</span>
               </button>
             </div>
           </div>

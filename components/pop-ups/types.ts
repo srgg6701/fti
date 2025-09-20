@@ -3,7 +3,7 @@ export type FilterActions = {
 };
 
 export interface ModalType {
-  type: 'backtesting' | 'invest';
+  type: "backtesting" | "invest";
 }
 
 export interface CommonModal {
@@ -18,11 +18,11 @@ export interface SortingModalProps extends CommonModal {
   currentSort?: string;
 }
 
-export type DataType = 'growthType' | 'strategyType';
+export type DataType = "growthType" | "strategyType";
 
 export type FilterStateTop = {
-  growthType: 'all' | 'raising' | 'downgrading';
-  strategyType: 'stocks' | 'crypto';
+  growthType: "all" | "raising" | "downgrading";
+  strategyType: "stocks" | "crypto";
 };
 
 export type FilterStateBottom = {
@@ -33,8 +33,8 @@ export type FilterStateBottom = {
 export type FilterState = FilterStateTop & FilterStateBottom;
 
 export type LabelMap = {
-  growthType: 'All' | 'Raising' | 'Downgrading';
-  strategyType: 'Stocks' | 'Crypto';
+  growthType: "All" | "Raising" | "Downgrading";
+  strategyType: "Stocks" | "Crypto";
 };
 
 export type Option<T extends DataType> = {

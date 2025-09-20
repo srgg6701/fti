@@ -1,9 +1,9 @@
-'use client';
-import Link from 'next/link';
-import Image from 'next/image';
+"use client";
+import Link from "next/link";
+import Image from "next/image";
 
-import PopupWrapper from './popup-wrapper';
-import { CommonModal } from './types';
+import PopupWrapper from "./popup-wrapper";
+import { CommonModal } from "./types";
 export default function Notification({ isOpen, onClose }: CommonModal) {
   if (!isOpen) return;
 
@@ -18,7 +18,7 @@ export default function Notification({ isOpen, onClose }: CommonModal) {
       />
       <h4 className="h-[21px]">Notification</h4>
       <p className="pt-[15px] text-sm">
-        <span className="text-sm opacity-50">Added a new asset named</span>{' '}
+        <span className="text-sm opacity-50">Added a new asset named</span>{" "}
         <Link className="color-blue-canonical" href="/contents/memicon">
           &quot;memcoin&quot;
         </Link>

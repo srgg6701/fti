@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { ButtonRoundedBlue, ButtonRoundedGrey } from '@/components/button-rounded';
-import { Header4Center } from '@/components/pop-ups/styled-popup-header';
+import { ButtonRoundedBlue, ButtonRoundedGrey } from "@/components/button-rounded";
+import { Header4Center } from "@/components/pop-ups/styled-popup-header";
 
-import PopupWrapper from './popup-wrapper';
+import PopupWrapper from "./popup-wrapper";
 export default function DeletingSubscritpionConfirmation({
   onCloseModal,
 }: {

@@ -1,6 +1,6 @@
-'use client';
-import InviteFriendsContent from '@/components/invite-friends';
-import InviteImage from '@/components/invite-friends/invite-image';
+"use client";
+import InviteFriendsContent from "@/components/invite-friends";
+import InviteImage from "@/components/invite-friends/invite-image";
 
 export default function ReferralSystem() {
   return (

@@ -1,20 +1,20 @@
-'use client';
-import { Select, SelectItem } from '@heroui/select';
-import { Input } from '@heroui/input';
-import { useState } from 'react';
+"use client";
+import { Select, SelectItem } from "@heroui/select";
+import { Input } from "@heroui/input";
+import { useState } from "react";
 
-import brokers from '@/mockData/brokers-list';
-import { ButtonRoundedBlue } from '@/components/button-rounded';
-import PopupWrapper from '@/components/pop-ups/popup-wrapper';
-import PopupHeader, { Header4Left } from '@/components/pop-ups/styled-popup-header';
-import { selectStyle, inputStyleInner } from '@/styles/style-variables';
+import brokers from "@/mockData/brokers-list";
+import { ButtonRoundedBlue } from "@/components/button-rounded";
+import PopupWrapper from "@/components/pop-ups/popup-wrapper";
+import PopupHeader, { Header4Left } from "@/components/pop-ups/styled-popup-header";
+import { selectStyle, inputStyleInner } from "@/styles/style-variables";
 
 export default function AddAccountModal({ onClose }: { onClose: () => void }) {
-  const [activeSection, setActiveSection] = useState<'roboforex' | 'binance' | null>(null);
+  const [activeSection, setActiveSection] = useState<"roboforex" | "binance" | null>(null);
 
   function handleSelect(type: string) {
-    console.log('handleSelect', type);
-    setActiveSection(type as 'roboforex' | 'binance');
+    console.log("handleSelect", type);
+    setActiveSection(type as "roboforex" | "binance");
   }
 
   function addAccount(activeSection: string) {
@@ -43,7 +43,7 @@ export default function AddAccountModal({ onClose }: { onClose: () => void }) {
             ))}
           </Select>
         </div>
-        {activeSection === 'roboforex' && (
+        {activeSection === "roboforex" && (
           <div>
             <div className="flex flex-col gap-2.5">
               <Header4Left>Enter the data</Header4Left>
@@ -58,7 +58,7 @@ export default function AddAccountModal({ onClose }: { onClose: () => void }) {
             </div>
           </div>
         )}
-        {activeSection === 'binance' && (
+        {activeSection === "binance" && (
           <div>
             <div className="flex flex-col gap-2.5">
               <Header4Left>Enter the key</Header4Left>

@@ -1,6 +1,6 @@
-import type { DataType, Option, RadioBlockProps } from '@/components/pop-ups/types';
+import type { DataType, Option, RadioBlockProps } from "@/components/pop-ups/types";
 
-import { RadioGroup, Radio } from '@heroui/react';
+import { RadioGroup, Radio } from "@heroui/react";
 
 export default function RadioBlock<T extends DataType>({
   header,

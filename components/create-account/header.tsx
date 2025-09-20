@@ -1,9 +1,9 @@
-'use client';
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
 
 export default function Header({
   messageType,
-  header = 'Create an account',
+  header = "Create an account",
 }: {
   messageType?: string;
   header?: string;
@@ -16,10 +16,10 @@ export default function Header({
         {header}
       </h1>
       <p className="text-sm">
-        {messageType === 'provide-your-email' && (
+        {messageType === "provide-your-email" && (
           <span>Enter your gmail to send the confirmation code</span>
         )}
-        {messageType === 'set-your-password' && (
+        {messageType === "set-your-password" && (
           <span>
             Come up with a strong password
             <button
@@ -31,7 +31,7 @@ export default function Header({
             </button>
           </span>
         )}
-        {messageType === 'enter-your-account-details' && (
+        {messageType === "enter-your-account-details" && (
           <span>Please enter your account details</span>
         )}
       </p>

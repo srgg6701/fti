@@ -1,45 +1,45 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { Input } from '@heroui/input';
-import { Button } from '@heroui/button';
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import { Input } from "@heroui/input";
+import { Button } from "@heroui/button";
 
-import Camera from '@/components/pop-ups/camera';
+import Camera from "@/components/pop-ups/camera";
 
 type PersonalItem = { label: string; value: string };
 
 const personal: PersonalItem[] = [
-  { label: 'Full name', value: 'Ivanov Inav Ivanovich' },
-  { label: 'Gender', value: 'Man' },
-  { label: 'Date of birth', value: '17.10.1999' },
-  { label: 'Country of residence', value: 'Russia' },
-  { label: 'Country of citizenship', value: 'Russia' },
-  { label: 'Residential address', value: 'Moscow, Marshala Tyhachevskogo' },
+  { label: "Full name", value: "Ivanov Inav Ivanovich" },
+  { label: "Gender", value: "Man" },
+  { label: "Date of birth", value: "17.10.1999" },
+  { label: "Country of residence", value: "Russia" },
+  { label: "Country of citizenship", value: "Russia" },
+  { label: "Residential address", value: "Moscow, Marshala Tyhachevskogo" },
 ];
 
 export default function PersonalInformation() {
   const [isCameraOpen, setCameraScreen] = useState<boolean>(false);
 
   useEffect(() => {
-    document.body.classList.toggle('camera-open', isCameraOpen);
-    document.getElementById('navbar-container')?.classList.toggle('backdrop-blur-lg');
-    const headerText = document.getElementById('page-header');
+    document.body.classList.toggle("camera-open", isCameraOpen);
+    document.getElementById("navbar-container")?.classList.toggle("backdrop-blur-lg");
+    const headerText = document.getElementById("page-header");
 
     if (headerText) {
-      headerText.textContent = isCameraOpen ? 'Biometrics' : 'Profile';
+      headerText.textContent = isCameraOpen ? "Biometrics" : "Profile";
     }
 
-    return () => document.body.classList.remove('camera-open');
+    return () => document.body.classList.remove("camera-open");
   }, [isCameraOpen]);
 
   const onEdit = () => {
-    console.log('on Edit');
+    console.log("on Edit");
   };
 
-  const blockParamsClass = 'flex flex-col bg-translucent-extreme blick-rounded gap-5 p-[15px]';
+  const blockParamsClass = "flex flex-col bg-translucent-extreme blick-rounded gap-5 p-[15px]";
 
-  const btnColorBlue = 'text-sm text-medium color-blue-secondary leading-[17px]';
+  const btnColorBlue = "text-sm text-medium color-blue-secondary leading-[17px]";
 
   const RightBlockSection = ({
     height,
@@ -51,7 +51,7 @@ export default function PersonalInformation() {
     children: React.ReactNode;
   }) => (
     <div className="flex flex-col gap-2.5">
-      <div className={`${height || ''} ${blockParamsClass}`}>
+      <div className={`${height || ""} ${blockParamsClass}`}>
         <h4 className="h-[21px]">{header}</h4>
         {children}
       </div>
@@ -66,7 +66,7 @@ export default function PersonalInformation() {
   );
 
   const addPhoto = () => {
-    alert('Add your photo');
+    alert("Add your photo");
   };
 
   const gotoCam = () => {
@@ -108,25 +108,25 @@ export default function PersonalInformation() {
           <div className="flex flex-col gap-2.5">
             {[
               {
-                height: 'h-[111px]',
-                header: 'Type of activity',
-                child: <Input className="" disabled={true} inputMode="text" value={'Welder'} />,
+                height: "h-[111px]",
+                header: "Type of activity",
+                child: <Input className="" disabled={true} inputMode="text" value={"Welder"} />,
               },
               {
-                height: 'h-[235px]',
-                header: 'Income',
+                height: "h-[235px]",
+                header: "Income",
                 child: [
                   <IncomeBlock key="period1" header="For the last month" value="$236" />,
                   <IncomeBlock key="period2" header="For the last year" value="2856" />,
                 ],
               },
               {
-                height: 'h-[111px]',
-                header: 'Passport photo',
+                height: "h-[111px]",
+                header: "Passport photo",
                 child: (
                   <Button
                     className="bg-blue-second-translusent-lignt flex h-[40px] w-[260px] items-center justify-center gap-[10px] rounded-[15px] px-[12px] py-[4px]"
-                    style={{ border: 'dashed 1px rgb(var(--color-blue-second-rgb))' }}
+                    style={{ border: "dashed 1px rgb(var(--color-blue-second-rgb))" }}
                     onClick={addPhoto}
                   >
                     <Image

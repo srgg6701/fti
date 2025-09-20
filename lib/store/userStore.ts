@@ -1,5 +1,5 @@
 // lib/store/userStore.ts
-import { create } from 'zustand';
+import { create } from "zustand";
 // import Cookies from 'js-cookie';           // ❌ Убираем
 
 interface UserState {
@@ -29,7 +29,7 @@ export const useUserStore = create<UserState>((set) => ({
   initializeUser: async () => {
     try {
       // мягкая проверка без авто-редиректа (не используем apiFetch, чтобы не прыгать на /login на публичных страницах)
-      const res = await fetch('/api/auth/me', { credentials: 'include' });
+      const res = await fetch("/api/auth/me", { credentials: "include" });
 
       if (!res.ok) {
         set({ isAuthenticated: false, email: null });

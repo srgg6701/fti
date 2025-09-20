@@ -1,12 +1,12 @@
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect } from "react";
 
 // INFO: this script manages horizontal visible space, that "overflows" window's width
 export function useAdjustArticleWidth() {
   useLayoutEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
-    const main = document.querySelector<HTMLElement>('main');
-    const overlay = document.querySelector<HTMLElement>('[data-overlay-container]');
+    const main = document.querySelector<HTMLElement>("main");
+    const overlay = document.querySelector<HTMLElement>("[data-overlay-container]");
 
     if (!main) return;
 
@@ -14,7 +14,7 @@ export function useAdjustArticleWidth() {
       const { left } = main.getBoundingClientRect();
       const workingWidth = window.innerWidth - left;
       const els = document.getElementsByClassName(
-        'article-container',
+        "article-container",
       ) as HTMLCollectionOf<HTMLElement>;
 
       for (let i = 0; i < els.length; i++) {
@@ -22,17 +22,17 @@ export function useAdjustArticleWidth() {
       }
     };
 
-    if (overlay) overlay.style.overflowX = 'hidden';
+    if (overlay) overlay.style.overflowX = "hidden";
 
     apply();
     const ro = new ResizeObserver(apply);
 
     ro.observe(main);
-    window.addEventListener('resize', apply, { passive: true });
+    window.addEventListener("resize", apply, { passive: true });
 
     return () => {
       ro.disconnect();
-      window.removeEventListener('resize', apply);
+      window.removeEventListener("resize", apply);
     };
   }, []);
 }

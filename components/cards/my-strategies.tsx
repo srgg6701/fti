@@ -1,6 +1,6 @@
-import ColoredIndicator from '@/components/coloredIndicator';
+import ColoredIndicator from "@/components/coloredIndicator";
 
-import UserBlock from './user-block';
+import UserBlock from "./user-block";
 
 export default function CardMyStrategies({
   username,
@@ -9,8 +9,8 @@ export default function CardMyStrategies({
   proRata,
   direction,
   data,
-  marginRight = 'mr-[10px]',
-  padding = 'p-5',
+  marginRight = "mr-[10px]",
+  padding = "p-5",
 }: {
   username: string;
   userImg: string;

@@ -1,9 +1,9 @@
-'use client'; // TODO: check if it should be a client component
-import Image from 'next/image';
-import { useState } from 'react';
+"use client"; // TODO: check if it should be a client component
+import Image from "next/image";
+import { useState } from "react";
 
-import HomeSections from '@/components/dataSections';
-import AddAccount from '@/components/pop-ups/add-account';
+import HomeSections from "@/components/dataSections";
+import AddAccount from "@/components/pop-ups/add-account";
 
 export default function Home() {
   const [isAddAccountOpen, setAddAccount] = useState<boolean | null>(null);

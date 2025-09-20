@@ -1,6 +1,6 @@
-import type { /* FilterActions,  */ FilterStateBottom } from './pop-ups/types';
+import type { /* FilterActions,  */ FilterStateBottom } from "./pop-ups/types";
 
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from "react";
 
 const SValues = ({ val, offset }: { val: number; offset: string }) => (
   <span className={`absolute -top-3 z-1 ${offset}`}>{val}</span>
@@ -12,7 +12,7 @@ export default function Slider({
   posIndicator,
   updateFilter,
   setFilters,
-  ratioType = 'winningRatio',
+  ratioType = "winningRatio",
 }: {
   sliderPosition: number;
   winningRatio: number;
@@ -24,8 +24,8 @@ export default function Slider({
   return (
     <div className="pr-[25px] pl-[16px]">
       <div className="relative mt-[-55px] mb-[55px] flex">
-        <SValues offset={'left-[-16px]'} val={1} />
-        <SValues offset={'right-[-25px]'} val={100} />
+        <SValues offset={"left-[-16px]"} val={1} />
+        <SValues offset={"right-[-25px]"} val={100} />
         <input
           className="custom-slider h-[1px] w-full cursor-pointer appearance-none rounded-lg bg-white/20"
           max="100"
