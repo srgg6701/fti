@@ -287,7 +287,7 @@ export default function Profile() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <ErrMess error={errMess} mx="mx-0" my="my-[-10px]" />
+              <ErrMess error={errMess} mx="mx-0" my="!my-[-10px]" />
               <Textarea
                 className="w-full"
                 classNames={{
