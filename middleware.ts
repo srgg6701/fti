@@ -3,6 +3,11 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
+  // skip on Vercel
+  const host = req.headers.get("host") ?? "";
+
+  if (host.endsWith(".vercel.app")) return NextResponse.next();
+
   // if we have cookies, let it go where they wanted
   if (req.cookies.has("jwt")) {
     console.log("Has jwt");
@@ -11,7 +16,7 @@ export function middleware(req: NextRequest) {
   }
   console.log("Has NO jwt");
 
-  // иначе — на /login с возвратом
+  // otherwist to the /login page
   const { pathname, search } = req.nextUrl;
   const url = req.nextUrl.clone();
 
