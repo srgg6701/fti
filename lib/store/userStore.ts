@@ -1,13 +1,11 @@
-// lib/store/userStore.ts
 import { create } from "zustand";
-// import Cookies from 'js-cookie';           // ❌ Убираем
 
 interface UserState {
   isAuthenticated: boolean;
   email: string | null;
   login: (email: string) => void;
   logout: () => void;
-  initializeUser: () => Promise<void>; // ⬅ асинхронная, мягкая проверка
+  initializeUser: () => Promise<void>;
 }
 
 export const useUserStore = create<UserState>((set) => ({
@@ -15,20 +13,18 @@ export const useUserStore = create<UserState>((set) => ({
   email: null,
 
   login: (email) => {
-    // Сервер уже поставил HTTP-only cookie `jwt`; этого достаточно.
+    // we can do that as the server already set HTTP-only cookie `jwt`;
     set({ isAuthenticated: true, email });
-    // ❌ никаких sessionStorage/небезопасных кук
   },
 
-  logout: () => {
+  logout: async () => {
     set({ isAuthenticated: false, email: null });
-    // опционально: вызвать fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
-    // и игнорировать ответ — middleware дальше всё защитит
+    await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
   },
 
   initializeUser: async () => {
     try {
-      // мягкая проверка без авто-редиректа (не используем apiFetch, чтобы не прыгать на /login на публичных страницах)
+      // Soft verification without auto-redirect (we don't use apiFetch to avoid jumping to /login on public pages)
       const res = await fetch("/api/auth/me", { credentials: "include" });
 
       if (!res.ok) {

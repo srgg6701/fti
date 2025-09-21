@@ -3,8 +3,13 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
-  // если есть кука — пускаем
-  if (req.cookies.has("jwt")) return NextResponse.next();
+  // if we have cookies, let it go where they wanted
+  if (req.cookies.has("jwt")) {
+    console.log("Has jwt");
+
+    return NextResponse.next();
+  }
+  console.log("Has NO jwt");
 
   // иначе — на /login с возвратом
   const { pathname, search } = req.nextUrl;
@@ -12,11 +17,12 @@ export function middleware(req: NextRequest) {
 
   url.pathname = "/login";
   url.searchParams.set("next", pathname + search);
+  console.log("Redirect url:", url);
 
   return NextResponse.redirect(url);
 }
 
-// защищаем только нужные роуты + их подпути
+// protected pages
 export const config = {
   matcher: [
     "/accounts  ",

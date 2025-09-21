@@ -2,14 +2,21 @@
 import { useRouter } from "next/navigation";
 
 import { LogoFTI } from "@/components/icons";
+import { useUserStore } from "@/lib/store/userStore";
 
 export default function Default() {
   const router = useRouter();
-  const tm = setTimeout(() => {
-    clearTimeout(tm);
-    console.log("Will redirect to the create account");
-    router.replace("/create-account");
-  }, 4000);
+  const isAuthenticated = useUserStore((state) => state.isAuthenticated);
+
+  //console.log(`isAuthenticated: ${isAuthenticated}`);
+  if (!isAuthenticated) {
+    const tm = setTimeout(() => {
+      clearTimeout(tm);
+      router.replace("/home");
+    }, 4000);
+  } else {
+    router.replace("/home");
+  }
 
   return (
     <div className="relative flex h-full w-full flex-col items-center justify-center">

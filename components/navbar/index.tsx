@@ -4,7 +4,6 @@ import {
   Navbar as HeroUINavbar,
   NavbarContent,
   NavbarMenu,
-  NavbarMenuToggle,
 } from "@heroui/navbar";
 import Link from "next/link";
 // FIXME: clarify if we can get rid from clsx and remove if we can
@@ -16,7 +15,7 @@ import { Input } from "@heroui/input";
 import { checkRouteAside, getUrlSegments } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
 //import { ThemeSwitch } from '@/components/theme-switch';
-import { useUserStore } from "@/lib/store/userStore";
+//import { useUserStore } from "@/lib/store/userStore";
 import { filterData } from "@/components/dataSections";
 import SortingModal from "@/components/pop-ups/sorting";
 import FilterModal from "@/components/pop-ups/filter";
@@ -35,7 +34,7 @@ export const Navbar = () => {
   const navBarContainer = useRef<HTMLElement | null>(null);
 
   // TODO: Check if it makes sense to leave it here:
-  const { isAuthenticated } = useUserStore();
+  //const { isAuthenticated } = useUserStore();
   const urlFirstSegment = getUrlSegments(usePathname, 1);
   const urlSecondSegment = getUrlSegments(usePathname, 2);
 
@@ -73,12 +72,6 @@ export const Navbar = () => {
   const [currentSort, setCurrentSort] = useState("alphabetical");
   // FILTER
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  /* const [filters, setFilters] = useState<FilterState>({
-    growthType: 'all',
-    strategyType: 'stocks',
-    winningRatio: 1,
-    posIndicator: 0,
-  }); */
 
   if (checkRouteAside(urlFirstSegment)) return null;
 
@@ -356,26 +349,25 @@ export const Navbar = () => {
           {/* mobile */}
           <NavbarContent className="basis-1 pl-4 lg:hidden" justify="end">
             {/* <ThemeSwitch /> */}
-            {isAuthenticated && (
+            {/* isAuthenticated && (
               <NavbarMenuToggle
                 aria-controls="main-menu"
                 aria-label="Open menu"
               />
-            )}
+            ) */}
           </NavbarContent>
-          {isAuthenticated && (
-            <NavbarMenu id="main-menu">
-              <ul className="mx-4 mt-2 flex flex-col gap-2">
-                {menuList()}
-                <li className="flex list-none items-center">
-                  <MenuRightSide
-                    className="py-2"
-                    onClick={() => setNotifications(!isNotificationsOpen)}
-                  />
-                </li>
-              </ul>
-            </NavbarMenu>
-          )}
+
+          <NavbarMenu id="main-menu">
+            <ul className="mx-4 mt-2 flex flex-col gap-2">
+              {menuList()}
+              <li className="flex list-none items-center">
+                <MenuRightSide
+                  className="py-2"
+                  onClick={() => setNotifications(!isNotificationsOpen)}
+                />
+              </li>
+            </ul>
+          </NavbarMenu>
         </HeroUINavbar>
       )}
       {/* Notifications: Left vertical panel*/}
