@@ -1,8 +1,5 @@
-const isDev = process.env.NODE_ENV !== 'production';
-const API_BASE = (process.env.API_BASE ?? 'https://fti-trade.online/api').replace(/\/$/, ''); /* 'https://api.fti-trade.com' */
-
-module.exports = isDev ? {
+module.exports = {
   async rewrites() {
-    return [{ source: '/api/:path*', destination: `${API_BASE}/:path*` }];
+    return [{ source: '/api/:path*', destination: `https://api.fti-trade.com/:path*` }];
   },
-} : {};
+} 
