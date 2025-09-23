@@ -1,32 +1,39 @@
 "use client";
-import type { UserAccounts } from "@/types/auth";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import CardShared from "@/components/cards/card-shared";
 import { SectionData } from "@/components/sectionsWrapper/sectionData";
 import { useAdjustArticleWidth } from "@/hooks/useAdjustArticleWidth";
-import { apiFetch } from "@/lib/api";
-import allStrategies from "@/mockData/accounts";
+// FIXME: remove it as real data is accessible
+import allStrategies, { type MockAccounts } from "@/mockData/accounts";
 
 // TODO: clarify is this all strategies or accounts
 export default function AllStrategies() {
   useAdjustArticleWidth();
 
-  useEffect(() => {
-    (async () => {
-      const accounts: UserAccounts[] = await apiFetch(
-        "/api/trading-accounts/user-accounts",
-      );
+  const [accounts_data, setAccountsData] = useState<MockAccounts[]>([]);
 
-      console.log("accounts", accounts);
-    })();
+  useEffect(() => {
+    /* if (false) {
+      (async () => {
+        const accounts: UserAccounts[] = await apiFetch(
+          "/api/trading-accounts/user-accounts",
+        );
+        
+        console.log("accounts", accounts);
+        setAccountsData(accounts);
+      })();
+      
+    } else { */
+    setAccountsData(allStrategies);
+    //};
   }, []);
 
   return (
     <div className="mt-[80px] mb-[56px] flex flex-col gap-[5rem]">
       <SectionData
-        data={allStrategies}
+        data={accounts_data as MockAccounts[]}
         getKey={(d) => d.brokerImg}
         height={310}
         noHeader={true}

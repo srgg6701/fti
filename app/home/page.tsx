@@ -26,6 +26,7 @@ export default function Home() {
               className="mx-auto"
               height="45"
               src="/assets/images/cross/plus.svg"
+              style={{ cursor: "pointer" }}
               width="45"
             />
           </button>

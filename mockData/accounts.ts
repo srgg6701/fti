@@ -1,4 +1,12 @@
-const allStrategies = [
+export type MockAccounts = {
+  brokerImg: string;
+  chartImg: string;
+  brokerCode: number;
+  brokerName: string;
+  status: "Successfully" | "Verifying..." | "Invalid password";
+};
+
+const allStrategies: MockAccounts[] = [
   {
     brokerImg: "binance.png",
     chartImg: "home/top-performing/graph1.svg",

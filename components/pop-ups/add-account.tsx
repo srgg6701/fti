@@ -1,4 +1,6 @@
 "use client";
+import type { status } from "@/types/ui";
+
 import { Select, SelectItem } from "@heroui/select";
 import { Input } from "@heroui/input";
 import { useState } from "react";
@@ -11,19 +13,48 @@ import PopupHeader, {
 } from "@/components/pop-ups/styled-popup-header";
 import { selectStyle, inputStyleInner } from "@/styles/style-variables";
 
-export default function AddAccountModal({ onClose }: { onClose: () => void }) {
-  const [activeSection, setActiveSection] = useState<
-    "roboforex" | "binance" | null
-  >(null);
+interface NewAccountData {
+  sectionName: string;
+  data: Record<string, string>;
+}
 
-  function handleSelect(type: string) {
-    console.log("handleSelect", type);
-    setActiveSection(type as "roboforex" | "binance");
+export default function AddAccountModal({ onClose }: { onClose: () => void }) {
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+
+  const [accountData, setAccountData] = useState<NewAccountData>({
+    sectionName: "",
+    data: {},
+  });
+
+  const [status, setStatus] = useState<status>("idle");
+
+  function handleSelect(broker: string) {
+    setActiveSection(broker);
+    setAccountData((prev) => ({ ...prev, sectionName: broker }));
   }
 
-  function addAccount(activeSection: string) {
+  function handleAccountData(dvalue: string, tvalue: string) {
+    if (!activeSection) return;
+
+    setAccountData((prev) => ({
+      ...prev,
+      sectionName: activeSection,
+      data: { ...prev.data, [dvalue]: tvalue }, // upsert одной строкой
+    }));
+  }
+
+  async function addAccount(activeSection: string) {
     if (activeSection) {
-      alert(`Added account of ${activeSection}`);
+      setStatus("loading");
+      console.log("New account data", accountData);
+      setTimeout(() => {
+        setStatus("success");
+        onClose();
+      }, 3000);
+      /* await apiFetch("/auth/accounts", {
+        method: "POST",
+        body: JSON.stringify({  }),
+      }); */
     }
   }
 
@@ -31,12 +62,15 @@ export default function AddAccountModal({ onClose }: { onClose: () => void }) {
     <PopupWrapper
       deeper={true}
       h="426px"
+      isLoading={status === "loading"}
       reducePb={true}
       w="380px"
       onClose={onClose}
     >
       {/* Header */}
-      <div className="flex flex-col gap-5 text-left">
+      <div
+        className={`flex flex-col gap-5 text-left ${status === "loading" && "opacity-20"}`}
+      >
         <PopupHeader>Add account</PopupHeader>
         <div>
           <Header4Left>Choose a broker</Header4Left>
@@ -63,6 +97,10 @@ export default function AddAccountModal({ onClose }: { onClose: () => void }) {
                   classNames={{ inputWrapper: inputStyleInner }}
                   placeholder={data.value}
                   type={data.type}
+                  onChange={(e) =>
+                    handleAccountData(data.value, e.target.value)
+                  }
+                  // RoboForex MT4: 1) MT4/MT5, 2) Server, 3) Login, 4) Password | console.log({ 'data1.value': data.value, value1: e.target.value})
                 />
               ))}
             </div>
@@ -78,6 +116,10 @@ export default function AddAccountModal({ onClose }: { onClose: () => void }) {
                   classNames={{ inputWrapper: inputStyleInner }}
                   placeholder={data.value}
                   type={data.type}
+                  onChange={(e) =>
+                    handleAccountData(data.value, e.target.value)
+                  }
+                  // Binance: 1) "API key", 2) "Secret key" | console.log({ 'data2.value': data.value, value2: e.target.value})
                 />
               ))}
             </div>
