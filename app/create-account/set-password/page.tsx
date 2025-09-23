@@ -1,4 +1,6 @@
 "use client";
+import type { status } from "@/types/ui";
+
 import { useState, FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@heroui/input";
@@ -16,9 +18,7 @@ export default function SetPassword() {
 
   const [password, setPassword] = useState("");
   const [password_confirmation, setPasswordConfirmation] = useState("");
-  const [status, setStatus] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
+  const [status, setStatus] = useState<status>("idle");
   const [errMess, setErrMess] = useState<string | null>(null);
   //const [isLoading, setIsLoading] = useState(false);
 

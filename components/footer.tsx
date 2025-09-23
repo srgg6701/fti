@@ -13,7 +13,7 @@ export default function Footer() {
   if (checkRouteAside(urlFirstSegment)) return null;
 
   return (
-    <footer className="py-[60px]">
+    <footer className="py-[60px] relative">
       <div className="mx-auto flex max-w-[430px] flex-col items-center gap-[2.5rem] px-4">
         <LogoFTI className="h-[27px] w-[55px]" />
         <nav className="block w-full justify-between text-center min-[480px]:flex">
@@ -38,6 +38,13 @@ export default function Footer() {
           </div>
         </div>
       </div>
+      <Link
+        className="text-zinc-800"
+        href="/api/test"
+        style={{ position: "absolute", bottom: "25px", marginLeft: "25px" }}
+      >
+        API test
+      </Link>
     </footer>
   );
 }

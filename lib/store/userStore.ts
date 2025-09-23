@@ -1,9 +1,20 @@
 import { create } from "zustand";
 
+export type ApiUser = {
+  id: number;
+  email: string;
+  username: string;
+  default_language_id: number;
+  start_page: string;
+  is_ban: boolean;
+  tour_step: number;
+};
+
 interface UserState {
   isAuthenticated: boolean;
   email: string | null;
-  login: (email: string) => void;
+  user: ApiUser | null;
+  login: (user: ApiUser) => void;
   logout: () => void;
   initializeUser: () => Promise<void>;
 }
@@ -11,32 +22,35 @@ interface UserState {
 export const useUserStore = create<UserState>((set) => ({
   isAuthenticated: false,
   email: null,
+  user: null,
 
-  login: (email) => {
-    // we can do that as the server already set HTTP-only cookie `jwt`;
-    set({ isAuthenticated: true, email });
+  login: (user) => {
+    set({ isAuthenticated: true, email: user.email, user });
   },
 
   logout: async () => {
-    set({ isAuthenticated: false, email: null });
+    set({ isAuthenticated: false, email: null, user: null });
     await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
   },
 
   initializeUser: async () => {
     try {
-      // Soft verification without auto-redirect (we don't use apiFetch to avoid jumping to /login on public pages)
       const res = await fetch("/api/auth/me", { credentials: "include" });
 
       if (!res.ok) {
-        set({ isAuthenticated: false, email: null });
+        set({ isAuthenticated: false, email: null, user: null });
 
         return;
       }
-      const data: { user?: { email?: string } } = await res.json();
+      const data: { user?: ApiUser } = await res.json();
 
-      set({ isAuthenticated: true, email: data.user?.email ?? null });
+      if (data.user) {
+        set({ isAuthenticated: true, email: data.user.email, user: data.user });
+      } else {
+        set({ isAuthenticated: false, email: null, user: null });
+      }
     } catch {
-      set({ isAuthenticated: false, email: null });
+      set({ isAuthenticated: false, email: null, user: null });
     }
   },
 }));

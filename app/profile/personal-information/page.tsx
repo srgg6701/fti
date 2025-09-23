@@ -5,20 +5,33 @@ import Image from "next/image";
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
 
+import { useUserStore } from "@/lib/store/userStore";
 import Camera from "@/components/pop-ups/camera";
 
 type PersonalItem = { label: string; value: string };
 
-const personal: PersonalItem[] = [
-  { label: "Full name", value: "Ivanov Inav Ivanovich" },
-  { label: "Gender", value: "Man" },
-  { label: "Date of birth", value: "17.10.1999" },
-  { label: "Country of residence", value: "Russia" },
-  { label: "Country of citizenship", value: "Russia" },
-  { label: "Residential address", value: "Moscow, Marshala Tyhachevskogo" },
-];
-
 export default function PersonalInformation() {
+  const user = useUserStore((s) => s.user);
+
+  /*
+    "id": 1,
+    "email": "user@example.com",
+    "username": "johndoe",
+    "default_language_id": 1,
+    "start_page": "default",
+    "is_ban": false,
+    "tour_step": 0
+  */
+
+  const personal: PersonalItem[] = [
+    { label: "Full name", value: "Ivanov Inav Ivanovich" },
+    { label: "Gender", value: "Man" },
+    { label: "Date of birth", value: "17.10.1999" },
+    { label: "Country of residence", value: "Russia" },
+    { label: "Country of citizenship", value: "Russia" },
+    { label: "Residential address", value: "Moscow, Marshala Tyhachevskogo" },
+  ];
+
   const [isCameraOpen, setCameraScreen] = useState<boolean>(false);
 
   useEffect(() => {

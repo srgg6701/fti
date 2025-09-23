@@ -1,15 +1,4 @@
-export interface IDataNews {
-  id: number;
-  username: string;
-  date: string;
-  img: string;
-  text: string;
-  title: string;
-  slug: string;
-  userImg: string;
-}
-
-const DataNews: IDataNews[] = [
+const DataNews = [
   {
     id: 1,
     username: "Jonh",

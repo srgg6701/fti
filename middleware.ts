@@ -4,9 +4,23 @@ import { NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
   // skip on Vercel
+  const testUrl = req.nextUrl;
+
+  if (testUrl.pathname.startsWith("/test")) {
+    const host = req.headers.get("host") || "";
+
+    if (!(host.startsWith("localhost") || host.startsWith("127.0.0.1"))) {
+      return new NextResponse("Not Found", { status: 404 });
+    }
+  }
   const host = req.headers.get("host") ?? "";
 
-  if (host.endsWith(".vercel.app")) return NextResponse.next();
+  console.log("req", req);
+
+  if (
+    host.endsWith(".vercel.app") // FIXME: remove this condition as soon as remote authentification works
+  )
+    return NextResponse.next();
 
   // if we have cookies, let it go where they wanted
   if (req.cookies.has("jwt")) {

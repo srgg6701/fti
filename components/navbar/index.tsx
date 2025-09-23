@@ -1,4 +1,6 @@
 "use client";
+import type { status } from "@/types/ui";
+
 import { useState, useRef } from "react";
 import {
   Navbar as HeroUINavbar,
@@ -16,7 +18,7 @@ import { checkRouteAside, getUrlSegments } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
 //import { ThemeSwitch } from '@/components/theme-switch';
 //import { useUserStore } from "@/lib/store/userStore";
-import { filterData } from "@/components/dataSections";
+//import { filterData } from "@/components/dataSections";
 import SortingModal from "@/components/pop-ups/sorting";
 import FilterModal from "@/components/pop-ups/filter";
 import Backtesting from "@/components/pop-ups/backtesting";
@@ -63,9 +65,7 @@ export const Navbar = () => {
   const [isInviteOpen, setInviteOpen] = useState<boolean>(!!inviteOpen);
 
   const [search_text, setSearch] = useState("");
-  const [status, setStatus] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
+  const [status, setStatus] = useState<status>("idle");
   const [isNotificationsOpen, setNotifications] = useState(false);
   // SORT
   const [isSortingOpen, setIsSortingOpen] = useState(false);
@@ -218,14 +218,14 @@ export const Navbar = () => {
     if (e.key === "Enter") {
       getData();
       //e.preventDefault(); // если нужно отменить сабмит формы
-      filterData(`Enter: filtered data by ${search_text}`);
+      //filterData(`Enter: filtered data by ${search_text}`);
     }
   };
   // TODO: clairify if we have the button to call this function
-  const filterDataClick = () => {
+  /* const filterDataClick = () => {
     getData();
     filterData(`Click: filtered data by ${search_text}`);
-  };
+  }; */
 
   const SetSearchCommands = ({
     action,

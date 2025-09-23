@@ -1,5 +1,6 @@
 "use client";
-import { FormEvent, useState } from "react";
+import type { status } from "@/types/ui";
+
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,7 +8,9 @@ import { Input } from "@heroui/input";
 import { Textarea } from "@heroui/input";
 import { Switch } from "@heroui/react";
 import { Form } from "@heroui/form";
+import { FormEvent, useState } from "react";
 
+import { useUserStore } from "@/lib/store/userStore";
 import { ButtonRoundedBlue } from "@/components/button-rounded";
 import DeletingSubscritpionConfirmation from "@/components/pop-ups/deletingSubscriptionConfirmation";
 import SectionHeader from "@/components/sectionsWrapper/sectionHeader";
@@ -56,13 +59,16 @@ const billingData = [
 ];
 
 export default function Profile() {
+  const user = useUserStore((s) => s.user);
+
+  console.log("user", user);
   const router = useRouter();
   const [notificationIsOpen, setNotification] = useState<boolean>(false);
 
   const [isUpdateOpen, setUpdateOpen] = useState(false);
   const [email, setEmail] = useState("");
   // FIXME: use it or remove
-  const [status, setStatus] = useState<string>("idle");
+  const [status, setStatus] = useState<status>("idle");
   const [errMess, setErrMess] = useState<string | null>(null);
 
   const handleTariffBtn = () => {
@@ -147,8 +153,10 @@ export default function Profile() {
             <div className="flex min-w-0 flex-1 flex-col gap-3">
               <div className="flex flex-col items-center gap-2.5">
                 <h2 className="h-[28px] text-[28px]">
-                  <Link href="/account/personal-information?id=dfq125dfe25">
-                    Joshua
+                  <Link
+                    href={`/account/personal-information?id=${user?.id || 69}`}
+                  >
+                    {user?.username || "User name unknown"}
                   </Link>
                 </h2>
                 <div className="relative">

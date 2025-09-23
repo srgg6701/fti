@@ -36,3 +36,16 @@ export async function apiFetch<T>(
 
   return res.json() as Promise<T>;
 }
+// FIXME: remove this function after switching to the real API
+export async function apiFetch2<T>(endpoint: string): Promise<T> {
+  // имитация задержки
+  await new Promise((resolve) => setTimeout(resolve, Number("400")));
+
+  try {
+    const mod = await import(`@/mockData/${endpoint}.ts`);
+
+    return mod.default as T;
+  } catch {
+    throw new Error(`Mock not found for: mockData/${endpoint}.ts`);
+  }
+}

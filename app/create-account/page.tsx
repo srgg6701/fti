@@ -1,4 +1,6 @@
 "use client";
+import type { status } from "@/types/ui";
+
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@heroui/input";
@@ -9,8 +11,7 @@ import { validateEmail, setInvalidEmailMessage } from "@/lib/utils";
 
 export default function CreateAccount() {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<string>("idle");
-  // 'idle' | 'loading' | 'success' | 'error'
+  const [status, setStatus] = useState<status>("idle");
   const [errMess, setErrMess] = useState<string | null>(null);
   const router = useRouter();
 

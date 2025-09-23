@@ -34,6 +34,8 @@ const CardNews = ({
     <article
       className={`md:h-[376px] md:w-[320px] ${marginRight} ${padding} flex flex-col gap-5 ${xtraClasses}`}
     >
+      {" "}
+      UserBlockNews here
       <UserBlockNews
         date={date}
         slug={slug}

@@ -43,6 +43,7 @@ const CardShared = ({
       ) : (
         <div className="flex w-full justify-between">
           <div className="flex">
+            img: {`/assets/images/exchange/${brokerImg}`}
             <Image
               alt="Broker"
               className="mr-5"
