@@ -154,7 +154,7 @@ export default function Profile() {
               <div className="flex flex-col items-center gap-2.5">
                 <h2 className="h-[28px] text-[28px]">
                   <Link
-                    href={`/account/personal-information?id=${user?.id || 69}`}
+                    href={`/profile/personal-information?id=${user?.id || 69}`}
                   >
                     {user?.username || "User name unknown"}
                   </Link>

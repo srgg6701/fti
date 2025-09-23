@@ -302,7 +302,7 @@ export const Navbar = () => {
                 <h1 className="mr-[1vw] leading-[27px]" id="page-header">
                   {pageHeader}
                 </h1>
-                {pageHeader === "Strategies" && (
+                {(pageHeader === "Strategies" || pageHeader === "Accounts") && (
                   <div className="flex gap-[5px] max-2xl:-mb-10 max-2xl:translate-y-[20px] relative">
                     <Image
                       alt="Search"

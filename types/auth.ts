@@ -55,3 +55,15 @@ export default interface LoginResponse {
   token: string;
   user: User;
 }
+
+export interface UserAccounts {
+  id: number;
+  account: string | number;
+  status: string;
+  broker: string;
+  platform: string;
+  connectionState: number;
+  balance: string | number;
+  currency: number;
+  created_at: string;
+}
