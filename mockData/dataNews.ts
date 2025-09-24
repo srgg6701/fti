@@ -1,4 +1,15 @@
-const DataNews = [
+export type IDataNews = {
+  id: number;
+  username: string;
+  date: string;
+  img: string;
+  text: string;
+  title: string;
+  slug: string;
+  userImg: string;
+};
+
+const DataNews: IDataNews[] = [
   {
     id: 1,
     username: "Jonh",
