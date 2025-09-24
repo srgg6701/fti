@@ -1,15 +1,28 @@
 "use client"; // TODO: check if it should be a client component
-import Image from "next/image";
 import { useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import HomeSections from "@/components/dataSections";
 import AddAccount from "@/components/pop-ups/add-account";
+import AccountAdded from "@/components/pop-ups/account-added";
 
 export default function Home() {
+  const router = useRouter();
+
   const [isAddAccountOpen, setAddAccount] = useState<boolean | null>(null);
+  const [isAccountAddOpen, setAccountAddOpen] = useState<boolean | null>(null);
 
   function addAddAccount() {
     setAddAccount(true);
+  }
+  function closeAddAccount() {
+    setAddAccount(null);
+    setAccountAddOpen(true);
+  }
+  function closeAccountAddedAndRedirect() {
+    setAccountAddOpen(false);
+    router.push("/home/strategies");
   }
 
   return (
@@ -33,10 +46,10 @@ export default function Home() {
         </div>
       </section>
       <HomeSections section="home" />
-      {(isAddAccountOpen && (
-        <AddAccount onClose={() => setAddAccount(null)} />
-      )) ||
-        null}
+      {(isAddAccountOpen && <AddAccount onClose={closeAddAccount} />) || null}
+      {isAccountAddOpen && (
+        <AccountAdded onClose={closeAccountAddedAndRedirect} />
+      )}
     </>
   );
 }

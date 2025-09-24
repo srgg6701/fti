@@ -12,7 +12,7 @@ import { FormEvent, useState } from "react";
 
 import { useUserStore } from "@/lib/store/userStore";
 import { ButtonRoundedBlue } from "@/components/button-rounded";
-import DeletingSubscritpionConfirmation from "@/components/pop-ups/deletingSubscriptionConfirmation";
+import DeletingSubscritpionConfirmation from "@/components/pop-ups/deleting-subscription-confirmation";
 import SectionHeader from "@/components/sectionsWrapper/sectionHeader";
 import { ButtonRoundedGrey } from "@/components/button-rounded";
 import { validateEmail, setInvalidEmailMessage } from "@/lib/utils";

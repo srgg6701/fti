@@ -49,6 +49,7 @@ export default function AddAccountModal({ onClose }: { onClose: () => void }) {
       console.log("New account data", accountData);
       setTimeout(() => {
         setStatus("success");
+
         onClose();
       }, 3000);
       /* await apiFetch("/auth/accounts", {
