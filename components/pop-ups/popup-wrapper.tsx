@@ -16,8 +16,8 @@ export default function PopupWrapper({
   onClose?: () => void;
   deeper?: boolean;
   reducePb?: boolean;
-  h: string;
-  w: string;
+  h?: string;
+  w?: string;
   innerPadding?: boolean;
   isLoading?: boolean;
 }) {
@@ -29,7 +29,6 @@ export default function PopupWrapper({
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         role="button"
-        onClick={onClose}
       />
       {isLoading && <Spinner className="absolute" variant="gradient" />}
       <div
