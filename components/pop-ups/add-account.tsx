@@ -13,7 +13,7 @@ import PopupHeader, {
 } from "@/components/pop-ups/styled-popup-header";
 import { selectStyle, inputStyleInner } from "@/styles/style-variables";
 import ErrMess from "@/components/errMess";
-import { validatePassword } from "@/lib/utils";
+import { apiFetch } from "@/lib/api";
 
 interface NewAccountData {
   sectionName: string;
@@ -36,7 +36,7 @@ function validateField(field: brokerData, val: string): string | null {
     return null;
   }
 
-  if (field.value === "password") {
+  /* if (field.value === "password") {
     const res = validatePassword(value, {
       min: 8,
       max: 128,
@@ -64,7 +64,7 @@ function validateField(field: brokerData, val: string): string | null {
     }
 
     return null;
-  }
+  } */
 
   const noSpaces = /\s/.test(value);
 
@@ -168,6 +168,12 @@ export default function AddAccountModal({ onClose }: { onClose: () => void }) {
         break;
     }
 
+    if (accountPath !== "forex-account") {
+      alert(`Currentlty you can add a RoboForex account only`);
+
+      return;
+    }
+
     const addedAccountData = { ...accountData.data };
 
     addedAccountData.broker = Brokers.find(
@@ -175,16 +181,26 @@ export default function AddAccountModal({ onClose }: { onClose: () => void }) {
     )!.label;
 
     console.log("New account data", {
-      accountPath,
-      accountData,
+      //accountPath,
+      //accountData,
       addedAccountData,
     });
 
-    /* await apiFetch(`/trading-accounts/add-${accountPath}`, {
-      method: "POST",
-      body: JSON.stringify({
-        
-        broker: Brokers[activeSection].label // RoboForex,
+    try {
+      const resp = await apiFetch(`/trading-accounts/add-${accountPath}`, {
+        method: "POST",
+        body: JSON.stringify(addedAccountData),
+      });
+
+      console.log("response", resp);
+
+      onClose();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  /* broker: Brokers[activeSection].label // RoboForex,
         platform: Brokers[activeSection].data.*platform //MT5,
         accountNumber Brokers[activeSection].data.*login
         
@@ -193,15 +209,7 @@ export default function AddAccountModal({ onClose }: { onClose: () => void }) {
         
 
         apiKey: Brokers[activeSection].data.*apiKey
-        secretKey: Brokers[activeSection].data.*secretKey
-      }),
-    }); */
-
-    setTimeout(() => {
-      setStatus("success");
-      onClose();
-    }, 1500);
-  }
+        secretKey: Brokers[activeSection].data.*secretKey */
 
   return (
     <PopupWrapper

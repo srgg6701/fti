@@ -1,14 +1,14 @@
 "use client"; // TODO: check if it should be a client component
 import { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+//import { useRouter } from "next/navigation";
 
 import HomeSections from "@/components/dataSections";
 import AddAccount from "@/components/pop-ups/add-account";
 import AccountAdded from "@/components/pop-ups/account-added";
 
 export default function Home() {
-  const router = useRouter();
+  //const router = useRouter();
 
   const [isAddAccountOpen, setAddAccount] = useState<boolean | null>(null);
   const [isAccountAddOpen, setAccountAddOpen] = useState<boolean | null>(null);
@@ -22,7 +22,7 @@ export default function Home() {
   }
   function closeAccountAddedAndRedirect() {
     setAccountAddOpen(false);
-    router.push("/home/strategies");
+    //router.push("/home/strategies");
   }
 
   return (
