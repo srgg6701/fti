@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
 import { Spinner } from "@heroui/react";
 
@@ -9,6 +9,7 @@ export default function PopupWrapper({
   reducePb,
   h,
   w,
+  style,
   innerPadding = true,
   isLoading,
 }: {
@@ -18,6 +19,7 @@ export default function PopupWrapper({
   reducePb?: boolean;
   h?: string;
   w?: string;
+  style?: CSSProperties | undefined;
   innerPadding?: boolean;
   isLoading?: boolean;
 }) {
@@ -33,6 +35,7 @@ export default function PopupWrapper({
       {isLoading && <Spinner className="absolute" variant="gradient" />}
       <div
         className={`bg-translucent-extreme relative flex justify-between overflow-y-auto rounded-[15px] ${innerPadding ? "p-10" : ""} ${reducePb && "pb-[30px]"} h-[${h}] w-[${w}] shadow-2xl`}
+        style={style}
       >
         {deeper ? (
           <>

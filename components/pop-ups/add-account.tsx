@@ -35,7 +35,7 @@ function validateField(field: brokerData, val: string): string | null {
 
     return null;
   }
-
+  // FIXME: uncomment it as we need robust password pattern
   /* if (field.value === "password") {
     const res = validatePassword(value, {
       min: 8,
@@ -102,7 +102,13 @@ function validateField(field: brokerData, val: string): string | null {
   return null;
 }
 
-export default function AddAccountModal({ onClose }: { onClose: () => void }) {
+export default function AddAccountModal({
+  onClose,
+  onCloseModal,
+}: {
+  onClose: (accountId: string, broker: string, brokerType: string) => void;
+  onCloseModal?: () => void;
+}) {
   const [activeSection, setActiveSection] = useState<string | null>(null);
 
   const [accountData, setAccountData] = useState<NewAccountData>({
@@ -194,22 +200,15 @@ export default function AddAccountModal({ onClose }: { onClose: () => void }) {
 
       console.log("response", resp);
 
-      onClose();
+      onClose(
+        addedAccountData.accountNumber,
+        addedAccountData.broker,
+        addedAccountData.platform,
+      );
     } catch (error) {
       console.log(error);
     }
   }
-
-  /* broker: Brokers[activeSection].label // RoboForex,
-        platform: Brokers[activeSection].data.*platform //MT5,
-        accountNumber Brokers[activeSection].data.*login
-        
-        serverName: Brokers[activeSection].data.*serverName
-        password: Brokers[activeSection].data.*password
-        
-
-        apiKey: Brokers[activeSection].data.*apiKey
-        secretKey: Brokers[activeSection].data.*secretKey */
 
   return (
     <PopupWrapper
@@ -218,7 +217,7 @@ export default function AddAccountModal({ onClose }: { onClose: () => void }) {
       h="426px"
       isLoading={status === "loading"}
       w="380px"
-      onClose={onClose}
+      onClose={onCloseModal}
     >
       <div
         className={`flex flex-col gap-5 text-left ${status === "loading" && "opacity-20"}`}

@@ -12,13 +12,25 @@ export default function Home() {
 
   const [isAddAccountOpen, setAddAccount] = useState<boolean | null>(null);
   const [isAccountAddOpen, setAccountAddOpen] = useState<boolean | null>(null);
+  const [addedData, setAddedData] = useState<{
+    accountNumber: string;
+    broker: string;
+    platform?: string;
+  } | null>(null);
 
   function addAddAccount() {
     setAddAccount(true);
   }
-  function closeAddAccount() {
+  function closeAddAccount(
+    accountNumber?: string,
+    broker?: string,
+    platform?: string,
+  ) {
     setAddAccount(null);
     setAccountAddOpen(true);
+    if (accountNumber && broker) {
+      setAddedData({ accountNumber, broker, platform });
+    }
   }
   function closeAccountAddedAndRedirect() {
     setAccountAddOpen(false);
@@ -46,9 +58,21 @@ export default function Home() {
         </div>
       </section>
       <HomeSections section="home" />
-      {(isAddAccountOpen && <AddAccount onClose={closeAddAccount} />) || null}
+      {(isAddAccountOpen && (
+        <AddAccount
+          onClose={closeAddAccount}
+          onCloseModal={() => setAddAccount(false)}
+        />
+      )) ||
+        null}
       {isAccountAddOpen && (
-        <AccountAdded onClose={closeAccountAddedAndRedirect} />
+        <AccountAdded
+          accountNumber={addedData?.accountNumber}
+          broker={addedData?.broker}
+          platform={addedData?.platform}
+          onClick={closeAccountAddedAndRedirect}
+          onClose={closeAccountAddedAndRedirect}
+        />
       )}
     </>
   );
