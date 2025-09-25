@@ -23,10 +23,10 @@ export function middleware(req: NextRequest) {
 
   console.log("req", req);
 
-  if (
+  /* if (
     host.endsWith(".vercel.app") // FIXME: remove this condition as soon as remote authentification works
   )
-    return NextResponse.next();
+    return NextResponse.next(); */
 
   // if we have cookies, let it go where they wanted
   if (req.cookies.has("jwt")) {
