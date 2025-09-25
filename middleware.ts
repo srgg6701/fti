@@ -9,7 +9,13 @@ export function middleware(req: NextRequest) {
   if (testUrl.pathname.startsWith("/test")) {
     const host = req.headers.get("host") || "";
 
-    if (!(host.startsWith("localhost") || host.startsWith("127.0.0.1"))) {
+    if (
+      !(
+        host.startsWith("localhost") ||
+        host.startsWith("127.0.0.1") ||
+        host.endsWith("vercel.app")
+      )
+    ) {
       return new NextResponse("Not Found", { status: 404 });
     }
   }
