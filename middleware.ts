@@ -19,7 +19,6 @@ export function middleware(req: NextRequest) {
       return new NextResponse("Not Found", { status: 404 });
     }
   }
-  const host = req.headers.get("host") ?? "";
 
   console.log("req", req);
 

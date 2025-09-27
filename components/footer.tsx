@@ -9,8 +9,11 @@ import { checkRouteAside } from "@/lib/utils";
 
 export default function Footer() {
   const urlFirstSegment = getUrlSegments(usePathname, 1);
+  const urlSecondSegment = getUrlSegments(usePathname, 2);
 
   if (checkRouteAside(urlFirstSegment)) return null;
+  if (checkRouteAside([urlFirstSegment, urlSecondSegment].join("")))
+    return null;
 
   return (
     <footer className="py-[60px] relative">

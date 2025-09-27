@@ -161,7 +161,13 @@ export function validatePassword(
   return { valid: true };
 }
 
-export const routesAside = ["/", "/create-account", "/login", "/logout"];
+export const routesAside = [
+  "/",
+  "/create-account",
+  "/login",
+  "/logout",
+  "/api/test",
+];
 
 export function checkRouteAside(segment: string) {
   return routesAside.some((seg) => seg === segment);
