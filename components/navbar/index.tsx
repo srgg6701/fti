@@ -198,10 +198,7 @@ export const Navbar = () => {
     console.log("Get data...");
     setStatus("loading");
     try {
-      /* await apiFetch('/auth/search', {
-        method: 'GET',
-        body: JSON.stringify({ query: search_text }),
-        }); */
+      /* await apiFetch('/auth/search'); */
       /****** send request to the endpoint to get the confirmation code ******/
       await new Promise((r) => setTimeout(r, 3500));
       console.log("Get data...");
