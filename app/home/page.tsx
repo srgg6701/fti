@@ -7,6 +7,12 @@ import HomeSections from "@/components/dataSections";
 import AddAccount from "@/components/pop-ups/add-account";
 import AccountAdded from "@/components/pop-ups/account-added";
 import { apiFetch } from "@/lib/api";
+import {
+  UserAccount,
+  TradeSystems,
+  UserSubscription,
+  ChartData,
+} from "@/types/apiData";
 
 export default function Home() {
   //const router = useRouter();
@@ -18,6 +24,15 @@ export default function Home() {
     broker: string;
     platform?: string;
   } | null>(null);
+
+  const [userAccounts, setUserAccounts] = useState<UserAccount[] | null>(null);
+  const [allStrategies, setAllStrategies] = useState<TradeSystems[] | null>(
+    null,
+  );
+  const [userSubscriptions, setUserSubscription] = useState<
+    UserSubscription[] | null
+  >(null);
+  const [chart, setChart] = useState<ChartData[] | null>(null);
 
   function addAddAccount() {
     setAddAccount(true);
@@ -40,22 +55,51 @@ export default function Home() {
 
   useEffect(() => {
     (async () => {
-      const userAccounts = await apiFetch(
-        "/api/trading-accounts/user-accounts",
+      const [accounts, tradeSystems, subscriptions, charts] = await Promise.all(
+        [
+          apiFetch<UserAccount[]>("/api/trading-accounts/user-accounts"),
+          apiFetch<TradeSystems[]>("/api/trade-systems"),
+          apiFetch<UserSubscription[]>("/api/subscriptions/user-subscriptions"),
+          apiFetch<ChartData[]>("/api/balance/equity/chart"),
+        ],
       );
 
-      console.log("userAccounts", userAccounts);
+      console.log({ accounts, tradeSystems, subscriptions, charts });
+      setUserAccounts(accounts);
+      setAllStrategies(tradeSystems);
+      setUserSubscription(userSubscriptions);
+      setChart(charts);
     })();
-  });
+  }, []);
+
+  const AccountInfoBlock = ({
+    userAccounts,
+  }: {
+    userAccounts: UserAccount[] | null;
+  }) => {
+    if (!userAccounts) return null;
+
+    return (
+      <>
+        <h2 className="text-lg font-medium">
+          You{" "}
+          {userAccounts.length > 0
+            ? `have ${userAccounts.length}`
+            : "don't have any"}{" "}
+          strategies at the moment.
+        </h2>
+        <div className="my-[10px]">
+          Add your {userAccounts.length > 0 ? "next" : "first"} strategy
+        </div>
+      </>
+    );
+  };
 
   return (
     <>
       <section className="mx-auto py-[80px]">
         <div className="mx-auto flex w-full max-w-[370px] flex-col text-center">
-          <h2 className="text-lg font-medium">
-            You don&apos;t have any strategies at the moment
-          </h2>
-          <div className="my-[10px]">Add your first strategy</div>
+          <AccountInfoBlock userAccounts={userAccounts} />
           <button className="text-center" onClick={addAddAccount}>
             <Image
               alt="Add your first strategy"
