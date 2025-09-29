@@ -7,12 +7,8 @@ import HomeSections from "@/components/dataSections";
 import AddAccount from "@/components/pop-ups/add-account";
 import AccountAdded from "@/components/pop-ups/account-added";
 import { apiFetch } from "@/lib/api";
-import {
-  UserAccount,
-  TradeSystems,
-  UserSubscription,
-  ChartData,
-} from "@/types/apiData";
+import { UserAccount, UserSubscription } from "@/types/apiData";
+import { ButtonRoundedBlue } from "@/components/button-rounded";
 
 export default function Home() {
   //const router = useRouter();
@@ -26,13 +22,10 @@ export default function Home() {
   } | null>(null);
 
   const [userAccounts, setUserAccounts] = useState<UserAccount[] | null>(null);
-  const [allStrategies, setAllStrategies] = useState<TradeSystems[] | null>(
-    null,
-  );
   const [userSubscriptions, setUserSubscription] = useState<
-    UserSubscription[] | null
-  >(null);
-  const [chart, setChart] = useState<ChartData[] | null>(null);
+    UserSubscription[] | []
+  >([]);
+  //const [chart, setChart] = useState<ChartData[] | null>(null);
 
   function addAddAccount() {
     setAddAccount(true);
@@ -55,20 +48,13 @@ export default function Home() {
 
   useEffect(() => {
     (async () => {
-      const [accounts, tradeSystems, subscriptions, charts] = await Promise.all(
-        [
-          apiFetch<UserAccount[]>("/api/trading-accounts/user-accounts"),
-          apiFetch<TradeSystems[]>("/api/trade-systems"),
-          apiFetch<UserSubscription[]>("/api/subscriptions/user-subscriptions"),
-          apiFetch<ChartData[]>("/api/balance/equity/chart"),
-        ],
-      );
+      const [accounts, strategies] = await Promise.all([
+        apiFetch<UserAccount[]>("/api/trading-accounts/user-accounts"),
+        apiFetch<UserSubscription[]>("/api//subscriptions/user-subscriptions"),
+      ]);
 
-      console.log({ accounts, tradeSystems, subscriptions, charts });
+      setUserSubscription(strategies);
       setUserAccounts(accounts);
-      setAllStrategies(tradeSystems);
-      setUserSubscription(userSubscriptions);
-      setChart(charts);
     })();
   }, []);
 
@@ -81,16 +67,53 @@ export default function Home() {
 
     return (
       <>
-        <h2 className="text-lg font-medium">
-          You{" "}
-          {userAccounts.length > 0
-            ? `have ${userAccounts.length}`
-            : "don't have any"}{" "}
-          strategies at the moment.
-        </h2>
-        <div className="my-[10px]">
-          Add your {userAccounts.length > 0 ? "next" : "first"} strategy
+        <div className="flex flex-col items-center gap-5">
+          {(!userAccounts.length && (
+            <>
+              <h1 className="leading-none">Connect Your Account</h1>
+              <p>Start trading by connecting your first account</p>
+            </>
+          )) ||
+            null}
+          {/* <h4>
+              Currently you have{" "}
+              <Link className="color-blue-secondary" href="/accounts">
+                {userAccounts.length} account{userAccounts.length > 1 && "s"}
+              </Link>
+            </h4> */}
+          <ButtonRoundedBlue
+            bgColor="bg-blue-second"
+            btnText="Add account"
+            padding="p-5"
+            width="w-fit"
+            onClick={addAddAccount}
+          />
         </div>
+        {userAccounts.length > 0 && (
+          <div className="mt-4">
+            <h5 className="font-base text-lg">
+              You
+              {userSubscriptions.length > 0
+                ? ` have ${userSubscriptions.length} `
+                : " don't have any "}
+              strategies at the moment.
+            </h5>
+            <div className="my-[10px]">
+              Add your {userSubscriptions.length > 0 ? "next" : "first"}{" "}
+              strategy
+            </div>
+            <button className="text-center">
+              <Image
+                alt="Add your strategy"
+                className="mx-auto"
+                height="45"
+                src="/assets/images/cross/plus.svg"
+                style={{ cursor: "pointer" }}
+                width="45"
+              />
+            </button>
+          </div>
+        )}
       </>
     );
   };
@@ -100,18 +123,9 @@ export default function Home() {
       <section className="mx-auto py-[80px]">
         <div className="mx-auto flex w-full max-w-[370px] flex-col text-center">
           <AccountInfoBlock userAccounts={userAccounts} />
-          <button className="text-center" onClick={addAddAccount}>
-            <Image
-              alt="Add your first strategy"
-              className="mx-auto"
-              height="45"
-              src="/assets/images/cross/plus.svg"
-              style={{ cursor: "pointer" }}
-              width="45"
-            />
-          </button>
         </div>
       </section>
+      {/* allStrategies?.length && "My Strategies:"} {allStrategies?.length */}
       <HomeSections section="home" />
       {(isAddAccountOpen && (
         <AddAccount

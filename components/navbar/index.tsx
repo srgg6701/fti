@@ -101,7 +101,7 @@ export const Navbar = () => {
     case "/accounts":
       pageHeader = "Accounts";
       break;
-    case "/frame":
+    /* case "/frame":
       pageHeader = "Frame";
       break;
     case "/frame256":
@@ -112,7 +112,7 @@ export const Navbar = () => {
       break;
     case "/news3":
       pageHeader = "News 3";
-      break;
+      break; */
     case "/referral-system":
       pageHeader = "Referral system";
       break;

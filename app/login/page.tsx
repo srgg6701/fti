@@ -59,7 +59,7 @@ export default function LoginPage() {
           console.log("%cUser data has not delivered...", "color: red");
         }
 
-        const next =
+        const next = // TODO: clarify this and the next code (sessionStorage)
           new URLSearchParams(window.location.search).get("next") ||
           sessionStorage.getItem("reauth_from") ||
           "/home";

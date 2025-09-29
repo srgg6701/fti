@@ -24,6 +24,7 @@ export interface TDataNews extends User, UserImg {
   title: string;
   slug: string;
 }
+
 export type TDataWorldLeaders = TDataTopPerforming;
 export type TDataTheBestOfTheDay = TDataTopPerforming;
 export type TDataTheBestOfTheWeek = TDataTopPerforming;
@@ -39,6 +40,7 @@ export interface UserAccount {
   currency: number;
   created_at: string; // ISO-date
 }
+
 export interface TradeSystems {
   id: number;
   name: string;
@@ -53,15 +55,17 @@ export interface TradeSystems {
 export interface UserSubscription {
   accountId: number;
   accountNumber: string;
+  amount: string;
+  risk: number;
   strategyId: number;
   strategyName: string;
   strategyDescription: string;
   subscribedAt: string;
 }
 interface CData {
-  date: string;
-  equity: number;
-  timestamp: number;
+  date?: string;
+  equity?: number;
+  timestamp?: number;
 }
 interface Data {
   absoluteChange: number;
@@ -72,7 +76,71 @@ interface Data {
   percentageChange: number;
 }
 export interface ChartData {
-  data: Data;
-  message: string;
-  success: boolean;
+  data?: Data;
+  message?: string;
+  success?: boolean;
+}
+interface DailyPnl {
+  date: string;
+  balance: number;
+  equity: number;
+  open_positions: number;
+  profit_percent: number;
+  drawdown_percent: number;
+  snp500: number;
+  snp500_percent: number;
+  realized_pnl: number;
+  unrealized_pnl: number;
+}
+interface HourlyData {
+  timestamp: string;
+  balance: number;
+  equity: number;
+  open_positions: number;
+  profit_percent: number;
+  drawdown_percent: number;
+  snp500: number;
+  snp500_percent: number;
+  realized_pnl: number;
+  unrealized_pnl: number;
+}
+interface Performance {
+  risk: number;
+  last_year: PeriodResult;
+  last_week: PeriodResult;
+  last_day: PeriodResult;
+  roi: PeriodResult;
+  max_drawdown: PeriodResult;
+}
+interface PeriodResult {
+  amount: number;
+  percent: number;
+}
+interface YearResult {
+  year: number;
+  amount: number;
+  percent: number;
+  months: MonthResult[];
+}
+interface Details {
+  years: YearResult[];
+}
+interface MonthResult {
+  month: number;
+  amount: number;
+  percent: number;
+}
+export interface UniversalEquity {
+  entity_type: string;
+  entity_id: string;
+  current_balance: number;
+  balance_change: number;
+  balance_change_percent: number;
+  daily_pnl_curve: DailyPnl[];
+  hourly_data: HourlyData[];
+  performance: Performance;
+  details: Details;
+  calculation_time: string;
+  system_id: string;
+  trading_account_id: string | null;
 }

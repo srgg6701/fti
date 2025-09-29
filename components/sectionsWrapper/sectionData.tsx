@@ -25,6 +25,7 @@ export function SectionData<T>({
   getKey,
   renderItem,
 }: SectionDataProps<T>) {
+  console.log("SectionData data", { [title || "no title"]: data });
   const style =
     height !== undefined
       ? { height: typeof height === "number" ? `${height}px` : height }

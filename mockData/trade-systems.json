@@ -1,2 +1,46 @@
-[{"id":1918254,"name":"AlexProgrammer's Strategy","description":"asd","status":5,"account":"25253332","server":"RoboForex-Pro-5","is_connected":1,"is_mt5":0,"account_type":0},
-	{"id":1918252,"name":"test_auto","description":"asd","status":5,"account":"63247352","server":"RoboForex-DemoPro","is_connected":1,"is_mt5":0,"account_type":0},{"id":1918250,"name":"test_manual","description":"Инстурмент тестрования. После подписки на эту стратегию Вы можете используя MetaTrader4 подключиться к этому аккаунту и совершать сделки руками. Сделки будут копироваться на подключенный счет. \r\n\r\nСервер: RoboForex-DemoPro\r\nЛогин:  63247355\r\nПароль: hTBYQJ32tRU2K2E ","status":5,"account":"63247355","server":"RoboForex-DemoPro","is_connected":1,"is_mt5":0,"account_type":0},{"id":1918248,"name":"Crypto Strategy test","description":"asd","status":0,"account":"f6f9b894d25ba7990ccd5dae36989388af4a5ce48a53034c53a3dd7197b44635","server":"BinanceFuturesTestnet","is_connected":0,"is_mt5":0,"account_type":0}]
+[
+  {
+    "id": 1918254,
+    "name": "AlexProgrammer's Strategy",
+    "description": "asd",
+    "status": 5,
+    "account": "25253332",
+    "server": "RoboForex-Pro-5",
+    "is_connected": 1,
+    "is_mt5": 0,
+    "account_type": 0
+  },
+  {
+    "id": 1918252,
+    "name": "test_auto",
+    "description": "asd",
+    "status": 5,
+    "account": "63247352",
+    "server": "RoboForex-DemoPro",
+    "is_connected": 1,
+    "is_mt5": 0,
+    "account_type": 0
+  },
+  {
+    "id": 1918250,
+    "name": "test_manual",
+    "description": "Инстурмент тестрования. После подписки на эту стратегию Вы можете используя MetaTrader4 подключиться к этому аккаунту и совершать сделки руками. Сделки будут копироваться на подключенный счет. \r\n\r\nСервер: RoboForex-DemoPro\r\nЛогин:  63247355\r\nПароль: hTBYQJ32tRU2K2E ",
+    "status": 5,
+    "account": "63247355",
+    "server": "RoboForex-DemoPro",
+    "is_connected": 1,
+    "is_mt5": 0,
+    "account_type": 0
+  },
+  {
+    "id": 1918248,
+    "name": "Crypto Strategy test",
+    "description": "asd",
+    "status": 0,
+    "account": "f6f9b894d25ba7990ccd5dae36989388af4a5ce48a53034c53a3dd7197b44635",
+    "server": "BinanceFuturesTestnet",
+    "is_connected": 0,
+    "is_mt5": 0,
+    "account_type": 0
+  }
+]

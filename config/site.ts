@@ -1,5 +1,15 @@
 export type SiteConfig = typeof siteConfig;
 
+export const routeAliases = {
+  home: "home",
+  people: "people",
+  strategies: "strategies",
+  pricing: "pricing",
+  news: "news",
+};
+export const routeAliasesSecond = {
+  homeStrategies: `${routeAliases.home}/strategies`,
+};
 export const siteConfig = {
   name: "Fintech Trade Innovation",
   description: "App for fintech services",
@@ -7,27 +17,27 @@ export const siteConfig = {
   navItems: [
     {
       label: "Home",
-      href: "/home",
+      href: `/${routeAliases.home}`,
       protected: true,
     },
     {
       label: "People",
-      href: "/people",
+      href: `/${routeAliases.people}`,
       protected: true,
     },
     {
       label: "Strategies",
-      href: "/strategies",
+      href: `/${routeAliases.strategies}`,
       protected: true,
     },
     {
       label: "Pricing",
-      href: "/pricing",
+      href: `/${routeAliases.pricing}`,
       protected: false,
     },
     {
       label: "News",
-      href: "/news",
+      href: `/${routeAliases.news}`,
       protected: true,
     },
     /* {
