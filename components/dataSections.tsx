@@ -136,7 +136,7 @@ export default function HomeSections({ section }: { section: string }) {
   return (
     <div className="mt-[80px] mb-[56px] flex flex-col gap-[5rem]">
       {section === routeAliasesSecond.homeStrategies && (
-        <TotalBalance currentBalance={chart?.data?.currentBalance || 0} />
+        <TotalBalance chart={chart} />
       )}
       {
         // home, // home/strategies

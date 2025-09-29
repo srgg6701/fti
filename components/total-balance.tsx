@@ -1,12 +1,15 @@
+import type { ChartData } from "@/types/apiData";
+
 import ColoredIndicator from "@/components/coloredIndicator";
 import DropdownPill from "@/components/dateDropDown";
-import HomeStrategiesGraph from "@/mockData/graphs/home-strategies";
+//import HomeStrategiesGraph from "@/mockData/graphs/home-strategies";
+import BalanceChart from "@/components/chart";
 
-export default function TotalBalance({
-  currentBalance = 0,
-}: {
-  currentBalance: number;
-}) {
+export default function TotalBalance({ chart }: { chart: ChartData }) {
+  const currentBalance = chart.data?.currentBalance;
+
+  console.log(chart);
+
   return (
     <section className="flex w-full flex-wrap gap-11 py-5 lg:flex-nowrap lg:p-[80px] lg:pb-[90px]">
       <div className="flex max-w-[452px] flex-col gap-2.5">
@@ -17,7 +20,7 @@ export default function TotalBalance({
           phrases, and web pages. It supports over 100 languages.
         </p>
       </div>
-      <div className="max-h-[160px] w-[590px] max-w-[100%] xl:p-[20px]">
+      <div className="w-[590px] max-w-[100%] xl:p-[20px]">
         <div className="jus flex justify-between">
           <div className="flex gap-2.5">
             <span className="font-semibold">Graph</span>
@@ -37,7 +40,8 @@ export default function TotalBalance({
             />
           </div>
         </div>
-        <HomeStrategiesGraph />
+        <BalanceChart payload={chart} />
+        {/* <HomeStrategiesGraph /> */}
       </div>
     </section>
   );
