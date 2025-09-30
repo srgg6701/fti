@@ -17,7 +17,7 @@ export default function CardMyStrategies({
   invested: string;
   proRata: string;
   direction: string;
-  changeDynamics: string[];
+  changeDynamics: number[];
   marginRight?: string;
   padding?: string;
 }) {

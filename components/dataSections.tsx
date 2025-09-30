@@ -56,7 +56,7 @@ export default function HomeSections({ section }: { section: string }) {
   >([]);
   const [newsData, setNewsData] = useState<TDataNews[]>([]);
   const [worldLeadersData, setWorldLeadersData] = useState<TDataWorldLeaders[]>(
-    []
+    [],
   );
   const [theBestOfTheDayData, setTheBestOfTheDayData] = useState<
     TDataTheBestOfTheDay[]
@@ -86,7 +86,7 @@ export default function HomeSections({ section }: { section: string }) {
           ] = await Promise.all([
             // TODO: Define API routes as constants
             apiFetch<UserSubscription[]>(
-              "/api/subscriptions/user-subscriptions"
+              "/api/subscriptions/user-subscriptions",
             ),
             apiFetch<TradeSystems[]>("/api/trade-systems"), // INFO: do we need this?:
             apiFetch<ChartData>("/api/balance/equity/chart"),
@@ -151,7 +151,7 @@ export default function HomeSections({ section }: { section: string }) {
                 renderItem={(d, i) => (
                   <CardMyStrategies
                     key={i}
-                    changeDynamics={["?", "?"]}
+                    changeDynamics={[0, 0]}
                     direction={"?"}
                     invested={d.amount}
                     proRata={"?"}

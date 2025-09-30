@@ -50,7 +50,13 @@ export default function TotalBalance({ chart }: { chart: ChartData }) {
         <div className="jus flex justify-between">
           <div className="flex gap-2.5">
             <span className="font-semibold">Graph</span>
-            <ColoredIndicator data={["32", "1.23"]} direction="Up" />
+            <ColoredIndicator
+              data={[
+                payload?.data?.absoluteChange!,
+                payload?.data?.percentageChange!,
+              ]}
+              direction={payload?.data?.isPositive ? "Up" : "Down"}
+            />
           </div>
           <div>
             <DropdownPill

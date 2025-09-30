@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import { LogoFTI } from "@/components/icons";
 import { useUserStore } from "@/lib/store/userStore";
@@ -8,15 +9,18 @@ export default function Default() {
   const router = useRouter();
   const isAuthenticated = useUserStore((state) => state.isAuthenticated);
 
-  //console.log(`isAuthenticated: ${isAuthenticated}`);
-  if (!isAuthenticated) {
-    const tm = setTimeout(() => {
-      clearTimeout(tm);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      const tm = setTimeout(() => {
+        clearTimeout(tm);
+        router.replace("/home");
+      }, 4000);
+
+      return () => clearTimeout(tm); // Clear timeout on unmount
+    } else {
       router.replace("/home");
-    }, 4000);
-  } else {
-    router.replace("/home");
-  }
+    }
+  }, [isAuthenticated, router]); // Add isAuthenticated and router to the dependency array
 
   return (
     <div className="relative flex h-full w-full flex-col items-center justify-center">

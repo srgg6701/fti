@@ -3,7 +3,7 @@ export default function coloredIndicator({
   data,
   direction,
 }: {
-  data: string[];
+  data: number[];
   direction: string;
 }) {
   return (
