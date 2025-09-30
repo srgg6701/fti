@@ -56,7 +56,7 @@ export default function HomeSections({ section }: { section: string }) {
   >([]);
   const [newsData, setNewsData] = useState<TDataNews[]>([]);
   const [worldLeadersData, setWorldLeadersData] = useState<TDataWorldLeaders[]>(
-    [],
+    []
   );
   const [theBestOfTheDayData, setTheBestOfTheDayData] = useState<
     TDataTheBestOfTheDay[]
@@ -86,7 +86,7 @@ export default function HomeSections({ section }: { section: string }) {
           ] = await Promise.all([
             // TODO: Define API routes as constants
             apiFetch<UserSubscription[]>(
-              "/api/subscriptions/user-subscriptions",
+              "/api/subscriptions/user-subscriptions"
             ),
             apiFetch<TradeSystems[]>("/api/trade-systems"), // INFO: do we need this?:
             apiFetch<ChartData>("/api/balance/equity/chart"),
@@ -143,23 +143,25 @@ export default function HomeSections({ section }: { section: string }) {
         (section === routeAliases.home ||
           section === routeAliasesSecond.homeStrategies) && (
           <>
-            <SectionData<UserSubscription>
-              data={userSubscriptionsData} // My Strategies
-              getKey={(d, i) => `${d.strategyName}-${i}`}
-              height={95}
-              renderItem={(d, i) => (
-                <CardMyStrategies
-                  key={i}
-                  changeDynamics={["?", "?"]}
-                  direction={"?"}
-                  invested={d.amount}
-                  proRata={"?"}
-                  userImg={"?"}
-                  username={d.strategyName}
-                />
-              )}
-              title="My Strategies"
-            />
+            {userSubscriptionsData.length > 0 && (
+              <SectionData<UserSubscription>
+                data={userSubscriptionsData} // My Strategies
+                getKey={(d, i) => `${d.strategyName}-${i}`}
+                height={95}
+                renderItem={(d, i) => (
+                  <CardMyStrategies
+                    key={i}
+                    changeDynamics={["?", "?"]}
+                    direction={"?"}
+                    invested={d.amount}
+                    proRata={"?"}
+                    userImg={"?"}
+                    username={d.strategyName}
+                  />
+                )}
+                title="My Strategies"
+              />
+            )}
             <SectionData
               // FIXME: substitute with real data!
               // /api/statistics/universal-equity?systemId=<TradeSystems.id>&star

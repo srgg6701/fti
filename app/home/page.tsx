@@ -33,7 +33,7 @@ export default function Home() {
   function closeAddAccount(
     accountNumber?: string,
     broker?: string,
-    platform?: string,
+    platform?: string
   ) {
     setAddAccount(null);
     setAccountAddOpen(true);
@@ -72,22 +72,16 @@ export default function Home() {
             <>
               <h1 className="leading-none">Connect Your Account</h1>
               <p>Start trading by connecting your first account</p>
+              <ButtonRoundedBlue
+                bgColor="bg-blue-second"
+                btnText="Add account"
+                padding="p-5"
+                width="w-fit"
+                onClick={addAddAccount}
+              />{" "}
             </>
           )) ||
             null}
-          {/* <h4>
-              Currently you have{" "}
-              <Link className="color-blue-secondary" href="/accounts">
-                {userAccounts.length} account{userAccounts.length > 1 && "s"}
-              </Link>
-            </h4> */}
-          <ButtonRoundedBlue
-            bgColor="bg-blue-second"
-            btnText="Add account"
-            padding="p-5"
-            width="w-fit"
-            onClick={addAddAccount}
-          />
         </div>
         {userAccounts.length > 0 && (
           <div className="mt-4">

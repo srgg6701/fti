@@ -2,7 +2,6 @@ import type { ChartData } from "@/types/apiData";
 
 import ColoredIndicator from "@/components/coloredIndicator";
 import DropdownPill from "@/components/dateDropDown";
-//import HomeStrategiesGraph from "@/mockData/graphs/home-strategies";
 import BalanceChart from "@/components/chart";
 
 export default function TotalBalance({ chart }: { chart: ChartData }) {
@@ -41,7 +40,6 @@ export default function TotalBalance({ chart }: { chart: ChartData }) {
           </div>
         </div>
         <BalanceChart payload={chart} />
-        {/* <HomeStrategiesGraph /> */}
       </div>
     </section>
   );
