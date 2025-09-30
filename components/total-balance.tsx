@@ -1,13 +1,40 @@
 import type { ChartData } from "@/types/apiData";
 
+import { useMemo, useState } from "react";
+
 import ColoredIndicator from "@/components/coloredIndicator";
 import DropdownPill from "@/components/dateDropDown";
 import BalanceChart from "@/components/chart";
+
+// TODO: Remove mock data in production
+import { MOCK_CHARTS, type PeriodKey } from "@/mockData/chart-data";
+
+const mapValueToPeriod: Record<string, PeriodKey> = {
+  "1week": "1W",
+  "1month": "1M",
+  "6month": "6M",
+  "1year": "1Y",
+  "2years": "2Y",
+  "3years": "3Y",
+};
 
 export default function TotalBalance({ chart }: { chart: ChartData }) {
   const currentBalance = chart.data?.currentBalance;
 
   console.log(chart);
+
+  const [sel, setSel] = useState<PeriodKey>("6M");
+
+  const items = [
+    { label: "1 Week", value: "1week" },
+    { label: "1 Month", value: "1month" },
+    { label: "6 Months", value: "6month" },
+    { label: "1 Year", value: "1year" },
+    { label: "2 Years", value: "2years" },
+    { label: "3 Years", value: "3years" },
+  ];
+
+  const payload = useMemo(() => MOCK_CHARTS[sel], [sel]);
 
   return (
     <section className="flex w-full flex-wrap gap-11 py-5 lg:flex-nowrap lg:p-[80px] lg:pb-[90px]">
@@ -27,19 +54,15 @@ export default function TotalBalance({ chart }: { chart: ChartData }) {
           </div>
           <div>
             <DropdownPill
-              items={[
-                { label: "1 Week", value: "1week" },
-                { label: "1 Month", value: "1month" },
-                { label: "6 Months", value: "6month" },
-                { label: "1 Year", value: "1year" },
-                { label: "2 Years", value: "2years" },
-                { label: "3 Years", value: "3years" },
-              ]}
-              onSelect={(item) => console.log("selected:", item)}
+              defaultValue="6month"
+              height={24}
+              items={items}
+              width={112}
+              onSelect={(item) => setSel(mapValueToPeriod[item.value])}
             />
           </div>
         </div>
-        <BalanceChart payload={chart} />
+        <BalanceChart payload={payload} />
       </div>
     </section>
   );

@@ -84,7 +84,8 @@ export default function DropdownPill({
                     type="button"
                     onClick={() => {
                       setValue(it.value);
-                      onChange?.(it.value);
+                      onChange?.(it.value); // если где-то используется
+                      onSelect?.(it);
                       setOpen(false);
                     }}
                   >

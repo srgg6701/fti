@@ -62,12 +62,12 @@ export interface UserSubscription {
   strategyDescription: string;
   subscribedAt: string;
 }
-interface CData {
+export interface CData {
   date?: string;
   equity?: number;
   timestamp?: number;
 }
-interface Data {
+export interface Data {
   absoluteChange: number;
   chartData: CData[];
   currentBalance: number;

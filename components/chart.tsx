@@ -1,4 +1,5 @@
 "use client";
+
 import {
   ResponsiveContainer,
   AreaChart,
@@ -11,84 +12,105 @@ import {
 
 import { ChartData } from "@/types/apiData";
 
-function fmtDate(ts: number) {
-  // If the timestamp comes in seconds, uncomment the division:
-  // if (ts < 10_000_000_000) ts *= 1000;
-  const d = new Date(ts);
+// ===== helpers =====
+const STROKE = "#155dfc";
 
-  return d.toLocaleDateString(undefined, { month: "short", day: "2-digit" });
-}
+const toMonthShort = (ts: number) =>
+  new Date(ts).toLocaleString(undefined, { month: "short" });
 
-function fmtMoney(n: number) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 }).format(
-    n,
-  );
-}
+const getMonthTicks = (points: { x: number }[]) => {
+  const seen = new Set<string>();
+  const ticks: number[] = [];
 
+  for (const p of points) {
+    const d = new Date(p.x);
+    const key = `${d.getFullYear()}-${d.getMonth()}`;
+
+    if (!seen.has(key)) {
+      seen.add(key);
+      ticks.push(p.x);
+    }
+  }
+
+  return ticks;
+};
+
+const getYDomain = (vals: number[]) => {
+  const min = Math.min(...vals);
+  const max = Math.max(...vals);
+  const pad = Math.max(1, (max - min) * 0.06); // ~6% отступ
+
+  return [min - pad, max + pad] as const;
+};
+
+// ===== компонент =====
 export default function BalanceChart({ payload }: { payload: ChartData }) {
-  if (!payload?.success || !payload.data?.chartData?.length) {
+  
+  console.log("Balance Chart: payload data", payload);
+
+  // 1) забираем сырые точки
+  const raw = payload?.data?.chartData ?? [];
+
+  // 2) фильтруем валидные (тайп-гард гарантирует числа)
+  const points = raw
+    .filter(
+      (p): p is { timestamp: number; equity: number } =>
+        typeof p?.timestamp === "number" && typeof p?.equity === "number",
+    )
+    .map((p) => {
+      const tsMs =
+        p.timestamp < 1_000_000_000_000 ? p.timestamp * 1000 : p.timestamp;
+
+      return { x: tsMs, y: p.equity };
+    });
+
+  if (!points.length) {
     return <div className="text-sm text-white/60">No data</div>;
   }
 
-  const { chartData, percentageChange, absoluteChange } = payload.data;
-
-  // Данные прямо в Recharts: x = timestamp, y = equity
-  const data = chartData.map((p) => ({
-    x: p.timestamp, // число для оси X
-    y: p.equity, // значение
-  }));
-
-  const stroke = percentageChange >= 0 ? "#3ea6ff" : "#ff5f5f";
+  const monthTicks = getMonthTicks(points);
+  const [yMin, yMax] = getYDomain(points.map((d) => d.y));
 
   return (
-    <div className="w-full rounded-xl bg-[#0b0d12] p-6">
-      <div className="mb-4 flex items-baseline justify-between">
-        <h3 className="text-white/90">Balance</h3>
-        <span
-          className={
-            percentageChange >= 0 ? "text-[#3ea6ff]" : "text-[#ff8b8b]"
-          }
-        >
-          {absoluteChange >= 0 ? "+" : "−"} $
-          {fmtMoney(Math.abs(absoluteChange))} ({percentageChange.toFixed(2)}%)
-        </span>
-      </div>
-
-      <div style={{ width: "100%", height: 280 }}>
+    <div className="w-full rounded-xl bg-[#0b0d12] p-4">
+      <div style={{ width: "100%", height: 220 }}>
         <ResponsiveContainer>
           <AreaChart
-            data={data}
-            margin={{ top: 10, right: 24, left: 0, bottom: 0 }}
+            data={points}
+            margin={{ top: 8, right: 16, left: 0, bottom: 0 }}
           >
             <defs>
               <linearGradient id="fill" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0%" stopColor={stroke} stopOpacity={0.32} />
-                <stop offset="100%" stopColor={stroke} stopOpacity={0} />
+                <stop offset="0%" stopColor={STROKE} stopOpacity={0.3} />
+                <stop offset="100%" stopColor={STROKE} stopOpacity={0} />
               </linearGradient>
             </defs>
 
             <XAxis
               axisLine={false}
               dataKey="x"
+              minTickGap={20}
               tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 12 }}
-              tickFormatter={fmtDate}
+              tickFormatter={(v) => toMonthShort(Number(v))}
               tickLine={false}
+              ticks={monthTicks}
             />
             <YAxis
               axisLine={false}
               dataKey="y"
+              domain={[yMin, yMax]}
               tick={{ fill: "rgba(255,255,255,0.35)", fontSize: 12 }}
               tickLine={false}
-              width={40}
+              width={36}
             />
             <Tooltip
               contentStyle={{
                 background: "#11151d",
                 border: "1px solid #1c2330",
               }}
-              formatter={(y: number) => [`$ ${fmtMoney(y)}`, "Equity"]}
+              formatter={(y: number) => [y.toFixed(2), ""]}
               itemStyle={{ color: "#dbe7ff" }}
-              labelFormatter={(x) => fmtDate(Number(x))}
+              labelFormatter={(x) => toMonthShort(Number(x))}
               labelStyle={{ color: "#9fb3c8" }}
             />
 
@@ -97,7 +119,7 @@ export default function BalanceChart({ payload }: { payload: ChartData }) {
               activeDot={{ r: 4 }}
               dataKey="y"
               dot={false}
-              stroke={stroke}
+              stroke={STROKE}
               strokeWidth={2}
               type="monotone"
             />

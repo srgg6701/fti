@@ -11,6 +11,7 @@ import Camera from "@/components/pop-ups/camera";
 type PersonalItem = { label: string; value: string };
 
 export default function PersonalInformation() {
+  // FIXME: should't we us this?
   const user = useUserStore((s) => s.user);
 
   /*
