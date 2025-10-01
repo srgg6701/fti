@@ -6,35 +6,35 @@ import CardShared from "@/components/cards/card-shared";
 import { SectionData } from "@/components/sectionsWrapper/sectionData";
 import { useAdjustArticleWidth } from "@/hooks/useAdjustArticleWidth";
 // FIXME: remove it as real data is accessible
-import allStrategies, { type MockAccounts } from "@/mockData/accounts";
+//import allStrategies, { type MockAccounts } from "@/mockData/accounts";
+import { UserAccount } from "@/types/apiData";
+import { apiFetch } from "@/lib/api";
 
 // TODO: clarify is this all strategies or accounts
 export default function AllStrategies() {
   useAdjustArticleWidth();
 
-  const [accounts_data, setAccountsData] = useState<MockAccounts[]>([]);
+  //const [accounts_data, setAccountsData] = useState<MockAccounts[]>([]);
+  const [accounts_data, setAccountsData] = useState<UserAccount[]>([]);
 
   useEffect(() => {
-    /* if (false) {
+    try {
       (async () => {
-        const accounts: UserAccounts[] = await apiFetch(
-          "/api/trading-accounts/user-accounts",
+        const accounts: UserAccount[] = await apiFetch(
+          "/api/trading-accounts/user-accounts"
         );
-        
+
         console.log("accounts", accounts);
         setAccountsData(accounts);
       })();
-      
-    } else { */
-    setAccountsData(allStrategies);
-    //};
+    } catch (error) {}
   }, []);
 
   return (
     <div className="mt-[80px] mb-[56px] flex flex-col gap-[5rem]">
       <SectionData
-        data={accounts_data as MockAccounts[]}
-        getKey={(d) => d.brokerImg}
+        data={accounts_data}
+        getKey={(d) => d?.id}
         height={310}
         noHeader={true}
         renderItem={(d, i) => (
@@ -42,8 +42,8 @@ export default function AllStrategies() {
             key={i}
             brokerCode={d.brokerCode}
             brokerImg={d.brokerImg}
-            brokerName={d.brokerName}
-            chartImg={d.chartImg}
+            brokerName={d.broker}
+            chartImg={d.chartImg || ""}
             status={d.status}
           />
         )}

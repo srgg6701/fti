@@ -32,13 +32,17 @@ export type TDataTheBestOfTheMonth = TDataTopPerforming;
 export interface UserAccount {
   id: number;
   account: string;
-  status: string;
   broker: string;
   platform: string;
-  connectionState: number;
+  status: string;
   balance: string;
   currency: number;
+  connectionState: number;
   created_at: string; // ISO-date
+  // should be added:
+  brokerCode?: number;
+  brokerImg?: string;
+  chartImg?: string;
 }
 
 export interface TradeSystems {

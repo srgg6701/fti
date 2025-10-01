@@ -33,7 +33,7 @@ export default function Home() {
   function closeAddAccount(
     accountNumber?: string,
     broker?: string,
-    platform?: string
+    platform?: string,
   ) {
     setAddAccount(null);
     setAccountAddOpen(true);
