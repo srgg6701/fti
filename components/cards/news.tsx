@@ -35,8 +35,6 @@ const CardNews = ({
     <article
       className={`md:h-[376px] md:w-[320px] ${marginRight} ${padding} flex flex-col gap-5 ${xtraClasses}`}
     >
-      {" "}
-      UserBlockNews here
       <UserBlockNews
         date={date}
         slug={slug}
@@ -44,16 +42,16 @@ const CardNews = ({
         userImg={userImg}
         username={username}
       />
-      <div className="flex h-[180] w-[280] items-center overflow-hidden rounded-[16px]">
+      <div className="flex min-h-[180px] items-center overflow-hidden rounded-[16px]">
         <Image
           alt={title}
-          className="h-full w-full"
+          className="min-h-[180px]"
           height={180}
           src={`/assets/images/news/${img}`}
           width={280}
         />
       </div>
-      <div className="p-4 text-left">
+      <div className="text-left">
         <h3 className="mb-[10px] text-lg leading-[1.2] font-semibold">
           <button
             className="cursor-pointer text-left"
@@ -62,7 +60,7 @@ const CardNews = ({
             {title}
           </button>
         </h3>
-        <p className="relative text-sm">
+        <p className="relative text-sm leading-[1.215]">
           <span className="opacity-80">{text}</span>
           <Link className="read-more" href={`/${routeAliases.news}/${slug}`}>
             <span className="color-blue-secondary"> read more</span>

@@ -197,7 +197,7 @@ export default function HomeSections({ section }: { section: string }) {
                 />
               )}
               seeAllHref="/top"
-              title="DataNews"
+              title="Data News"
             />
           </>
         )
