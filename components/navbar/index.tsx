@@ -82,7 +82,7 @@ export const Navbar = () => {
       pageHeader = "Home";
       break;
     case "/people":
-      pageHeader = "People";
+      pageHeader = "Referral system";
       break;
     case "/strategies":
       if (urlSecondSegment?.includes("strategy")) {
@@ -101,22 +101,7 @@ export const Navbar = () => {
     case "/accounts":
       pageHeader = "Accounts";
       break;
-    /* case "/frame":
-      pageHeader = "Frame";
-      break;
-    case "/frame256":
-      pageHeader = "Frame 256";
-      break;
-    case "/meaning":
-      pageHeader = "Meaning";
-      break;
-    case "/news3":
-      pageHeader = "News 3";
-      break; */
-    case "/referral-system":
-      pageHeader = "Referral system";
-      break;
-    case "/tariffplan":
+    case "/pricing":
       pageHeader = "Tariff Plan";
       break;
     case "/update":
