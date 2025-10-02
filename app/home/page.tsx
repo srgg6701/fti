@@ -9,6 +9,7 @@ import AccountAdded from "@/components/pop-ups/account-added";
 import { apiFetch } from "@/lib/api";
 import { UserAccount, UserSubscription } from "@/types/apiData";
 import { ButtonRoundedBlue } from "@/components/button-rounded";
+import { routeAliases } from "@/config/site";
 
 export default function Home() {
   //const router = useRouter();
@@ -120,7 +121,7 @@ export default function Home() {
         </div>
       </section>
       {/* allStrategies?.length && "My Strategies:"} {allStrategies?.length */}
-      <HomeSections section="home" />
+      <HomeSections section={routeAliases.home} />
       {(isAddAccountOpen && (
         <AddAccount
           onClose={closeAddAccount}

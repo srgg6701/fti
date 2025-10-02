@@ -10,6 +10,7 @@ import { Switch } from "@heroui/react";
 import { Form } from "@heroui/form";
 import { FormEvent, useState } from "react";
 
+import { siteConfig } from "@/config/site";
 import { useUserStore } from "@/lib/store/userStore";
 import { ButtonRoundedBlue } from "@/components/button-rounded";
 import DeletingSubscritpionConfirmation from "@/components/pop-ups/deleting-subscription-confirmation";
@@ -147,14 +148,16 @@ export default function Profile() {
               alt="avatar"
               className="h-[120px] w-[120px] rounded-2xl object-cover"
               height={120}
+              role="button"
               src="/assets/images/users/user-joshua.svg"
               width={120}
+              onClick={() => router.push("/accounts")}
             />
             <div className="flex min-w-0 flex-1 flex-col gap-3">
               <div className="flex flex-col items-center gap-2.5">
                 <h2 className="h-[28px] text-[28px]">
                   <Link
-                    href={`/profile/personal-information?id=${user?.id || 69}`}
+                    href={`${siteConfig.innerItems.profile.href}/personal-information?id=${user?.id || 69}`}
                   >
                     {user?.username || "User name unknown"}
                   </Link>

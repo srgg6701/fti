@@ -1,3 +1,4 @@
+import { siteConfig } from "@/config/site";
 function toApiPath(endpoint: string) {
   // принимаем '/auth/login' или '/api/auth/login' — оба варианта ок
   if (endpoint.startsWith("/api/")) return endpoint;
@@ -20,7 +21,7 @@ export async function apiFetch<T>(
       const from = window.location.pathname + window.location.search;
 
       sessionStorage.setItem("reauth_from", from);
-      window.location.href = "/login"; // согласовано с middleware
+      window.location.href = siteConfig.innerItems.login.href; // согласовано с middleware
     }
     throw new Error("Unauthorized");
   }

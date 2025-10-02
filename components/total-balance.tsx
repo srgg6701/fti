@@ -21,7 +21,7 @@ const mapValueToPeriod: Record<string, PeriodKey> = {
 export default function TotalBalance({ chart }: { chart: ChartData }) {
   const currentBalance = chart.data?.currentBalance;
 
-  console.log(chart);
+  console.log("chart", chart);
 
   const [sel, setSel] = useState<PeriodKey>("6M");
 

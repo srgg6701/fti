@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
 
+import { siteConfig } from "@/config/site";
 import { ButtonRoundedBlue } from "@/components/button-rounded";
 import { useUserStore } from "@/lib/store/userStore";
 import { LogoFTI } from "@/components/icons";
@@ -20,7 +21,7 @@ export default function LogoutPage() {
         Thank you for using our service!
       </p>
       <LogoFTI className="mt-16 mb-28 max-w-[100%]" />
-      <Link href="/login">
+      <Link href={siteConfig.innerItems.login.href}>
         <ButtonRoundedBlue btnText="Go to Login Page" />
       </Link>
     </div>

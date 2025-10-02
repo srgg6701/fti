@@ -45,7 +45,7 @@ const getYDomain = (vals: number[]) => {
 
 // ===== компонент =====
 export default function BalanceChart({ payload }: { payload: ChartData }) {
-  console.log("Balance Chart: payload data", payload);
+  //console.log("Balance Chart: payload data", payload);
 
   // 1) забираем сырые точки
   const raw = payload?.data?.chartData ?? [];

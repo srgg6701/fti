@@ -14,7 +14,7 @@ import type {
 
 import { useEffect, useState } from "react";
 
-import { routeAliases, routeAliasesSecond } from "@/config/site";
+import { routeAliases /* , routeAliasesSecond */ } from "@/config/site";
 
 //import DataNews from "@/mockData/dataNews";
 import { SectionData } from "@/components/sectionsWrapper/sectionData";
@@ -74,8 +74,8 @@ export default function HomeSections({ section }: { section: string }) {
         setStatus("loading");
 
         if (
-          section === routeAliases.home ||
-          section === routeAliasesSecond.homeStrategies
+          section === routeAliases.home
+          //|| section === routeAliasesSecond.homeStrategies
         ) {
           const [
             userSubscriptionsData,
@@ -135,13 +135,11 @@ export default function HomeSections({ section }: { section: string }) {
 
   return (
     <div className="mt-[80px] mb-[56px] flex flex-col gap-[5rem]">
-      {section === routeAliasesSecond.homeStrategies && (
-        <TotalBalance chart={chart} />
-      )}
+      {section === routeAliases.home && <TotalBalance chart={chart} />}
       {
         // home, // home/strategies
-        (section === routeAliases.home ||
-          section === routeAliasesSecond.homeStrategies) && (
+        section === routeAliases.home && (
+          //|| section === routeAliasesSecond.homeStrategies
           <>
             {userSubscriptionsData.length > 0 && (
               <SectionData<UserSubscription>

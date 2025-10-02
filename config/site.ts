@@ -7,9 +7,9 @@ export const routeAliases = {
   pricing: "pricing",
   news: "news",
 };
-export const routeAliasesSecond = {
+/* export const routeAliasesSecond = {
   homeStrategies: `${routeAliases.home}/strategies`,
-};
+}; */
 export const siteConfig = {
   name: "Fintech Trade Innovation",
   description: "App for fintech services",
@@ -40,17 +40,49 @@ export const siteConfig = {
       href: `/${routeAliases.news}`,
       protected: true,
     },
-    /* {
-      label: 'Account',
-      href: '/account',
-      protected: true,
-    } ,*/
-    /* {
-      label: 'Logout',
-      href: '/logout',
-      protected: true,
-    }, */
   ],
+  innerItems: {
+    accounts: {
+      header: "Accounts",
+      href: "/accounts",
+    },
+    portfolio: {
+      header: "Portfolio",
+      href: "/portfolio",
+    },
+    portfolio_balancer: {
+      header: "Portfolio balancer",
+      href: "/portfolio_balancer",
+    },
+    profile: {
+      header: "Profile",
+      href: "/profile",
+    },
+    terminal: {
+      header: "Terminal",
+      href: "/terminal",
+    },
+    trading_history: {
+      header: "Trading history",
+      href: "/trading_history",
+    },
+    add_forex_account: {
+      header: "Add forex account",
+      href: "/add_forex_account",
+    },
+    new_provider: {
+      header: "New provider",
+      href: "/new_provider",
+    },
+    login: {
+      header: "Login",
+      href: "/login",
+    },
+    logout: {
+      header: "Logout",
+      href: "/logout",
+    },
+  },
 };
 
 const endpoint = "https://653fb0ea9e8bd3be29e10cd4.mockapi.io/api/v1/";

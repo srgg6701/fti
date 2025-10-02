@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 
+import { siteConfig } from "@/config/site";
 import {
   ButtonRoundedGrey,
   ButtonRoundedBlue,
@@ -31,15 +32,19 @@ export default function Buttons({ messageType, status, type }: ButtonsProps) {
         }
       />
       <ButtonRoundedBlue type={type} />
-      {urlFirstSegment !== "/login" && urlFirstSegment !== "/logout" && (
-        <p className="mt-[11.5px] text-sm">
-          {messageType === "have-you-account" &&
-            "Do you already have an account?"}
-          <Link className="ml-1 font-bold" href="/login">
-            Log in
-          </Link>
-        </p>
-      )}
+      {urlFirstSegment !== siteConfig.innerItems.login.href &&
+        urlFirstSegment !== siteConfig.innerItems.logout.href && (
+          <p className="mt-[11.5px] text-sm">
+            {messageType === "have-you-account" &&
+              "Do you already have an account?"}
+            <Link
+              className="ml-1 font-bold"
+              href={siteConfig.innerItems.login.href}
+            >
+              Log in
+            </Link>
+          </p>
+        )}
       {status === "error" && (
         <p className="text-sm text-red-400" role="alert">
           Something went wrong. Try again.

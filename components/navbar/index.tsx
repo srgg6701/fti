@@ -176,7 +176,10 @@ export const Navbar = () => {
         width="20"
         onClick={onClick}
       />
-      <Link className="mr-10 inline-block" href="/profile">
+      <Link
+        className="mr-10 inline-block"
+        href={siteConfig.innerItems.profile.href}
+      >
         <Image
           alt="Account"
           height="24"
@@ -187,7 +190,7 @@ export const Navbar = () => {
       </Link>
       <Link
         className="menu-item color-ultra-violet font-bold whitespace-nowrap"
-        href="/logout"
+        href={siteConfig.innerItems.logout.href}
       >
         Exit
       </Link>

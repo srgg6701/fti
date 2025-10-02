@@ -21,7 +21,7 @@ export default function AllStrategies() {
     try {
       (async () => {
         const accounts: UserAccount[] = await apiFetch(
-          "/api/trading-accounts/user-accounts"
+          "/api/trading-accounts/user-accounts",
         );
 
         console.log("accounts", accounts);
