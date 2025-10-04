@@ -8,6 +8,7 @@ export default function SectionHeader({
   mb = "mb-4",
   seeAllHref,
   noLink,
+  onClick,
 }: {
   title: string;
   textSize?: string;
@@ -17,19 +18,24 @@ export default function SectionHeader({
   mb?: string;
   seeAllHref: string;
   noLink?: boolean;
+  onClick?: () => void;
 }) {
+  const buttonClasses = `${linkSize} cursor-pointer underline hover:text-white`;
+
   return (
     <div className={`${mb} ${h} flex items-center justify-start gap-5`}>
       <h2 className={`${textSize} ${textWeight}`}>{title}</h2>
-      {(!noLink && (
-        <Link
-          className={`${linkSize} underline hover:text-white`}
-          href={seeAllHref}
-        >
+      {(!noLink && !onClick && (
+        <Link className={buttonClasses} href={seeAllHref}>
           See all
         </Link>
       )) ||
         null}
+      {onClick && (
+        <button className={buttonClasses} onClick={onClick}>
+          See all
+        </button>
+      )}
     </div>
   );
 }

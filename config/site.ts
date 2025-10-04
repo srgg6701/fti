@@ -58,6 +58,10 @@ export const siteConfig = {
       header: "Profile",
       href: "/profile",
     },
+    personal_information: {
+      header: "Profile",
+      href: "/profile/personal-information",
+    },
     terminal: {
       header: "Terminal",
       href: "/terminal",

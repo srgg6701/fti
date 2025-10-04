@@ -1,17 +1,19 @@
 "use client";
 import type { status } from "@/types/ui";
 
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 import { Input } from "@heroui/input";
 import { Textarea } from "@heroui/input";
 import { Switch } from "@heroui/react";
 import { Form } from "@heroui/form";
-import { FormEvent, useState } from "react";
 
-import { siteConfig } from "@/config/site";
+import { siteConfig, routeAliases } from "@/config/site";
 import { useUserStore } from "@/lib/store/userStore";
+import Billing from "@/components/billing";
+import BillingModal from "@/components/pop-ups/billing";
 import { ButtonRoundedBlue } from "@/components/button-rounded";
 import DeletingSubscritpionConfirmation from "@/components/pop-ups/deleting-subscription-confirmation";
 import SectionHeader from "@/components/sectionsWrapper/sectionHeader";
@@ -27,44 +29,18 @@ const headerParams = {
 
   seeAllHref: "/#",
 };
+
 const verticalOffset = "pt-[var(--offset-80)]";
 const sectionParams = {
   className: `flex flex-col ${verticalOffset}`,
 };
 
-const billingData = [
-  {
-    img: "plus",
-    title: "Adding funds",
-    desc: "Deposit from the account **** 5423",
-    amount: "+ $ 324",
-  },
-  {
-    img: "payment_success",
-    title: "Payment",
-    desc: "Payment for the standard service",
-    amount: "$ 324",
-  },
-  {
-    img: "payment_error",
-    title: "Adding funds",
-    desc: "Insufficient funds",
-    amount: "- $ 324",
-  },
-  {
-    img: "plus",
-    title: "Adding funds",
-    desc: "Deposit from the account **** 5423",
-    amount: "+ $ 324",
-  },
-];
-
 export default function Profile() {
   const user = useUserStore((s) => s.user);
 
-  console.log("user", user);
   const router = useRouter();
   const [notificationIsOpen, setNotification] = useState<boolean>(false);
+  const [billingIsOpen, setBillingModal] = useState<boolean>(false);
 
   const [isUpdateOpen, setUpdateOpen] = useState(false);
   const [email, setEmail] = useState("");
@@ -76,18 +52,19 @@ export default function Profile() {
     setUpdateOpen(!isUpdateOpen);
   };
 
-  // Handlers (placeholders)
-  const handleVerification = () => {
-    console.log("Handling verification...");
-    window.alert("Handling verification...");
-  };
-
-  const goReferralPage = () => {
-    router.push("/referral-system");
-  };
+  const SectionBtnGrey = ({ page, link }: { page: string; link: string }) => (
+    <ButtonRoundedGrey
+      btnText={page}
+      fontSize="text-base"
+      height="h-[45px]"
+      width="w-[171px]"
+      onClick={() => router.push(link)}
+      onPress={() => router.push(link)}
+    />
+  );
 
   //const handleToggleDark = (checked: boolean) => {};
-
+  // TODO: Set the procedure
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setErrMess(null);
@@ -119,17 +96,6 @@ export default function Profile() {
     }
   }
 
-  const colorizeAmount = (amount: string): string | undefined => {
-    switch (amount[0]) {
-      case "+":
-        return "color-blue-canonical";
-      case "-":
-        return "color-ultra-violet";
-      default:
-        break;
-    }
-  };
-
   /* function deleteSubscription() {
     setNotification(true);
   } */
@@ -157,7 +123,7 @@ export default function Profile() {
               <div className="flex flex-col items-center gap-2.5">
                 <h2 className="h-[28px] text-[28px]">
                   <Link
-                    href={`${siteConfig.innerItems.profile.href}/personal-information?id=${user?.id || 69}`}
+                    href={`${siteConfig.innerItems.personal_information.href}/?id=${user?.id || 69}`}
                   >
                     {user?.username || "User name unknown"}
                   </Link>
@@ -207,45 +173,29 @@ export default function Profile() {
             </div>
           </div>
         </section>
-        {/* Billing (stacked with other sections) */}
+        {/* Billing */}
         <section {...sectionParams}>
-          <SectionHeader title="Billing" {...headerParams} />
-          {billingData.map((item, idx) => (
-            <div
-              key={idx}
-              className="my-2.5 flex min-h-[66px] flex-wrap items-center justify-between gap-3 rounded-xl py-2.5"
-            >
-              <div className="flex min-w-0 items-center gap-5">
-                <Image
-                  alt={item.title}
-                  height={25}
-                  src={`/assets/images/icons/billing/${item.img}_icon.png`}
-                  width={25}
-                />
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="text-base">{item.title}</span>
-                    <span className="text-xs opacity-50">1 day ago</span>
-                  </div>
-                  <div className="text-sm opacity-80">{item.desc}</div>
-                </div>
-              </div>
-              <div className={`text-sm ${colorizeAmount(item.amount)}`}>
-                {item.amount}
-              </div>
-            </div>
-          ))}
+          <SectionHeader
+            title="Billing"
+            onClick={() => setBillingModal(true)}
+            {...headerParams}
+          />
+          <Billing />
+        </section>
+        {/* Accounts */}
+        <section className={verticalOffset}>
+          <SectionHeader noLink={true} title="Accounts" {...headerParams} />
+          <SectionBtnGrey
+            link={siteConfig.innerItems.accounts.href}
+            page="Accounts page"
+          />
         </section>
         {/* Verification */}
         <section className={verticalOffset}>
           <SectionHeader noLink={true} title="Verification" {...headerParams} />
-          <ButtonRoundedGrey
-            btnText="Verification page"
-            fontSize="text-base"
-            height="h-[45px]"
-            width="w-[171px]"
-            onClick={handleVerification}
-            onPress={handleVerification}
+          <SectionBtnGrey
+            link={`${siteConfig.innerItems.personal_information.href}/?id=${user?.id || 69}`}
+            page="Verification page"
           />
         </section>
         {/* Settings */}
@@ -268,13 +218,9 @@ export default function Profile() {
             title="Referral system"
             {...headerParams}
           />
-          <ButtonRoundedGrey
-            btnText="Referral system page"
-            fontSize="text-base"
-            height="h-[45px]"
-            width="w-[204px]"
-            onClick={goReferralPage}
-            onPress={goReferralPage}
+          <SectionBtnGrey
+            link={routeAliases.people}
+            page="Referral system page"
           />
         </section>
         {/* Support */}
@@ -321,6 +267,10 @@ export default function Profile() {
       </div>
       {(notificationIsOpen && (
         <DeletingSubscritpionConfirmation onCloseModal={closeActive} />
+      )) ||
+        null}
+      {(billingIsOpen && (
+        <BillingModal onClose={() => setBillingModal(false)} />
       )) ||
         null}
     </>
