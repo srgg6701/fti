@@ -148,3 +148,14 @@ export interface UniversalEquity {
   system_id: string;
   trading_account_id: string | null;
 }
+export interface Partner {
+  id: number;
+  name: string;
+  description: boolean;
+  logoUrl: string;
+  websiteUrl: string;
+  referralId: string;
+  isActive: number;
+  createdAt: string;
+  updatedAt: string;
+}

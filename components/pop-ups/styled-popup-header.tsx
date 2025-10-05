@@ -9,6 +9,7 @@ type Header4Props = {
   $limitW?: "52" | "72" | "sm" | "lg";
   $limitH?: "52" | "72" | "sm" | "lg";
   $h?: string;
+  $mTop?: string;
   $mBottom?: string;
   $size?: string;
 };
@@ -16,6 +17,7 @@ type Header4Props = {
 const headerHeader4 = (p: Header4Props) => `
   ${p.$limitW ? `max-w-${p.$limitW}` : ""}
   ${p.$limitH ? `max-h-${p.$limitH}` : ""}
+  ${p.$mTop ? `mt-${p.$mTop}` : ""}
   ${p.$mBottom ? `mb-${p.$mBottom}` : ""}
   ${p.$h ? `h-${p.$h}` : "mx-auto"}
   ${p.$size ? p.$size : "text-base"}
