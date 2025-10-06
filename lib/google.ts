@@ -31,7 +31,9 @@ function loadGsi(): Promise<void> {
 }
 
 export async function requestGoogleIdToken(clientId: string): Promise<string> {
-  await loadGsi();
+  const gsi = await loadGsi();
+
+  console.log("gsi", gsi);
 
   return new Promise<string>((resolve, reject) => {
     const google = (window as any).google;
@@ -47,6 +49,7 @@ export async function requestGoogleIdToken(clientId: string): Promise<string> {
     google.accounts.id.initialize({
       client_id: clientId,
       callback: (resp: { credential?: string }) => {
+        console.log("Google ID callback", resp);
         if (settled) return;
         settled = true;
         if (resp?.credential) resolve(resp.credential);
