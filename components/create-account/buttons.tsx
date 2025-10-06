@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import { siteConfig } from "@/config/site";
 import {
@@ -9,6 +10,9 @@ import {
   ButtonRoundedBlue,
 } from "@/components/button-rounded";
 import { getUrlSegments } from "@/lib/utils";
+import { requestGoogleIdToken } from "@/lib/google";
+import { apiFetch } from "@/lib/api";
+import { useUserStore } from "@/lib/store/userStore";
 
 type ButtonsProps = {
   messageType: string;
@@ -18,6 +22,8 @@ type ButtonsProps = {
 
 export default function Buttons({ messageType, status, type }: ButtonsProps) {
   const urlFirstSegment = getUrlSegments(usePathname, 1);
+  const router = useRouter();
+  const loginUser = useUserStore((s) => s.login);
 
   return (
     <div className="mx-auto mt-auto flex w-full max-w-[300px] flex-col items-center">
@@ -30,6 +36,47 @@ export default function Buttons({ messageType, status, type }: ButtonsProps) {
             width={18}
           />
         }
+        onPress={async () => {
+          try {
+            // TODO: move client id to env/public config
+            const clientId = (
+              process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""
+            ).trim();
+
+            if (!clientId) {
+              console.error("NEXT_PUBLIC_GOOGLE_CLIENT_ID is not set");
+
+              return;
+            }
+
+            const idToken = await requestGoogleIdToken(clientId);
+            const resp: { success?: boolean } = await apiFetch("/auth/google", {
+              method: "POST",
+              body: JSON.stringify({ idToken: idToken }),
+            });
+
+            if (resp?.success) {
+              // fetch profile and log in, mirroring email/password flow
+              const me: { user?: ReturnType<typeof Object> } =
+                await apiFetch("/auth/me");
+
+              if (me?.user) {
+                // Type cast to store's ApiUser
+                loginUser(me.user as any);
+              }
+
+              const next =
+                new URLSearchParams(window.location.search).get("next") ||
+                sessionStorage.getItem("reauth_from") ||
+                "/home";
+
+              sessionStorage.removeItem("reauth_from");
+              router.replace(next);
+            }
+          } catch (e) {
+            console.error("Google login failed", e);
+          }
+        }}
       />
       <ButtonRoundedBlue type={type} />
       {urlFirstSegment !== siteConfig.innerItems.login.href &&
