@@ -11,7 +11,7 @@ export interface TDataStrategies extends User, UserImg {
   data: [string, string];
 }
 export interface TDataTopPerforming extends User, UserImg {
-  chartImg: string;
+  chartImg?: string;
   risk: number;
   roi: number;
   timeFrame: string;

@@ -169,7 +169,7 @@ export default function HomeSections({ section }: { section: string }) {
               renderItem={(d, i) => (
                 <CardShared
                   key={i}
-                  chartImg={d.chartImg}
+                  chartImg={d.chartImg || ""}
                   risk={d.risk}
                   roi={d.roi}
                   timeFrame={d.timeFrame}
@@ -214,7 +214,7 @@ export default function HomeSections({ section }: { section: string }) {
               renderItem={(d, i) => (
                 <CardShared
                   key={i}
-                  chartImg={d.chartImg}
+                  chartImg={d.chartImg || ""}
                   risk={d.risk}
                   roi={d.roi}
                   timeFrame={d.timeFrame}
@@ -233,7 +233,7 @@ export default function HomeSections({ section }: { section: string }) {
               renderItem={(d, i) => (
                 <CardShared
                   key={i}
-                  chartImg={d.chartImg}
+                  chartImg={d.chartImg || ""}
                   risk={d.risk}
                   roi={d.roi}
                   timeFrame={d.timeFrame}
@@ -252,7 +252,7 @@ export default function HomeSections({ section }: { section: string }) {
               renderItem={(d, i) => (
                 <CardShared
                   key={i}
-                  chartImg={d.chartImg}
+                  chartImg={d.chartImg || ""}
                   risk={d.risk}
                   roi={d.roi}
                   timeFrame={d.timeFrame}
@@ -271,7 +271,7 @@ export default function HomeSections({ section }: { section: string }) {
               renderItem={(d, i) => (
                 <CardShared
                   key={i}
-                  chartImg={d.chartImg}
+                  chartImg={d.chartImg || ""}
                   risk={d.risk}
                   roi={d.roi}
                   timeFrame={d.timeFrame}

@@ -32,7 +32,7 @@ export const useUserStore = create<UserState>((set) => ({
     set({ isAuthenticated: false, email: null, user: null });
     await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
   },
-  // FIXME: where is it used and shouldn't it be called from /login?
+
   initializeUser: async () => {
     try {
       const res = await fetch("/api/auth/me", { credentials: "include" });

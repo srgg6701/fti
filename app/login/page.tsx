@@ -49,6 +49,7 @@ export default function LoginPage() {
       });
 
       if (resp?.success) {
+        console.log("Login successful:", resp);
         // подтянуть профиль и записать весь user в Zustand
         const me: { user: ApiUser } = await apiFetch("/auth/me");
 

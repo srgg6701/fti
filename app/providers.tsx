@@ -2,7 +2,7 @@
 
 import type { ThemeProviderProps } from "next-themes";
 
-import * as React from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { HeroUIProvider } from "@heroui/system";
 import { useRouter } from "next/navigation";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
@@ -10,7 +10,7 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { useUserStore } from "@/lib/store/userStore";
 
 export interface ProvidersProps {
-  children: React.ReactNode;
+  children: ReactNode;
   themeProps?: ThemeProviderProps;
 }
 
@@ -26,16 +26,20 @@ export function Providers({ children, themeProps }: ProvidersProps) {
   const router = useRouter();
   const initializeUser = useUserStore((s) => s.initializeUser);
 
-  const [mounted, setMounted] = React.useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setMounted(true);
   }, []);
 
-  React.useEffect(() => {
-    if (mounted) {
-      initializeUser();
-    }
+  useEffect(() => {
+    if (!mounted) return;
+    // Call initialize only when we already have a jwt cookie
+    const hasJwt =
+      typeof document !== "undefined" && document.cookie.includes("jwt=");
+
+    if (!hasJwt) return;
+    initializeUser();
   }, [mounted, initializeUser]);
 
   if (!mounted) {
