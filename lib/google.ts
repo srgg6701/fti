@@ -31,52 +31,62 @@ function loadGsi(): Promise<void> {
 }
 
 export async function requestGoogleIdToken(clientId: string): Promise<string> {
-  const gsi = await loadGsi();
-
-  console.log("gsi", gsi);
+  await loadGsi();
 
   return new Promise<string>((resolve, reject) => {
     const google = (window as any).google;
 
-    if (!google?.accounts?.id) {
-      reject(new Error("Google Identity is not available"));
-
-      return;
-    }
+    if (!google?.accounts?.id)
+      return reject(new Error("Google Identity is not available"));
 
     let settled = false;
 
     google.accounts.id.initialize({
       client_id: clientId,
       callback: (resp: { credential?: string }) => {
-        console.log("Google ID callback", resp);
         if (settled) return;
         settled = true;
         if (resp?.credential) resolve(resp.credential);
         else reject(new Error("No Google credential returned"));
       },
-      ux_mode: "popup",
+      // важные флаги для стабильности
+      itp_support: true, // Safari/ITP
+      use_fedcm_for_prompt: true, // современный путь в Chrome
     });
 
-    // Show One Tap / popup. If user closes it, we reject after a short delay.
-    try {
-      google.accounts.id.prompt((notification: any) => {
-        // If dismissed or not displayed, surface an error so UI can handle it
-        if (
-          notification?.isNotDisplayed?.() ||
-          notification?.isSkippedMoment?.()
-        ) {
+    // 1) вариант через кнопку (надёжнее, чем prompt):
+    const btn = document.createElement("div");
+
+    btn.style.position = "fixed";
+    btn.style.pointerEvents = "none"; // невидимо для пользователя
+    btn.style.opacity = "0";
+    document.body.appendChild(btn);
+
+    google.accounts.id.renderButton(btn, {
+      type: "standard",
+      shape: "rectangular",
+      size: "large",
+    });
+    // имитируем клик
+    setTimeout(() => (btn.querySelector("div") as HTMLElement)?.click(), 0);
+
+    // 2) необязательный fallback: если FedCM/кнопка не сработали — пробуем One Tap
+    setTimeout(() => {
+      if (!settled) {
+        try {
+          google.accounts.id.prompt((n: any) => {
+            if ((n?.isNotDisplayed?.() || n?.isSkippedMoment?.()) && !settled) {
+              settled = true;
+              reject(new Error("Google sign-in was dismissed"));
+            }
+          });
+        } catch (e) {
           if (!settled) {
             settled = true;
-            reject(new Error("Google sign-in was dismissed"));
+            reject(e as Error);
           }
         }
-      });
-    } catch (e) {
-      if (!settled) {
-        settled = true;
-        reject(e as Error);
       }
-    }
+    }, 400);
   });
 }
