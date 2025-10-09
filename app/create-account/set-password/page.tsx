@@ -3,9 +3,9 @@ import type { status } from "@/types/ui";
 
 import { useState, FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { siteConfig } from "@/config/site";
 import { Input } from "@heroui/input";
 
+import { siteConfig } from "@/config/site";
 import Form from "@/components/create-account/form";
 import ErrMess from "@/components/errMess";
 import { validatePassword } from "@/lib/utils";

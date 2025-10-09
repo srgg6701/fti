@@ -18,8 +18,8 @@ export interface Statistics {
   successful: number;
   failed: number;
   results: StrategyResult[];
-  errors: StatisticsError[];           // может быть []
-  generated_at: string;                // ISO datetime
+  errors: StatisticsError[]; // может быть []
+  generated_at: string; // ISO datetime
 }
 
 export interface StatisticsError {
@@ -35,7 +35,7 @@ export interface StrategyResult {
 }
 
 export interface StrategyData {
-  entity_type: string;                 // напр. "trade_system"
+  entity_type: string; // напр. "trade_system"
   entity_id: string | number;
   system_id: number;
   trading_account_id: number;
@@ -50,11 +50,11 @@ export interface StrategyData {
   performance: PerformanceBlock;
   details: DetailsBlock;
 
-  calculation_time: string;            // ISO datetime
+  calculation_time: string; // ISO datetime
 }
 
 export interface DailyPnlPoint {
-  date: string;                        // 'YYYY-MM-DD'
+  date: string; // 'YYYY-MM-DD'
   balance: number;
   equity: number;
   open_positions: number;
@@ -67,7 +67,7 @@ export interface DailyPnlPoint {
 }
 
 export interface HourlyDataPoint {
-  timestamp: string;                   // ISO datetime
+  timestamp: string; // ISO datetime
   balance: number;
   equity: number;
   open_positions: number;
@@ -105,7 +105,7 @@ export interface YearDetails {
 }
 
 export interface MonthDetails {
-  month: number;                       // 1..12
+  month: number; // 1..12
   amount: number;
   percent: number;
 }

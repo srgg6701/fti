@@ -43,6 +43,7 @@ export function Providers({ children, themeProps }: ProvidersProps) {
     (async () => {
       try {
         const ok = await initializeUser();
+
         if (!alive) return;
         setInitialized(ok);
       } catch {
