@@ -42,6 +42,34 @@ export const siteConfig = {
     },
   ],
   innerItems: {
+    auth: {
+      register: {
+        header: "Create account",
+        href: "/auth/register",
+      },
+      login: {
+        header: "Login",
+        href: "/auth/login",
+      },
+      logout: {
+        header: "Logout",
+        href: "/auth/logout",
+      },
+      me: {
+        header: "My data",
+        href: "/auth/me",
+      },
+      refresh: {
+        header: "Refresh token",
+        href: "/auth/refresh",
+      },
+    },
+    subscriptions: {
+      user_subscriptions: {
+        header: "User subscriptions",
+        href: "/subscriptions/user-subscriptions",
+      },
+    },
     accounts: {
       header: "Accounts",
       href: "/accounts",
@@ -65,6 +93,12 @@ export const siteConfig = {
     terminal: {
       header: "Terminal",
       href: "/terminal",
+    },
+    trading_accounts: {
+      user_accounts: {
+        header: "Trading accounts",
+        href: "/trading-accounts/user-accounts",
+      },
     },
     trading_history: {
       header: "Trading history",

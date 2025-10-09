@@ -3,6 +3,7 @@ import type { status } from "@/types/ui";
 
 import { useState, FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { siteConfig } from "@/config/site";
 import { Input } from "@heroui/input";
 
 import Form from "@/components/create-account/form";
@@ -60,7 +61,7 @@ export default function SetPassword() {
     }
     try {
       setStatus("loading");
-      await apiFetch("/auth/register", {
+      await apiFetch(`/api${siteConfig.innerItems.auth.register.href}`, {
         method: "POST",
         body: JSON.stringify({ email, password, username }),
       });

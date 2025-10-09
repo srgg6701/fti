@@ -28,7 +28,7 @@ export default function Buttons({ messageType, status, type }: ButtonsProps) {
   async function goGoogleSignIn() {
     console.log(
       "Google sign-in clicked, NEXT_PUBLIC_GOOGLE_CLIENT_ID=",
-      process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
+      process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
     );
     try {
       // TODO: move client id to env/public config
@@ -48,8 +48,9 @@ export default function Buttons({ messageType, status, type }: ButtonsProps) {
 
       if (resp?.success) {
         // fetch profile and log in, mirroring email/password flow
-        const me: { user?: ReturnType<typeof Object> } =
-          await apiFetch("/auth/me");
+        const me: { user?: ReturnType<typeof Object> } = await apiFetch(
+          `/api${siteConfig.innerItems.auth.me.href}`,
+        );
 
         if (me?.user) {
           // Type cast to store's ApiUser

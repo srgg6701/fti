@@ -4,6 +4,7 @@ import type { status } from "@/types/ui";
 
 import { useState, useEffect, FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { siteConfig } from "@/config/site";
 import { Input } from "@heroui/input";
 
 import Form from "@/components/create-account/form";
@@ -43,7 +44,7 @@ export default function LoginPage() {
 
     try {
       setStatus("loading");
-      const resp: LoginResponse = await apiFetch("/auth/login", {
+      const resp: LoginResponse = await apiFetch(`/api${siteConfig.innerItems.auth.login.href}`, {
         method: "POST",
         body: JSON.stringify({ email, password }),
       });
@@ -51,7 +52,7 @@ export default function LoginPage() {
       if (resp?.success) {
         console.log("Login successful:", resp);
         // подтянуть профиль и записать весь user в Zustand
-        const me: { user: ApiUser } = await apiFetch("/auth/me");
+        const me: { user: ApiUser } = await apiFetch(`/api${siteConfig.innerItems.auth.me.href}`);
 
         if (me?.user) {
           console.log("user data", me?.user);

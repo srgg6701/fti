@@ -71,7 +71,7 @@ export function makeMockChartDataForPeriod(
       equity: Number(eq.toFixed(2)),
     };
 
-    console.log("mockData", { period, mockData });
+    //console.log("mockData", { period, mockData });
 
     return mockData;
   });
