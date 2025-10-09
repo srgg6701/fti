@@ -2,6 +2,8 @@ import type { NextRequest } from "next/server";
 
 import { NextResponse } from "next/server";
 
+import { PROTECTED_ROUTES } from "./lib/shared/protectedRoutes";
+
 export function middleware(req: NextRequest) {
   // skip on Vercel
   const testUrl = req.nextUrl;
@@ -37,6 +39,17 @@ export function middleware(req: NextRequest) {
 
   // otherwist to the /login page
   const { pathname, search } = req.nextUrl;
+
+  // Avoid redirect loop: if user already requests the login page or public assets/APIs, allow it.
+  if (
+    pathname === "/login" ||
+    pathname.startsWith("/login/") ||
+    pathname.startsWith("/api") ||
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/static")
+  ) {
+    return NextResponse.next();
+  }
   const url = req.nextUrl.clone();
 
   url.pathname = "/login";
@@ -48,25 +61,5 @@ export function middleware(req: NextRequest) {
 
 // protected pages
 export const config = {
-  matcher: [
-    "/accounts  ",
-    "/home",
-    "/home/:path*",
-    "/portfolio",
-    "/portfolio/:path*",
-    "/portfolio_balancer",
-    "/portfolio_balancer/:path*",
-    "/profile",
-    "/profile/:path*",
-    "/strategies",
-    "/strategies/:path*",
-    "/terminal",
-    "/terminal/:path*",
-    "/trading_history",
-    "/trading_history/:path*",
-    "/add_forex_account",
-    "/add_forex_account/:path*",
-    "/new_provider",
-    "/new_provider/:path*",
-  ],
+  matcher: PROTECTED_ROUTES,
 };

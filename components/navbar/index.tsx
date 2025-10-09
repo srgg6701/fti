@@ -13,6 +13,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Input } from "@heroui/input";
 
+import { PROTECTED_ROUTES } from "@/lib/shared/protectedRoutes";
 import { checkRouteAside, getUrlSegments } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
 import SortingModal from "@/components/pop-ups/sorting";
@@ -27,8 +28,20 @@ import notifications from "@/mockData/notifications";
 import Invest from "@/components/pop-ups/invest";
 import { Icon, menuIcons } from "@/components/icons";
 import "@/styles/style-navbar.css";
+import { useUserStore } from "@/lib/store/userStore";
+
+function isProtectedPath(pathname: string) {
+  if (!pathname) return false;
+
+  return PROTECTED_ROUTES.some((pattern) => {
+    const base = pattern.replace(/\/:path\*$/, "");
+
+    return pathname === base || pathname.startsWith(base + "/");
+  });
+}
 
 export const Navbar = () => {
+  const isAuthenticated = useUserStore((state) => state.isAuthenticated);
   const navBarContainer = useRef<HTMLDivElement | null>(null);
 
   // ЕДИНЫЙ источник правды для меню
@@ -38,6 +51,10 @@ export const Navbar = () => {
   useLayoutEffect(() => {
     setIsMenuOpen(false); // закрываем при смене маршрута
   }, [pathname]);
+
+  // Пример: если нужен особый кейс для защищённых страниц, используйте `isProtected`.
+  // (например, скрывать некоторые публичные элементы или сбрасывать состояние)
+  // if (isProtected) { ... }
 
   // ВОЗВРАЩАЮ исходную сигнатуру утилиты — передаём сам хук
   const urlFirstSegment = getUrlSegments(usePathname, 1);
@@ -110,28 +127,32 @@ export const Navbar = () => {
 
   const items = siteConfig.navItems;
 
-  const menuList = () => (
-    <>
-      {items.map((item) => {
-        const iconName = item.href.split("/")[1] as keyof typeof menuIcons;
-        const active = urlFirstSegment === item.href;
+  const menuList = () => {
+    return (
+      <>
+        {items.map((item) => {
+          const iconName = item.href.split("/")[1] as keyof typeof menuIcons;
+          const active = urlFirstSegment === item.href;
 
-        return (
-          <li key={item.href} className="flex list-none items-center">
-            <Link
-              aria-current={active ? "page" : undefined}
-              className={`menu-item flex items-center gap-3 ${active ? "" : "opacity-60 hover:opacity-100"}`}
-              href={item.href}
-              onClick={() => setIsMenuOpen(false)} // закрыть меню после перехода
-            >
-              {Icon({ ...menuIcons[iconName], color: "white" })}
-              <span>{item.label}</span>
-            </Link>
-          </li>
-        );
-      })}
-    </>
-  );
+          return (
+            (isAuthenticated || !isProtectedPath(item.href)) && (
+              <li key={item.href} className="flex list-none items-center">
+                <Link
+                  aria-current={active ? "page" : undefined}
+                  className={`menu-item flex items-center gap-3 ${active ? "" : "opacity-60 hover:opacity-100"}`}
+                  href={item.href}
+                  onClick={() => setIsMenuOpen(false)} // закрыть меню после перехода
+                >
+                  {Icon({ ...menuIcons[iconName], color: "white" })}
+                  <span>{item.label}</span>
+                </Link>
+              </li>
+            )
+          );
+        })}
+      </>
+    );
+  };
 
   const MenuRightSide = ({
     className,

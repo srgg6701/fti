@@ -2,8 +2,10 @@ import { siteConfig } from "@/config/site";
 import { useUserStore } from "@/lib/store/userStore";
 
 const innerItems = siteConfig.innerItems;
+
 /* function toApiPath(endpoint: string) {
-  // принимаем '/auth/login' или '/api/auth/login' — оба варианта ок
+  // Accept either '/auth/login' or '/api/auth/login' — both variants are supported.
+  // Normalize to a path that starts with /api/
   if (endpoint.startsWith("/api/")) return endpoint;
 
   return endpoint.startsWith("/") ? `/api${endpoint}` : `/api/${endpoint}`;
@@ -22,17 +24,47 @@ export async function apiFetch<T = any>(
   input: RequestInfo,
   init: RequestInit = {},
 ): Promise<T> {
+  // Build headers robustly by using the Headers constructor.
+  // This supports incoming headers as plain objects, arrays, or Headers instances.
+  const hdrs = new Headers(init.headers as HeadersInit);
+
+  // Ensure we accept JSON responses by default.
+  if (!hdrs.has("Accept")) {
+    hdrs.set("Accept", "application/json");
+  }
+
+  // Detect if a Content-Type header is already provided.
+  const hasContentType = hdrs.has("Content-Type");
+  const body = init.body;
+
+  // Detect body types that should NOT get a JSON Content-Type automatically.
+  // FormData and URLSearchParams set their own appropriate content type / boundaries.
+  const bodyIsFormData =
+    typeof FormData !== "undefined" && body instanceof FormData;
+  const bodyIsURLSearchParams =
+    typeof URLSearchParams !== "undefined" && body instanceof URLSearchParams;
+
+  // If there is a body and the caller didn't set Content-Type,
+  // and the body is not FormData / URLSearchParams, default to JSON.
+  if (
+    body != null &&
+    !hasContentType &&
+    !bodyIsFormData &&
+    !bodyIsURLSearchParams
+  ) {
+    hdrs.set("Content-Type", "application/json");
+  }
+
+  // Always include credentials by default to forward cookies / session.
   const opts: RequestInit = {
     credentials: "include",
-    headers: {
-      Accept: "application/json",
-      ...(init.headers || {}),
-    },
+    headers: hdrs,
     ...init,
   };
 
   const res = await fetch(input, opts);
 
+  // Check response content-type before attempting to parse JSON.
   const contentType = res.headers.get("content-type") || "";
   const hasJson = contentType.includes("application/json");
   let payload: any = null;
@@ -41,11 +73,11 @@ export async function apiFetch<T = any>(
     if (hasJson) payload = await res.json();
     else payload = await res.text();
   } catch {
-    // ignore parse errors
+    // Ignore parse errors — we'll surface status/errors below.
   }
 
   if (res.status === 401 || res.status === 403) {
-    // Обновляем состояние стора — пользователь не аутентифицирован
+    // Update the user store to mark the user as unauthenticated.
     try {
       useUserStore.setState({
         isAuthenticated: false,
@@ -54,18 +86,19 @@ export async function apiFetch<T = any>(
       });
     } catch {}
 
-    // Классический клиентский редирект на /login?next=..., если мы в браузере
+    // If running in the browser, redirect to the login page with ?next=currentLocation.
     if (typeof window !== "undefined") {
       const current = window.location.pathname + window.location.search;
 
       if (!current.startsWith(innerItems.login.href)) {
         const next = encodeURIComponent(current);
 
-        // replace чтобы не добавлять запись в history
+        // Use replace so the redirect does not create a new history entry.
         window.location.replace(`${innerItems.login.href}?next=${next}`);
       }
     }
 
+    // Throw a specialized AuthError so callers can handle auth flows separately.
     throw new AuthError(
       (payload && payload.message) || "Unauthorized",
       res.status,
@@ -73,6 +106,7 @@ export async function apiFetch<T = any>(
   }
 
   if (!res.ok) {
+    // Build an error object: prefer structured payload.message, otherwise raw payload or status.
     const message =
       (payload && payload.message) ||
       payload ||
@@ -86,9 +120,10 @@ export async function apiFetch<T = any>(
 
   return payload as T;
 }
+
 // FIXME: remove this function after switching to the real API
 export async function apiFetch2<T>(endpoint: string): Promise<T> {
-  // имитация задержки
+  // Simulate a delay for mock responses.
   await new Promise((resolve) => setTimeout(resolve, Number("400")));
 
   try {
