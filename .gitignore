@@ -47,5 +47,5 @@ bun.lockb
 .env.*
 
 cert/
-
+curl
 app/api/test

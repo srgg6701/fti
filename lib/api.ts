@@ -24,7 +24,8 @@ export async function apiFetch<T = any>(
   input: RequestInfo,
   init: RequestInit = {},
 ): Promise<T> {
-  // Build headers robustly by using the Headers constructor.
+  // INFO: look at .sources\dev-clarifications\request-headers.md
+  // Build headers robustly by using the Headers *CONSTRUCTOR*.
   // This supports incoming headers as plain objects, arrays, or Headers instances.
   const hdrs = new Headers(init.headers as HeadersInit);
 
@@ -90,11 +91,11 @@ export async function apiFetch<T = any>(
     if (typeof window !== "undefined") {
       const current = window.location.pathname + window.location.search;
 
-      if (!current.startsWith(innerItems.login.href)) {
+      if (!current.startsWith(innerItems.auth.login.href)) {
         const next = encodeURIComponent(current);
 
         // Use replace so the redirect does not create a new history entry.
-        window.location.replace(`${innerItems.login.href}?next=${next}`);
+        window.location.replace(`${innerItems.auth.login.href}?next=${next}`);
       }
     }
 

@@ -112,14 +112,6 @@ export const siteConfig = {
       header: "New provider",
       href: "/new_provider",
     },
-    login: {
-      header: "Login",
-      href: "/login",
-    },
-    logout: {
-      header: "Logout",
-      href: "/logout",
-    },
   },
 };
 

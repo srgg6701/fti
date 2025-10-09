@@ -189,7 +189,7 @@ export const Navbar = () => {
       </Link>
       <Link
         className="menu-item color-ultra-violet font-bold whitespace-nowrap"
-        href={siteConfig.innerItems.logout.href}
+        href={siteConfig.innerItems.auth.logout.href}
         onClick={() => setIsMenuOpen(false)}
       >
         Exit

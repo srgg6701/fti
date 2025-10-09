@@ -14,6 +14,7 @@ import PopupHeader, {
 import { selectStyle, inputStyleInner } from "@/styles/style-variables";
 import ErrMess from "@/components/errMess";
 import { apiFetch } from "@/lib/api";
+import { siteConfig } from "@/config/site";
 
 interface NewAccountData {
   sectionName: string;
@@ -193,10 +194,13 @@ export default function AddAccountModal({
     });
 
     try {
-      const resp = await apiFetch(`/trading-accounts/add-${accountPath}`, {
-        method: "POST",
-        body: JSON.stringify(addedAccountData),
-      });
+      const resp = await apiFetch(
+        `/api/${siteConfig.innerItems.trading_accounts.user_accounts.href}/add-${accountPath}`,
+        {
+          method: "POST",
+          body: JSON.stringify(addedAccountData),
+        },
+      );
 
       console.log("response", resp);
 

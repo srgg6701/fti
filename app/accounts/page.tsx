@@ -9,6 +9,7 @@ import { useAdjustArticleWidth } from "@/hooks/useAdjustArticleWidth";
 //import allStrategies, { type MockAccounts } from "@/mockData/accounts";
 import { UserAccount } from "@/types/apiData";
 import { apiFetch } from "@/lib/api";
+import { siteConfig } from "@/config/site";
 
 // TODO: clarify is this all strategies or accounts
 export default function AllStrategies() {
@@ -21,7 +22,7 @@ export default function AllStrategies() {
     try {
       (async () => {
         const accounts: UserAccount[] = await apiFetch(
-          "/api/trading-accounts/user-accounts",
+          `/api/${siteConfig.innerItems.trading_accounts.user_accounts.href}`,
         );
 
         console.log("accounts", accounts);
