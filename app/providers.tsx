@@ -27,6 +27,7 @@ export function Providers({ children, themeProps }: ProvidersProps) {
   const initializeUser = useUserStore((s) => s.initializeUser);
 
   const [mounted, setMounted] = useState(false);
+  const [initialized, setInitialized] = useState<boolean | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -34,15 +35,28 @@ export function Providers({ children, themeProps }: ProvidersProps) {
 
   useEffect(() => {
     if (!mounted) return;
-    // Call initialize only when we already have a jwt cookie
-    const hasJwt =
-      typeof document !== "undefined" && document.cookie.includes("jwt=");
 
-    if (!hasJwt) return;
-    initializeUser();
+    // Always call initializeUser so backend can validate httpOnly cookie.
+    // Do not rely on document.cookie (httpOnly cookies are not readable from JS).
+    let alive = true;
+
+    (async () => {
+      try {
+        const ok = await initializeUser();
+        if (!alive) return;
+        setInitialized(ok);
+      } catch {
+        if (alive) setInitialized(false);
+      }
+    })();
+
+    return () => {
+      alive = false;
+    };
   }, [mounted, initializeUser]);
 
-  if (!mounted) {
+  // Пока неизвестен статус аутентификации — скрываем UI (можно заменить на лоадер)
+  if (!mounted || initialized === null) {
     return null;
   }
 

@@ -1,24 +1,20 @@
 "use client";
 import type { status } from "@/types/ui";
 
-import { useState, useRef } from "react";
+import React, { useState, useRef, useLayoutEffect } from "react";
 import {
   Navbar as HeroUINavbar,
   NavbarContent,
   NavbarMenu,
+  NavbarMenuToggle,
 } from "@heroui/navbar";
 import Link from "next/link";
-// FIXME: clarify if we can get rid from clsx and remove if we can
-//import clsx from 'clsx';
 import { usePathname, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Input } from "@heroui/input";
 
 import { checkRouteAside, getUrlSegments } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
-//import { ThemeSwitch } from '@/components/theme-switch';
-//import { useUserStore } from "@/lib/store/userStore";
-//import { filterData } from "@/components/dataSections";
 import SortingModal from "@/components/pop-ups/sorting";
 import FilterModal from "@/components/pop-ups/filter";
 import Backtesting from "@/components/pop-ups/backtesting";
@@ -33,14 +29,20 @@ import { Icon, menuIcons } from "@/components/icons";
 import "@/styles/style-navbar.css";
 
 export const Navbar = () => {
-  const navBarContainer = useRef<HTMLElement | null>(null);
+  const navBarContainer = useRef<HTMLDivElement | null>(null);
 
-  // TODO: Check if it makes sense to leave it here:
-  //const { isAuthenticated } = useUserStore();
+  // ЕДИНЫЙ источник правды для меню
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  useLayoutEffect(() => {
+    setIsMenuOpen(false); // закрываем при смене маршрута
+  }, [pathname]);
+
+  // ВОЗВРАЩАЮ исходную сигнатуру утилиты — передаём сам хук
   const urlFirstSegment = getUrlSegments(usePathname, 1);
   const urlSecondSegment = getUrlSegments(usePathname, 2);
 
-  // TODO: remove after clarifying the way of opening Backtesting and Add Account modals
   const params = useSearchParams();
   const backtestingOpen = params.get("backtesting");
   const investOpen = params.get("invest");
@@ -55,10 +57,7 @@ export const Navbar = () => {
   const [isAssetsListOpen, setAssetsListOpen] =
     useState<boolean>(!!assetListOpen);
   const [isTradeOpen, setTradeOpen] = useState<boolean>(!!tradeOpen);
-
-  /*const [isAddAccountIsOpen, setAddAccount] = useState<boolean | null>(null); */
   const [isNoticeOpen, setNoticeOpen] = useState<boolean>(!!noticeOpen);
-
   const [isBacktestingOpen, setBacktestingOpen] =
     useState<boolean>(!!backtestingOpen);
   const [isInvestOpen, setInvestOpen] = useState<boolean>(!!investOpen);
@@ -67,10 +66,8 @@ export const Navbar = () => {
   const [search_text, setSearch] = useState("");
   const [status, setStatus] = useState<status>("idle");
   const [isNotificationsOpen, setNotifications] = useState(false);
-  // SORT
   const [isSortingOpen, setIsSortingOpen] = useState(false);
   const [currentSort, setCurrentSort] = useState("alphabetical");
-  // FILTER
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   if (checkRouteAside(urlFirstSegment)) return null;
@@ -85,12 +82,9 @@ export const Navbar = () => {
       pageHeader = "Referral system";
       break;
     case "/strategies":
-      if (urlSecondSegment?.includes("strategy")) {
-        pageHeader = "Strategy";
-        console.log("pageHeader", pageHeader);
-        break;
-      }
-      pageHeader = "Strategies";
+      pageHeader = urlSecondSegment?.includes("strategy")
+        ? "Strategy"
+        : "Strategies";
       break;
     case "/news":
       pageHeader = "News";
@@ -116,66 +110,66 @@ export const Navbar = () => {
 
   const items = siteConfig.navItems;
 
-  const menuList = () => {
-    return (
-      <>
-        {items.map((item) => {
-          const iconName = item.href.split("/")[1] as keyof typeof menuIcons;
+  const menuList = () => (
+    <>
+      {items.map((item) => {
+        const iconName = item.href.split("/")[1] as keyof typeof menuIcons;
+        const active = urlFirstSegment === item.href;
 
-          return (
-            <li key={item.href} className="flex list-none items-center">
-              <Link
-                aria-current={
-                  urlFirstSegment === item.href ? "page" : undefined
-                }
-                className={`menu-item flex items-center gap-3 ${urlFirstSegment === item.href ? "" : "opacity-60 hover:opacity-100"}`}
-                href={item.href}
-              >
-                {Icon({
-                  ...menuIcons[iconName],
-                  color: "white", // TODO: make color self-customizing
-                })}
-                <span>{item.label}</span>
-              </Link>
-            </li>
-          );
-        })}
-      </>
-    );
-  };
+        return (
+          <li key={item.href} className="flex list-none items-center">
+            <Link
+              aria-current={active ? "page" : undefined}
+              className={`menu-item flex items-center gap-3 ${active ? "" : "opacity-60 hover:opacity-100"}`}
+              href={item.href}
+              onClick={() => setIsMenuOpen(false)} // закрыть меню после перехода
+            >
+              {Icon({ ...menuIcons[iconName], color: "white" })}
+              <span>{item.label}</span>
+            </Link>
+          </li>
+        );
+      })}
+    </>
+  );
 
   const MenuRightSide = ({
     className,
+    style,
     onClick,
   }: {
     className?: string;
     onClick: () => void;
+    style?: React.CSSProperties;
   }) => (
-    <div className={className || ""} id="exit-link">
+    <div className={className || ""} id="exit-link" style={style}>
       <Image
         alt="Show notifications"
         className="mr-5 inline-block"
-        height="20"
+        height={20}
         src="/assets/images/icons/bell.png"
         title="Show notifications"
-        width="20"
+        width={20}
         onClick={onClick}
       />
       <Link
         className="mr-10 inline-block"
         href={siteConfig.innerItems.profile.href}
+        onClick={() => setIsMenuOpen(false)}
       >
         <Image
           alt="Account"
-          height="24"
+          height={24}
           src="/assets/images/icons/user-account.svg"
+          style={{ minWidth: 24, minHeight: 24 }}
           title="Your account"
-          width="24"
+          width={24}
         />
       </Link>
       <Link
         className="menu-item color-ultra-violet font-bold whitespace-nowrap"
         href={siteConfig.innerItems.logout.href}
+        onClick={() => setIsMenuOpen(false)}
       >
         Exit
       </Link>
@@ -183,34 +177,18 @@ export const Navbar = () => {
   );
 
   async function getData() {
-    console.log("Get data...");
     setStatus("loading");
     try {
-      /* await apiFetch('/auth/search'); */
-      /****** send request to the endpoint to get the confirmation code ******/
       await new Promise((r) => setTimeout(r, 3500));
-      console.log("Get data...");
       setStatus("success");
-      //router.push('/login');
-    } catch (e) {
-      //setStatus('error');
     } finally {
       setTimeout(() => setStatus("idle"), 1000);
     }
   }
 
   const filterDataEnter: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
-    if (e.key === "Enter") {
-      getData();
-      //e.preventDefault(); // если нужно отменить сабмит формы
-      //filterData(`Enter: filtered data by ${search_text}`);
-    }
+    if (e.key === "Enter") getData();
   };
-  // TODO: clairify if we have the button to call this function
-  /* const filterDataClick = () => {
-    getData();
-    filterData(`Click: filtered data by ${search_text}`);
-  }; */
 
   const SetSearchCommands = ({
     action,
@@ -239,9 +217,9 @@ export const Navbar = () => {
   );
 
   const Notifications = ({ onClick }: { onClick: () => void }) => (
-    <aside className="scroller vertical top-0 right-0 z-40 h-full w-[460px] bg-[#030303]">
+    <aside className="fixed top-0 right-0 z-[900] h-full w-[460px] bg-[#030303]">
       <button
-        className="fixed top-10 right-10 z-42 cursor-pointer"
+        className="fixed top-10 right-10 z-[901] cursor-pointer"
         onClick={onClick}
       >
         <Image
@@ -278,7 +256,9 @@ export const Navbar = () => {
           aria-label="Main"
           as="nav"
           id="navbar-container"
+          isMenuOpen={isMenuOpen}
           maxWidth="xl"
+          onMenuOpenChange={setIsMenuOpen}
         >
           {/* desktop */}
           <NavbarContent className="navbar-justify-around basis-1/5 items-center sm:basis-full">
@@ -288,10 +268,10 @@ export const Navbar = () => {
                   {pageHeader}
                 </h1>
                 {(pageHeader === "Strategies" || pageHeader === "Accounts") && (
-                  <div className="flex gap-[5px] max-2xl:-mb-10 max-2xl:translate-y-[20px] relative">
+                  <div className="relative flex gap-[5px] max-2xl:-mb-10 max-2xl:translate-y-[20px]">
                     <Image
                       alt="Search"
-                      className="absolute top-[15px] left-[13px] z-10"
+                      className="absolute left-[13px] top-[15px] z-10"
                       height={10}
                       src="/assets/images/service/search-white.svg"
                       width={10}
@@ -319,10 +299,13 @@ export const Navbar = () => {
                   </div>
                 )}
               </div>
+
               <div className="hidden lg:flex" id="menu-container">
-                <ul className="flex items-center gap-[50px]">{menuList()}</ul>
-                {/* <ThemeSwitch /> */}
+                <ul className="mr-5 flex items-center gap-[50px]">
+                  {menuList()}
+                </ul>
               </div>
+
               <div className="hidden items-center lg:flex">
                 <MenuRightSide
                   className="flex"
@@ -331,23 +314,37 @@ export const Navbar = () => {
               </div>
             </div>
           </NavbarContent>
+
           {/* mobile */}
           <NavbarContent className="basis-1 pl-4 lg:hidden" justify="end">
-            {/* <ThemeSwitch /> */}
-            {/* isAuthenticated && (
-              <NavbarMenuToggle
-                aria-controls="main-menu"
-                aria-label="Open menu"
-              />
-            ) */}
+            {/* Тоггл не завязываем на isAuthenticated — иначе иногда нечем открыть меню */}
+            <NavbarMenuToggle
+              aria-controls="main-menu"
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            />
           </NavbarContent>
 
-          <NavbarMenu id="main-menu">
+          {/* HeroUI сам монтирует/порталит */}
+          <NavbarMenu className="top-0 z-[1000] !h-full" id="main-menu">
+            <button
+              className="fixed right-[66px] top-[14px] cursor-pointer"
+              type="button"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Image
+                alt="Close menu"
+                height={36}
+                src="/assets/images/cross/cross-light.svg"
+                width={36}
+              />
+            </button>
+
             <ul className="mx-4 mt-2 flex flex-col gap-2">
               {menuList()}
               <li className="flex list-none items-center">
                 <MenuRightSide
                   className="py-2"
+                  style={{ display: "flex", flexDirection: "column", gap: 14 }}
                   onClick={() => setNotifications(!isNotificationsOpen)}
                 />
               </li>
@@ -355,7 +352,8 @@ export const Navbar = () => {
           </NavbarMenu>
         </HeroUINavbar>
       )}
-      {/* Notifications: Left vertical panel*/}
+
+      {/* Notifications panel */}
       {isNotificationsOpen && (
         <Notifications onClick={() => setNotifications(false)} />
       )}
@@ -363,17 +361,11 @@ export const Navbar = () => {
       <SortingModal
         currentSort={currentSort}
         isOpen={isSortingOpen}
-        onApply={(sortType) => {
-          setCurrentSort(sortType);
-        }}
+        onApply={(sortType) => setCurrentSort(sortType)}
         onClose={() => setIsSortingOpen(false)}
       />
       <FilterModal
         isOpen={isFilterOpen}
-        /* onApply={(newFilters) => {
-          setFilters(newFilters);
-          // Ваша логика фильтрации
-        }} */
         onClose={() => setIsFilterOpen(false)}
       />
       <Backtesting

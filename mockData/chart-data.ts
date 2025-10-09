@@ -45,7 +45,7 @@ function wave(i: number, amp: number) {
  * @param amp     - амплитуда колебаний (по умолчанию 25)
  * @param nowMs   - опорная «сегодня» (по умолчанию Date.now())
  */
-export function makeMockChartData(
+export function makeMockChartDataForPeriod(
   period: PeriodKey,
   base = 1000,
   amp = 25,
@@ -65,8 +65,15 @@ export function makeMockChartData(
   const chartData: CData[] = Array.from({ length: points }).map((_, i) => {
     const ts = startMs + i * msStep;
     const eq = base + wave(i, amp);
+    const mockData = {
+      timestamp: ts,
+      date: niceDate(ts),
+      equity: Number(eq.toFixed(2)),
+    };
 
-    return { timestamp: ts, date: niceDate(ts), equity: Number(eq.toFixed(2)) };
+    console.log("mockData", { period, mockData });
+
+    return mockData;
   });
 
   const first: number = chartData[0].equity!;
@@ -88,10 +95,10 @@ export function makeMockChartData(
 
 // Быстрый набор готовых моков, если нужно сразу:
 export const MOCK_CHARTS: Record<PeriodKey, ChartData> = {
-  "1W": makeMockChartData("1W"),
-  "1M": makeMockChartData("1M"),
-  "6M": makeMockChartData("6M"),
-  "1Y": makeMockChartData("1Y"),
-  "2Y": makeMockChartData("2Y"),
-  "3Y": makeMockChartData("3Y"),
+  "1W": makeMockChartDataForPeriod("1W"),
+  "1M": makeMockChartDataForPeriod("1M"),
+  "6M": makeMockChartDataForPeriod("6M"),
+  "1Y": makeMockChartDataForPeriod("1Y"),
+  "2Y": makeMockChartDataForPeriod("2Y"),
+  "3Y": makeMockChartDataForPeriod("3Y"),
 };

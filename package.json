@@ -7,7 +7,7 @@
     "extract:images": "node extract-images.js",
     "generate": "node generate.js",
     "dev:secure": "concurrently -k --names \"next,ssl\" \"pnpm dev\" \"local-ssl-proxy --source 3443 --target 3000 --cert ./certs/localhost.pem --key ./certs/localhost-key.pem\"",
-    "dev": "next dev --turbopack -p 3000",
+    "dev": "next dev --turbopack -p 3001",
     "build": "next build",
     "start": "next start",
     "lint": "eslint --fix",

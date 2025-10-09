@@ -4,12 +4,35 @@ interface User {
 interface UserImg {
   userImg: string;
 }
+export interface Data {
+  absoluteChange: number;
+  chartData: CData[];
+  currentBalance: number;
+  dataPoints: number;
+  isPositive: boolean;
+  percentageChange: number;
+}
+export interface ChartData {
+  data?: Data;
+  message?: string;
+  success?: boolean;
+}
 export interface TDataStrategies extends User, UserImg {
   invested: string;
   proRata: string;
   direction: string;
   data: [string, string];
 }
+export interface Strategy extends User, UserImg {
+  id: number;
+  risk: number;
+  roi: number;
+  timeFrame: string;
+  message?: string;
+  success?: boolean;
+  data?: Data;
+}
+// FIXME: REMOVE this interface as soon as Strategy is ready.
 export interface TDataTopPerforming extends User, UserImg {
   chartImg?: string;
   risk: number;
@@ -70,19 +93,6 @@ export interface CData {
   date?: string;
   equity?: number;
   timestamp?: number;
-}
-export interface Data {
-  absoluteChange: number;
-  chartData: CData[];
-  currentBalance: number;
-  dataPoints: number;
-  isPositive: boolean;
-  percentageChange: number;
-}
-export interface ChartData {
-  data?: Data;
-  message?: string;
-  success?: boolean;
 }
 interface DailyPnl {
   date: string;
