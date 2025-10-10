@@ -35,6 +35,7 @@ export default function TotalBalance({ chart }: { chart: ChartData }) {
   ];
 
   const payload = useMemo(() => MOCK_CHARTS[sel], [sel]);
+  console.log("payload", payload);
 
   return (
     <section className="flex w-full flex-wrap gap-11 py-5 lg:flex-nowrap lg:p-[80px] lg:pb-[90px]">

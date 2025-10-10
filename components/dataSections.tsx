@@ -2,6 +2,7 @@
 import type { status } from "@/types/ui";
 import type {
   ChartData,
+  Strategy,
   TDataTopPerforming,
   TDataNews,
   TDataWorldLeaders,
@@ -28,20 +29,6 @@ import { clampText } from "@/lib/utils";
 import { apiFetch, apiFetch2 } from "@/lib/api";
 import "@/styles/style-sections.css";
 
-//TODO: temporal solution, DataTopPerforming should be changed to real data obtained from server
-/* const DataWorldLeaders = [...DataTopPerforming];
-const DataTheBestOfTheDay = [...DataTopPerforming];
-const DataTheBestOfTheWeek = [...DataTopPerforming];
-const DataTheBestOfTheMonth = [...DataTopPerforming];
-
-export function filterData(message: string) {
-  console.log(`${message}, DATA`, {
-    DataWorldLeaders,
-    DataTheBestOfTheDay,
-    DataTheBestOfTheWeek,
-    DataTheBestOfTheMonth,
-  });
-} */
 export default function HomeSections({ section }: { section: string }) {
   useAdjustArticleWidth();
   const [status, setStatus] = useState<status>("idle");
@@ -109,6 +96,7 @@ export default function HomeSections({ section }: { section: string }) {
             dataTheBestOfTheWeek,
             dataTheBestOfTheMonth,
           ] = await Promise.all([
+            // INFO: World leaders = Strategy
             apiFetch2<TDataWorldLeaders[]>("dataTopPerforming"),
             apiFetch2<TDataTheBestOfTheDay[]>("dataTopPerforming"),
             apiFetch2<TDataTheBestOfTheWeek[]>("dataTopPerforming"),
