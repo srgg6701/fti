@@ -21,8 +21,6 @@ const mapValueToPeriod: Record<string, PeriodKey> = {
 export default function TotalBalance({ chart }: { chart: ChartData }) {
   const currentBalance = chart.data?.currentBalance;
 
-  console.log("chart", chart);
-
   const [sel, setSel] = useState<PeriodKey>("6M");
 
   const items = [
@@ -35,7 +33,10 @@ export default function TotalBalance({ chart }: { chart: ChartData }) {
   ];
 
   const payload = useMemo(() => MOCK_CHARTS[sel], [sel]);
-  console.log("payload", payload);
+
+  console.groupCollapsed("chart/payload");
+  console.log({ chart, payload });
+  console.groupEnd();
 
   return (
     <section className="flex w-full flex-wrap gap-11 py-5 lg:flex-nowrap lg:p-[80px] lg:pb-[90px]">

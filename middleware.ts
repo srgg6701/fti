@@ -22,7 +22,7 @@ export function middleware(req: NextRequest) {
     }
   }
 
-  console.log("req", req);
+  //console.log("req", req);
 
   /* if (
     host.endsWith(".vercel.app") // FIXME: remove this condition as soon as remote authentification works

@@ -50,10 +50,12 @@ export const siteConfig = {
       login: {
         header: "Login",
         href: "/auth/login",
+        href_ui: "/login",
       },
       logout: {
         header: "Logout",
         href: "/auth/logout",
+        href_ui: "/logout",
       },
       me: {
         header: "My data",

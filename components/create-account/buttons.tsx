@@ -34,14 +34,14 @@ export default function Buttons({ messageType, status, type }: ButtonsProps) {
         onPress={() => signIn("google")}
       />
       <ButtonRoundedBlue type={type} />
-      {urlFirstSegment !== siteConfig.innerItems.auth.login.href &&
-        urlFirstSegment !== siteConfig.innerItems.auth.logout.href && (
+      {urlFirstSegment !== siteConfig.innerItems.auth.login.href_ui &&
+        urlFirstSegment !== siteConfig.innerItems.auth.logout.href_ui && (
           <p className="mt-[11.5px] text-sm">
             {messageType === "have-you-account" &&
               "Do you already have an account?"}
             <Link
               className="ml-1 font-bold"
-              href={siteConfig.innerItems.auth.login.href}
+              href={siteConfig.innerItems.auth.login.href_ui}
             >
               Log in
             </Link>

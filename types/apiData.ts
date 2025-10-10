@@ -25,6 +25,8 @@ export interface TDataStrategies extends User, UserImg {
 }
 export interface Strategy extends User, UserImg {
   strategyId: number;
+  name: string;
+  description: string;
   username: string; // interface User
   userImg: string; // interface UserImg
   risk: number;

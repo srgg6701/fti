@@ -6,8 +6,9 @@ import Image from "next/image";
 import HomeSections from "@/components/dataSections";
 import AddAccount from "@/components/pop-ups/add-account";
 import AccountAdded from "@/components/pop-ups/account-added";
+import AddSubscription from "@/components/pop-ups/add-subscription";
 import { apiFetch } from "@/lib/api";
-import { UserAccount, UserSubscription } from "@/types/apiData";
+import { Strategy, UserAccount, UserSubscription } from "@/types/apiData";
 import { ButtonRoundedBlue } from "@/components/button-rounded";
 import { routeAliases } from "@/config/site";
 
@@ -23,10 +24,16 @@ export default function Home() {
   } | null>(null);
 
   const [userAccounts, setUserAccounts] = useState<UserAccount[] | null>(null);
+  const [allStrategies, setAllStrategies] = useState<Strategy[]>([]);
+  const [applicableStrategies, setApplicableStrategies] = useState<Strategy[]>(
+    [],
+  );
   const [userSubscriptions, setUserSubscription] = useState<
     UserSubscription[] | []
   >([]);
-  //const [chart, setChart] = useState<ChartData[] | null>(null);
+  //const [chart, setChart] = useStateChartData[] | null>(null);
+
+  const [isAddSubscriptionOpen, setAddSubscriptionOpen] = useState(false);
 
   function addAddAccount() {
     setAddAccount(true);
@@ -49,15 +56,37 @@ export default function Home() {
 
   useEffect(() => {
     (async () => {
-      const [accounts, strategies] = await Promise.all([
-        apiFetch<UserAccount[]>("/api/trading-accounts/user-accounts"),
-        apiFetch<UserSubscription[]>("/api//subscriptions/user-subscriptions"),
-      ]);
+      const [userAccountsApiData, strategiesApiData, userSubscriptionsApiData] =
+        await Promise.all([
+          apiFetch<UserAccount[]>("/api/trading-accounts/user-accounts"),
+          apiFetch<Strategy[]>("/api/statistics/strategies"), // INFO: do we need this? ITS HUGE
+          apiFetch<UserSubscription[]>("/api/subscriptions/user-subscriptions"),
+        ]);
 
-      setUserSubscription(strategies);
-      setUserAccounts(accounts);
+      console.groupCollapsed("Fetched Home data");
+      console.log({
+        accounts: userAccountsApiData,
+        userSubscriptions: userSubscriptionsApiData,
+      });
+      console.groupEnd();
+      setUserAccounts(userAccountsApiData);
+      setAllStrategies(strategiesApiData);
+      setUserSubscription(userSubscriptionsApiData);
+      console.log("HOME strategiesApiData (fetched)", strategiesApiData);
     })();
   }, []);
+
+  useEffect(() => {
+    const sbKeys = userSubscriptions.map((s) => s.strategyId);
+    const restStrategies = allStrategies.filter(
+      (s) => !sbKeys.includes(s.strategyId),
+    );
+
+    console.log({ sbKeys, restStrategies, userSubscriptions, allStrategies });
+
+    //setApplicableStrategies(allStrategies);
+    setApplicableStrategies(restStrategies);
+  }, [allStrategies]);
 
   const AccountInfoBlock = ({
     userAccounts,
@@ -97,7 +126,10 @@ export default function Home() {
               Add your {userSubscriptions.length > 0 ? "next" : "first"}{" "}
               strategy
             </div>
-            <button className="text-center">
+            <button
+              className="text-center"
+              onClick={() => setAddSubscriptionOpen(true)}
+            >
               <Image
                 alt="Add your strategy"
                 className="mx-auto"
@@ -121,7 +153,11 @@ export default function Home() {
         </div>
       </section>
       {/* allStrategies?.length && "My Strategies:"} {allStrategies?.length */}
-      <HomeSections section={routeAliases.home} />
+      <HomeSections
+        allStrategies={allStrategies}
+        section={routeAliases.home}
+        userSubscriptions={userSubscriptions}
+      />
       {(isAddAccountOpen && (
         <AddAccount
           onClose={closeAddAccount}
@@ -136,6 +172,12 @@ export default function Home() {
           platform={addedData?.platform}
           onClick={closeAccountAddedAndRedirect}
           onClose={closeAccountAddedAndRedirect}
+        />
+      )}
+      {isAddSubscriptionOpen && (
+        <AddSubscription
+          {...{ applicableStrategies }}
+          onClose={() => setAddSubscriptionOpen(false)}
         />
       )}
     </>

@@ -2,16 +2,15 @@
 import type { status } from "@/types/ui";
 
 import React, { useState, useRef, useLayoutEffect } from "react";
+import Link from "next/link";
 import {
   Navbar as HeroUINavbar,
   NavbarContent,
   NavbarMenu,
   NavbarMenuToggle,
 } from "@heroui/navbar";
-import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { Input } from "@heroui/input";
 
 import { PROTECTED_ROUTES } from "@/lib/shared/protectedRoutes";
 import { checkRouteAside, getUrlSegments } from "@/lib/utils";
@@ -28,6 +27,7 @@ import notifications from "@/mockData/notifications";
 import Invest from "@/components/pop-ups/invest";
 import { Icon, menuIcons } from "@/components/icons";
 import "@/styles/style-navbar.css";
+import StrategiesSearchSortFilter from "@/components/strategies-search-sort-filter";
 import { useUserStore } from "@/lib/store/userStore";
 
 function isProtectedPath(pathname: string) {
@@ -80,12 +80,18 @@ export const Navbar = () => {
   const [isInvestOpen, setInvestOpen] = useState<boolean>(!!investOpen);
   const [isInviteOpen, setInviteOpen] = useState<boolean>(!!inviteOpen);
 
-  const [search_text, setSearch] = useState("");
   const [status, setStatus] = useState<status>("idle");
   const [isNotificationsOpen, setNotifications] = useState(false);
   const [isSortingOpen, setIsSortingOpen] = useState(false);
   const [currentSort, setCurrentSort] = useState("alphabetical");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const handleSortingOpen = () => {
+    setIsSortingOpen(!isSortingOpen);
+  };
+  const handleFilteringOpen = () => {
+    setIsFilterOpen(!isFilterOpen);
+  };
 
   if (checkRouteAside(urlFirstSegment)) return null;
 
@@ -164,77 +170,48 @@ export const Navbar = () => {
     style?: React.CSSProperties;
   }) => (
     <div className={className || ""} id="exit-link" style={style}>
-      <Image
-        alt="Show notifications"
-        className="mr-5 inline-block"
-        height={20}
-        src="/assets/images/icons/bell.png"
-        title="Show notifications"
-        width={20}
-        onClick={onClick}
-      />
-      <Link
-        className="mr-10 inline-block"
-        href={siteConfig.innerItems.profile.href}
-        onClick={() => setIsMenuOpen(false)}
-      >
-        <Image
-          alt="Account"
-          height={24}
-          src="/assets/images/icons/user-account.svg"
-          style={{ minWidth: 24, minHeight: 24 }}
-          title="Your account"
-          width={24}
-        />
-      </Link>
-      <Link
-        className="menu-item color-ultra-violet font-bold whitespace-nowrap"
-        href={siteConfig.innerItems.auth.logout.href}
-        onClick={() => setIsMenuOpen(false)}
-      >
-        Exit
-      </Link>
+      {isAuthenticated ? (
+        <>
+          <Image
+            alt="Show notifications"
+            className="mr-5 inline-block"
+            height={20}
+            src="/assets/images/icons/bell.png"
+            title="Show notifications"
+            width={20}
+            onClick={onClick}
+          />
+          <Link
+            className="mr-10 inline-block"
+            href={siteConfig.innerItems.profile.href}
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <Image
+              alt="Account"
+              height={24}
+              src="/assets/images/icons/user-account.svg"
+              style={{ minWidth: 24, minHeight: 24 }}
+              title="Your account"
+              width={24}
+            />
+          </Link>
+          <Link
+            className="menu-item color-ultra-violet font-bold whitespace-nowrap"
+            href={siteConfig.innerItems.auth.logout.href_ui}
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Exit
+          </Link>
+        </>
+      ) : (
+        <Link
+          className="menu-item"
+          href={siteConfig.innerItems.auth.login.href_ui}
+        >
+          Login
+        </Link>
+      )}
     </div>
-  );
-
-  async function getData() {
-    setStatus("loading");
-    try {
-      await new Promise((r) => setTimeout(r, 3500));
-      setStatus("success");
-    } finally {
-      setTimeout(() => setStatus("idle"), 1000);
-    }
-  }
-
-  const filterDataEnter: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
-    if (e.key === "Enter") getData();
-  };
-
-  const SetSearchCommands = ({
-    action,
-    alt,
-    title,
-    onClick,
-  }: {
-    action: string;
-    alt: string;
-    title: string;
-    onClick: () => void;
-  }) => (
-    <button
-      className="standard-block-decoration-40 bg-translusent-light w-[40px] p-[13px]"
-      title={title}
-      type="button"
-      onClick={onClick}
-    >
-      <Image
-        alt={alt}
-        height={14}
-        src={`/assets/images/service/${action}.svg`}
-        width={14}
-      />
-    </button>
   );
 
   const Notifications = ({ onClick }: { onClick: () => void }) => (
@@ -289,35 +266,11 @@ export const Navbar = () => {
                   {pageHeader}
                 </h1>
                 {(pageHeader === "Strategies" || pageHeader === "Accounts") && (
-                  <div className="relative flex gap-[5px] max-2xl:-mb-10 max-2xl:translate-y-[20px]">
-                    <Image
-                      alt="Search"
-                      className="absolute left-[13px] top-[15px] z-10"
-                      height={10}
-                      src="/assets/images/service/search-white.svg"
-                      width={10}
-                    />
-                    <Input
-                      className="standard-block-decoration-40"
-                      placeholder="Enter your search request"
-                      type="search"
-                      value={search_text}
-                      onKeyDown={filterDataEnter}
-                      onValueChange={setSearch}
-                    />
-                    <SetSearchCommands
-                      action="sort"
-                      alt="Sort search results"
-                      title="Click to sort records"
-                      onClick={() => setIsSortingOpen(!isSortingOpen)}
-                    />
-                    <SetSearchCommands
-                      action="set"
-                      alt="Set search results"
-                      title="Click to filter records by search string"
-                      onClick={() => setIsFilterOpen(!isFilterOpen)}
-                    />
-                  </div>
+                  <StrategiesSearchSortFilter
+                    handleFiltering={handleFilteringOpen}
+                    handleSorting={handleSortingOpen}
+                    {...{ setStatus }}
+                  />
                 )}
               </div>
 

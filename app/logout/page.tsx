@@ -21,7 +21,7 @@ export default function LogoutPage() {
         Thank you for using our service!
       </p>
       <LogoFTI className="mt-16 mb-28 max-w-[100%]" />
-      <Link href={siteConfig.innerItems.auth.login.href}>
+      <Link href={siteConfig.innerItems.auth.login.href_ui}>
         <ButtonRoundedBlue btnText="Go to Login Page" />
       </Link>
     </div>

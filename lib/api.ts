@@ -91,11 +91,11 @@ export async function apiFetch<T = any>(
     if (typeof window !== "undefined") {
       const current = window.location.pathname + window.location.search;
 
-      if (!current.startsWith(innerItems.auth.login.href)) {
+      if (!current.startsWith(innerItems.auth.login.href_ui)) {
         const next = encodeURIComponent(current);
 
         // Use replace so the redirect does not create a new history entry.
-        window.location.replace(`${innerItems.auth.login.href}?next=${next}`);
+        window.location.replace(`${innerItems.auth.login.href_ui}?next=${next}`);
       }
     }
 
