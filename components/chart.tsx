@@ -17,6 +17,9 @@ const STROKE = "#155dfc";
 
 const toMonthShort = (ts: number) =>
   new Date(ts).toLocaleString(undefined, { month: "short" });
+const toWeekdayShort = (ts: number) =>
+  new Date(ts).toLocaleString(undefined, { weekday: "short" });
+const toDayOfMonth = (ts: number) => new Date(ts).getDate().toString();
 
 const getMonthTicks = (points: { x: number }[]) => {
   const seen = new Set<string>();
@@ -25,6 +28,25 @@ const getMonthTicks = (points: { x: number }[]) => {
   for (const p of points) {
     const d = new Date(p.x);
     const key = `${d.getFullYear()}-${d.getMonth()}`;
+
+    if (!seen.has(key)) {
+      seen.add(key);
+      ticks.push(p.x);
+    }
+  }
+
+  return ticks;
+};
+
+const getWeekOfMonthTicks = (points: { x: number }[]) => {
+  // Week index within month: 1..5
+  const seen = new Set<string>();
+  const ticks: number[] = [];
+
+  for (const p of points) {
+    const d = new Date(p.x);
+    const week = Math.floor((d.getDate() - 1) / 7) + 1; // 1..5
+    const key = `${d.getFullYear()}-${d.getMonth()}-W${week}`;
 
     if (!seen.has(key)) {
       seen.add(key);
@@ -44,7 +66,15 @@ const getYDomain = (vals: number[]) => {
 };
 
 // ===== компонент =====
-export default function BalanceChart({ payload }: { payload: ChartData }) {
+type PeriodKey = "1W" | "1M" | "6M" | "1Y";
+
+export default function BalanceChart({
+  payload,
+  period,
+}: {
+  payload: ChartData;
+  period: PeriodKey;
+}) {
   //console.log("Balance Chart: payload data", payload);
 
   // 1) забираем сырые точки
@@ -54,7 +84,7 @@ export default function BalanceChart({ payload }: { payload: ChartData }) {
   const points = raw
     .filter(
       (p): p is { timestamp: number; equity: number } =>
-        typeof p?.timestamp === "number" && typeof p?.equity === "number",
+        typeof p?.timestamp === "number" && typeof p?.equity === "number"
     )
     .map((p) => {
       const tsMs =
@@ -67,8 +97,105 @@ export default function BalanceChart({ payload }: { payload: ChartData }) {
     return <div className="text-sm text-white/60">No data</div>;
   }
 
-  const monthTicks = getMonthTicks(points);
+  // X-axis ticks/labels depend on selected period
+  //const monthTicksFromPoints = getMonthTicks(points);
+  //const weekOfMonthTicksFromPoints = getWeekOfMonthTicks(points);
+  //const dayTicksFromPoints = points.map((p) => p.x);
   const [yMin, yMax] = getYDomain(points.map((d) => d.y));
+
+  // ==== Debug helpers for X-axis ticks derivation ====
+  const fmtTs = (ts: number) => new Date(ts).toISOString().slice(0, 10);
+  const sample = (arr: number[], n = 6) => arr.slice(0, n).map(fmtTs);
+
+  // ==== Calendar-based tick generators (independent from point density) ====
+  const getDomain = () => {
+    const xs = points.map((p) => p.x);
+
+    return [Math.min(...xs), Math.max(...xs)] as const;
+  };
+  const startOfDay = (ts: number) => {
+    const d = new Date(ts);
+
+    d.setHours(0, 0, 0, 0);
+
+    return d.getTime();
+  };
+  const startOfMonth = (ts: number) => {
+    const d = new Date(ts);
+
+    d.setDate(1);
+    d.setHours(0, 0, 0, 0);
+
+    return d.getTime();
+  };
+  const addDays = (ts: number, days: number) => ts + days * 24 * 60 * 60 * 1000;
+  const addMonths = (ts: number, months: number) => {
+    const d = new Date(ts);
+
+    d.setMonth(d.getMonth() + months, 1);
+    d.setHours(0, 0, 0, 0);
+
+    return d.getTime();
+  };
+
+  const genDailyTicks = (minX: number, maxX: number) => {
+    const ticks: number[] = [];
+    let cur = startOfDay(minX);
+
+    while (cur <= maxX) {
+      ticks.push(cur);
+      cur = addDays(cur, 1);
+    }
+
+    return ticks;
+  };
+
+  // Exactly 4 week ticks: W1..W4 aligned to month start (0,7,14,21 days)
+  const genFourWeekTicks = (minX: number, maxX: number) => {
+    const start = startOfMonth(minX);
+    const ticks = [0, 7, 14, 21]
+      .map((d) => addDays(start, d))
+      .filter((t) => t >= minX && t <= maxX);
+
+    // If range is too short and some fell outside, still return up to 4
+    return ticks;
+  };
+
+  const genMonthStartTicks = (minX: number, maxX: number) => {
+    const ticks: number[] = [];
+    let cur = startOfMonth(minX);
+
+    while (cur <= maxX) {
+      ticks.push(cur);
+      cur = addMonths(cur, 1);
+    }
+
+    return ticks;
+  };
+
+  const setTick = () => {
+    let ticks4: number[] = [];
+    const [minX, maxX] = getDomain();
+
+    switch (period) {
+      case "1W":
+        ticks4 = genDailyTicks(minX, maxX);
+        break;
+      case "1M":
+        ticks4 = genFourWeekTicks(minX, maxX);
+        break;
+      case "6M":
+        ticks4 = genMonthStartTicks(minX, maxX);
+        break;
+      case "1Y":
+        // 12 ticks
+        break;
+      default:
+        break;
+    }
+    console.log("setTicks", ticks4);
+    return ticks4;
+  };
 
   return (
     <div className="w-full rounded-xl bg-[#0b0d12] p-4">
@@ -76,7 +203,7 @@ export default function BalanceChart({ payload }: { payload: ChartData }) {
         <ResponsiveContainer>
           <AreaChart
             data={points}
-            margin={{ top: 8, right: 16, left: 0, bottom: 0 }}
+            margin={{ top: 8, right: 48, left: 0, bottom: 0 }}
           >
             <defs>
               <linearGradient id="fill" x1="0" x2="0" y1="0" y2="1">
@@ -88,18 +215,33 @@ export default function BalanceChart({ payload }: { payload: ChartData }) {
             <XAxis
               axisLine={false}
               dataKey="x"
+              domain={["dataMin", "dataMax"]}
+              interval="preserveStartEnd"
               minTickGap={20}
+              padding={{ left: 0, right: 0 }}
+              scale="time"
               tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 12 }}
-              tickFormatter={(v) => toMonthShort(Number(v))}
+              tickFormatter={(v) => {
+                const ts = Number(v);
+
+                if (period === "1W") return toWeekdayShort(ts);
+                if (period === "1M")
+                  return "W" + Math.ceil(new Date(ts).getDate() / 7);
+
+                return toMonthShort(ts);
+              }}
               tickLine={false}
-              ticks={monthTicks}
+              ticks={setTick()}
+              type="number"
             />
             <YAxis
               axisLine={false}
               dataKey="y"
               domain={[yMin, yMax]}
+              orientation="right"
               tick={{ fill: "rgba(255,255,255,0.35)", fontSize: 12 }}
               tickLine={false}
+              tickMargin={6}
               width={36}
             />
             <Tooltip
@@ -109,7 +251,14 @@ export default function BalanceChart({ payload }: { payload: ChartData }) {
               }}
               formatter={(y: number) => [y.toFixed(2), ""]}
               itemStyle={{ color: "#dbe7ff" }}
-              labelFormatter={(x) => toMonthShort(Number(x))}
+              labelFormatter={(x) => {
+                const ts = Number(x);
+
+                if (period === "1W") return toWeekdayShort(ts);
+                if (period === "1M") return toDayOfMonth(ts);
+
+                return toMonthShort(ts);
+              }}
               labelStyle={{ color: "#9fb3c8" }}
             />
 

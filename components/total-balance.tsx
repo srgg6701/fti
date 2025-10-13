@@ -244,7 +244,7 @@ export default function TotalBalance({ chart }: { chart: Chart }) {
 
         {/* График — всегда рендерим, чтобы при успехе мгновенно перерисовать;
             а при загрузке/ошибке выше покажется индикатор */}
-        <BalanceChart payload={payload} />
+        <BalanceChart payload={payload} period={sel} />
       </div>
     </section>
   );
