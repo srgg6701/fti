@@ -21,42 +21,6 @@ const toWeekdayShort = (ts: number) =>
   new Date(ts).toLocaleString(undefined, { weekday: "short" });
 const toDayOfMonth = (ts: number) => new Date(ts).getDate().toString();
 
-const getMonthTicks = (points: { x: number }[]) => {
-  const seen = new Set<string>();
-  const ticks: number[] = [];
-
-  for (const p of points) {
-    const d = new Date(p.x);
-    const key = `${d.getFullYear()}-${d.getMonth()}`;
-
-    if (!seen.has(key)) {
-      seen.add(key);
-      ticks.push(p.x);
-    }
-  }
-
-  return ticks;
-};
-
-/* const getWeekOfMonthTicks = (points: { x: number }[]) => {
-  // Week index within month: 1..5
-  const seen = new Set<string>();
-  const ticks: number[] = [];
-
-  for (const p of points) {
-    const d = new Date(p.x);
-    const week = Math.floor((d.getDate() - 1) / 7) + 1; // 1..5
-    const key = `${d.getFullYear()}-${d.getMonth()}-W${week}`;
-
-    if (!seen.has(key)) {
-      seen.add(key);
-      ticks.push(p.x);
-    }
-  }
-
-  return ticks;
-}; */
-
 const getYDomain = (vals: number[]) => {
   const min = Math.min(...vals);
   const max = Math.max(...vals);
@@ -81,46 +45,43 @@ export default function BalanceChart({
   tickStepMs?: number;
   tickFormatter?: (ts: number) => string;
 }) {
-  console.log("Balance Chart: payload data", { payload, period });
+  //console.log("Balance Chart: payload data", { payload, period });
 
-  // 1) забираем сырые точки
-  const raw = payload?.data?.chartData ?? [];
+  // фильтруем валидные (тайп-гард гарантирует числа)
+  // --- NEW: local toMs/normalize + build points safely (ms, sorted) ---
+  const localToMs = (p: any): number => {
+    if (typeof p?.timestamp === "number") {
+      return p.timestamp < 1_000_000_000_000 ? p.timestamp * 1000 : p.timestamp;
+    }
+    if (p?.date) return new Date(p.date).getTime();
 
-  // 2) фильтруем валидные (тайп-гард гарантирует числа)
-  const points = raw
-    .filter(
-      (p): p is { timestamp: number; equity: number } =>
-        typeof p?.timestamp === "number" && typeof p?.equity === "number"
-    )
-    .map((p) => {
-      const tsMs =
-        p.timestamp < 1_000_000_000_000 ? p.timestamp * 1000 : p.timestamp;
-
-      return { x: tsMs, y: p.equity };
-    });
-
-  if (!points.length) {
-    return <div className="text-sm text-white/60">No data</div>;
-  }
-
-  // X-axis ticks/labels depend on selected period
-  //const monthTicksFromPoints = getMonthTicks(points);
-  //const weekOfMonthTicksFromPoints = getWeekOfMonthTicks(points);
-  //const dayTicksFromPoints = points.map((p) => p.x);
-  const [yMin, yMax] = getYDomain(points.map((d) => d.y));
-
-  // ==== Debug helpers for X-axis ticks derivation ====
-  const fmtTs = (ts: number) => new Date(ts).toISOString().slice(0, 10);
-  const sample = (arr: number[], n = 6) => arr.slice(0, n).map(fmtTs);
-
-  // ==== Calendar-based tick generators (independent from point density) ====
-  const getDomainFromPoints = () => {
-    const xs = points.map((p) => p.x);
-    return [Math.min(...xs), Math.max(...xs)] as const;
+    return NaN;
   };
 
-  // effective domain: prefer externally provided xDomain (from parent), else derive from points
-  const [minX, maxX] = xDomain ?? getDomainFromPoints();
+  const points = (payload?.data?.chartData ?? [])
+    .map((p: any) => ({ ...p, x: localToMs(p) }))
+    .filter((p: any) => Number.isFinite(p.x))
+    .sort((a: any, b: any) => a.x - b.x);
+
+  // Normalize value -> y and compute Y domain
+  const pointsWithY = points.map((p: any) => ({
+    ...p,
+    // source field is `equity` in your data; fall back to `value` or 0
+    y:
+      typeof p.equity === "number"
+        ? p.equity
+        : Number(p.equity ?? p.value ?? 0),
+  }));
+
+  const ys = pointsWithY
+    .map((p: any) => p.y)
+    .filter((v: any) => Number.isFinite(v));
+  const [yMin, yMax] = ys.length ? getYDomain(ys) : [0, 0];
+
+  // effective domain: prefer external xDomain, else use points
+  const [minX, maxX] =
+    xDomain ??
+    (points.length ? [points[0].x, points[points.length - 1].x] : [0, 0]);
 
   const startOfDay = (ts: number) => {
     const d = new Date(ts);
@@ -163,10 +124,12 @@ export default function BalanceChart({
     const ticks: number[] = [];
     // align start to startOfDay to avoid odd hours
     let cur = startOfDay(minX);
+
     while (cur <= maxX) {
       ticks.push(cur);
       cur = cur + stepMs;
     }
+
     return ticks;
   };
 
@@ -182,8 +145,10 @@ export default function BalanceChart({
     const start = Math.max(minStart, maxStartAllowed);
 
     const ticks: number[] = [];
+
     for (let i = 0; i < 4; i++) {
       const t = start + i * STEP;
+
       // keep ticks inside the domain (safety)
       if (t >= minX && t <= maxX) ticks.push(t);
     }
@@ -212,6 +177,7 @@ export default function BalanceChart({
     }
 
     let ticks4: number[] = [];
+
     switch (period) {
       case "1W":
         ticks4 = genDailyTicks(minX, maxX);
@@ -233,12 +199,54 @@ export default function BalanceChart({
     return ticks4;
   };
 
+  // ===== Диагностика: печатаем реальный диапазон и сгенерированные тики =====
+  /* if (process.env.NODE_ENV === "development") {
+    try {
+      const sampleFirst = points.slice(0, 3).map((p: any) => ({
+        x: new Date(p.x).toISOString(),
+        y: p.y,
+      }));
+      const sampleLast = points.slice(-3).map((p: any) => ({
+        x: new Date(p.x).toISOString(),
+        y: p.y,
+      }));
+      const derivedDomain = [
+        points.length ? new Date(points[0].x).toISOString() : null,
+        points.length
+          ? new Date(points[points.length - 1].x).toISOString()
+          : null,
+      ];
+      const providedDomain = xDomain
+        ? [
+            new Date(xDomain[0]).toISOString(),
+            new Date(xDomain[1]).toISOString(),
+          ]
+        : null;
+      const generatedTicks = (setTick() || []).map((t: number) =>
+        new Date(t).toISOString(),
+      );
+
+      console.debug("BalanceChart DEBUG", {
+        period,
+        providedDomain,
+        derivedDomain,
+        pointsCount: points.length,
+        sampleFirst,
+        sampleLast,
+        generatedTicks,
+        yDomain: { yMin, yMax },
+      });
+    } catch (e) {
+      console.debug("BalanceChart DEBUG error", e);
+    }
+  } */
+
   return (
     <div className="w-full rounded-xl bg-[#0b0d12] p-4">
       <div style={{ width: "100%", height: 220 }}>
         <ResponsiveContainer>
           <AreaChart
-            data={points}
+            data={pointsWithY}
             margin={{ top: 8, right: 48, left: 0, bottom: 0 }}
           >
             <defs>
@@ -259,9 +267,12 @@ export default function BalanceChart({
               tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 12 }}
               tickFormatter={(v) => {
                 const ts = Number(v);
+
                 if (tickFormatter) return tickFormatter(ts);
                 if (period === "1W") return toWeekdayShort(ts);
-                if (period === "1M") return "W" + Math.ceil(new Date(ts).getDate() / 7);
+                if (period === "1M")
+                  return "W" + Math.ceil(new Date(ts).getDate() / 7);
+
                 return toMonthShort(ts);
               }}
               tickLine={false}
