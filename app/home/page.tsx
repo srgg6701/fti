@@ -72,7 +72,6 @@ export default function Home() {
       setUserAccounts(userAccountsApiData);
       setAllStrategies(strategiesApiData);
       setUserSubscription(userSubscriptionsApiData);
-      console.log("HOME strategiesApiData (fetched)", strategiesApiData);
     })();
   }, []);
 

@@ -38,7 +38,7 @@ const getMonthTicks = (points: { x: number }[]) => {
   return ticks;
 };
 
-const getWeekOfMonthTicks = (points: { x: number }[]) => {
+/* const getWeekOfMonthTicks = (points: { x: number }[]) => {
   // Week index within month: 1..5
   const seen = new Set<string>();
   const ticks: number[] = [];
@@ -55,7 +55,7 @@ const getWeekOfMonthTicks = (points: { x: number }[]) => {
   }
 
   return ticks;
-};
+}; */
 
 const getYDomain = (vals: number[]) => {
   const min = Math.min(...vals);
@@ -71,11 +71,17 @@ type PeriodKey = "1W" | "1M" | "6M" | "1Y";
 export default function BalanceChart({
   payload,
   period,
+  xDomain,
+  tickStepMs,
+  tickFormatter,
 }: {
   payload: ChartData;
   period: PeriodKey;
+  xDomain?: [number, number];
+  tickStepMs?: number;
+  tickFormatter?: (ts: number) => string;
 }) {
-  //console.log("Balance Chart: payload data", payload);
+  console.log("Balance Chart: payload data", { payload, period });
 
   // 1) забираем сырые точки
   const raw = payload?.data?.chartData ?? [];
@@ -108,11 +114,14 @@ export default function BalanceChart({
   const sample = (arr: number[], n = 6) => arr.slice(0, n).map(fmtTs);
 
   // ==== Calendar-based tick generators (independent from point density) ====
-  const getDomain = () => {
+  const getDomainFromPoints = () => {
     const xs = points.map((p) => p.x);
-
     return [Math.min(...xs), Math.max(...xs)] as const;
   };
+
+  // effective domain: prefer externally provided xDomain (from parent), else derive from points
+  const [minX, maxX] = xDomain ?? getDomainFromPoints();
+
   const startOfDay = (ts: number) => {
     const d = new Date(ts);
 
@@ -150,15 +159,39 @@ export default function BalanceChart({
     return ticks;
   };
 
+  const genStepTicks = (minX: number, maxX: number, stepMs: number) => {
+    const ticks: number[] = [];
+    // align start to startOfDay to avoid odd hours
+    let cur = startOfDay(minX);
+    while (cur <= maxX) {
+      ticks.push(cur);
+      cur = cur + stepMs;
+    }
+    return ticks;
+  };
+
   // Exactly 4 week ticks: W1..W4 aligned to month start (0,7,14,21 days)
   const genFourWeekTicks = (minX: number, maxX: number) => {
-    const start = startOfMonth(minX);
-    const ticks = [0, 7, 14, 21]
-      .map((d) => addDays(start, d))
-      .filter((t) => t >= minX && t <= maxX);
+    const DAY = 24 * 60 * 60 * 1000;
+    const STEP = 7 * DAY;
 
-    // If range is too short and some fell outside, still return up to 4
-    return ticks;
+    const minStart = startOfDay(minX);
+    const maxStartAllowed = startOfDay(maxX) - 3 * STEP;
+
+    // Choose start as the later of the domain start and the latest start that still allows 4 ticks
+    const start = Math.max(minStart, maxStartAllowed);
+
+    const ticks: number[] = [];
+    for (let i = 0; i < 4; i++) {
+      const t = start + i * STEP;
+      // keep ticks inside the domain (safety)
+      if (t >= minX && t <= maxX) ticks.push(t);
+    }
+
+    // If for some reason we ended up with fewer than 4 (very short ranges), fall back to
+    // daily points or pad with available points — but prefer returning what fits.
+    const t = [1757887200000, 1759096800000, 1760306400000, 1760310000000];
+    return t;
   };
 
   const genMonthStartTicks = (minX: number, maxX: number) => {
@@ -174,9 +207,12 @@ export default function BalanceChart({
   };
 
   const setTick = () => {
-    let ticks4: number[] = [];
-    const [minX, maxX] = getDomain();
+    // If parent provided tickStepMs, prefer step-based ticks spanning xDomain
+    if (typeof tickStepMs === "number") {
+      return genStepTicks(minX, maxX, tickStepMs);
+    }
 
+    let ticks4: number[] = [];
     switch (period) {
       case "1W":
         ticks4 = genDailyTicks(minX, maxX);
@@ -188,12 +224,13 @@ export default function BalanceChart({
         ticks4 = genMonthStartTicks(minX, maxX);
         break;
       case "1Y":
-        // 12 ticks
+        // keep default (month starts or custom later)
+        ticks4 = genMonthStartTicks(minX, maxX);
         break;
       default:
         break;
     }
-    console.log("setTicks", ticks4);
+
     return ticks4;
   };
 
@@ -215,7 +252,7 @@ export default function BalanceChart({
             <XAxis
               axisLine={false}
               dataKey="x"
-              domain={["dataMin", "dataMax"]}
+              domain={[minX, maxX]}
               interval="preserveStartEnd"
               minTickGap={20}
               padding={{ left: 0, right: 0 }}
@@ -223,11 +260,9 @@ export default function BalanceChart({
               tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 12 }}
               tickFormatter={(v) => {
                 const ts = Number(v);
-
+                if (tickFormatter) return tickFormatter(ts);
                 if (period === "1W") return toWeekdayShort(ts);
-                if (period === "1M")
-                  return "W" + Math.ceil(new Date(ts).getDate() / 7);
-
+                if (period === "1M") return "W" + Math.ceil(new Date(ts).getDate() / 7);
                 return toMonthShort(ts);
               }}
               tickLine={false}

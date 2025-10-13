@@ -12,7 +12,7 @@ import BalanceChart from "@/components/chart";
 import LoadingIndicator from "@/components/loading-indicator";
 
 // Периоды интерфейса (значения приходят из DropdownPill)
-export type PeriodKey = "1W" | "1M" | "6M" | "1Y"
+export type PeriodKey = "1W" | "1M" | "6M" | "1Y";
 type Gran = "daily" | "weekly" | "monthly";
 
 const mapValueToPeriod: Record<string, PeriodKey> = {
@@ -37,12 +37,22 @@ const granStepMs: Record<Gran, number> = {
   monthly: 30 * MS_DAY, // достаточно для визуализации
 };
 
+// Приведение времени точки к миллисекундам (timestamp в сек → мс)
+function toMs(p: CData): number {
+  if (typeof p?.timestamp === "number") {
+    return p.timestamp < 1_000_000_000_000 ? p.timestamp * 1000 : p.timestamp;
+  }
+  if (p?.date) return new Date(p.date).getTime();
+
+  return NaN;
+}
+
 // Берём последний доступный "now" из данных, если возможно (иначе Date.now())
 function inferNowMs(data: CData[] | undefined): number {
   if (!data?.length) return Date.now();
   const last = data[data.length - 1];
 
-  return last.timestamp ?? new Date(last.date!).getTime() ?? Date.now();
+  return toMs(last) || Date.now();
 }
 
 // Бинирование/ресэмплинг: группируем точки по шагу и берём последнюю в каждом бакете
@@ -54,7 +64,7 @@ function resampleByStep(
   const buckets = new Map<number, CData>();
 
   for (const p of data) {
-    const ts = p.timestamp ?? new Date(p.date!).getTime();
+    const ts = toMs(p);
     const idx = Math.floor((ts - startMs) / stepMs);
 
     if (idx >= 0) buckets.set(idx, p); // последняя в бакете «побеждает»
@@ -67,34 +77,61 @@ function resampleByStep(
   return out;
 }
 
-// Формирование среза периода + пересчёт метрик
+// Формирование простого среза периода (без ресэмплинга)
+// Теперь: нормализует timestamp -> ms и сортирует по времени (asc)
 function makeSlice(all: CData[], period: PeriodKey, nowMs?: number): Chart {
-  const { days, gran } = periodDefs[period];
-  const stepMs = granStepMs[gran];
+  const { days } = periodDefs[period];
 
   const now = nowMs ?? inferNowMs(all);
   const fromMs = now - days * MS_DAY;
 
-  // 1) фильтруем нужный диапазон
-  const inRange = all.filter((p) => {
-    const ts = p.timestamp ?? new Date(p.date!).getTime();
-
-    return ts >= fromMs && ts <= now;
+  // 1) простой фильтр по диапазону
+  const inRangeRaw = all.filter((p) => {
+    const ts = toMs(p);
+    return Number.isFinite(ts) && ts >= fromMs && ts <= now;
   });
 
-  // Если данных мало — берём хвост из двух последних точек для устойчивости
-  const base = inRange.length >= 2 ? inRange : all.slice(-2);
+  // helper: приводим timestamp к ms и гарантируем число
+  const normalize = (p: CData): CData => ({ ...p, timestamp: toMs(p) });
 
-  // 2) ресэмплим до желаемой «видимой» гранулярности
-  const startMs = base.length
-    ? (base[0].timestamp ?? new Date(base[0].date!).getTime())
-    : fromMs;
-  const sampled = resampleByStep(base, startMs, stepMs);
+  // сортируем по возрастанию времени
+  const inRange = inRangeRaw.map(normalize).sort((a, b) => (a.timestamp as number) - (b.timestamp as number));
 
-  // Гарантируем минимум 2 точки (если вдруг после ресэмплинга осталась 1)
-  const chartData = sampled.length >= 2 ? sampled : base.slice(-2);
+  // 2) минимум 2 точки — фолбэк на последние 2 из общего ряда (тоже нормализуем и сортируем)
+  let chartData: CData[];
+  if (inRange.length >= 2) {
+    chartData = inRange;
+  } else {
+    const tail = all.slice(-2).map(normalize).sort((a, b) => (a.timestamp as number) - (b.timestamp as number));
+    chartData = tail;
+  }
 
-  // 3) пересчитываем метрики
+  // Ensure chartData covers full requested domain: add boundary points if missing
+  const tsVals = chartData.map((p) => p.timestamp as number);
+  const minTs = Math.min(...tsVals);
+  const maxTs = Math.max(...tsVals);
+
+  // If no point at fromMs — insert carry-forward (last point <= fromMs) or duplicate first
+  if (minTs > fromMs) {
+    const lastBefore = all
+      .map(normalize)
+      .filter((p) => (p.timestamp as number) <= fromMs)
+      .sort((a, b) => (a.timestamp as number) - (b.timestamp as number))
+      .pop();
+    const startPoint = lastBefore
+      ? { ...lastBefore, timestamp: fromMs }
+      : { ...chartData[0], timestamp: fromMs };
+    chartData = [startPoint, ...chartData];
+  }
+
+  // If no point at now — append duplicate of last with timestamp = now
+  if (maxTs < now) {
+    const lastPoint = chartData[chartData.length - 1];
+    const endPoint = { ...lastPoint, timestamp: now };
+    chartData = [...chartData, endPoint];
+  }
+
+  // 3) пересчёт метрик (как было)
   const first = chartData[0]?.equity ?? 0;
   const last = chartData[chartData.length - 1]?.equity ?? first;
   const absoluteChange = Number((last - first).toFixed(2));
@@ -109,7 +146,9 @@ function makeSlice(all: CData[], period: PeriodKey, nowMs?: number): Chart {
     isPositive: absoluteChange >= 0,
     percentageChange,
   };
-
+  console.groupCollapsed("makeSlice");
+  console.log({data, period});
+  console.groupEnd();
   return { data, message: "ok", success: true };
 }
 
@@ -169,6 +208,22 @@ export default function TotalBalance({ chart }: { chart: Chart }) {
   // «now» фиксируем по данным, чтобы все периоды считались от одного опорного времени
   const nowMs = useMemo(() => inferNowMs(longSeries), [longSeries]);
 
+  // current from/to для домена графика
+  const currentFromMs = useMemo(() => {
+    return nowMs - periodDefs[sel].days * MS_DAY;
+  }, [sel, nowMs]);
+
+  // шаг тиков в ms по текущей гранулярности
+  const tickStepMs = useMemo(() => {
+    return granStepMs[periodDefs[sel].gran];
+  }, [sel]);
+
+  // форматтер тика (под 1M хотим день/короткий месяц)
+  const tickFormatter = useMemo(() => {
+    return (ts: number) =>
+      new Date(ts).toLocaleDateString(undefined, { day: "numeric", month: "short" });
+  }, []);
+
   // Получаем/мемоизируем срез по текущему периоду
   const payload = useMemo<Chart>(() => {
     if (!longSeries.length) {
@@ -185,9 +240,47 @@ export default function TotalBalance({ chart }: { chart: Chart }) {
   // Заголовок берём из актуального payload
   const currentBalance = payload?.data?.currentBalance ?? 0;
 
-  console.groupCollapsed("chart/payload");
-  console.log({ sel, status, errorMsg, baseChart, payload });
-  console.groupEnd();
+  // Debug: validate that the slice matches selected period and granularity
+  try {
+    const days = periodDefs[sel].days;
+    const fromMs = nowMs - days * MS_DAY;
+    const points = payload?.data?.chartData ?? [];
+    const toMs = (ts?: number) =>
+      typeof ts === "number" ? (ts < 1_000_000_000_000 ? ts * 1000 : ts) : NaN;
+    const xs = points
+      .map((p) => toMs(p.timestamp ?? new Date(p.date!).getTime()))
+      .filter((n) => Number.isFinite(n)) as number[];
+    const sorted = [...xs].sort((a, b) => a - b);
+    const diffs = sorted.slice(1).map((v, i) => v - sorted[i]);
+    const median = (arr: number[]) => {
+      if (!arr.length) return 0;
+      const s = [...arr].sort((a, b) => a - b);
+      const m = Math.floor(s.length / 2);
+
+      return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+    };
+
+    console.groupCollapsed("chart/slice-validate");
+    console.log("period", sel);
+    console.log("range", {
+      from: new Date(fromMs).toISOString(),
+      to: new Date(nowMs).toISOString(),
+    });
+    console.log("points", { count: xs.length });
+    if (sorted.length) {
+      console.log("domain", {
+        min: new Date(sorted[0]).toISOString(),
+        max: new Date(sorted[sorted.length - 1]).toISOString(),
+      });
+    }
+    console.log("diffs", {
+      count: diffs.length,
+      medianMs: Math.round(median(diffs)),
+      minMs: diffs.length ? Math.min(...diffs) : 0,
+      maxMs: diffs.length ? Math.max(...diffs) : 0,
+    });
+    console.groupEnd();
+  } catch {}
 
   const items = [
     { label: "1 Week", value: "1week" },
@@ -244,7 +337,13 @@ export default function TotalBalance({ chart }: { chart: Chart }) {
 
         {/* График — всегда рендерим, чтобы при успехе мгновенно перерисовать;
             а при загрузке/ошибке выше покажется индикатор */}
-        <BalanceChart payload={payload} period={sel} />
+        <BalanceChart
+          payload={payload}
+          period={sel}
+          xDomain={[currentFromMs, nowMs]}
+          tickStepMs={tickStepMs}
+          tickFormatter={tickFormatter}
+        />
       </div>
     </section>
   );

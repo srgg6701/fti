@@ -8,10 +8,8 @@ type Gran = "daily" | "weekly" | "monthly";
 const periodDefs: Record<PeriodKey, { days: number; gran: Gran }> = {
   "1W": { days: 7, gran: "daily" },
   "1M": { days: 30, gran: "daily" },
-  "6M": { days: 182, gran: "weekly" }, // ~26 точек
-  "1Y": { days: 365, gran: "weekly" }, // ~52 точки
-  //"2Y": { days: 730, gran: "monthly" }, // 24 точки
-  //"3Y": { days: 1095, gran: "monthly" }, // 36 точек
+  "6M": { days: 182, gran: "weekly" },
+  "1Y": { days: 365, gran: "weekly" },
 };
 
 function stepMs(gran: Gran) {
@@ -97,6 +95,4 @@ export const MOCK_CHARTS: Record<PeriodKey, ChartData> = {
   "1M": makeMockChartDataForPeriod("1M"),
   "6M": makeMockChartDataForPeriod("6M"),
   "1Y": makeMockChartDataForPeriod("1Y"),
-  //"2Y": makeMockChartDataForPeriod("2Y"),
-  //"3Y": makeMockChartDataForPeriod("3Y"),
 };

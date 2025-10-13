@@ -111,9 +111,9 @@ export default function HomeSections({
   }, []);
 
   // FIXME: remove as test period is over
-  useEffect(() => {
+  /* useEffect(() => {
     console.log("dataSections", allStrategies);
-  }, [allStrategies]);
+  }, [allStrategies]); */
 
   {
     /* <h1>{chart?.data.currentBalance}</h1> */
