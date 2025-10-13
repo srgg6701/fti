@@ -1,15 +1,18 @@
-import type { PeriodKey } from "@/mockData/chart-data";
-import type { CData, ChartData, Chart, BalanceDynamics } from "@/types/apiData";
+// components/total-balance.tsx
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import type { Chart, CData, BalanceDynamics } from "@/types/apiData";
 
+import { useMemo, useState, useEffect, useRef } from "react";
+
+import res from "@/mockData/graphs/charts-mock-massive.json";
+import { siteConfig } from "@/config/site";
 import ColoredIndicator from "@/components/coloredIndicator";
 import DropdownPill from "@/components/dateDropDown";
 import BalanceChart from "@/components/chart";
-import res from "@/mockData/graphs/charts-mock-massive.json";
-import LoadingIndicator from "./loading-indicator";
-import { siteConfig } from "@/config/site";
+import LoadingIndicator from "@/components/loading-indicator";
 
+// Периоды интерфейса (значения приходят из DropdownPill)
+export type PeriodKey = "1W" | "1M" | "6M" | "1Y"
 type Gran = "daily" | "weekly" | "monthly";
 
 const mapValueToPeriod: Record<string, PeriodKey> = {
@@ -17,8 +20,6 @@ const mapValueToPeriod: Record<string, PeriodKey> = {
   "1month": "1M",
   "6month": "6M",
   "1year": "1Y",
-  //"2years": "2Y",
-  //"3years": "3Y",
 };
 
 // Определения периодов и желаемой гранулярности отображения
@@ -28,6 +29,7 @@ const periodDefs: Record<PeriodKey, { days: number; gran: Gran }> = {
   "6M": { days: 182, gran: "weekly" }, // ~26 точек
   "1Y": { days: 365, gran: "weekly" }, // ~52 точки
 };
+
 const MS_DAY = 24 * 60 * 60 * 1000;
 const granStepMs: Record<Gran, number> = {
   daily: MS_DAY,
@@ -47,7 +49,7 @@ function inferNowMs(data: CData[] | undefined): number {
 function resampleByStep(
   data: CData[],
   startMs: number,
-  stepMs: number
+  stepMs: number,
 ): CData[] {
   const buckets = new Map<number, CData>();
 
@@ -111,25 +113,18 @@ function makeSlice(all: CData[], period: PeriodKey, nowMs?: number): Chart {
   return { data, message: "ok", success: true };
 }
 
-export default function TotalBalance({ chart }: { chart: ChartData }) {
-  const currentBalance = chart.data?.currentBalance;
-
+export default function TotalBalance({ chart }: { chart: Chart }) {
   const [sel, setSel] = useState<PeriodKey>("6M");
+
   // Статусы загрузки
   const [status, setStatus] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   // Базовый ответ API и срезы по периодам
   const [baseChart, setBaseChart] = useState<Chart | null>(null);
   const slicesRef = useRef<Partial<Record<PeriodKey, Chart>>>({});
-
-  const items = [
-    { label: "1 Week", value: "1week" },
-    { label: "1 Month", value: "1month" },
-    { label: "6 Months", value: "6month" },
-    { label: "1 Year", value: "1year" },
-  ];
 
   // Подтягиваем реальные данные
   useEffect(() => {
@@ -158,6 +153,7 @@ export default function TotalBalance({ chart }: { chart: ChartData }) {
         setErrorMsg(e?.message || "Failed to load chart data");
       }
     })();
+
     return () => {
       aborted = true;
     };
@@ -186,12 +182,19 @@ export default function TotalBalance({ chart }: { chart: ChartData }) {
     return slicesRef.current[sel]!;
   }, [longSeries, sel, nowMs, chart]);
 
-  //const payload = useMemo(() => MOCK_CHARTS[sel], [sel]);
-  // const payload = res;
+  // Заголовок берём из актуального payload
+  const currentBalance = payload?.data?.currentBalance ?? 0;
 
   console.groupCollapsed("chart/payload");
-  console.log({ chart, payload, res });
+  console.log({ sel, status, errorMsg, baseChart, payload });
   console.groupEnd();
+
+  const items = [
+    { label: "1 Week", value: "1week" },
+    { label: "1 Month", value: "1month" },
+    { label: "6 Months", value: "6month" },
+    { label: "1 Year", value: "1year" },
+  ];
 
   return (
     <section className="flex w-full flex-wrap gap-11 py-5 lg:flex-nowrap lg:p-[80px] lg:pb-[90px]">
@@ -203,14 +206,15 @@ export default function TotalBalance({ chart }: { chart: ChartData }) {
           phrases, and web pages. It supports over 100 languages.
         </p>
       </div>
+
       <div className="w-[590px] max-w-[100%] xl:p-[20px]">
         <div className="jus flex justify-between">
-          <div className="flex gap-2.5">
+          <div className="flex items-center gap-2.5">
             <span className="font-semibold">Graph</span>
             <ColoredIndicator
               data={[
-                payload?.data?.absoluteChange!,
-                payload?.data?.percentageChange!,
+                payload?.data?.absoluteChange ?? 0,
+                payload?.data?.percentageChange ?? 0,
               ]}
               direction={payload?.data?.isPositive ? "Up" : "Down"}
             />
@@ -225,6 +229,7 @@ export default function TotalBalance({ chart }: { chart: ChartData }) {
             />
           </div>
         </div>
+
         {/* Лоадер/ошибка поверх графика */}
         {status !== "success" ? (
           <div className="py-6">
@@ -236,6 +241,9 @@ export default function TotalBalance({ chart }: { chart: ChartData }) {
             ) : null}
           </div>
         ) : null}
+
+        {/* График — всегда рендерим, чтобы при успехе мгновенно перерисовать;
+            а при загрузке/ошибке выше покажется индикатор */}
         <BalanceChart payload={payload} />
       </div>
     </section>
