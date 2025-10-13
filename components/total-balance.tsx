@@ -88,6 +88,7 @@ function makeSlice(all: CData[], period: PeriodKey, nowMs?: number): Chart {
   // 1) простой фильтр по диапазону
   const inRangeRaw = all.filter((p) => {
     const ts = toMs(p);
+
     return Number.isFinite(ts) && ts >= fromMs && ts <= now;
   });
 
@@ -95,14 +96,21 @@ function makeSlice(all: CData[], period: PeriodKey, nowMs?: number): Chart {
   const normalize = (p: CData): CData => ({ ...p, timestamp: toMs(p) });
 
   // сортируем по возрастанию времени
-  const inRange = inRangeRaw.map(normalize).sort((a, b) => (a.timestamp as number) - (b.timestamp as number));
+  const inRange = inRangeRaw
+    .map(normalize)
+    .sort((a, b) => (a.timestamp as number) - (b.timestamp as number));
 
   // 2) минимум 2 точки — фолбэк на последние 2 из общего ряда (тоже нормализуем и сортируем)
   let chartData: CData[];
+
   if (inRange.length >= 2) {
     chartData = inRange;
   } else {
-    const tail = all.slice(-2).map(normalize).sort((a, b) => (a.timestamp as number) - (b.timestamp as number));
+    const tail = all
+      .slice(-2)
+      .map(normalize)
+      .sort((a, b) => (a.timestamp as number) - (b.timestamp as number));
+
     chartData = tail;
   }
 
@@ -118,16 +126,19 @@ function makeSlice(all: CData[], period: PeriodKey, nowMs?: number): Chart {
       .filter((p) => (p.timestamp as number) <= fromMs)
       .sort((a, b) => (a.timestamp as number) - (b.timestamp as number))
       .pop();
+
     const startPoint = lastBefore
       ? { ...lastBefore, timestamp: fromMs }
       : { ...chartData[0], timestamp: fromMs };
-    chartData = [startPoint, ...chartData];
+
+    chartData = [{ ...startPoint }, ...chartData];
   }
 
   // If no point at now — append duplicate of last with timestamp = now
   if (maxTs < now) {
     const lastPoint = chartData[chartData.length - 1];
     const endPoint = { ...lastPoint, timestamp: now };
+
     chartData = [...chartData, endPoint];
   }
 
@@ -146,9 +157,7 @@ function makeSlice(all: CData[], period: PeriodKey, nowMs?: number): Chart {
     isPositive: absoluteChange >= 0,
     percentageChange,
   };
-  console.groupCollapsed("makeSlice");
-  console.log({data, period});
-  console.groupEnd();
+
   return { data, message: "ok", success: true };
 }
 
@@ -221,7 +230,10 @@ export default function TotalBalance({ chart }: { chart: Chart }) {
   // форматтер тика (под 1M хотим день/короткий месяц)
   const tickFormatter = useMemo(() => {
     return (ts: number) =>
-      new Date(ts).toLocaleDateString(undefined, { day: "numeric", month: "short" });
+      new Date(ts).toLocaleDateString(undefined, {
+        day: "numeric",
+        month: "short",
+      });
   }, []);
 
   // Получаем/мемоизируем срез по текущему периоду
@@ -230,11 +242,13 @@ export default function TotalBalance({ chart }: { chart: Chart }) {
       // Если вообще нет данных — отдаём пустую структуру (покажется лоадер/ошибка выше)
       return chart;
     }
-    if (!slicesRef.current[sel]) {
-      slicesRef.current[sel] = makeSlice(longSeries, sel, nowMs);
-    }
 
-    return slicesRef.current[sel]!;
+    // всегда пересчитываем срез для текущего периода/данных
+    const slice = makeSlice(longSeries, sel, nowMs);
+
+    slicesRef.current[sel] = slice; // можно опционально хранить, но не полагаться на это
+
+    return slice;
   }, [longSeries, sel, nowMs, chart]);
 
   // Заголовок берём из актуального payload
@@ -340,9 +354,9 @@ export default function TotalBalance({ chart }: { chart: Chart }) {
         <BalanceChart
           payload={payload}
           period={sel}
-          xDomain={[currentFromMs, nowMs]}
-          tickStepMs={tickStepMs}
           tickFormatter={tickFormatter}
+          tickStepMs={tickStepMs}
+          xDomain={[currentFromMs, nowMs]}
         />
       </div>
     </section>
