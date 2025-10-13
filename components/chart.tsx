@@ -190,8 +190,7 @@ export default function BalanceChart({
 
     // If for some reason we ended up with fewer than 4 (very short ranges), fall back to
     // daily points or pad with available points — but prefer returning what fits.
-    const t = [1757887200000, 1759096800000, 1760306400000, 1760310000000];
-    return t;
+    return ticks;
   };
 
   const genMonthStartTicks = (minX: number, maxX: number) => {
