@@ -7,7 +7,8 @@ import DropdownPill from "@/components/dateDropDown";
 import BalanceChart from "@/components/chart";
 
 // TODO: Remove mock data in production
-import { MOCK_CHARTS, type PeriodKey } from "@/mockData/chart-data";
+import { MOCK_CHARTS, mockDt, type PeriodKey } from "@/mockData/chart-data";
+console.log("mockDt", mockDt);
 
 const mapValueToPeriod: Record<string, PeriodKey> = {
   "1week": "1W",

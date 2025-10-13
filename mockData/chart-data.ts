@@ -45,6 +45,8 @@ function wave(i: number, amp: number) {
  * @param amp     - амплитуда колебаний (по умолчанию 25)
  * @param nowMs   - опорная «сегодня» (по умолчанию Date.now())
  */
+let mockDt: CData[] = [];
+
 export function makeMockChartDataForPeriod(
   period: PeriodKey,
   base = 1000,
@@ -71,7 +73,8 @@ export function makeMockChartDataForPeriod(
       equity: Number(eq.toFixed(2)),
     };
 
-    //console.log("mockData", { period, mockData });
+    mockDt.push(mockData);
+    console.log("mockData", { period, mockData });
 
     return mockData;
   });
@@ -102,3 +105,4 @@ export const MOCK_CHARTS: Record<PeriodKey, ChartData> = {
   "2Y": makeMockChartDataForPeriod("2Y"),
   "3Y": makeMockChartDataForPeriod("3Y"),
 };
+export { mockDt };
