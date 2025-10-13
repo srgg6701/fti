@@ -1,6 +1,7 @@
 import { CData, Data, ChartData } from "@/types/apiData";
 
-export type PeriodKey = "1W" | "1M" | "6M" | "1Y" | "2Y" | "3Y";
+export type PeriodKey = "1W" | "1M" | "6M" | "1Y";
+// | "2Y" | "3Y";
 
 type Gran = "daily" | "weekly" | "monthly";
 
@@ -9,8 +10,8 @@ const periodDefs: Record<PeriodKey, { days: number; gran: Gran }> = {
   "1M": { days: 30, gran: "daily" },
   "6M": { days: 182, gran: "weekly" }, // ~26 точек
   "1Y": { days: 365, gran: "weekly" }, // ~52 точки
-  "2Y": { days: 730, gran: "monthly" }, // 24 точки
-  "3Y": { days: 1095, gran: "monthly" }, // 36 точек
+  //"2Y": { days: 730, gran: "monthly" }, // 24 точки
+  //"3Y": { days: 1095, gran: "monthly" }, // 36 точек
 };
 
 function stepMs(gran: Gran) {
@@ -45,8 +46,6 @@ function wave(i: number, amp: number) {
  * @param amp     - амплитуда колебаний (по умолчанию 25)
  * @param nowMs   - опорная «сегодня» (по умолчанию Date.now())
  */
-let mockDt: CData[] = [];
-
 export function makeMockChartDataForPeriod(
   period: PeriodKey,
   base = 1000,
@@ -72,10 +71,6 @@ export function makeMockChartDataForPeriod(
       date: niceDate(ts),
       equity: Number(eq.toFixed(2)),
     };
-
-    mockDt.push(mockData);
-    console.log("mockData", { period, mockData });
-
     return mockData;
   });
 
@@ -102,7 +97,6 @@ export const MOCK_CHARTS: Record<PeriodKey, ChartData> = {
   "1M": makeMockChartDataForPeriod("1M"),
   "6M": makeMockChartDataForPeriod("6M"),
   "1Y": makeMockChartDataForPeriod("1Y"),
-  "2Y": makeMockChartDataForPeriod("2Y"),
-  "3Y": makeMockChartDataForPeriod("3Y"),
+  //"2Y": makeMockChartDataForPeriod("2Y"),
+  //"3Y": makeMockChartDataForPeriod("3Y"),
 };
-export { mockDt };

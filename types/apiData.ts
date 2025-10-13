@@ -4,6 +4,19 @@ interface User {
 interface UserImg {
   userImg: string;
 }
+export interface BalanceDynamics {
+  absoluteChange: number;
+  chartData: CData[];
+  currentBalance: number;
+  dataPoints: number;
+  isPositive: boolean;
+  percentageChange: number;
+}
+export interface Chart {
+  data?: BalanceDynamics;
+  message?: string;
+  success?: boolean;
+}
 export interface Data {
   absoluteChange: number;
   chartData: CData[];

@@ -1,3 +1,5 @@
+import { get } from "http";
+
 export type SiteConfig = typeof siteConfig;
 
 export const routeAliases = {
@@ -75,6 +77,22 @@ export const siteConfig = {
     accounts: {
       header: "Accounts",
       href: "/accounts",
+    },
+    balance: {
+      equity: {
+        account: {
+          header: "Account",
+          getEndpointUrl: (accountId: number) => `balance/equity/account/${accountId}/current`,
+        },
+        chart: {
+          header: "Chart",
+          href: "/balance/equity/chart",
+        },
+      },
+      status: {
+        header: "Balance",
+        href: "/balance/status",
+      },
     },
     portfolio: {
       header: "Portfolio",
