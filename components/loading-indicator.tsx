@@ -1,11 +1,9 @@
 import { Spinner } from "@heroui/react";
 import { Alert } from "@heroui/alert";
 
-export default function LoadingIndicator({
-  status,
-}: {
-  status?: "loading" | "error" | "success" | "idle";
-}) {
+import { status } from "@/types/ui";
+
+export default function LoadingIndicator({ status }: { status?: status }) {
   let messageBox;
 
   switch (status) {

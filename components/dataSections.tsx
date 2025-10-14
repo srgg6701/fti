@@ -25,7 +25,6 @@ import CardShared from "@/components/cards/card-shared";
 import CardNews from "@/components/cards/news";
 import { clampText } from "@/lib/utils";
 import { apiFetch, apiFetch2 } from "@/lib/api";
-
 import LoadingIndicator from "@/components/loading-indicator";
 // FIXME: remove apiFetch as data is real
 import "@/styles/style-sections.css";
@@ -47,7 +46,7 @@ export default function HomeSections({
   >([]);
   const [newsData, setNewsData] = useState<TDataNews[]>([]);
   const [worldLeadersData, setWorldLeadersData] = useState<TDataWorldLeaders[]>(
-    []
+    [],
   );
   const [theBestOfTheDayData, setTheBestOfTheDayData] = useState<
     TDataTheBestOfTheDay[]
@@ -65,17 +64,14 @@ export default function HomeSections({
         setStatus("loading");
 
         if (section === routeAliases.home) {
-          const [
-            chartsApiData,
-            topPerformingApiData,
-            newsApiData,
-          ] = await Promise.all([
-            // TODO: Define API routes as constants
-            apiFetch<ChartData>("/api/balance/equity/chart"),
-            // MOCK DATA:// FIXME: use real data (apiFetch)
-            apiFetch2<TDataTopPerforming[]>("dataTopPerforming"),
-            apiFetch2<TDataNews[]>("dataNews"),
-          ]);
+          const [chartsApiData, topPerformingApiData, newsApiData] =
+            await Promise.all([
+              // TODO: Define API routes as constants
+              apiFetch<ChartData>("/api/balance/equity/chart"),
+              // MOCK DATA:// FIXME: use real data (apiFetch)
+              apiFetch2<TDataTopPerforming[]>("dataTopPerforming"),
+              apiFetch2<TDataNews[]>("dataNews"),
+            ]);
 
           setChart(chartsApiData);
           setTopPerformingData(topPerformingApiData);

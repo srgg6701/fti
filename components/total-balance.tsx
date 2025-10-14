@@ -6,6 +6,7 @@ import { useMemo, useState, useEffect, useRef } from "react";
 
 import res from "@/mockData/graphs/charts-mock-massive.json";
 import { siteConfig } from "@/config/site";
+import { status } from "@/types/ui";
 import ColoredIndicator from "@/components/coloredIndicator";
 import DropdownPill from "@/components/dateDropDown";
 import BalanceChart from "@/components/chart";
@@ -56,7 +57,7 @@ function inferNowMs(data: CData[] | undefined): number {
 }
 
 // Бинирование/ресэмплинг: группируем точки по шагу и берём последнюю в каждом бакете
-function resampleByStep(
+/* function resampleByStep(
   data: CData[],
   startMs: number,
   stepMs: number,
@@ -75,7 +76,7 @@ function resampleByStep(
   for (const i of sortedIdx) out.push(buckets.get(i)!);
 
   return out;
-}
+} */
 
 // Формирование простого среза периода (без ресэмплинга)
 // Теперь: нормализует timestamp -> ms и сортирует по времени (asc)
@@ -165,9 +166,7 @@ export default function TotalBalance({ chart }: { chart: Chart }) {
   const [sel, setSel] = useState<PeriodKey>("6M");
 
   // Статусы загрузки
-  const [status, setStatus] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
+  const [status, setStatus] = useState<status>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   // Базовый ответ API и срезы по периодам
@@ -274,7 +273,7 @@ export default function TotalBalance({ chart }: { chart: Chart }) {
       return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
     };
 
-    console.groupCollapsed("chart/slice-validate");
+    /* console.groupCollapsed("chart/slice-validate");
     console.log("period", sel);
     console.log("range", {
       from: new Date(fromMs).toISOString(),
@@ -293,7 +292,7 @@ export default function TotalBalance({ chart }: { chart: Chart }) {
       minMs: diffs.length ? Math.min(...diffs) : 0,
       maxMs: diffs.length ? Math.max(...diffs) : 0,
     });
-    console.groupEnd();
+    console.groupEnd(); */
   } catch {}
 
   const items = [

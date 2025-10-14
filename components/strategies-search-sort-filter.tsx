@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
+import { status } from "@/types/ui";
 import { Input } from "@heroui/input";
 const SetSearchCommands = ({
   action,
@@ -37,7 +38,7 @@ export default function StrategiesSearchSortFilter({
   handleSorting: () => void;
   handleFiltering: () => void;
   verticalOffset?: boolean;
-  setStatus?: (status: "idle" | "loading" | "success" | "error") => void;
+  setStatus?: (status: status) => void;
 }) {
   const [search_text, setSearch] = useState("");
 
