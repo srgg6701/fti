@@ -4,8 +4,14 @@ import { useState } from "react";
 
 type Item = { label: string; value: string; disabled?: boolean };
 
+const items: Item[] = [
+  { label: "1 Week", value: "1week" },
+  { label: "1 Month", value: "1month" },
+  { label: "6 Months", value: "6month" },
+  { label: "1 Year", value: "1year" },
+];
+
 export default function DropdownPill({
-  items,
   defaultValue,
   onChange,
   width = 86,
@@ -13,7 +19,6 @@ export default function DropdownPill({
   className = "",
   onSelect,
 }: {
-  items: Item[];
   defaultValue?: string;
   onChange?: (v: string) => void;
   width?: number;

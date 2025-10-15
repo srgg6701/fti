@@ -1,19 +1,16 @@
-// components/total-balance.tsx
-
 import type { Chart, CData, BalanceDynamics } from "@/types/apiData";
 
 import { useMemo, useState, useEffect, useRef } from "react";
 
+// FIXME: remove apiFetch as data is real
 import res from "@/mockData/graphs/charts-mock-massive.json";
-import { siteConfig } from "@/config/site";
-import { status } from "@/types/ui";
-import ColoredIndicator from "@/components/coloredIndicator";
-import DropdownPill from "@/components/dateDropDown";
-import BalanceChart from "@/components/chart";
-import LoadingIndicator from "@/components/loading-indicator";
+import ChartBlock, {
+  GraphTopPanel,
+  type PeriodKey,
+} from "@/components/chart/chart-block";
 
 // Периоды интерфейса (значения приходят из DropdownPill)
-export type PeriodKey = "1W" | "1M" | "6M" | "1Y";
+
 type Gran = "daily" | "weekly" | "monthly";
 
 const mapValueToPeriod: Record<string, PeriodKey> = {
@@ -55,28 +52,6 @@ function inferNowMs(data: CData[] | undefined): number {
 
   return toMs(last) || Date.now();
 }
-
-// Бинирование/ресэмплинг: группируем точки по шагу и берём последнюю в каждом бакете
-/* function resampleByStep(
-  data: CData[],
-  startMs: number,
-  stepMs: number,
-): CData[] {
-  const buckets = new Map<number, CData>();
-
-  for (const p of data) {
-    const ts = toMs(p);
-    const idx = Math.floor((ts - startMs) / stepMs);
-
-    if (idx >= 0) buckets.set(idx, p); // последняя в бакете «побеждает»
-  }
-  const out: CData[] = [];
-  const sortedIdx = Array.from(buckets.keys()).sort((a, b) => a - b);
-
-  for (const i of sortedIdx) out.push(buckets.get(i)!);
-
-  return out;
-} */
 
 // Формирование простого среза периода (без ресэмплинга)
 // Теперь: нормализует timestamp -> ms и сортирует по времени (asc)
@@ -162,12 +137,20 @@ function makeSlice(all: CData[], period: PeriodKey, nowMs?: number): Chart {
   return { data, message: "ok", success: true };
 }
 
-export default function TotalBalance({ chart }: { chart: Chart }) {
+export default function GraphAndBalance({
+  chart,
+  wrapper = false,
+}: {
+  chart: Chart;
+  wrapper?: boolean;
+}) {
   const [sel, setSel] = useState<PeriodKey>("6M");
 
   // Статусы загрузки
-  const [status, setStatus] = useState<status>("idle");
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+  const [errorMsg, setErrorMsg] = useState<string | boolean>();
 
   // Базовый ответ API и срезы по периодам
   const [baseChart, setBaseChart] = useState<Chart | null>(null);
@@ -176,14 +159,13 @@ export default function TotalBalance({ chart }: { chart: Chart }) {
   // Подтягиваем реальные данные
   useEffect(() => {
     let aborted = false;
-    const chartUrl = siteConfig.innerItems.balance.equity.chart.href;
 
     (async () => {
       try {
         setStatus("loading");
-        setErrorMsg(null);
+        setErrorMsg(false);
         // INFO: используем мок из файла, чтобы не плодить ещё один API-роут
-        //const res = await apiFetch<Chart>(`/api${chartUrl}`);
+        //const res = await apiFetch<Chart>(`/api${siteConfig.innerItems.balance.equity.chart.href}`);
 
         if (aborted) return;
 
@@ -273,7 +255,7 @@ export default function TotalBalance({ chart }: { chart: Chart }) {
       return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
     };
 
-    /* console.groupCollapsed("chart/slice-validate");
+    console.groupCollapsed("chart/slice-validate");
     console.log("period", sel);
     console.log("range", {
       from: new Date(fromMs).toISOString(),
@@ -292,17 +274,23 @@ export default function TotalBalance({ chart }: { chart: Chart }) {
       minMs: diffs.length ? Math.min(...diffs) : 0,
       maxMs: diffs.length ? Math.max(...diffs) : 0,
     });
-    console.groupEnd(); */
+    console.groupEnd();
   } catch {}
 
-  const items = [
-    { label: "1 Week", value: "1week" },
-    { label: "1 Month", value: "1month" },
-    { label: "6 Months", value: "6month" },
-    { label: "1 Year", value: "1year" },
-  ];
+  const ChartWrapper = () => (
+    <ChartBlock
+      currentFromMs={currentFromMs}
+      errorMsg={errorMsg}
+      nowMs={nowMs}
+      payload={payload}
+      sel={sel}
+      status={status}
+      tickFormatter={tickFormatter}
+      tickStepMs={tickStepMs}
+    />
+  );
 
-  return (
+  return wrapper ? (
     <section className="flex w-full flex-wrap gap-11 py-5 lg:flex-nowrap lg:p-[80px] lg:pb-[90px]">
       <div className="flex max-w-[452px] flex-col gap-2.5">
         <h3 className="text-2xl font-medium">Total Balance</h3>
@@ -314,50 +302,14 @@ export default function TotalBalance({ chart }: { chart: Chart }) {
       </div>
 
       <div className="w-[590px] max-w-[100%] xl:p-[20px]">
-        <div className="jus flex justify-between">
-          <div className="flex items-center gap-2.5">
-            <span className="font-semibold">Graph</span>
-            <ColoredIndicator
-              data={[
-                payload?.data?.absoluteChange ?? 0,
-                payload?.data?.percentageChange ?? 0,
-              ]}
-              direction={payload?.data?.isPositive ? "Up" : "Down"}
-            />
-          </div>
-          <div>
-            <DropdownPill
-              defaultValue="6month"
-              height={24}
-              items={items}
-              width={112}
-              onSelect={(item) => setSel(mapValueToPeriod[item.value])}
-            />
-          </div>
-        </div>
-
-        {/* Лоадер/ошибка поверх графика */}
-        {status !== "success" ? (
-          <div className="py-6">
-            <LoadingIndicator status={status} />
-            {status === "error" && errorMsg ? (
-              <div className="mt-2 text-center text-sm opacity-70">
-                {errorMsg}
-              </div>
-            ) : null}
-          </div>
-        ) : null}
-
-        {/* График — всегда рендерим, чтобы при успехе мгновенно перерисовать;
-            а при загрузке/ошибке выше покажется индикатор */}
-        <BalanceChart
+        <GraphTopPanel
           payload={payload}
-          period={sel}
-          tickFormatter={tickFormatter}
-          tickStepMs={tickStepMs}
-          xDomain={[currentFromMs, nowMs]}
+          onSelect={(item) => setSel(mapValueToPeriod[item.value])}
         />
+        <ChartWrapper />
       </div>
     </section>
+  ) : (
+    <ChartWrapper />
   );
 }

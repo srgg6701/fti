@@ -1,3 +1,4 @@
+import { stat } from "fs";
 import { get } from "http";
 
 export type SiteConfig = typeof siteConfig;
@@ -110,9 +111,17 @@ export const siteConfig = {
       header: "Profile",
       href: "/profile/personal-information",
     },
+    equity: {
+      header: "Equity",
+      href: "/statistics/universal-equity",
+    },
     terminal: {
       header: "Terminal",
       href: "/terminal",
+    },
+    trade_systems: {
+      header: "Trade systems",
+      href: "/trade-systems",
     },
     trading_accounts: {
       user_accounts: {

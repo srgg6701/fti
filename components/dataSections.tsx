@@ -10,15 +10,17 @@ import type {
   TDataTheBestOfTheWeek,
   TDataTheBestOfTheMonth,
   UserSubscription,
+  TradeSystems,
+  UniversalEquity,
 } from "@/types/apiData";
 
 import { useEffect, useState } from "react";
 
-import { routeAliases } from "@/config/site";
+import { routeAliases, siteConfig } from "@/config/site";
 
 //import DataNews from "@/mockData/dataNews";
 import { SectionData } from "@/components/sectionsWrapper/sectionData";
-import TotalBalance from "@/components/total-balance";
+import GraphAndBalance from "@/components/graph-and-balance";
 import { useAdjustArticleWidth } from "@/hooks/useAdjustArticleWidth";
 import CardMyStrategies from "@/components/cards/my-strategies";
 import CardShared from "@/components/cards/card-shared";
@@ -44,9 +46,10 @@ export default function HomeSections({
   const [topPerformingData, setTopPerformingData] = useState<
     TDataTopPerforming[]
   >([]);
+  const [tradeSystems, setTradeSystems] = useState<TDataNews[]>([]);
   const [newsData, setNewsData] = useState<TDataNews[]>([]);
-  const [worldLeadersData, setWorldLeadersData] = useState<TDataWorldLeaders[]>(
-    [],
+  const [worldLeadersData, setWorldLeadersData] = useState<UniversalEquity[]>(
+    []
   );
   const [theBestOfTheDayData, setTheBestOfTheDayData] = useState<
     TDataTheBestOfTheDay[]
@@ -58,6 +61,8 @@ export default function HomeSections({
     TDataTheBestOfTheMonth[]
   >([]);
 
+  const innerItems = siteConfig.innerItems;
+
   useEffect(() => {
     (async () => {
       try {
@@ -67,7 +72,9 @@ export default function HomeSections({
           const [chartsApiData, topPerformingApiData, newsApiData] =
             await Promise.all([
               // TODO: Define API routes as constants
-              apiFetch<ChartData>("/api/balance/equity/chart"),
+              apiFetch<ChartData>(
+                `/api${innerItems.balance.equity.chart.href}`
+              ),
               // MOCK DATA:// FIXME: use real data (apiFetch)
               apiFetch2<TDataTopPerforming[]>("dataTopPerforming"),
               apiFetch2<TDataNews[]>("dataNews"),
@@ -77,22 +84,42 @@ export default function HomeSections({
           setTopPerformingData(topPerformingApiData);
           setNewsData(newsApiData);
         } else if (section === routeAliases.strategies) {
-          // /strategies
-
           const [
-            dataWorldLeaders,
+            dataTradeSystems,
             dataTheBestOfTheDay,
             dataTheBestOfTheWeek,
             dataTheBestOfTheMonth,
           ] = await Promise.all([
-            // INFO: World leaders = Strategy
-            apiFetch2<TDataWorldLeaders[]>("dataTopPerforming"),
+            // INFO: World leaders: universal-equity?systemId=[trade-systems.id]
+            //apiFetch2<TDataWorldLeaders[]>("dataTopPerforming"),
+            apiFetch<TradeSystems[]>(
+              `/api${siteConfig.innerItems.trade_systems.href}`
+            ),
             apiFetch2<TDataTheBestOfTheDay[]>("dataTopPerforming"),
             apiFetch2<TDataTheBestOfTheWeek[]>("dataTopPerforming"),
             apiFetch2<TDataTheBestOfTheMonth[]>("dataTopPerforming"),
           ]);
 
-          setWorldLeadersData(dataWorldLeaders);
+          if (!tradeSystems.length) {
+            const promises = dataTradeSystems.map((ts) =>
+              apiFetch<UniversalEquity>(
+                `/api${innerItems.equity.href}?systemId=${ts.id}&start_from_first_trade=true`
+              )
+            );
+            const results = await Promise.all(promises);
+            const dwl: UniversalEquity[] = [];
+
+            results.forEach((res) => {
+              console.log("res", res);
+              dwl.push(res);
+            });
+            setWorldLeadersData(dwl);
+            console.log("trade_systems", {
+              dataTradeSystems,
+              results,
+              dataWorldLeaders: dwl,
+            });
+          }
           setTheBestOfTheDayData(dataTheBestOfTheDay);
           setTheBestOfTheWeekData(dataTheBestOfTheWeek);
           setTheBestOfTheMonthData(dataTheBestOfTheMonth);
@@ -105,7 +132,6 @@ export default function HomeSections({
       }
     })();
   }, []);
-
   // FIXME: remove as test period is over
   /* useEffect(() => {
     console.log("dataSections", allStrategies);
@@ -121,7 +147,9 @@ export default function HomeSections({
         <LoadingIndicator {...{ status }} />
       ) : (
         <div className="mt-[80px] mb-[56px] flex flex-col gap-[5rem]">
-          {section === routeAliases.home && <TotalBalance chart={chart} />}
+          {section === routeAliases.home && (
+            <GraphAndBalance chart={chart} wrapper={true} />
+          )}
           {
             // home, // home/strategies
             section === routeAliases.home && userSubscriptions?.length && (
@@ -189,25 +217,27 @@ export default function HomeSections({
             //strategies
             section === routeAliases.strategies && (
               <>
-                <SectionData
-                  // FIXME: substitute with real data!
-                  data={worldLeadersData}
-                  getKey={(d, i) => `${d.timeFrame}-${i}`}
-                  height={310}
-                  renderItem={(d, i) => (
-                    <CardShared
-                      key={i}
-                      chartImg={d.chartImg || ""}
-                      risk={d.risk}
-                      roi={d.roi}
-                      timeFrame={d.timeFrame}
-                      userImg={d.userImg}
-                      username={d.username}
-                    />
-                  )}
-                  seeAllHref="/top"
-                  title="World leaders"
-                />
+                {worldLeadersData.length && (
+                  <SectionData
+                    // FIXME: substitute with real data!
+                    data={worldLeadersData} // World leaders
+                    getKey={(d, i) => `${d.entity_id}-${i}`}
+                    height={310}
+                    renderItem={(d, i) => (
+                      <CardShared
+                        key={i}
+                        chartImg={/* d.chartImg*/""}
+                        risk={d.performance.risk}
+                        roi={d.performance.roi.percent}
+                        timeFrame="6 Months"
+                        userImg={/* d.userImg */""}
+                        username={/* d.username */"username"}
+                      />
+                    )}
+                    seeAllHref="/top"
+                    title="World leaders"
+                  />
+                )}
                 <SectionData
                   // FIXME: substitute with real data!
                   data={theBestOfTheDayData}
