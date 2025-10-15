@@ -65,7 +65,9 @@ export interface TDataNews extends User, UserImg {
   slug: string;
 }
 
-export type TDataWorldLeaders = TDataTopPerforming;
+export interface TDataWorldLeaders extends TDataTopPerforming {
+  chart?: Chart;
+};
 export type TDataTheBestOfTheDay = TDataTopPerforming;
 export type TDataTheBestOfTheWeek = TDataTopPerforming;
 export type TDataTheBestOfTheMonth = TDataTopPerforming;

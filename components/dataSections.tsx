@@ -109,16 +109,9 @@ export default function HomeSections({
             const results = await Promise.all(promises);
             const dwl: UniversalEquity[] = [];
 
-            results.forEach((res) => {
-              console.log("res", res);
-              dwl.push(res);
-            });
+            results.forEach((res) => dwl.push(res));
             setWorldLeadersData(dwl);
-            console.log("trade_systems", {
-              dataTradeSystems,
-              results,
-              dataWorldLeaders: dwl,
-            });
+            console.log("dataWorldLeaders", dwl);
           }
           setTheBestOfTheDayData(dataTheBestOfTheDay);
           setTheBestOfTheWeekData(dataTheBestOfTheWeek);
@@ -226,7 +219,8 @@ export default function HomeSections({
                     renderItem={(d, i) => (
                       <CardShared
                         key={i}
-                        chartImg={/* d.chartImg*/""}
+                        //chartImg={d.chartImg}
+                        chart={chart}
                         risk={d.performance.risk}
                         roi={d.performance.roi.percent}
                         timeFrame="6 Months"

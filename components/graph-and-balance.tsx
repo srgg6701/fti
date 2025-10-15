@@ -144,6 +144,9 @@ export default function GraphAndBalance({
   chart: Chart;
   wrapper?: boolean;
 }) {
+
+  console.log("%cGraphAndBalance chart", "color: violet", chart);
+
   const [sel, setSel] = useState<PeriodKey>("6M");
 
   // Статусы загрузки
