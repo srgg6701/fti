@@ -130,7 +130,8 @@ export default function StrategyId() {
                 header="$ 1432"
                 subheader="$ 324 (3.23%)"
               />
-              <DropdownPill onSelect={(item) => console.log("selected:", item)}
+              <DropdownPill
+                onSelect={(item) => console.log("selected:", item)}
               />
             </div>
             <Image
