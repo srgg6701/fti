@@ -1,59 +1,51 @@
 "use client";
+import type { News } from "@/types/apiData";
+
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
 // INFO:temporal measure, remove as we have real data
-import DataNews, { type IDataNews } from "@/mockData/dataNews";
 // ----------------------------------------------------
 import { SectionData } from "@/components/sectionsWrapper/sectionData";
 import CardNews from "@/components/cards/news";
 import UserBlockNews from "@/components/cards/user-block-news";
-import { clampText } from "@/lib/utils";
+import { clampText, defineImgBase64, formatDate, makeSlug } from "@/lib/utils";
 import formatTextToParagraphs from "@/components/formatText";
 import "@/styles/style-sections.css";
+import { routeAliases } from "@/config/site";
+import { apiFetch } from "@/lib/api";
 
-type SelectedNews = {
-  id?: number;
-  slug?: string;
-};
-
-function selectTargetNews(data: IDataNews[], slug: SelectedNews["slug"]) {
-  const news = data.find((data) => `/${data.slug}` === slug);
+function selectTargetNews(data: News[]) {
+  const id = localStorage.getItem("newsId");
+  const news = data.find((data) => `/${data.id}` === id);
 
   if (news) {
     return news;
   }
 }
 
-export default function DataSectionNews({ slug }: SelectedNews) {
-  const [newsData, setNewsData] = useState<IDataNews[] | []>([]);
-  const [actualNews, setSelectedNews] = useState<IDataNews | null>(null);
+export default function DataSectionNews({ slug }: { slug: string }) {
+  const [newsData, setNewsData] = useState<News[] | []>([]);
+  const [actualNews, setSelectedNews] = useState<News | null>(null);
   const [horizontalLayout, setLayoutHorizontal] = useState(true);
 
-  async function fetchNews() {
-    // реальный запрос к серверу (пока отключён)
-    // const r = await fetch('/api/news', { cache: 'no-store' });
-    // if (!r.ok) throw new Error(`Fetch error: ${r.status}`);
-    // const data = await r.json();
-    // return data;
+  // get all news
+  useEffect(() => {
+    async function fetchNews() {
+      const news = await apiFetch<News[]>(`/api/${routeAliases.news}`);
 
-    // имитация работы сети
-    new Promise((resolve) => {
-      setTimeout(() => {
-        setNewsData(DataNews);
-        resolve(DataNews);
-      }, 500); // mocking delay
-    });
-  }
+      setNewsData(news);
+    }
 
-  fetchNews();
+    fetchNews();
+  }, []);
 
   useEffect(() => {
-    console.log({ newsData, slug });
+    //console.log({ newsData, id });
     if (slug && newsData.length > 0) {
-      const targetNews = selectTargetNews(newsData, slug);
+      const targetNews = selectTargetNews(newsData);
 
-      console.log("targetNews", targetNews);
+      //console.log("targetNews", targetNews);
       if (targetNews) {
         setSelectedNews(targetNews);
       }
@@ -77,16 +69,21 @@ export default function DataSectionNews({ slug }: SelectedNews) {
           className={`flex flex-col gap-10 ${horizontalLayout ? "m-auto max-w-[550px]" : "-mr-[400px] pr-[400px]"} w-full`}
         >
           <UserBlockNews
-            date={actualNews.date}
+            author={actualNews.author}
+            date={actualNews.timestamp}
             title={actualNews.title}
-            userImg={actualNews.userImg}
-            username={actualNews.username}
+            //userImg={actualNews.userImg}
+            //username={actualNews.username}
           />
           <Image
             alt={actualNews.title}
             className={`rounded-[15px] ${!horizontalLayout ? "mx-auto" : ""}`}
             height={394}
-            src={`/assets/images/news/target-news/${actualNews.img}`}
+            src={
+              actualNews.img
+                ? `/assets/images/news/${actualNews.img}`
+                : defineImgBase64(actualNews.imageBase64!)
+            }
             width={550}
           />
           <div>
@@ -101,7 +98,7 @@ export default function DataSectionNews({ slug }: SelectedNews) {
             <div
               className={`relative text-sm ${horizontalLayout ? "max-h-80 overflow-hidden" : ""}`}
             >
-              {formatTextToParagraphs(actualNews.text)}
+              {formatTextToParagraphs(actualNews.content)}
               <button
                 className="color-blue-secondary absolute right-0 bottom-0 cursor-pointer"
                 onClick={() => setLayoutHorizontal(!horizontalLayout)}
@@ -120,18 +117,21 @@ export default function DataSectionNews({ slug }: SelectedNews) {
         renderItem={(d, i) => (
           <CardNews
             key={i}
-            date={d.date}
+            author={d.author}
+            date={formatDate(d.timestamp)}
+            id={d.id}
+            imageBase64={d.imageBase64}
             img={d.img}
-            slug={d.slug}
-            text={clampText(d.text)}
+            slug={makeSlug(d.title)}
+            text={clampText(d.content)}
             title={d.title}
-            userImg={d.userImg}
-            username={d.username}
+            //userImg={d.userImg}
+            //username={d.username}
           />
         )}
         rowClassName="w-full flex-wrap gap-y-2.5"
         seeAllHref="/top"
-        title="DataNews"
+        title="News"
       />
     </div>
   );

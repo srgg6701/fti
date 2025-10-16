@@ -24,7 +24,7 @@ import { useAdjustArticleWidth } from "@/hooks/useAdjustArticleWidth";
 import CardMyStrategies from "@/components/cards/my-strategies";
 import CardShared from "@/components/cards/card-shared";
 import CardNews from "@/components/cards/news";
-import { clampText, formatDate } from "@/lib/utils";
+import { clampText, formatDate, makeSlug } from "@/lib/utils";
 import { apiFetch, apiFetch2 } from "@/lib/api";
 import LoadingIndicator from "@/components/loading-indicator";
 // FIXME: remove apiFetch as data is real
@@ -45,7 +45,7 @@ export default function HomeSections({
   const [topPerformingData, setTopPerformingData] = useState<
     TDataTopPerforming[]
   >([]);
-  const [tradeSystems, setTradeSystems] = useState<News[]>([]);
+  //const [tradeSystems, setTradeSystems] = useState<News[]>([]);
   const [newsData, setNewsData] = useState<News[]>([]);
   const [worldLeadersData, setWorldLeadersData] = useState<UniversalEquity[]>(
     [],
@@ -99,19 +99,19 @@ export default function HomeSections({
             apiFetch2<TDataTheBestOfTheMonth[]>("dataTopPerforming"),
           ]);
 
-          if (!tradeSystems.length) {
-            const promises = dataTradeSystems.map((ts) =>
-              apiFetch<UniversalEquity>(
-                `/api${innerItems.equity.href}?systemId=${ts.id}&start_from_first_trade=true`,
-              ),
-            );
-            const results = await Promise.all(promises);
-            const dwl: UniversalEquity[] = [];
+          //if (!tradeSystems.length) {
+          const promises = dataTradeSystems.map((ts) =>
+            apiFetch<UniversalEquity>(
+              `/api${innerItems.equity.href}?systemId=${ts.id}&start_from_first_trade=true`,
+            ),
+          );
+          const results = await Promise.all(promises);
+          const dwl: UniversalEquity[] = [];
 
-            results.forEach((res) => dwl.push(res));
-            setWorldLeadersData(dwl);
-            console.log("dataWorldLeaders", dwl);
-          }
+          results.forEach((res) => dwl.push(res));
+          setWorldLeadersData(dwl);
+          //console.log("dataWorldLeaders", dwl);
+          //}
           setTheBestOfTheDayData(dataTheBestOfTheDay);
           setTheBestOfTheWeekData(dataTheBestOfTheWeek);
           setTheBestOfTheMonthData(dataTheBestOfTheMonth);
@@ -194,14 +194,15 @@ export default function HomeSections({
                       author={d.author}
                       date={formatDate(d.timestamp)}
                       id={d.id}
-                      imageBase64={d.imageBase64 || null}
-                      img={d.img || null}
+                      imageBase64={d.imageBase64}
+                      img={d.img}
+                      slug={makeSlug(d.title)}
                       text={clampText(d.content)}
                       title={d.title}
                     />
                   )}
                   seeAllHref="/top"
-                  title="Data News"
+                  title="News"
                 />
               </>
             )

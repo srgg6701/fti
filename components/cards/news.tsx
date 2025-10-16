@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -25,7 +24,7 @@ const CardNews = ({
   id: number;
   img?: string | null;
   imageBase64?: string | null;
-  slug?: string;
+  slug: string;
   title: string;
   text: string;
   marginRight?: string;
@@ -33,6 +32,11 @@ const CardNews = ({
   xtraClasses?: string;
 }) => {
   const router = useRouter();
+
+  const handleRoute = (id: number) => {
+    localStorage.setItem("newsId", `/${id}`);
+    router.push(`/${routeAliases.news}/${slug}`);
+  };
 
   return (
     <article
@@ -56,16 +60,19 @@ const CardNews = ({
         <h3 className="mb-[10px] text-lg leading-[1.2] font-semibold">
           <button
             className="cursor-pointer text-left"
-            onClick={() => router.push(`/${routeAliases.news}/${slug}`)}
+            onClick={() => handleRoute(id)}
           >
             {title}
           </button>
         </h3>
         <p className="relative text-sm leading-[1.215]">
           <span className="opacity-80">{text}</span>
-          <Link className="read-more" href={`/${routeAliases.news}/${slug}`}>
+          <button
+            className="read-more cursor-pointer"
+            onClick={() => handleRoute(id)}
+          >
             <span className="color-blue-secondary"> read more</span>
-          </Link>
+          </button>
         </p>
       </div>
     </article>

@@ -321,3 +321,11 @@ export function defineImgBase64(imageBase64: string) {
   // по умолчанию — jpeg
   return `data:image/jpeg;base64,${imageBase64}`;
 }
+
+export function makeSlug(s: string) {
+  return s
+    .toLowerCase()
+    .trim()
+    .replace(/[\s\W-]+/g, "-") // replace spaces and non-word characters with hyphen
+    .replace(/^-+|-+$/g, ""); // remove leading and trailing hyphens
+}

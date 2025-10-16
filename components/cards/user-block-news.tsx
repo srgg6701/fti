@@ -1,3 +1,5 @@
+import { formatDate } from "@/lib/utils";
+
 export default function UserBlockNews({
   title,
   slug,
@@ -19,7 +21,7 @@ export default function UserBlockNews({
           {author}
         </span>
       </div>
-      <span className="text-xs text-white/60">{date}</span>
+      <span className="text-xs opacity-80">{formatDate(date)}</span>
     </header>
   );
 }
