@@ -4,7 +4,7 @@ import type {
   ChartData,
   Strategy,
   TDataTopPerforming,
-  TDataNews,
+  News,
   TDataTheBestOfTheDay,
   TDataTheBestOfTheWeek,
   TDataTheBestOfTheMonth,
@@ -24,7 +24,7 @@ import { useAdjustArticleWidth } from "@/hooks/useAdjustArticleWidth";
 import CardMyStrategies from "@/components/cards/my-strategies";
 import CardShared from "@/components/cards/card-shared";
 import CardNews from "@/components/cards/news";
-import { clampText } from "@/lib/utils";
+import { clampText, formatDate } from "@/lib/utils";
 import { apiFetch, apiFetch2 } from "@/lib/api";
 import LoadingIndicator from "@/components/loading-indicator";
 // FIXME: remove apiFetch as data is real
@@ -45,8 +45,8 @@ export default function HomeSections({
   const [topPerformingData, setTopPerformingData] = useState<
     TDataTopPerforming[]
   >([]);
-  const [tradeSystems, setTradeSystems] = useState<TDataNews[]>([]);
-  const [newsData, setNewsData] = useState<TDataNews[]>([]);
+  const [tradeSystems, setTradeSystems] = useState<News[]>([]);
+  const [newsData, setNewsData] = useState<News[]>([]);
   const [worldLeadersData, setWorldLeadersData] = useState<UniversalEquity[]>(
     [],
   );
@@ -76,7 +76,7 @@ export default function HomeSections({
               ),
               // MOCK DATA:// FIXME: use real data (apiFetch)
               apiFetch2<TDataTopPerforming[]>("dataTopPerforming"),
-              apiFetch2<TDataNews[]>("dataNews"),
+              apiFetch<News[]>(`/api/${routeAliases.news}`),
             ]);
 
           setChart(chartsApiData);
@@ -185,18 +185,19 @@ export default function HomeSections({
                 />
                 <SectionData
                   // FIXME: substitute with real data!
-                  data={newsData as TDataNews[]} // Data News
+                  data={newsData as News[]} // Data News
                   getKey={(d, i) => `${d.title}-${i}`}
                   height={378}
                   renderItem={(d, i) => (
                     <CardNews
                       key={i}
-                      date={d.date}
-                      img={d.img}
-                      text={clampText(d.text)}
+                      author={d.author}
+                      date={formatDate(d.timestamp)}
+                      id={d.id}
+                      imageBase64={d.imageBase64 || null}
+                      img={d.img || null}
+                      text={clampText(d.content)}
                       title={d.title}
-                      userImg={d.userImg}
-                      username={d.username}
                     />
                   )}
                   seeAllHref="/top"

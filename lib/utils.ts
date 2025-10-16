@@ -292,3 +292,32 @@ export function setInvalidEmailMessage(reason: string): string {
 
   return errMess;
 }
+
+export const formatDate = (s: string) =>
+  new Date(s)
+    .toLocaleString("en-US", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    })
+    .replace(/\//g, ".")
+    .replace(",", "");
+
+export function defineImgBase64(imageBase64: string) {
+  // если строка уже содержит data:image/... — возвращаем как есть
+  if (imageBase64.startsWith("data:image")) return imageBase64;
+
+  // иначе пытаемся угадать формат (по сигнатуре)
+  if (imageBase64.startsWith("/9j/"))
+    return `data:image/jpeg;base64,${imageBase64}`; // JPEG
+  if (imageBase64.startsWith("iVBOR"))
+    return `data:image/png;base64,${imageBase64}`; // PNG
+  if (imageBase64.startsWith("UklG"))
+    return `data:image/webp;base64,${imageBase64}`; // WebP
+
+  // по умолчанию — jpeg
+  return `data:image/jpeg;base64,${imageBase64}`;
+}
