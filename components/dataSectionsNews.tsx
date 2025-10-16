@@ -24,7 +24,7 @@ function selectTargetNews(data: News[]) {
   }
 }
 
-export default function DataSectionNews({ slug }: { slug: string }) {
+export default function DataSectionNews({ slug }: { slug?: string }) {
   const [newsData, setNewsData] = useState<News[] | []>([]);
   const [actualNews, setSelectedNews] = useState<News | null>(null);
   const [horizontalLayout, setLayoutHorizontal] = useState(true);
@@ -51,14 +51,6 @@ export default function DataSectionNews({ slug }: { slug: string }) {
       }
     }
   }, [newsData, slug]);
-
-  //
-  useEffect(() => {
-    console.log("actualNews is absent", actualNews);
-    if (actualNews) {
-      console.log("actualNews", actualNews);
-    }
-  }, [actualNews]);
 
   return (
     <div
