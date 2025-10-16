@@ -15,7 +15,7 @@ export function GraphTopPanel({
   onSelect: (item: { label: string; value: string }) => void;
 }) {
   return (
-    <div className="jus flex justify-between">
+    <div className="jus flex justify-between mb-5">
       <div className="flex items-center gap-2.5">
         <span className="font-semibold">Graph</span>
         <ColoredIndicator
@@ -47,6 +47,7 @@ export default function ChartBlock({
   nowMs,
   tickFormatter,
   tickStepMs,
+  height = "220px",
 }: {
   status: status;
   errorMsg?: string | boolean;
@@ -56,6 +57,7 @@ export default function ChartBlock({
   nowMs: number;
   tickFormatter?: (ts: number) => string;
   tickStepMs?: number;
+  height: string;
 }) {
   return (
     <>
@@ -73,6 +75,7 @@ export default function ChartBlock({
       {/* График — всегда рендерим, чтобы при успехе мгновенно перерисовать;
             а при загрузке/ошибке выше покажется индикатор */}
       <BalanceChart
+        height={height}
         payload={payload}
         period={sel}
         tickFormatter={tickFormatter}

@@ -38,16 +38,17 @@ export default function BalanceChart({
   xDomain,
   tickStepMs,
   tickFormatter,
+  height = "220px",
+  containerClasses = "w-full",
 }: {
   payload: ChartData;
   period: PeriodKey;
   xDomain?: [number, number];
   tickStepMs?: number;
   tickFormatter?: (ts: number) => string;
+  height?: string;
+  containerClasses?: string;
 }) {
-  //console.log("Balance Chart: payload data", { payload, period });
-
-  // фильтруем валидные (тайп-гард гарантирует числа)
   // --- NEW: local toMs/normalize + build points safely (ms, sorted) ---
   const localToMs = (p: any): number => {
     if (typeof p?.timestamp === "number") {
@@ -77,6 +78,13 @@ export default function BalanceChart({
     .map((p: any) => p.y)
     .filter((v: any) => Number.isFinite(v));
   const [yMin, yMax] = ys.length ? getYDomain(ys) : [0, 0];
+
+  console.group("%cBalance Chart", "color: violet");
+  console.log({
+    data: payload.data?.chartData,
+    rest: { payload, period, points, yMin, yMax },
+  });
+  console.groupEnd();
 
   // effective domain: prefer external xDomain, else use points
   const [minX, maxX] =
@@ -242,12 +250,13 @@ export default function BalanceChart({
   } */
 
   return (
-    <div className="w-full rounded-xl bg-[#0b0d12] p-4">
-      <div style={{ width: "100%", height: 220 }}>
+    <div className={containerClasses}>
+      <div style={{ width: "100%", height }}>
         <ResponsiveContainer>
           <AreaChart
             data={pointsWithY}
-            margin={{ top: 8, right: 48, left: 0, bottom: 0 }}
+            //data={payload?.data?.chartData || []} // fallback to raw data if mapping failed
+            margin={{ top: 8, right: 0, left: 0, bottom: 10 }}
           >
             <defs>
               <linearGradient id="fill" x1="0" x2="0" y1="0" y2="1">
@@ -259,6 +268,7 @@ export default function BalanceChart({
             <XAxis
               axisLine={false}
               dataKey="x"
+              //dataKey="timestamp"
               domain={[minX, maxX]}
               interval="preserveStartEnd"
               minTickGap={20}
@@ -280,15 +290,21 @@ export default function BalanceChart({
               type="number"
             />
             <YAxis
+              allowDataOverflow={false}
+              allowDecimals={true}
               axisLine={false}
               dataKey="y"
+              //dataKey="equity"
               domain={[yMin, yMax]}
               orientation="right"
+              padding={{ bottom: 12 }}
               tick={{ fill: "rgba(255,255,255,0.35)", fontSize: 12 }}
+              tickFormatter={(v: number) => (Number(v) / 1000).toFixed(2)}
               tickLine={false}
               tickMargin={6}
               width={36}
             />
+
             <Tooltip
               contentStyle={{
                 background: "#11151d",
@@ -307,10 +323,17 @@ export default function BalanceChart({
               labelStyle={{ color: "#9fb3c8" }}
             />
 
-            <Area dataKey="y" fill="url(#fill)" stroke="none" type="monotone" />
+            <Area
+              dataKey="y"
+              //dataKey="equity"
+              fill="url(#fill)"
+              stroke="none"
+              type="monotone"
+            />
             <Line
               activeDot={{ r: 4 }}
               dataKey="y"
+              //dataKey="equity"
               dot={false}
               stroke={STROKE}
               strokeWidth={2}

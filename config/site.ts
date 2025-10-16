@@ -1,6 +1,3 @@
-import { stat } from "fs";
-import { get } from "http";
-
 export type SiteConfig = typeof siteConfig;
 
 export const routeAliases = {
@@ -83,7 +80,8 @@ export const siteConfig = {
       equity: {
         account: {
           header: "Account",
-          getEndpointUrl: (accountId: number) => `balance/equity/account/${accountId}/current`,
+          getEndpointUrl: (accountId: number) =>
+            `balance/equity/account/${accountId}/current`,
         },
         chart: {
           header: "Chart",

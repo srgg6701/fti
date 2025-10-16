@@ -69,6 +69,7 @@ export function makeMockChartDataForPeriod(
       date: niceDate(ts),
       equity: Number(eq.toFixed(2)),
     };
+
     return mockData;
   });
 

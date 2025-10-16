@@ -1,8 +1,9 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import { status } from "@/types/ui";
 import { Input } from "@heroui/input";
+
+import { status } from "@/types/ui";
 const SetSearchCommands = ({
   action,
   alt,

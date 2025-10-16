@@ -140,11 +140,12 @@ function makeSlice(all: CData[], period: PeriodKey, nowMs?: number): Chart {
 export default function GraphAndBalance({
   chart,
   wrapper = false,
+  height = "220px",
 }: {
   chart: Chart;
   wrapper?: boolean;
+  height?: string;
 }) {
-
   console.log("%cGraphAndBalance chart", "color: violet", chart);
 
   const [sel, setSel] = useState<PeriodKey>("6M");
@@ -284,6 +285,7 @@ export default function GraphAndBalance({
     <ChartBlock
       currentFromMs={currentFromMs}
       errorMsg={errorMsg}
+      height={height}
       nowMs={nowMs}
       payload={payload}
       sel={sel}

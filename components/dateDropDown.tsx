@@ -35,9 +35,8 @@ export default function DropdownPill({
       <button
         aria-expanded={open}
         aria-haspopup="listbox"
-        className="flex w-full items-center justify-between px-3"
+        className="flex w-full items-center justify-between px-3 py-1.5"
         style={{
-          height,
           borderRadius: height / 2,
           background: "rgba(244,249,255,0.05)",
           color: "#F4F9FF",
@@ -77,7 +76,7 @@ export default function DropdownPill({
                 <li key={it.value}>
                   <button
                     aria-selected={isSel}
-                    className={`w-full px-3 py-1.5 text-left text-[12px] text-white ${
+                    className={`height-[17px] w-full px-3 py-1.5 text-left text-[12px] text-white ${
                       it.disabled
                         ? "cursor-not-allowed opacity-50"
                         : isSel

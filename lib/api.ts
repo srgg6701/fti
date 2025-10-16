@@ -95,7 +95,9 @@ export async function apiFetch<T = any>(
         const next = encodeURIComponent(current);
 
         // Use replace so the redirect does not create a new history entry.
-        window.location.replace(`${innerItems.auth.login.href_ui}?next=${next}`);
+        window.location.replace(
+          `${innerItems.auth.login.href_ui}?next=${next}`,
+        );
       }
     }
 

@@ -130,16 +130,7 @@ export default function StrategyId() {
                 header="$ 1432"
                 subheader="$ 324 (3.23%)"
               />
-              <DropdownPill
-                items={[
-                  { label: "1 Week", value: "1week" },
-                  { label: "1 Month", value: "1month" },
-                  { label: "6 Months", value: "6month" },
-                  { label: "1 Year", value: "1year" },
-                  { label: "2 Years", value: "2years" },
-                  { label: "3 Years", value: "3years" },
-                ]}
-                onSelect={(item) => console.log("selected:", item)}
+              <DropdownPill onSelect={(item) => console.log("selected:", item)}
               />
             </div>
             <Image

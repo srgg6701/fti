@@ -1,13 +1,15 @@
 import Image from "next/image";
+import { useMemo } from "react";
 
 import UserImage from "@/components/userImage";
-import { Chart } from "@/types/apiData";
+import { Chart, UniversalEquity } from "@/types/apiData";
 import GraphAndBalance from "@/components/graph-and-balance";
 const CardShared = ({
   username,
   userImg = "",
   timeFrame,
   chartImg,
+  // `chart` here is expected to be raw UniversalEquity (not a prebuilt Chart)
   chart,
   roi = 51.25,
   risk = 5,
@@ -22,7 +24,8 @@ const CardShared = ({
   userImg?: string;
   timeFrame?: string;
   chartImg?: string;
-  chart?: Chart;
+  // chart prop is the raw UniversalEquity payload
+  chart?: UniversalEquity["daily_pnl_curve"];
   roi?: number;
   risk?: number;
   brokerImg?: string;
@@ -32,6 +35,42 @@ const CardShared = ({
   marginRight?: string;
   padding?: string;
 }) => {
+  // Process incoming `chart` prop (treated as UniversalEquity) -> Chart
+  const processedChart = useMemo<Chart | undefined>(() => {
+    if (!chart) return;
+
+    if (!chart || !Array.isArray(chart) || chart.length === 0) return;
+
+    const chartData = chart
+      .map((d) => ({
+        date: d.date,
+        equity:
+          typeof d.equity === "number"
+            ? d.equity
+            : Number(d.equity ?? d.balance ?? 0),
+        timestamp: d.date ? new Date(d.date).getTime() : NaN,
+      }))
+      .filter((p) => Number.isFinite(p.timestamp))
+      .sort((a, b) => (a.timestamp as number) - (b.timestamp as number));
+
+    const first = chartData[0]?.equity ?? 0;
+    const last = chartData[chartData.length - 1]?.equity ?? first;
+    const absoluteChange = Number((last - first).toFixed(2));
+    const percentageChange =
+      first !== 0 ? Number(((absoluteChange / first) * 100).toFixed(2)) : 0;
+
+    return {
+      data: {
+        absoluteChange,
+        chartData,
+        currentBalance: last,
+        dataPoints: chartData.length,
+        isPositive: absoluteChange >= 0,
+        percentageChange,
+      },
+    };
+  }, [chart]);
+
   return (
     <article className={`md:h-[310px] md:w-[352px] ${marginRight} ${padding} `}>
       <header className="mb-5 flex items-center gap-3">
@@ -86,7 +125,10 @@ const CardShared = ({
             width={312}
           />
         )}
-        {chart && <GraphAndBalance chart={chart} />}
+        {/* chart prop is raw UniversalEquity — always pass processed Chart to GraphAndBalance */}
+        {processedChart && (
+          <GraphAndBalance chart={processedChart} height="158px" />
+        )}
       </div>
       {username && (
         <footer className="flex items-center justify-end gap-3 text-xs font-bold text-white/70">
@@ -101,4 +143,5 @@ const CardShared = ({
     </article>
   );
 };
+
 export default CardShared;

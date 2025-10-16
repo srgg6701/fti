@@ -5,7 +5,6 @@ import type {
   Strategy,
   TDataTopPerforming,
   TDataNews,
-  TDataWorldLeaders,
   TDataTheBestOfTheDay,
   TDataTheBestOfTheWeek,
   TDataTheBestOfTheMonth,
@@ -49,7 +48,7 @@ export default function HomeSections({
   const [tradeSystems, setTradeSystems] = useState<TDataNews[]>([]);
   const [newsData, setNewsData] = useState<TDataNews[]>([]);
   const [worldLeadersData, setWorldLeadersData] = useState<UniversalEquity[]>(
-    []
+    [],
   );
   const [theBestOfTheDayData, setTheBestOfTheDayData] = useState<
     TDataTheBestOfTheDay[]
@@ -73,7 +72,7 @@ export default function HomeSections({
             await Promise.all([
               // TODO: Define API routes as constants
               apiFetch<ChartData>(
-                `/api${innerItems.balance.equity.chart.href}`
+                `/api${innerItems.balance.equity.chart.href}`,
               ),
               // MOCK DATA:// FIXME: use real data (apiFetch)
               apiFetch2<TDataTopPerforming[]>("dataTopPerforming"),
@@ -93,7 +92,7 @@ export default function HomeSections({
             // INFO: World leaders: universal-equity?systemId=[trade-systems.id]
             //apiFetch2<TDataWorldLeaders[]>("dataTopPerforming"),
             apiFetch<TradeSystems[]>(
-              `/api${siteConfig.innerItems.trade_systems.href}`
+              `/api${siteConfig.innerItems.trade_systems.href}`,
             ),
             apiFetch2<TDataTheBestOfTheDay[]>("dataTopPerforming"),
             apiFetch2<TDataTheBestOfTheWeek[]>("dataTopPerforming"),
@@ -103,8 +102,8 @@ export default function HomeSections({
           if (!tradeSystems.length) {
             const promises = dataTradeSystems.map((ts) =>
               apiFetch<UniversalEquity>(
-                `/api${innerItems.equity.href}?systemId=${ts.id}&start_from_first_trade=true`
-              )
+                `/api${innerItems.equity.href}?systemId=${ts.id}&start_from_first_trade=true`,
+              ),
             );
             const results = await Promise.all(promises);
             const dwl: UniversalEquity[] = [];
@@ -220,12 +219,12 @@ export default function HomeSections({
                       <CardShared
                         key={i}
                         //chartImg={d.chartImg}
-                        chart={chart}
+                        chart={d.daily_pnl_curve}
                         risk={d.performance.risk}
                         roi={d.performance.roi.percent}
                         timeFrame="6 Months"
-                        userImg={/* d.userImg */""}
-                        username={/* d.username */"username"}
+                        userImg={/* d.userImg */ ""}
+                        username={/* d.username */ "username"}
                       />
                     )}
                     seeAllHref="/top"
