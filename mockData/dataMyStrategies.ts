@@ -9,7 +9,7 @@ const DataMyStrategies = [
   },
   {
     username: "Colbert",
-    userImg: "face-male-all-orange.svg",
+    userImg: "jurgen.svg",
     invested: "$1000.00",
     proRata: "100%",
     direction: "Down",
@@ -17,7 +17,7 @@ const DataMyStrategies = [
   },
   {
     username: "Clarisse",
-    userImg: "face-female.png",
+    userImg: "clarisse.png",
     invested: "$1000.00",
     proRata: "100%",
     direction: "Up",
@@ -25,7 +25,7 @@ const DataMyStrategies = [
   },
   {
     username: "Naomi",
-    userImg: "face-female2.png",
+    userImg: "naomi.png",
     invested: "$1000.00",
     proRata: "100%",
     direction: "Down",

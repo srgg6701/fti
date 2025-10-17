@@ -16,8 +16,7 @@ import type {
 import { useEffect, useState } from "react";
 
 import { routeAliases, siteConfig } from "@/config/site";
-
-//import DataNews from "@/mockData/dataNews";
+import userImages from "@/mockData/user-images.json";
 import { SectionData } from "@/components/sectionsWrapper/sectionData";
 import GraphAndBalance from "@/components/graph-and-balance";
 import { useAdjustArticleWidth } from "@/hooks/useAdjustArticleWidth";
@@ -157,8 +156,8 @@ export default function HomeSections({
                       direction={"?"}
                       invested={d.amount}
                       proRata={"?"}
-                      userImg={"?"}
-                      username={d.strategyName}
+                      userImg={d.userImage || userImages[i].img}
+                      username={d.strategyName || userImages[i].name}
                     />
                   )}
                   title="My Strategies"
@@ -176,8 +175,8 @@ export default function HomeSections({
                       risk={d.risk}
                       roi={d.roi}
                       timeFrame={d.timeFrame}
-                      userImg={d.userImg}
-                      username={d.username}
+                      userImg={d.userImg || userImages[i].img}
+                      username={d.username || userImages[i].name}
                     />
                   )}
                   seeAllHref="/top"
@@ -225,8 +224,8 @@ export default function HomeSections({
                         risk={d.performance.risk}
                         roi={d.performance.roi.percent}
                         timeFrame="6 Months"
-                        userImg={/* d.userImg */ ""}
-                        username={/* d.username */ "username"}
+                        userImg={d.userImg || userImages[i].img}
+                        username={d.username || userImages[i].name}
                       />
                     )}
                     seeAllHref="/top"
@@ -245,8 +244,8 @@ export default function HomeSections({
                       risk={d.risk}
                       roi={d.roi}
                       timeFrame={d.timeFrame}
-                      userImg={d.userImg}
-                      username={d.username}
+                      userImg={d.userImg || userImages[i].img}
+                      username={d.username || userImages[i].name}
                     />
                   )}
                   seeAllHref="/top"
@@ -264,8 +263,8 @@ export default function HomeSections({
                       risk={d.risk}
                       roi={d.roi}
                       timeFrame={d.timeFrame}
-                      userImg={d.userImg}
-                      username={d.username}
+                      userImg={d.userImg || userImages[i].img}
+                      username={d.username || userImages[i].name}
                     />
                   )}
                   seeAllHref="/top"
@@ -283,8 +282,8 @@ export default function HomeSections({
                       risk={d.risk}
                       roi={d.roi}
                       timeFrame={d.timeFrame}
-                      userImg={d.userImg}
-                      username={d.username}
+                      userImg={d.userImg || userImages[i].img}
+                      username={d.username || userImages[i].name}
                     />
                   )}
                   seeAllHref="/top"

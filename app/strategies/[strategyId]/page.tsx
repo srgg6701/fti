@@ -83,7 +83,7 @@ export default function StrategyId() {
               marginRight="mx-0"
               mb="0"
               padding="0"
-              userImg="user-joshua.svg"
+              userImg="joshua.svg"
             >
               Joshua
             </UserBlock>

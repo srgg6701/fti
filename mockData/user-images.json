@@ -1,0 +1,12 @@
+[
+  { "name": "Clarisse",  "img": "clarisse.png" },
+  { "name": "Naomi",     "img": "naomi.png" },
+  { "name": "Joshua",    "img": "joshua.svg" },
+  { "name": "Janis",     "img": "janis.svg" },
+  { "name": "Margareth", "img": "margareth.svg" },
+  { "name": "Jurgen",    "img": "jurgen.svg" },
+  { "name": "Rabbie",    "img": "rabbie.svg" },
+  { "name": "Fidel",     "img": "fidel.svg" },
+  { "name": "Bob",       "img": "bob.svg" },
+  { "name": "Emile",     "img": "emile.svg" }
+]

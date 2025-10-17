@@ -120,6 +120,7 @@ export interface UserSubscription {
   strategyName: string;
   strategyDescription: string;
   subscribedAt: string;
+  userImage?: string;
 }
 export interface CData {
   date?: string;
@@ -189,6 +190,8 @@ export interface UniversalEquity {
   calculation_time: string;
   system_id: string;
   trading_account_id: string | null;
+  userImg?: string;
+  username?: string;
 }
 export interface Partner {
   id: number;

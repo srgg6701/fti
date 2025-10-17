@@ -16,7 +16,7 @@ const DataTopPerforming = [
     risk: 5,
     roi: 51.25,
     timeFrame: "6 Months",
-    userImg: "face-female.png",
+    userImg: "clarisse.png",
   },
   {
     username: "Naomi",
@@ -24,7 +24,7 @@ const DataTopPerforming = [
     risk: 5,
     roi: 51.25,
     timeFrame: "6 Months",
-    userImg: "face-female2.png",
+    userImg: "naomi.png",
   },
   {
     username: "Joshua",
@@ -48,7 +48,7 @@ const DataTopPerforming = [
     risk: 5,
     roi: 51.25,
     timeFrame: "6 Months",
-    userImg: "face-female.png",
+    userImg: "clarisse.png",
   },
   {
     username: "Margareth",
@@ -56,7 +56,7 @@ const DataTopPerforming = [
     risk: 5,
     roi: 51.25,
     timeFrame: "6 Months",
-    userImg: "face-female2.png",
+    userImg: "naomi.png",
   },
 ];
 

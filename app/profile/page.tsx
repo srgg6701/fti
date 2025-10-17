@@ -115,7 +115,7 @@ export default function Profile() {
               className="h-[120px] w-[120px] rounded-2xl object-cover"
               height={120}
               role="button"
-              src="/assets/images/users/user-joshua.svg"
+              src="/assets/images/users/joshua.svg"
               width={120}
               onClick={() => router.push("/accounts")}
             />
