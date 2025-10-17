@@ -156,8 +156,8 @@ export default function HomeSections({
                       direction={"?"}
                       invested={d.amount}
                       proRata={"?"}
+                      strategyName={d.strategyName}
                       userImg={d.userImage || userImages[i].img}
-                      username={d.strategyName || userImages[i].name}
                     />
                   )}
                   title="My Strategies"

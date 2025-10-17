@@ -1,9 +1,12 @@
-import ColoredIndicator from "@/components/coloredIndicator";
+import { useRouter } from "next/navigation";
 
-import UserBlock from "./user-block";
+import { siteConfig } from "@/config/site";
+import ColoredIndicator from "@/components/coloredIndicator";
+import UserBlock from "@/components/cards/user-block";
+import { makeSlug } from "@/lib/utils";
 
 export default function CardMyStrategies({
-  username,
+  strategyName,
   userImg,
   invested,
   proRata,
@@ -12,7 +15,7 @@ export default function CardMyStrategies({
   marginRight = "mr-[10px]",
   padding = "p-5",
 }: {
-  username: string;
+  strategyName: string;
   userImg: string;
   invested: string;
   proRata: string;
@@ -21,18 +24,29 @@ export default function CardMyStrategies({
   marginRight?: string;
   padding?: string;
 }) {
+  const router = useRouter();
+  const href = siteConfig.navItems.find(
+    (obj) => obj.label === "Strategies",
+  )?.href;
+  const goToStrategy = () => {
+    router.push(`${href}/${makeSlug(strategyName)}`);
+  };
+
   return (
     <UserBlock
-      imgAlt={`Card of ${username}`}
+      imgAlt={`Card of ${strategyName}`}
       marginRight={marginRight}
       padding={padding}
       userImg={userImg}
     >
-      <div className="flex flex-col">
-        <span className="text-sm font-medium">{username}</span>
+      <button
+        className="flex flex-col text-left cursor-pointer"
+        onClick={goToStrategy}
+      >
+        <span className="text-sm font-medium">{strategyName}</span>
         <span className="text-xs text-white/60">Invested: {invested}</span>
         {/* <span className="text-xs text-white/60">Pro Rata: {proRata}</span> */}
-      </div>
+      </button>
       <div>
         <ColoredIndicator data={changeDynamics} direction={direction} />
       </div>
