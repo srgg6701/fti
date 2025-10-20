@@ -6,6 +6,7 @@
   --light-color-rgb: 244, 249, 255; /* #f4f9ff; */
   --color-second: rgb(var(--light-color-rgb)); 
   --color-blue-canonical: #00F;
+  /* --color-blue-light: #101AC1; */
   --color-blue-second-rgb: 59, 87, 255; /* #3B57FF; */
   --color-ultra-violet: #ff33a6;
   --offset-80: 80px; 

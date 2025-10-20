@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 .bg-blue {
   @apply bg-[var(--color-blue-canonical)];
@@ -10,7 +10,12 @@
   @apply bg-[rgba(var(--color-blue-second-rgb),0.1)];
 }
 .bg-light {
-   @apply bg-[rgb(var(--light-color-rgb))];
+  @apply bg-[rgb(var(--light-color-rgb))];
+}
+
+@layer utilities {
+  .bg-light-middle { @apply bg-[rgba(var(--light-color-rgb),0)]; }
+  .bg-light-middle:hover { @apply bg-[rgba(var(--light-color-rgb),0.3)]; }
 }
 .bg-translusent-light {
   @apply bg-[rgba(var(--light-color-rgb),0.1)];
@@ -20,10 +25,10 @@
   @apply bg-[rgba(var(--light-color-rgb),0.05)];
 }
 .standard-colored-005-rounded {
-  @apply bg-[rgba(var(--light-color-rgb),0.05)] rounded-[15px]; 
+  @apply bg-[rgba(var(--light-color-rgb),0.05)] rounded-[15px];
 }
 .standard-colored-01-rounded, /* TODO: check entries to apply */
 .standard-block-decoration-45,
 .standard-block-decoration-40 {
-  @apply bg-[rgba(var(--light-color-rgb),0.1)] rounded-[15px]; 
+  @apply bg-[rgba(var(--light-color-rgb),0.1)] rounded-[15px];
 }

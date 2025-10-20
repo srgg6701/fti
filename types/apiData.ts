@@ -193,7 +193,11 @@ export interface UniversalEquity {
   userImg?: string;
   username?: string;
 }
-export interface Partner {
+interface createdUpdated {
+  createdAt: string;
+  updatedAt: string | null;
+}
+export interface Partner extends createdUpdated {
   id: number;
   name: string;
   description: boolean;
@@ -201,6 +205,17 @@ export interface Partner {
   websiteUrl: string;
   referralId: string;
   isActive: number;
-  createdAt: string;
-  updatedAt: string;
+}
+export interface NotificationsData extends createdUpdated {
+  id: string;
+  userId: number;
+  title: string;
+  description: string;
+  content: string;
+  author: string;
+  isRead: boolean;
+  readAt: string | null;
+}
+export interface Notifications {
+  data: NotificationsData[];
 }

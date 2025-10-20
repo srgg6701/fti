@@ -27,6 +27,9 @@ nav > header {
 .blick-rounded {
   @apply rounded-[15px];
 }
+.dark-lightened:hover {
+  @apply hover:bg-[rgba(var(--light-color-rgb),0.1)];
+}
 .standard-block-decoration-45 {
   @apply h-[45px] w-full;
 }

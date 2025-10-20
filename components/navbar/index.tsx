@@ -1,7 +1,8 @@
 "use client";
 import type { status } from "@/types/ui";
+import type { NotificationsData, Notifications } from "@/types/apiData";
 
-import React, { useState, useRef, useLayoutEffect } from "react";
+import React, { useState, useRef, useLayoutEffect, useEffect } from "react";
 import Link from "next/link";
 import {
   Navbar as HeroUINavbar,
@@ -15,6 +16,7 @@ import Image from "next/image";
 import { PROTECTED_ROUTES } from "@/lib/shared/protectedRoutes";
 import { checkRouteAside, getUrlSegments } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
+import { apiFetch } from "@/lib/api";
 import SortingModal from "@/components/pop-ups/sorting";
 import FilterModal from "@/components/pop-ups/filter";
 import Backtesting from "@/components/pop-ups/backtesting";
@@ -23,12 +25,15 @@ import AssetsList from "@/components/pop-ups/assets-list";
 import Trades from "@/components/pop-ups/trades";
 import Notice from "@/components/pop-ups/notice";
 import InviteFriends from "@/components/pop-ups/invite-friends";
-import notifications from "@/mockData/notifications";
+//import notifications from "@/mockData/notifications";
 import Invest from "@/components/pop-ups/invest";
 import { Icon, menuIcons } from "@/components/icons";
 import "@/styles/style-navbar.css";
 import StrategiesSearchSortFilter from "@/components/strategies-search-sort-filter";
 import { useUserStore } from "@/lib/store/userStore";
+
+const items = siteConfig.navItems;
+const innerItems = siteConfig.innerItems;
 
 function isProtectedPath(pathname: string) {
   if (!pathname) return false;
@@ -46,11 +51,30 @@ export const Navbar = () => {
 
   // ЕДИНЫЙ источник правды для меню
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [notifications, setNotificationsData] = useState<NotificationsData[]>(
+    [],
+  );
   const pathname = usePathname();
 
   useLayoutEffect(() => {
     setIsMenuOpen(false); // закрываем при смене маршрута
   }, [pathname]);
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const userNotifications = await apiFetch<Notifications>(
+          `/api${innerItems.notifications.get.all.href}`,
+        );
+
+        setNotificationsData(userNotifications?.data);
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+      }
+    };
+
+    if (isAuthenticated) fetchNotifications();
+  }, [isAuthenticated]);
 
   // Пример: если нужен особый кейс для защищённых страниц, используйте `isProtected`.
   // (например, скрывать некоторые публичные элементы или сбрасывать состояние)
@@ -127,11 +151,22 @@ export const Navbar = () => {
     case "/verification":
       pageHeader = "Verification";
       break;
+    case "/policies":
+      switch (urlSecondSegment) {
+        case "/terms-of-services":
+          pageHeader = "Terms of Services";
+          break;
+        case "/privacy-policy":
+          pageHeader = "Privacy Policy";
+          break;
+        case "/refund-policy":
+          pageHeader = "Refund Policy";
+          break;
+      }
+      break;
     default:
       break;
   }
-
-  const items = siteConfig.navItems;
 
   const menuList = () => {
     return (
@@ -190,7 +225,7 @@ export const Navbar = () => {
           />
           <Link
             className="mr-10 inline-block"
-            href={siteConfig.innerItems.profile.href}
+            href={innerItems.profile.href}
             onClick={() => setIsMenuOpen(false)}
           >
             <Image
@@ -204,21 +239,39 @@ export const Navbar = () => {
           </Link>
           <Link
             className="menu-item color-ultra-violet font-bold whitespace-nowrap"
-            href={siteConfig.innerItems.auth.logout.href_ui}
+            href={innerItems.auth.logout.href_ui}
             onClick={() => setIsMenuOpen(false)}
           >
             Exit
           </Link>
         </>
       ) : (
-        <Link
-          className="menu-item"
-          href={siteConfig.innerItems.auth.login.href_ui}
-        >
+        <Link className="menu-item" href={innerItems.auth.login.href_ui}>
           Login
         </Link>
       )}
     </div>
+  );
+
+  const calculateNotificationTimeAgo = (createdAt: string) => {
+    const now = new Date();
+    const createdDate = new Date(createdAt);
+    const diffInMs = now.getTime() - createdDate.getTime();
+    const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+    if (diffInMinutes < 60) {
+      return `${diffInMinutes} minutes ago`;
+    } else if (diffInHours < 24) {
+      return `${diffInHours} hours ago`;
+    } else {
+      return `${diffInDays} days ago`;
+    }
+  };
+
+  const notificator = () => (
+    <div className="h-[8px] w-[8px] bg-[var(--color-blue-canonical)] rounded-[50%]" />
   );
 
   const Notifications = ({ onClick }: { onClick: () => void }) => (
@@ -236,18 +289,68 @@ export const Navbar = () => {
       </button>
       <div className="row is-vertical h-full max-w-[460px] overflow-y-auto px-10">
         <h3 className="aside mb-[30px] pt-20 pb-5">Notifications</h3>
-        {notifications.map((note) => (
-          <div key={note.id} className="[scroll-snap-align:start] py-2.5">
-            <div className="flex gap-2.5">
-              <div>{note.title}</div>
-              <div className="opacity-30">{note.timeAgo}</div>
-            </div>
-            <div className="opacity-50">{note.preview}</div>
+        {(notifications.length &&
+          notifications.map((note) => (
+            <button
+              key={note.id}
+              className={`[scroll-snap-align:start] py-2.5 hover:-mx-10 hover:px-10 ${note.isRead && "bg-light-middle cursor-pointer"} text-left`}
+              title={`${(note.isRead && "Click to mark it read") || ""}`}
+              onClick={() => markAsRead(note)}
+            >
+              <div className="flex gap-2.5 items-center">
+                <div>{note.title}</div>
+                {note.isRead && notificator()}
+                <div className="opacity-30">
+                  {calculateNotificationTimeAgo(note.createdAt)}
+                </div>
+              </div>
+              <div className="opacity-50">{note.content}</div>
+            </button>
+          ))) || (
+          <div className="items-center flex flex-col pt-20">
+            <Image
+              alt="No notifications"
+              className="mb-5"
+              height={77}
+              src="/assets/images/bell.jpg"
+              width={64}
+            />
+            <p className="opacity-50">No notifications yet</p>
+            <p className="opacity-30 text-sm">
+              You will see important updates here
+            </p>
           </div>
-        ))}
+        )}
       </div>
     </aside>
   );
+
+  const markAsRead = (note: NotificationsData) => {
+    if (note.isRead) return;
+
+    const path = `/api${innerItems.notifications.handle.href(note.id)}`;
+
+    apiFetch(path, {
+      method: "PUT",
+    })
+      .then(() => {
+        // Обновляем список уведомлений после пометки как прочитанное
+        setNotificationsData((prevNotifications) =>
+          prevNotifications.map((notification) =>
+            notification.id === note.id
+              ? {
+                  ...notification,
+                  isRead: true,
+                  readAt: new Date().toISOString(),
+                }
+              : notification,
+          ),
+        );
+      })
+      .catch((error) => {
+        console.error("Error marking notification as read:", error);
+      });
+  };
 
   return (
     <>

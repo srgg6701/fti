@@ -1,4 +1,11 @@
 export type SiteConfig = typeof siteConfig;
+export interface MenuItem {
+  label: string;
+  href: string;
+}
+export interface NavItem extends MenuItem {
+  protected: boolean;
+}
 
 export const routeAliases = {
   home: "home",
@@ -10,37 +17,56 @@ export const routeAliases = {
 /* export const routeAliasesSecond = {
   homeStrategies: `${routeAliases.home}/strategies`,
 }; */
+export const navItems: NavItem[] = [
+  {
+    label: "Home",
+    href: `/${routeAliases.home}`,
+    protected: true,
+  },
+  {
+    label: "People",
+    href: `/${routeAliases.people}`,
+    protected: true,
+  },
+  {
+    label: "Strategies",
+    href: `/${routeAliases.strategies}`,
+    protected: true,
+  },
+  {
+    label: "Pricing",
+    href: `/${routeAliases.pricing}`,
+    protected: false,
+  },
+  {
+    label: "News",
+    href: `/${routeAliases.news}`,
+    protected: true,
+  },
+];
+const policiesPath = "/policies";
+
+export const navItemsBottom: MenuItem[] = [
+  {
+    label: "Privacy Policy",
+    href: `${policiesPath}/privacy-policy`,
+  },
+  {
+    label: "Refund Policy",
+    href: `${policiesPath}/refund-policy`,
+  },
+  {
+    label: "Terms of Services",
+    href: `${policiesPath}/terms-of-services`,
+  },
+];
+
 export const siteConfig = {
   name: "Fintech Trade Innovation",
   description: "App for fintech services",
   // items order matters since it defines the menu's order appearance
-  navItems: [
-    {
-      label: "Home",
-      href: `/${routeAliases.home}`,
-      protected: true,
-    },
-    {
-      label: "People",
-      href: `/${routeAliases.people}`,
-      protected: true,
-    },
-    {
-      label: "Strategies",
-      href: `/${routeAliases.strategies}`,
-      protected: true,
-    },
-    {
-      label: "Pricing",
-      href: `/${routeAliases.pricing}`,
-      protected: false,
-    },
-    {
-      label: "News",
-      href: `/${routeAliases.news}`,
-      protected: true,
-    },
-  ],
+  navItems,
+  navItemsBottom,
   innerItems: {
     auth: {
       register: {
@@ -91,6 +117,18 @@ export const siteConfig = {
       status: {
         header: "Balance",
         href: "/balance/status",
+      },
+    },
+    notifications: {
+      get: {
+        all: {
+          header: "Notifications",
+          href: "/notifications",
+        },
+      },
+      handle: {
+        header: "Mark as read",
+        href: (id: string) => `/notifications/${id}/read`,
       },
     },
     portfolio: {

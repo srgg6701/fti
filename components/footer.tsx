@@ -1,10 +1,12 @@
 "use client";
+import type { NavItem, MenuItem } from "@/config/site";
+
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 import { getUrlSegments } from "@/lib/utils";
 import { LogoFTI } from "@/components/icons";
-import { siteConfig } from "@/config/site";
+import { navItems, navItemsBottom } from "@/config/site";
 import { checkRouteAside } from "@/lib/utils";
 
 export default function Footer() {
@@ -15,20 +17,35 @@ export default function Footer() {
   if (checkRouteAside([urlFirstSegment, urlSecondSegment].join("")))
     return null;
 
-  return (
-    <footer className="py-[60px] relative">
-      <div className="mx-auto flex max-w-[430px] flex-col items-center gap-[2.5rem] px-4">
-        <LogoFTI className="h-[27px] w-[55px]" />
-        <nav className="block w-full justify-between text-center min-[480px]:flex">
-          {siteConfig.navItems.map((item) => (
+  const getMenuItem = (block: NavItem[] | MenuItem[]) => {
+    return (
+      <div className="flex w-full justify-center text-center gap-4">
+        {block.map((item) => {
+          const eqFirst = urlFirstSegment === item.href;
+          const eqSecond =
+            `${urlFirstSegment}${urlSecondSegment}` === item.href;
+
+          return (
             <Link
               key={item.href}
-              className={`${urlFirstSegment === item.href ? "" : "opacity-60 hover:opacity-100"} block`}
+              className={`${eqFirst || eqSecond ? "" : "opacity-60 hover:opacity-100"} block`}
               href={item.href}
             >
               {item.label}
             </Link>
-          ))}
+          );
+        })}
+      </div>
+    );
+  };
+
+  return (
+    <footer className="py-[60px] relative">
+      <div className="mx-auto flex max-w-[430px] flex-col items-center gap-[2.5rem] px-4">
+        <LogoFTI className="h-[27px] w-[55px]" />
+        <nav className="block flex-col min-[480px]:flex gap-5">
+          {getMenuItem(navItems)}
+          {getMenuItem(navItemsBottom)}
         </nav>
         <div className="space-y-1 text-sm opacity-60">
           <div>+7 999 999 99 99</div>
