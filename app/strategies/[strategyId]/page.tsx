@@ -46,6 +46,7 @@ function Collapsible({
 export default function StrategyId() {
   const searchParam = useSearchParams();
   const stopTrading = searchParam.get("stop-trading");
+  const savedStrategyId = typeof window !== "undefined" ? localStorage.getItem("mystrategyId") : null;
 
   const [openIds, setOpenIds] = useState<string[]>([]);
 

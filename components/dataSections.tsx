@@ -20,7 +20,7 @@ import userImages from "@/mockData/user-images.json";
 import { SectionData } from "@/components/sectionsWrapper/sectionData";
 import GraphAndBalance from "@/components/graph-and-balance";
 import { useAdjustArticleWidth } from "@/hooks/useAdjustArticleWidth";
-import CardMyStrategies from "@/components/cards/my-strategies";
+import CardMyStrategy from "@/components/cards/my-strategy";
 import CardShared from "@/components/cards/card-shared";
 import CardNews from "@/components/cards/news";
 import { clampText, formatDate, makeSlug } from "@/lib/utils";
@@ -150,12 +150,14 @@ export default function HomeSections({
                   getKey={(d, i) => `${d.strategyName}-${i}`}
                   height={95}
                   renderItem={(d, i) => (
-                    <CardMyStrategies
+                    // FIXME: Draft implementation, needs the real image
+                    <CardMyStrategy
                       key={i}
                       changeDynamics={[0, 0]}
                       direction={"?"}
                       invested={d.amount}
                       proRata={"?"}
+                      strategyId={d.strategyId}
                       strategyName={d.strategyName}
                       userImg={d.userImage || userImages[i].img}
                     />

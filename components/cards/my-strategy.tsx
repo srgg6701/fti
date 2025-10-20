@@ -1,3 +1,4 @@
+"use client";
 import { useRouter } from "next/navigation";
 
 import { siteConfig } from "@/config/site";
@@ -5,8 +6,9 @@ import ColoredIndicator from "@/components/coloredIndicator";
 import UserBlock from "@/components/cards/user-block";
 import { makeSlug } from "@/lib/utils";
 
-export default function CardMyStrategies({
+export default function CardMyStrategy({
   strategyName,
+  strategyId,
   userImg,
   invested,
   proRata,
@@ -16,6 +18,7 @@ export default function CardMyStrategies({
   padding = "p-5",
 }: {
   strategyName: string;
+  strategyId: number;
   userImg: string;
   invested: string;
   proRata: string;
@@ -29,6 +32,7 @@ export default function CardMyStrategies({
     (obj) => obj.label === "Strategies",
   )?.href;
   const goToStrategy = () => {
+    localStorage.setItem("mystrategyId", `/${strategyId}`);
     router.push(`${href}/${makeSlug(strategyName)}`);
   };
 

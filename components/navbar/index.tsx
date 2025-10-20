@@ -169,7 +169,11 @@ export const Navbar = () => {
     onClick: () => void;
     style?: React.CSSProperties;
   }) => (
-    <div className={className || ""} id="exit-link" style={style}>
+    <div
+      className={`${className || ""} cursor-pointer`}
+      id="exit-link"
+      style={style}
+    >
       {isAuthenticated ? (
         <>
           <Image
@@ -179,7 +183,10 @@ export const Navbar = () => {
             src="/assets/images/icons/bell.png"
             title="Show notifications"
             width={20}
-            onClick={onClick}
+            onClick={() => {
+              onClick();
+              setIsMenuOpen(false);
+            }}
           />
           <Link
             className="mr-10 inline-block"
@@ -215,9 +222,9 @@ export const Navbar = () => {
   );
 
   const Notifications = ({ onClick }: { onClick: () => void }) => (
-    <aside className="fixed top-0 right-0 z-[900] h-full w-[460px] bg-[#030303]">
+    <aside className="fixed top-0 right-0 z-[40] h-full w-[460px] bg-[#030303]">
       <button
-        className="fixed top-10 right-10 z-[901] cursor-pointer"
+        className="fixed top-10 right-10 z-[41] cursor-pointer"
         onClick={onClick}
       >
         <Image
