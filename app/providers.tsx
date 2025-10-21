@@ -24,10 +24,11 @@ declare module "@react-types/shared" {
 
 export function Providers({ children, themeProps }: ProvidersProps) {
   const router = useRouter();
+  const isAuthenticated = useUserStore((s) => s.isAuthenticated);
   const initializeUser = useUserStore((s) => s.initializeUser);
 
   const [mounted, setMounted] = useState(false);
-  const [initialized, setInitialized] = useState<boolean | null>(null);
+  //const [initialized, setInitialized] = useState<boolean | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -35,29 +36,38 @@ export function Providers({ children, themeProps }: ProvidersProps) {
 
   useEffect(() => {
     if (!mounted) return;
+    //let alive;
 
-    // Always call initializeUser so backend can validate httpOnly cookie.
-    // Do not rely on document.cookie (httpOnly cookies are not readable from JS).
-    let alive = true;
+    // Если пользователь уже авторизован, не нужно обращаться к API
+    if (isAuthenticated) {
+      //setInitialized(true);
+      //return;
+      //}
 
-    (async () => {
-      try {
-        const ok = await initializeUser();
+      // Always call initializeUser so backend can validate httpOnly cookie.
+      // Do not rely on document.cookie (httpOnly cookies are not readable from JS).
+      //alive = true;
 
-        if (!alive) return;
-        setInitialized(ok);
-      } catch {
-        if (alive) setInitialized(false);
-      }
-    })();
+      (async () => {
+        try {
+          const ok = await initializeUser();
 
-    return () => {
+          //if (!alive) return;
+          //setInitialized(ok);
+        } catch(e) {
+          //if (alive) setInitialized(false);
+          console.error("Failed to initialize user:", e);
+        }
+      })();
+    }
+
+    /* return () => {
       alive = false;
-    };
-  }, [mounted, initializeUser]);
+    }; */
+  }, [mounted, initializeUser, isAuthenticated]);
 
   // Пока неизвестен статус аутентификации — скрываем UI (можно заменить на лоадер)
-  if (!mounted || initialized === null) {
+  if (!mounted/*  || initialized === null */) {
     return null;
   }
 
