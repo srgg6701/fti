@@ -25,11 +25,15 @@ export default function LoginPage() {
   const [status, setStatus] = useState<status>("idle");
   const [errMess, setErrMess] = useState<string | null>(null);
   // const [isLoading, setIsLoading] = useState(false);
+  const initializeUser = useUserStore((s) => s.initializeUser);
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.push("/home");
-      console.log("User is authenticated");
+      (async () => {
+        await initializeUser();
+        console.log("User is authenticated");
+        router.push("/home");
+      })();
     }
   }, [isAuthenticated, router]);
 
@@ -49,14 +53,14 @@ export default function LoginPage() {
         {
           method: "POST",
           body: JSON.stringify({ email, password }),
-        },
+        }
       );
 
       if (resp?.success) {
         console.log("Login successful:", resp);
         // подтянуть профиль и записать весь user в Zustand
         const me: { user: ApiUser } = await apiFetch(
-          `/api${siteConfig.innerItems.auth.me.href}`,
+          `/api${siteConfig.innerItems.auth.me.href}`
         );
 
         if (me?.user) {
