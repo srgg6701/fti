@@ -62,7 +62,7 @@ async function apiFetch<T>(
 } */
 // ==============================================
 
-export function generateCredentials(prefix = "test") {
+function generateCredentials(prefix = "test") {
   const tm = new Date().getTime();
   const nick = tm.toString().slice(8, 12);
   const userName = `${prefix}${nick}`;
