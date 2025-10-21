@@ -112,7 +112,7 @@ export default function Home() {
           )) ||
             null}
         </div>
-        {userAccounts.length > 0 && (
+        {(userAccounts.length > 0 && (
           <div className="mt-4">
             <h5 className="font-base text-lg">
               You
@@ -139,7 +139,8 @@ export default function Home() {
               />
             </button>
           </div>
-        )}
+        )) ||
+          null}
       </>
     );
   };
@@ -164,7 +165,7 @@ export default function Home() {
         />
       )) ||
         null}
-      {isAccountAddOpen && (
+      {(isAccountAddOpen && (
         <AccountAdded
           accountNumber={addedData?.accountNumber}
           broker={addedData?.broker}
@@ -172,13 +173,15 @@ export default function Home() {
           onClick={closeAccountAddedAndRedirect}
           onClose={closeAccountAddedAndRedirect}
         />
-      )}
-      {isAddSubscriptionOpen && (
+      )) ||
+        null}
+      {(isAddSubscriptionOpen && (
         <AddSubscription
           {...{ applicableStrategies }}
           onClose={() => setAddSubscriptionOpen(false)}
         />
-      )}
+      )) ||
+        null}
     </>
   );
 }

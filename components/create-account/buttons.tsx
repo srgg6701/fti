@@ -34,7 +34,7 @@ export default function Buttons({ messageType, status, type }: ButtonsProps) {
         onPress={() => signIn("google")}
       />
       <ButtonRoundedBlue type={type} />
-      {urlFirstSegment !== siteConfig.innerItems.auth.login.href_ui &&
+      {(urlFirstSegment !== siteConfig.innerItems.auth.login.href_ui &&
         urlFirstSegment !== siteConfig.innerItems.auth.logout.href_ui && (
           <p className="mt-[11.5px] text-sm">
             {messageType === "have-you-account" &&
@@ -46,7 +46,8 @@ export default function Buttons({ messageType, status, type }: ButtonsProps) {
               Log in
             </Link>
           </p>
-        )}
+        )) ||
+        null}
       {status === "error" && (
         <p className="text-sm text-red-400" role="alert">
           Something went wrong. Try again.

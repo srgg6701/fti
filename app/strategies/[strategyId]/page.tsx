@@ -170,7 +170,7 @@ export default function StrategyId() {
                 </Fragment>
               ))}
             </dl>
-            {stopTrading && (
+            {(stopTrading && (
               <FormElementWrapper header4="Choose a risk" wrapperClass="mt-5">
                 <Select
                   classNames={{
@@ -184,10 +184,11 @@ export default function StrategyId() {
                   ))}
                 </Select>
               </FormElementWrapper>
-            )}
+            )) ||
+              null}
           </div>
         </section>
-        {!stopTrading && (
+        {(!stopTrading && (
           <section className="standard-colored-005-rounded p-5">
             <h4 className="mb-5 h-[21px]">Details</h4>
             {[
@@ -246,7 +247,8 @@ export default function StrategyId() {
               );
             })}
           </section>
-        )}
+        )) ||
+          null}
       </div>
     </>
   );

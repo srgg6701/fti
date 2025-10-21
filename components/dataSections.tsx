@@ -123,14 +123,36 @@ export default function HomeSections({
       }
     })();
   }, []);
-  // FIXME: remove as test period is over
-  /* useEffect(() => {
-    console.log("dataSections", allStrategies);
-  }, [allStrategies]); */
 
-  {
-    /* <h1>{chart?.data.currentBalance}</h1> */
-  }
+  useEffect(() => {
+    console.groupCollapsed(
+      "%cChecking data for dataSections",
+      "color: lightblue",
+    );
+    console.log({
+      homeData: {
+        userSubscriptions,
+        topPerformingData,
+        newsData,
+      },
+      strategiesData: {
+        worldLeadersData,
+        theBestOfTheDayData,
+        theBestOfTheWeekData,
+        theBestOfTheMonthData,
+      },
+    });
+
+    console.groupEnd();
+  }, [
+    userSubscriptions,
+    topPerformingData,
+    newsData,
+    worldLeadersData,
+    theBestOfTheDayData,
+    theBestOfTheWeekData,
+    theBestOfTheMonthData,
+  ]);
 
   return (
     <>
@@ -138,12 +160,13 @@ export default function HomeSections({
         <LoadingIndicator {...{ status }} />
       ) : (
         <div className="mt-[80px] mb-[56px] flex flex-col gap-[5rem]">
-          {section === routeAliases.home && (
+          {(section === routeAliases.home && (
             <GraphAndBalance chart={chart} wrapper={true} />
-          )}
+          )) ||
+            null}
           {
             // home, // home/strategies
-            section === routeAliases.home && userSubscriptions?.length && (
+            (section === routeAliases.home && userSubscriptions?.length && (
               <>
                 <SectionData
                   data={userSubscriptions} // My Strategies
@@ -206,13 +229,14 @@ export default function HomeSections({
                   title="News"
                 />
               </>
-            )
+            )) ||
+              null
           }
           {
             //strategies
-            section === routeAliases.strategies && (
+            (section === routeAliases.strategies && (
               <>
-                {worldLeadersData.length && (
+                {(worldLeadersData.length && (
                   <SectionData
                     // FIXME: substitute with real data!
                     data={worldLeadersData} // World leaders
@@ -233,7 +257,8 @@ export default function HomeSections({
                     seeAllHref="/top"
                     title="World leaders"
                   />
-                )}
+                )) ||
+                  null}
                 <SectionData
                   // FIXME: substitute with real data!
                   data={theBestOfTheDayData}
@@ -292,7 +317,8 @@ export default function HomeSections({
                   title="The best of the month"
                 />
               </>
-            )
+            )) ||
+              null
           }
         </div>
       )}

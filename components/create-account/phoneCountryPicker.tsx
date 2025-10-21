@@ -52,7 +52,7 @@ export default function PhoneCountryPicker({
         </span>
       </button>
       {/* drop-down */}
-      {open && (
+      {(open && (
         <div className="absolute z-50 mt-2 rounded-2xl border border-white/10 bg-black/80 p-2 shadow-lg backdrop-blur">
           {/* search field */}
           <input
@@ -86,7 +86,8 @@ export default function PhoneCountryPicker({
             ))}
           </ul>
         </div>
-      )}
+      )) ||
+        null}
 
       {open && (
         <button

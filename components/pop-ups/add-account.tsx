@@ -242,7 +242,7 @@ export default function AddAccountModal({
           </Select>
         </div>
 
-        {activeSection === "roboforex" && (
+        {(activeSection === "roboforex" && (
           <div className="flex flex-col gap-2.5">
             <Header4Left>Enter the data</Header4Left>
             {Brokers[0].data.map((field) =>
@@ -276,9 +276,10 @@ export default function AddAccountModal({
               ) : null,
             )}
           </div>
-        )}
+        )) ||
+          null}
 
-        {activeSection === "binance" && (
+        {(activeSection === "binance" && (
           <div className="flex flex-col gap-2.5">
             <Header4Left>Enter the key</Header4Left>
             {Brokers[1].data.map((field) => (
@@ -295,7 +296,8 @@ export default function AddAccountModal({
               </div>
             ))}
           </div>
-        )}
+        )) ||
+          null}
 
         {activeSection && (
           <ButtonRoundedBlue

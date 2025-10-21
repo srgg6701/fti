@@ -63,7 +63,7 @@ export default function DropdownPill({
         </svg>
       </button>
 
-      {open && (
+      {(open && (
         <div
           className="absolute left-0 z-50 mt-1 min-w-full overflow-hidden rounded-md border border-white/10 bg-black/70 backdrop-blur-md"
           role="listbox"
@@ -100,7 +100,8 @@ export default function DropdownPill({
             })}
           </ul>
         </div>
-      )}
+      )) ||
+        null}
     </div>
   );
 }

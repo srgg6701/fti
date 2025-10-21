@@ -57,12 +57,13 @@ export default function MultiFetch() {
       >
         {loading ? "Loading..." : "Get main user data"}
       </button>
-      {error && (
+      {(error && (
         <pre className="mt-2 p-3 rounded border text-red-600 whitespace-pre-wrap break-words">
           {error}
         </pre>
-      )}
-      {response && (
+      )) ||
+        null}
+      {(response && (
         <>
           <button
             className="hover:underline cursor-pointer"
@@ -79,7 +80,8 @@ export default function MultiFetch() {
             {JSON.stringify(response, null, 2)}
           </pre>
         </>
-      )}
+      )) ||
+        null}
     </div>
   );
 }

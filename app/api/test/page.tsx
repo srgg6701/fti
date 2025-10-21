@@ -1188,13 +1188,14 @@ export default function ApiTestPage() {
                 {section.name}
                 <span className="ml-2">{isOpen ? "▾" : "▸"}</span>
               </button>
-              {isOpen && (
+              {(isOpen && (
                 <div className="pb-1">
-                  {section.endpoints.length === 0 && (
+                  {(section.endpoints.length === 0 && (
                     <div className="text-xs opacity-60 italic">
                       No endpoints
                     </div>
-                  )}
+                  )) ||
+                    null}
                   {section.endpoints.map((e) => {
                     const active = selected?.key === e.key;
 
@@ -1214,11 +1215,12 @@ export default function ApiTestPage() {
                           [{e.method}]
                         </span>
                         <span className="text-sm">{e.path}</span>
-                        {e.note && (
+                        {(e.note && (
                           <span className="block text-[11px] opacity-60 mt-1">
                             {e.note}
                           </span>
-                        )}
+                        )) ||
+                          null}
                         <li
                           className="mb-1 text-xs opacity-70"
                           style={{ marginLeft: "16px", listStyle: "square" }}
@@ -1229,7 +1231,8 @@ export default function ApiTestPage() {
                     );
                   })}
                 </div>
-              )}
+              )) ||
+                null}
             </div>
           );
         })}
@@ -1293,7 +1296,7 @@ export default function ApiTestPage() {
           ) : (
             <>
               <div className="relative rounded border p-4 space-y-3 mb-1.5">
-                {(selected.path === favoritePaths.authLogin ||
+                {((selected.path === favoritePaths.authLogin ||
                   selected.path === favoritePaths.addForexAccount) && (
                   <div
                     className="absolute flex flex-col items-start gap-1.5 bg-[#eee] p-4 m-0"
@@ -1328,7 +1331,7 @@ export default function ApiTestPage() {
                           {lg.login}
                         </button>
                       ))}
-                    {selected.path === favoritePaths.addForexAccount && (
+                    {(selected.path === favoritePaths.addForexAccount && (
                       <div className="flex flex-col">
                         {RoboForexAccounts.accountNumbers.map((n) => (
                           <button
@@ -1355,9 +1358,11 @@ export default function ApiTestPage() {
                           </button>
                         ))}
                       </div>
-                    )}
+                    )) ||
+                      null}
                   </div>
-                )}
+                )) ||
+                  null}
                 <div className="text-sm">
                   <span className="font-mono text-[11px] mr-2">
                     [selected.method]
@@ -1384,7 +1389,7 @@ export default function ApiTestPage() {
                 </div>
 
                 {/* Path params */}
-                {paramsInPath.length > 0 && (
+                {(paramsInPath.length > 0 && (
                   <div className="space-y-2">
                     <div className="text-sm opacity-80">Path params</div>
                     <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
@@ -1404,8 +1409,9 @@ export default function ApiTestPage() {
                       ))}
                     </div>
                   </div>
-                )}
-                {selected.key.startsWith("auth/") && selected.needsBody && (
+                )) ||
+                  null}
+                {(selected.key.startsWith("auth/") && selected.needsBody && (
                   <div className="grid sm:grid-cols-2 gap-2">
                     <input
                       className="border rounded px-3 py-2"
@@ -1432,7 +1438,8 @@ export default function ApiTestPage() {
                       }
                     />
                   </div>
-                )}
+                )) ||
+                  null}
 
                 {/* Body */}
                 {selected.needsBody && (
@@ -1472,21 +1479,24 @@ export default function ApiTestPage() {
               </div>
 
               {/* Error / Response */}
-              {error && (
+              {(error && (
                 <pre className="p-3 rounded border text-red-600 whitespace-pre-wrap break-words">
                   {error}
                 </pre>
-              )}
-              {response && (
+              )) ||
+                null}
+              {(response && (
                 <>
                   <pre className="p-3 rounded border bg-neutral-50 overflow-auto">
                     {response}
                   </pre>
                 </>
-              )}
-              {selected.key === "auth/login" && isAuthenticated && (
+              )) ||
+                null}
+              {(selected.key === "auth/login" && isAuthenticated && (
                 <MultiFetch />
-              )}
+              )) ||
+                null}
             </>
           )}
         </div>

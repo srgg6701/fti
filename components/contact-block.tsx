@@ -8,8 +8,7 @@ export default function ContactBlocks() {
       <div className="space-y-2">
         <p>FTI-Trade</p>
         <p>
-          Email:
-          {" "}
+          Email:{" "}
           <Link href="mailto:support@fti-trade.com">support@fti-trade.com</Link>
         </p>
         <p>

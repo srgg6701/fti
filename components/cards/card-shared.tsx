@@ -126,11 +126,12 @@ const CardShared = ({
           />
         )}
         {/* chart prop is raw UniversalEquity — always pass processed Chart to GraphAndBalance */}
-        {processedChart && (
+        {(processedChart && (
           <GraphAndBalance chart={processedChart} height="158px" />
-        )}
+        )) ||
+          null}
       </div>
-      {username && (
+      {(username && (
         <footer className="flex items-center justify-end gap-3 text-xs font-bold text-white/70">
           <span className="">
             ROI: <span className="text-white">{roi}%</span>
@@ -139,7 +140,8 @@ const CardShared = ({
             RISK: <span className="text-white">{risk}</span>
           </span>
         </footer>
-      )}
+      )) ||
+        null}
     </article>
   );
 };

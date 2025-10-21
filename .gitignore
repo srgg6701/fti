@@ -48,4 +48,4 @@ bun.lockb
 
 cert/
 curl
-app/api/test
+#app/api/test
