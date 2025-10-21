@@ -46,7 +46,9 @@ export function middleware(req: NextRequest) {
     pathname.startsWith("/login/") ||
     pathname.startsWith("/api") ||
     pathname.startsWith("/_next") ||
-    pathname.startsWith("/static")
+    pathname.startsWith("/static") ||
+    pathname.startsWith("/assets") ||
+    pathname.startsWith("/favicon")
   ) {
     return NextResponse.next();
   }
