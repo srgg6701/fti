@@ -8,14 +8,15 @@ import { Input } from "@heroui/input";
 
 import { siteConfig } from "@/config/site";
 import Form from "@/components/create-account/form";
-import { ApiUser, useUserStore } from "@/lib/store/userStore";
+import { useUserStore } from "@/lib/store/userStore";
 import ErrMess from "@/components/errMess";
 import { apiFetch } from "@/lib/api";
 import LoginResponse from "@/types/auth";
 
 export default function LoginPage() {
-  const loginUser = useUserStore((state) => state.login);
   const isAuthenticated = useUserStore((state) => state.isAuthenticated);
+  const user = useUserStore((state) => state.user);
+  const initializeUser = useUserStore((s) => s.initializeUser);
 
   const router = useRouter();
 
@@ -25,17 +26,14 @@ export default function LoginPage() {
   const [status, setStatus] = useState<status>("idle");
   const [errMess, setErrMess] = useState<string | null>(null);
   // const [isLoading, setIsLoading] = useState(false);
-  const initializeUser = useUserStore((s) => s.initializeUser);
 
+  // Redirect to /home only when store is hydrated (isAuthenticated + user)
   useEffect(() => {
-    if (isAuthenticated) {
-      (async () => {
-        await initializeUser();
-        console.log("User is authenticated");
-        router.push("/home");
-      })();
+    if (isAuthenticated && user) {
+      console.log("User is authenticated");
+      router.push("/home");
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, user, router]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -53,21 +51,19 @@ export default function LoginPage() {
         {
           method: "POST",
           body: JSON.stringify({ email, password }),
-        }
+        },
       );
 
       if (resp?.success) {
         console.log("Login successful:", resp);
-        // подтянуть профиль и записать весь user в Zustand
-        const me: { user: ApiUser } = await apiFetch(
-          `/api${siteConfig.innerItems.auth.me.href}`
-        );
+        // Централизованно инициализируем стор (внутри initializeUser делается /me + refresh + дедупликация)
+        const ok = await initializeUser();
 
-        if (me?.user) {
-          console.log("user data", me?.user);
-          loginUser(me.user);
-        } else {
-          console.log("%cUser data has not delivered...", "color: red");
+        if (!ok) {
+          setErrMess("Failed to initialize user after login.");
+          setStatus("idle");
+
+          return;
         }
 
         const next = // TODO: clarify this and the next code (sessionStorage)
