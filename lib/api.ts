@@ -1,15 +1,4 @@
-import { siteConfig } from "@/config/site";
 import { useUserStore } from "@/lib/store/userStore";
-
-const innerItems = siteConfig.innerItems;
-
-/* function toApiPath(endpoint: string) {
-  // Accept either '/auth/login' or '/api/auth/login' — both variants are supported.
-  // Normalize to a path that starts with /api/
-  if (endpoint.startsWith("/api/")) return endpoint;
-
-  return endpoint.startsWith("/") ? `/api${endpoint}` : `/api/${endpoint}`;
-} */
 
 export class AuthError extends Error {
   public status: number;
@@ -86,20 +75,6 @@ export async function apiFetch<T = any>(
         user: null,
       });
     } catch {}
-
-    // If running in the browser, redirect to the login page with ?next=currentLocation.
-    if (typeof window !== "undefined") {
-      const current = window.location.pathname + window.location.search;
-
-      if (!current.startsWith(innerItems.auth.login.href_ui)) {
-        const next = encodeURIComponent(current);
-
-        // Use replace so the redirect does not create a new history entry.
-        window.location.replace(
-          `${innerItems.auth.login.href_ui}?next=${next}`,
-        );
-      }
-    }
 
     // Throw a specialized AuthError so callers can handle auth flows separately.
     throw new AuthError(

@@ -13,8 +13,7 @@ import {
 import { usePathname, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
-import { PROTECTED_ROUTES } from "@/lib/shared/protectedRoutes";
-import { checkRouteAside, getUrlSegments } from "@/lib/utils";
+import { checkRouteAside, isProtectedPath, getUrlSegments } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
 import { apiFetch } from "@/lib/api";
 import SortingModal from "@/components/pop-ups/sorting";
@@ -35,18 +34,9 @@ import { useUserStore } from "@/lib/store/userStore";
 const items = siteConfig.navItems;
 const innerItems = siteConfig.innerItems;
 
-function isProtectedPath(pathname: string) {
-  if (!pathname) return false;
-
-  return PROTECTED_ROUTES.some((pattern) => {
-    const base = pattern.replace(/\/:path\*$/, "");
-
-    return pathname === base || pathname.startsWith(base + "/");
-  });
-}
-
 export const Navbar = () => {
   const isAuthenticated = useUserStore((state) => state.isAuthenticated);
+  console.log("Navbar: isAuthenticated =", isAuthenticated);
   const navBarContainer = useRef<HTMLDivElement | null>(null);
 
   // ЕДИНЫЙ источник правды для меню

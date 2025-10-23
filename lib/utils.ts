@@ -1,3 +1,5 @@
+import { PROTECTED_ROUTES } from "@/lib/shared/protectedRoutes";
+
 export type EmailValidation =
   | { valid: true }
   | {
@@ -328,4 +330,14 @@ export function makeSlug(s: string) {
     .trim()
     .replace(/[\s\W-]+/g, "-") // replace spaces and non-word characters with hyphen
     .replace(/^-+|-+$/g, ""); // remove leading and trailing hyphens
+}
+
+export function isProtectedPath(pathname: string) {
+  if (!pathname) return false;
+
+  return PROTECTED_ROUTES.some((pattern) => {
+    const base = pattern.replace(/\/:path\*$/, "");
+
+    return pathname === base || pathname.startsWith(base + "/");
+  });
 }

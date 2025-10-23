@@ -1,3 +1,4 @@
+// check if PROTECTED_ROUTES is equal to the one in middleware.ts
 export const PROTECTED_ROUTES = [
   "/accounts",
   "/accounts/:path*",
