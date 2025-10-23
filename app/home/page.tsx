@@ -13,8 +13,7 @@ import { ButtonRoundedBlue } from "@/components/button-rounded";
 import { routeAliases } from "@/config/site";
 
 export default function Home() {
-  //const router = useRouter();
-
+  console.log("Home component rendered");
   const [isAddAccountOpen, setAddAccount] = useState<boolean | null>(null);
   const [isAccountAddOpen, setAccountAddOpen] = useState<boolean | null>(null);
   const [addedData, setAddedData] = useState<{
@@ -51,7 +50,6 @@ export default function Home() {
   }
   function closeAccountAddedAndRedirect() {
     setAccountAddOpen(false);
-    //router.push("/home/strategies");
   }
 
   useEffect(() => {
@@ -83,7 +81,6 @@ export default function Home() {
 
     console.log({ sbKeys, restStrategies, userSubscriptions, allStrategies });
 
-    //setApplicableStrategies(allStrategies);
     setApplicableStrategies(restStrategies);
   }, [allStrategies]);
 

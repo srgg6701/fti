@@ -7,9 +7,11 @@ import Link from "next/link";
 import { getUrlSegments } from "@/lib/utils";
 import { LogoFTI } from "@/components/icons";
 import { navItems, navItemsBottom } from "@/config/site";
-import { checkRouteAside } from "@/lib/utils";
+import { checkRouteAside, isProtectedPath } from "@/lib/utils";
+import { useUserStore } from "@/lib/store/userStore";
 
 export default function Footer() {
+  const isAuthenticated = useUserStore((state) => state.isAuthenticated);
   const urlFirstSegment = getUrlSegments(usePathname, 1);
   const urlSecondSegment = getUrlSegments(usePathname, 2);
 
@@ -26,13 +28,15 @@ export default function Footer() {
             `${urlFirstSegment}${urlSecondSegment}` === item.href;
 
           return (
-            <Link
-              key={item.href}
-              className={`${eqFirst || eqSecond ? "" : "opacity-60 hover:opacity-100"} block`}
-              href={item.href}
-            >
-              {item.label}
-            </Link>
+            (isAuthenticated || !isProtectedPath(item.href)) && (
+              <Link
+                key={item.href}
+                className={`${eqFirst || eqSecond ? "" : "opacity-60 hover:opacity-100"} block`}
+                href={item.href}
+              >
+                {item.label}
+              </Link>
+            )
           );
         })}
       </div>

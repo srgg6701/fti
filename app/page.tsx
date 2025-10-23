@@ -4,21 +4,21 @@ import { useEffect } from "react";
 
 import { LogoFTI } from "@/components/icons";
 import { useUserStore } from "@/lib/store/userStore";
+import { routeAliases } from "@/config/site";
 
 export default function Default() {
   const router = useRouter();
   const isAuthenticated = useUserStore((state) => state.isAuthenticated);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (isAuthenticated) {
       const tm = setTimeout(() => {
-        clearTimeout(tm);
-        router.replace("/home");
+        router.replace(routeAliases.home);
+
+        console.log("Redirecting to /home after 4 seconds");
       }, 4000);
 
       return () => clearTimeout(tm); // Clear timeout on unmount
-    } else {
-      router.replace("/home");
     }
   }, [isAuthenticated, router]); // Add isAuthenticated and router to the dependency array
 

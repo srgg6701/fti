@@ -24,6 +24,7 @@ module.exports = {
       'yt3.googleusercontent.com',
       'avatars.mds.yandex.net',
       'altcoinsbox.com',
+      'api.fti-trade.com',
     ],
   },
 };

@@ -32,6 +32,7 @@ export const useUserStore = create<UserState>((set) => ({
 
   logout: async () => {
     set({ isAuthenticated: false, email: null, user: null });
+    // FIXME: can we change this to use apiFetch?
     await fetch(`/api${siteConfig.innerItems.auth.logout.href}`, {
       method: "POST",
       credentials: "include",
@@ -40,6 +41,7 @@ export const useUserStore = create<UserState>((set) => ({
 
   initializeUser: async () => {
     try {
+      // FIXME: can we change this to use apiFetch?
       let res = await fetch(`/api${siteConfig.innerItems.auth.me.href}`, {
         credentials: "include",
       });
@@ -60,6 +62,7 @@ export const useUserStore = create<UserState>((set) => ({
 
       // Попробуем обновить access-token через refresh endpoint
       if (res.status === 401 || res.status === 403) {
+        // FIXME: can we change this to use apiFetch?
         const r = await fetch(
           `/api${siteConfig.innerItems.auth.refresh.href}`,
           {
@@ -69,6 +72,7 @@ export const useUserStore = create<UserState>((set) => ({
         );
 
         if (r.ok) {
+          // FIXME: can we change this to use apiFetch?
           // после refresh — повторный /me
           const me = await fetch(`/api${siteConfig.innerItems.auth.me.href}`, {
             credentials: "include",
