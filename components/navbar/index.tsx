@@ -37,6 +37,14 @@ const innerItems = siteConfig.innerItems;
 export const Navbar = () => {
   const isAuthenticated = useUserStore((state) => state.isAuthenticated);
   console.log("Navbar: isAuthenticated =", isAuthenticated);
+  const initializeUser = useUserStore((s) => s.initializeUser);
+
+  useEffect(() => {
+    // единый вызов инициализации стора при монтировании (dedup внутри)
+    initializeUser()
+      .then((ok) => console.log("initializeUser (Navbar) result:", ok))
+      .catch((e) => console.error("initializeUser (Navbar) error:", e));
+  }, [initializeUser]);
   const navBarContainer = useRef<HTMLDivElement | null>(null);
 
   // ЕДИНЫЙ источник правды для меню
