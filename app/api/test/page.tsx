@@ -578,6 +578,12 @@ const SECTIONS: Section[] = [
         method: "GET",
         path: "/statistics/universal-equity",
       },
+      {
+        key: "stats/strategies",
+        description: "Get all user strategies",
+        method: "GET",
+        path: "/statistics/strategies",
+      },
     ],
   },
 
@@ -1244,7 +1250,7 @@ export default function ApiTestPage() {
         style={{ left: "37vw", position: "fixed", width: "60vw" }}
       >
         <div
-          className="fixed top-[101px] left-[443.35px] overflow-auto"
+          className="fixed top-[101px] overflow-auto"
           style={{
             backgroundColor: "var(--background-default)",
             height: "calc(100vh - 88px)",
@@ -1487,7 +1493,7 @@ export default function ApiTestPage() {
                 null}
               {(response && (
                 <>
-                  <pre className="p-3 rounded border bg-neutral-50 overflow-auto">
+                  <pre className="p-3 rounded border overflow-auto">
                     {response}
                   </pre>
                 </>
