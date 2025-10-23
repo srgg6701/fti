@@ -21,100 +21,115 @@ interface UserState {
   initializeUser: () => Promise<boolean>;
 }
 
-export const useUserStore = create<UserState>((set) => ({
-  isAuthenticated: false,
-  email: null,
-  user: null,
+export const useUserStore = create<UserState>((set) => {
+  // Deduplicate concurrent initializeUser calls
+  let initPromise: Promise<boolean> | null = null;
 
-  login: (user) => {
-    set({ isAuthenticated: true, email: user.email, user });
-  },
+  return {
+    isAuthenticated: false,
+    email: null,
+    user: null,
 
-  logout: async () => {
-    set({ isAuthenticated: false, email: null, user: null });
-    // FIXME: can we change this to use apiFetch?
-    await fetch(`/api${siteConfig.innerItems.auth.logout.href}`, {
-      method: "POST",
-      credentials: "include",
-    });
-  },
+    login: (user) => {
+      set({ isAuthenticated: true, email: user.email, user });
+    },
 
-  initializeUser: async () => {
-    try {
+    logout: async () => {
+      set({ isAuthenticated: false, email: null, user: null });
       // FIXME: can we change this to use apiFetch?
-      let res = await fetch(`/api${siteConfig.innerItems.auth.me.href}`, {
+      await fetch(`/api${siteConfig.innerItems.auth.logout.href}`, {
+        method: "POST",
         credentials: "include",
       });
+    },
 
-      if (res.ok) {
-        const data: { user?: ApiUser } = await res.json();
+    initializeUser: async () => {
+      if (initPromise) return initPromise;
 
-        if (data.user) {
-          set({
-            isAuthenticated: true,
-            email: data.user.email,
-            user: data.user,
-          });
-
-          return true;
-        }
-      }
-
-      // Попробуем обновить access-token через refresh endpoint
-      if (res.status === 401 || res.status === 403) {
-        // FIXME: can we change this to use apiFetch?
-        const r = await fetch(
-          `/api${siteConfig.innerItems.auth.refresh.href}`,
-          {
-            method: "POST",
-            credentials: "include",
-          },
-        );
-
-        if (r.ok) {
+      initPromise = (async () => {
+        try {
           // FIXME: can we change this to use apiFetch?
-          // после refresh — повторный /me
-          const me = await fetch(`/api${siteConfig.innerItems.auth.me.href}`, {
+          let res = await fetch(`/api${siteConfig.innerItems.auth.me.href}`, {
             credentials: "include",
           });
 
-          if (me.ok) {
-            const data2: { user?: ApiUser } = await me.json();
+          if (res.ok) {
+            const data: { user?: ApiUser } = await res.json();
 
-            if (data2.user) {
+            if (data.user) {
               set({
                 isAuthenticated: true,
-                email: data2.user.email,
-                user: data2.user,
+                email: data.user.email,
+                user: data.user,
               });
 
               return true;
             }
           }
-          // fallback: если refresh вернул payload с user
-          try {
-            const payload = await r.json();
 
-            if (payload.user) {
-              set({
-                isAuthenticated: true,
-                email: payload.user.email,
-                user: payload.user,
-              });
+          // Попробуем обновить access-token через refresh endpoint
+          if (res.status === 401 || res.status === 403) {
+            // FIXME: can we change this to use apiFetch?
+            const r = await fetch(
+              `/api${siteConfig.innerItems.auth.refresh.href}`,
+              {
+                method: "POST",
+                credentials: "include",
+              },
+            );
 
-              return true;
+            if (r.ok) {
+              // после refresh — повторный /me
+              const me = await fetch(
+                `/api${siteConfig.innerItems.auth.me.href}`,
+                {
+                  credentials: "include",
+                },
+              );
+
+              if (me.ok) {
+                const data2: { user?: ApiUser } = await me.json();
+
+                if (data2.user) {
+                  set({
+                    isAuthenticated: true,
+                    email: data2.user.email,
+                    user: data2.user,
+                  });
+
+                  return true;
+                }
+              }
+              // fallback: если refresh вернул payload с user
+              try {
+                const payload = await r.json();
+
+                if (payload.user) {
+                  set({
+                    isAuthenticated: true,
+                    email: payload.user.email,
+                    user: payload.user,
+                  });
+
+                  return true;
+                }
+              } catch {}
             }
-          } catch {}
+          }
+
+          set({ isAuthenticated: false, email: null, user: null });
+
+          return false;
+        } catch {
+          set({ isAuthenticated: false, email: null, user: null });
+          return false;
+        } finally {
+          // allow future attempts
+          initPromise = null;
         }
-      }
+      })();
 
-      set({ isAuthenticated: false, email: null, user: null });
-
-      return false;
-    } catch {
-      set({ isAuthenticated: false, email: null, user: null });
-
-      return false;
-    }
-  },
-}));
+      return initPromise;
+    },
+  };
+});
