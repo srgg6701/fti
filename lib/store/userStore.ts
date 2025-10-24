@@ -120,7 +120,8 @@ export const useUserStore = create<UserState>((set) => {
           set({ isAuthenticated: false, email: null, user: null });
 
           return false;
-        } catch {
+        } catch (e){
+          console.log("Error in initializeUser:", e);
           set({ isAuthenticated: false, email: null, user: null });
           return false;
         } finally {

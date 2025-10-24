@@ -13,6 +13,7 @@ export async function apiFetch<T = any>(
   input: RequestInfo,
   init: RequestInit = {},
 ): Promise<T> {
+  console.log("%capiFetch called for ", "color: lightskyblue", input);
   // INFO: look at .sources\dev-clarifications\request-headers.md
   // Build headers robustly by using the Headers *CONSTRUCTOR*.
   // This supports incoming headers as plain objects, arrays, or Headers instances.
@@ -51,9 +52,19 @@ export async function apiFetch<T = any>(
     headers: hdrs,
     ...init,
   };
+  const color = input.toString().includes("/statistics/strategies")
+    ? "yellow"
+    : input.toString().includes("/statistics/universal-equity")
+      ? "orangered"
+      : "darkorange";
+
+  //console.groupCollapsed("%capiFetch", `color: ${color}`);
+  //console.log({ input, opts });
 
   const res = await fetch(input, opts);
 
+  //console.log(`%cres for ${input}`, `color: ${color}`, res);
+  //console.groupEnd();
   // Check response content-type before attempting to parse JSON.
   const contentType = res.headers.get("content-type") || "";
   const hasJson = contentType.includes("application/json");
@@ -62,7 +73,16 @@ export async function apiFetch<T = any>(
   try {
     if (hasJson) payload = await res.json();
     else payload = await res.text();
-  } catch {
+
+    console.log(`%cpayload for ${input}`, `color: ${color}`, {
+      contentType,
+      hasJson,
+      input,
+      res,
+      payload,
+    });
+  } catch (e) {
+    console.log("Error parsing response payload as JSON/text:", e);
     // Ignore parse errors — we'll surface status/errors below.
   }
 
@@ -74,7 +94,9 @@ export async function apiFetch<T = any>(
         email: null,
         user: null,
       });
-    } catch {}
+    } catch(е) {
+      console.log("Error updating user store on auth error:", е);
+    }
 
     // Throw a specialized AuthError so callers can handle auth flows separately.
     throw new AuthError(

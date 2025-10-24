@@ -76,7 +76,7 @@ export default function MultiFetch() {
           >
             Hide output
           </button>
-          <pre className="mt-2 p-3 rounded border bg-neutral-50 overflow-auto w-full">
+          <pre className="mt-2 p-3 rounded border overflow-auto w-full">
             {JSON.stringify(response, null, 2)}
           </pre>
         </>

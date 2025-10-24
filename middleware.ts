@@ -1,29 +1,47 @@
 import type { NextRequest } from "next/server";
 
-import { SignJWT, decodeJwt } from "jose";
 import { NextResponse } from "next/server";
-
+import { SignJWT, decodeJwt, jwtVerify } from "jose";
+// decodeJwt
 // ✅ Берём проверку токена из NextAuth
 // Он читает куку next-auth.session-token (__Secure-next-auth.session-token)
 // и возвращает расшифрованный payload (email, sub, name, picture, iat/exp и т.д.).
 import { getToken } from "next-auth/jwt";
 
-/**
- * ГЛАВНАЯ ИДЕЯ:
- * - middleware НИКОГДА не общается с Google и не "ждёт ответа" от Google.
- * - Вся проверка (state/PKCE/обмен code→tokens/валидация id_token) делается на /api/auth/callback/google внутри NextAuth.
- * - Если вход успешен, NextAuth ставит сессионную куку.
- * - Здесь мы просто проверяем: есть ли валидный токен NextAuth? Если да — пускаем. Если нет — редиректим на /login.
- */
+// Minimal, strict auth flow:
+// 1) Trust our own cookie JWT if signature+exp are valid.
+// 2) Else, if a NextAuth session exists, mint our JWT and set it.
+// 3) Else, redirect to /login.
+// Pass-through: /login, /api/auth/*, /_next/*, /static/*, /assets/*, /favicon*
+function isPassThrough(pathname: string) {
+  return (
+    pathname === "/login" ||
+    pathname.startsWith("/login/") ||
+    pathname.startsWith("/api/auth") ||
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/static") ||
+    pathname.startsWith("/assets") ||
+    pathname.startsWith("/favicon")
+  );
+}
+
 export async function middleware(req: NextRequest) {
   //console.log('\x1b[34m%s\x1b[0m', 'req', req);
   /*  console.log('\x1b[31m%s\x1b[0m', 'Красный текст');
       console.log('\x1b[32m%s\x1b[0m', 'Зелёный текст');
       console.log('\x1b[33m%s\x1b[0m', 'Жёлтый текст');
       console.log('\x1b[34m%s\x1b[0m', 'Синий текст');  */
-  const url = req.nextUrl;
-  const { pathname, search } = url;
-  // 🚧
+  const { pathname, search } = req.nextUrl;
+
+  if (isPassThrough(pathname)) {
+    console.log(
+      "\x1b[33m%s\x1b[0m",
+      `isPassThrough, редирект на ${pathname}${search}`
+    );
+
+    return NextResponse.next();
+  }
+
   const loginUrl = new URL("/login", req.nextUrl.origin);
 
   loginUrl.searchParams.set("next", pathname + search);
@@ -31,7 +49,15 @@ export async function middleware(req: NextRequest) {
   const appSecret =
     process.env.SERVER_JWT_SECRET || process.env.NEXTAUTH_SECRET;
 
-  let key = new TextEncoder().encode(appSecret);
+  console.log('\x1b[36m%s\x1b[0m', `[ПОДПИСЬ] Ключ: "${appSecret}"`);
+
+  if (!appSecret) {
+    // Fail safe: no secret — don't allow access
+    console.log("\x1b[31m%s\x1b[0m", "No appSecret, redirecting to /login");
+
+    return NextResponse.redirect(loginUrl);
+  }
+  const key = new TextEncoder().encode(appSecret);
 
   // 1) 🔒 Служебный тестовый маршрут /test — ограничим доступ окружением
   if (pathname.startsWith("/test")) {
@@ -42,76 +68,70 @@ export async function middleware(req: NextRequest) {
       host.endsWith("vercel.app");
 
     if (!allowed) {
+      console.log("\x1b[31m%s\x1b[0m", "No test API on this domain!");
+
       return new NextResponse("Not Found", { status: 404 });
     }
   }
+  // 1) Check our cookie JWT first
+  const jwtCookie = req.cookies.get("jwt")?.value;
 
-  // 2) 🛂 Разрешаем маршруты, которые нельзя блокировать:
-  //    - вся аутентификация NextAuth, включая /api/auth/callback/*
-  //    - служебные ассеты/бандлы
-  //    - сама страница /login (чтобы избежать петель)
-  const isPassThrough =
-    pathname === "/login" ||
-    pathname.startsWith("/login/") ||
-    pathname.startsWith("/api/auth") || // ⚠️ важно: callback/error/signin/signout
-    pathname.startsWith("/_next") ||
-    pathname.startsWith("/static") ||
-    pathname.startsWith("/assets") ||
-    pathname.startsWith("/favicon");
+  if (jwtCookie) {
+    // FIXME: закомментировать после тестов проверку просроченности
+    const payload = decodeJwt(jwtCookie); // просто декодирует без верификации
+    const exp = payload.exp; // Unix timestamp в секундах
 
-  if (isPassThrough) {
-    console.log("\x1b[33m%s\x1b[0m", `pass не пройден, редирект на ${url}`);
+    if (exp && Date.now() / 1000 > exp) {
+      console.log('\x1b[31m%s\x1b[0m', "JWT просрочен");
+      const res = NextResponse.redirect(loginUrl);
+    } else {
+      console.log('\x1b[32m%s\x1b[0m', "JWT действителен");
+      return NextResponse.next();
+    }
+    //--------------------------------
 
-    return NextResponse.next();
+    /* console.log("\x1b[32m%s\x1b[0m", "jwtCookie found, verifying...");
+    try {
+      console.log('\x1b[35m%s\x1b[0m', `[ПРОВЕРКА] Ключ: "${appSecret}"`); //
+      await jwtVerify(jwtCookie, key, { algorithms: ["HS256"] });
+      console.log("\x1b[32m%s\x1b[0m", "jwtCookie valid, proceeding...");
+
+      return NextResponse.next();
+    } catch (err) {
+      // Invalid/expired — clear and continue to NextAuth fallback
+      console.log("\x1b[31m%s\x1b[0m", "Something wrong with jwtCookie:", err);
+      const res = NextResponse.next();
+
+      console.log("\x1b[31m%s\x1b[0m", "Nullifying cookies");
+      res.cookies.set("jwt", "", {
+        path: "/",
+        maxAge: 0,
+        sameSite: "lax",
+        httpOnly: true,
+      });
+      return NextResponse.redirect(loginUrl);
+      // continue
+    } */
   }
 
-  // 3) 🔑 Проверка авторизации:
-  //    Если пользователь только что успешно прошёл Google OAuth,
-  //    NextAuth уже поставил сессионную куку -> getToken вернёт объект-пейлоад.
-  const token = await getToken({ req }); // читает next-auth.session-token
+  // 2) Try NextAuth token (Google/OAuth-backed session)
+  const gSession = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
-  console.log("\x1b[32m%s\x1b[0m", "token", token);
-
-  /*{ читатель/декодер уже созданного сервером JWT-токена NextAuth
-  name: 'Sergey Cleftsow',
-  email: 'srgg.next@gmail.com',
-  picture: 'https://lh3.googleusercontent.com/a/ACg8ocIhKT1CjoNVIsICw2qIkLHzkM63BBnpuB6iqCqc8KUoX34ACg8=s96-c',
-  sub: '100022084306780759683',
-  iat: 1761150498,
-  exp: 1763742498,
-  jti: '2165f2ec-ab3b-41ab-b7d7-5a8a369e1e90'
-  }*/
-  // if we have cookies, let it go where they wanted
-
-  // 3.1) (необязательно) Можем посмотреть, что именно вернулось из токена.
-  //      Это и есть "данные после авторизации через Google" (но уже в виде JWT-пейлоада NextAuth).
-  //      Полезно для отладки — потом лучше убрать.
-  // if (token) {
-  //   console.log("Auth OK:", {
-  //     sub: token.sub,                   // Google user id
-  //     email: token.email,               // email из профиля
-  //     name: token.name,                 // имя
-  //     picture: token.picture,           // аватар
-  //     iat: token.iat, exp: token.exp,   // времена выпуска/истечения
-  //   });
-  // }
-  console.log(
-    `
-******************************************************************
-`
-  );
-
-  if (token) {
-    if (!appSecret) {
-      throw new Error("SERVER_JWT_SECRET is missing");
-    }
-
-    const appJwt = await new SignJWT({ sub: token.sub, email: token.email })
+  if (gSession && (gSession as any).sub && (gSession as any).email) {
+    console.log(
+      "\x1b[32m%s\x1b[0m",
+      "NextAuth session found, minting jwtCookie..."
+    );
+    const appJwt = await new SignJWT({
+      sub: (gSession as any).sub,
+      email: (gSession as any).email,
+    })
       .setProtectedHeader({ alg: "HS256", typ: "JWT" })
       .setIssuedAt()
       .setExpirationTime("1h")
       .sign(key);
 
+    console.log("\x1b[34m%s\x1b[0m", "Редирект на ${pathname}${search}");
     const res = NextResponse.next();
 
     res.cookies.set("jwt", appJwt, {
@@ -120,81 +140,25 @@ export async function middleware(req: NextRequest) {
       path: "/",
     });
 
-    console.log(
-      "\x1b[34m%s\x1b[0m",
-      `token получен, пользователь авторизован и будет отправлен на ${url}, appJwt: ${appJwt}`
-    );
-
-    // ✅ Авторизован — пропускаем к защищённой странице
     return res;
-  } else {
-    console.log(
-      "\x1b[33m%s\x1b[0m",
-      `token не получен, редирект не выполняется`
-    );
   }
 
-  // ✅ JWT in cookies?
-  const jwt = req.cookies.get("jwt")?.value;
-  console.log("Cookies", req.cookies);
-  console.log(
-    "-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/"
-  );
-  console.log("jwt", jwt);
+  // 3) Neither our JWT nor NextAuth session — login
+  console.log("\x1b[34m%s\x1b[0m", "Конечный редирект на /login");
+  console.log("\x1b[31m%s\x1b[0m", "Обнуление cookies jwt");
 
-  if (!jwt || jwt.split(".").length !== 3) {
-    console.log(
-      "\x1b[32m%s\x1b[0m",
-      `JWT отсутствует или некорректен, редирект на ${req.nextUrl.origin}/login`
-    );
-    // не JWT → чистим и директим на /login
-    const nxtRedirect = NextResponse.redirect(loginUrl);
+  const redirect = NextResponse.redirect(loginUrl);
 
-    nxtRedirect.cookies.set("jwt", "", {
-      path: "/",
-      maxAge: 0,
-      sameSite: "lax",
-      httpOnly: true,
-    });
+  redirect.cookies.set("jwt", "", {
+    path: "/",
+    maxAge: 0,
+    sameSite: "lax",
+    httpOnly: true,
+  });
 
-    return nxtRedirect;
-  }
-
-  try {
-    /* const { payload } = await jwtVerify(jwt!, key!, {
-      algorithms: ["HS256"],
-    }); */
-    const decodedJwt = decodeJwt(jwt);
-    console.log(decodedJwt.exp);
-    // опционально явная проверка exp (jwtVerify уже проверяет):
-    const now = Math.floor(Date.now() / 1000);
-
-    if (decodedJwt.exp && decodedJwt.exp > now) {
-      console.log("\x1b[32m%s\x1b[0m", `payload есть и он не просрочен
-
-      decodedJwt.exp: ${decodedJwt.exp}
-      now: ${now}
-      difference: ${decodedJwt.exp - now}
-
-`);
-
-      return NextResponse.next();
-    }
-  } catch (e) {
-    console.log("\x1b[31m%s\x1b[0m", "JWT verification error:", e);
-  }
-
-  const res = NextResponse.redirect(loginUrl);
-
-  res.cookies.set("jwt", "", { path: "/", maxAge: 0, sameSite: "lax" });
-
-  return res;
+  return redirect;
 }
 
-/**
- * matcher — список защищённых страниц, для которых включается middleware.
- * (Он не трогает другие страницы/маршруты вне этого списка.)
- */
 export const config = {
   matcher: [
     "/",

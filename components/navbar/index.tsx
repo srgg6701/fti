@@ -34,17 +34,44 @@ import { useUserStore } from "@/lib/store/userStore";
 const items = siteConfig.navItems;
 const innerItems = siteConfig.innerItems;
 
-export const Navbar = () => {
-  const isAuthenticated = useUserStore((state) => state.isAuthenticated);
-  console.log("Navbar: isAuthenticated =", isAuthenticated);
-  const initializeUser = useUserStore((s) => s.initializeUser);
+export const Navbar = ({ isAuth }: { isAuth: boolean }) => {
+  const { initializeUser, isAuthenticated, email, user } = useUserStore((state) => state);
+  
+  console.log("%cNavbar, data from userSotre", "color: violet", { initializeUser, isAuthenticated, email, user });
+
 
   useEffect(() => {
+    if (!isAuthenticated && !isAuth) {
+      console.log(
+        "%cNavbar: User not authenticated, cancelling initializeUser",
+        "color: orange;",
+      );
+
+      return;
+    }
     // единый вызов инициализации стора при монтировании (dedup внутри)
     initializeUser()
       .then((ok) => console.log("initializeUser (Navbar) result:", ok))
       .catch((e) => console.error("initializeUser (Navbar) error:", e));
-  }, [initializeUser]);
+    const fetchNotifications = async () => {
+      try {
+        const userNotifications = await apiFetch<Notifications>(
+          `/api${innerItems.notifications.get.all.href}`,
+        );
+
+        setNotificationsData(userNotifications?.data);
+      } catch (error) {
+        console.error(
+          "%cError fetching notifications:",
+          "color: yellow",
+          error,
+        );
+      }
+    };
+
+    fetchNotifications();
+  }, []);
+
   const navBarContainer = useRef<HTMLDivElement | null>(null);
 
   // ЕДИНЫЙ источник правды для меню
@@ -57,22 +84,6 @@ export const Navbar = () => {
   useLayoutEffect(() => {
     setIsMenuOpen(false); // закрываем при смене маршрута
   }, [pathname]);
-
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const userNotifications = await apiFetch<Notifications>(
-          `/api${innerItems.notifications.get.all.href}`,
-        );
-
-        setNotificationsData(userNotifications?.data);
-      } catch (error) {
-        console.error("Error fetching notifications:", error);
-      }
-    };
-
-    if (isAuthenticated) fetchNotifications();
-  }, [isAuthenticated]);
 
   // Пример: если нужен особый кейс для защищённых страниц, используйте `isProtected`.
   // (например, скрывать некоторые публичные элементы или сбрасывать состояние)

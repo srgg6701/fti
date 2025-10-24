@@ -13,7 +13,7 @@ import { ButtonRoundedBlue } from "@/components/button-rounded";
 import { routeAliases } from "@/config/site";
 
 export default function Home() {
-  console.log("Home component rendered");
+  //console.log("Home component rendered");
   const [isAddAccountOpen, setAddAccount] = useState<boolean | null>(null);
   const [isAccountAddOpen, setAccountAddOpen] = useState<boolean | null>(null);
   const [addedData, setAddedData] = useState<{
