@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 
 import { NextResponse } from "next/server";
-import { SignJWT, decodeJwt, jwtVerify } from "jose";
+import { SignJWT, decodeJwt } from "jose";
 // decodeJwt
 // ✅ Берём проверку токена из NextAuth
 // Он читает куку next-auth.session-token (__Secure-next-auth.session-token)
@@ -36,7 +36,7 @@ export async function middleware(req: NextRequest) {
   if (isPassThrough(pathname)) {
     console.log(
       "\x1b[33m%s\x1b[0m",
-      `isPassThrough, редирект на ${pathname}${search}`
+      `isPassThrough, редирект на ${pathname}${search}`,
     );
 
     return NextResponse.next();
@@ -49,7 +49,7 @@ export async function middleware(req: NextRequest) {
   const appSecret =
     process.env.SERVER_JWT_SECRET || process.env.NEXTAUTH_SECRET;
 
-  console.log('\x1b[36m%s\x1b[0m', `[ПОДПИСЬ] Ключ: "${appSecret}"`);
+  console.log("\x1b[36m%s\x1b[0m", `[ПОДПИСЬ] Ключ: "${appSecret}"`);
 
   if (!appSecret) {
     // Fail safe: no secret — don't allow access
@@ -82,10 +82,11 @@ export async function middleware(req: NextRequest) {
     const exp = payload.exp; // Unix timestamp в секундах
 
     if (exp && Date.now() / 1000 > exp) {
-      console.log('\x1b[31m%s\x1b[0m', "JWT просрочен");
+      console.log("\x1b[31m%s\x1b[0m", "JWT просрочен");
       const res = NextResponse.redirect(loginUrl);
     } else {
-      console.log('\x1b[32m%s\x1b[0m', "JWT действителен");
+      console.log("\x1b[32m%s\x1b[0m", "JWT действителен");
+
       return NextResponse.next();
     }
     //--------------------------------
@@ -120,7 +121,7 @@ export async function middleware(req: NextRequest) {
   if (gSession && (gSession as any).sub && (gSession as any).email) {
     console.log(
       "\x1b[32m%s\x1b[0m",
-      "NextAuth session found, minting jwtCookie..."
+      "NextAuth session found, minting jwtCookie...",
     );
     const appJwt = await new SignJWT({
       sub: (gSession as any).sub,
@@ -131,8 +132,7 @@ export async function middleware(req: NextRequest) {
       .setExpirationTime("1h")
       .sign(key);
 
-    console.log("\x1b[34m%s\x1b[0m", "Редирект на ${pathname}${search}");
-    const res = NextResponse.next();
+    const res = NextResponse.redirect(req.nextUrl);
 
     res.cookies.set("jwt", appJwt, {
       httpOnly: true,
@@ -140,7 +140,15 @@ export async function middleware(req: NextRequest) {
       path: "/",
     });
 
+    console.log(`\x1b[34m%s\x1b[0m", "Редирект на ${pathname}${search}`);
+
     return res;
+  } else {
+    console.log(
+      "\x1b[31m%s\x1b[0m",
+      "NextAuth session problems. gSession =",
+      gSession,
+    );
   }
 
   // 3) Neither our JWT nor NextAuth session — login

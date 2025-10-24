@@ -113,7 +113,9 @@ export const useUserStore = create<UserState>((set) => {
 
                   return true;
                 }
-              } catch {}
+              } catch(e) {
+                console.log("Error parsing refresh payload:", e);
+              }
             }
           }
 

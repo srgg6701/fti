@@ -74,13 +74,13 @@ export async function apiFetch<T = any>(
     if (hasJson) payload = await res.json();
     else payload = await res.text();
 
-    console.log(`%cpayload for ${input}`, `color: ${color}`, {
+    /* console.log(`%cpayload for ${input}`, `color: ${color}`, {
       contentType,
       hasJson,
       input,
       res,
       payload,
-    });
+    }); */
   } catch (e) {
     console.log("Error parsing response payload as JSON/text:", e);
     // Ignore parse errors — we'll surface status/errors below.
