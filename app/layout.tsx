@@ -50,10 +50,13 @@ export default async function RootLayout({
   if (jwt) {
     try {
       const decodedJwt = decodeJwt(jwt);
-      console.log("Decoded JWT in layout", decodedJwt);
+      //console.log("Decoded JWT in layout", decodedJwt);
       const { exp } = decodedJwt;
 
       isAuth = !!exp && exp * 1000 > Date.now();
+
+      console.log("%cUser is auth in layout:", "color: violet", isAuth);
+
     } catch (e) {
       console.log("Error decoding JWT in layout:", e);
     }

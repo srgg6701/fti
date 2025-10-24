@@ -11,17 +11,18 @@ export default function Default() {
   const isAuthenticated = useUserStore((state) => state.isAuthenticated);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      console.log("%cUser is authenticated...", "color: green;");
+    if (!isAuthenticated) {
       const tm = setTimeout(() => {
-        console.log("Redirecting to /home after 4 seconds");
+        console.log("%cUser is not authenticated, let them go to home and check there", "color: green;");
+        //console.log("Redirecting to /home after 4 seconds");
 
         router.replace(routeAliases.home);
       }, 4000);
-
+      
       return () => clearTimeout(tm); // Clear timeout on unmount
     } else {
-      console.log("%cUser not authenticated, ... what next... ?", "color: yellow;");  
+      console.log("%cUser authenticated, redirected them to home immidiately", "color: yellow;");  
+      router.replace(routeAliases.home);
     }
   }, [isAuthenticated, router]); // Add isAuthenticated and router to the dependency array
 
