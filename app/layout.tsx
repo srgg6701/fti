@@ -1,6 +1,8 @@
 import { Metadata, Viewport } from "next";
 // TODO: check if we really need this:
 import clsx from "clsx";
+import { cookies } from "next/headers";
+import { decodeJwt } from "jose";
 
 import "@/styles/globals.css";
 import "@/styles/xtra.css";
@@ -36,11 +38,27 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const storedCookies = await cookies();
+  const jwt = storedCookies.get("jwt")?.value;
+  let isAuth = false;
+
+  if (jwt) {
+    try {
+      const decodedJwt = decodeJwt(jwt);
+      console.log("Decoded JWT in layout", decodedJwt);
+      const { exp } = decodedJwt;
+
+      isAuth = !!exp && exp * 1000 > Date.now();
+    } catch (e) {
+      console.log("Error decoding JWT in layout:", e);
+    }
+  }
+
   return (
     <html suppressHydrationWarning lang="en">
       <head />
@@ -61,7 +79,7 @@ export default function RootLayout({
             className="relative m-auto flex h-screen max-w-[1440px] flex-col px-10 md:px-[55.38px]"
             id="main-wrapper"
           >
-            <Navbar />
+            <Navbar isAuth={isAuth} />
             <main className="container mx-auto flex-grow py-6">{children}</main>
             <Footer />
             {/* <ThemeAutoSwitch /> */}

@@ -146,9 +146,11 @@ export default function GraphAndBalance({
   wrapper?: boolean;
   height?: string;
 }) {
-  console.groupCollapsed("%cBalance Chart", "color: violet");
-  console.log(chart);
-  console.groupEnd();
+  
+  // INFO: CONSOLE:GraphAndBalance
+  // console.groupCollapsed("%cGraphAndBalance", "color: violet");
+  // console.log(chart);
+  // console.groupEnd();
 
   const [sel, setSel] = useState<PeriodKey>("6M");
 

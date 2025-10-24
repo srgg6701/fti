@@ -12,13 +12,16 @@ export default function Default() {
 
   useEffect(() => {
     if (isAuthenticated) {
+      console.log("%cUser is authenticated...", "color: green;");
       const tm = setTimeout(() => {
-        router.replace(routeAliases.home);
-
         console.log("Redirecting to /home after 4 seconds");
+
+        router.replace(routeAliases.home);
       }, 4000);
 
       return () => clearTimeout(tm); // Clear timeout on unmount
+    } else {
+      console.log("%cUser not authenticated, ... what next... ?", "color: yellow;");  
     }
   }, [isAuthenticated, router]); // Add isAuthenticated and router to the dependency array
 

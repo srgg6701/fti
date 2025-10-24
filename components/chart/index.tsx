@@ -79,12 +79,13 @@ export default function BalanceChart({
     .filter((v: any) => Number.isFinite(v));
   const [yMin, yMax] = ys.length ? getYDomain(ys) : [0, 0];
 
-  console.group("%cBalance Chart", "color: violet");
+  // INFO: CONSOLE: Balance Chart
+  /* console.group("%cBalance Chart", "color: violet");
   console.log({
     data: payload.data?.chartData,
     rest: { payload, period, points, yMin, yMax },
   });
-  console.groupEnd();
+  console.groupEnd(); */
 
   // effective domain: prefer external xDomain, else use points
   const [minX, maxX] =
