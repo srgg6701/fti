@@ -31,7 +31,9 @@ export default function Buttons({ messageType, status, type }: ButtonsProps) {
             width={18}
           />
         }
-        onPress={() => signIn("google")}
+        onPress={() => {
+          () => signIn("google", { callbackUrl: "/home" });
+        }}
       />
       <ButtonRoundedBlue type={type} />
       {(urlFirstSegment !== siteConfig.innerItems.auth.login.href_ui &&
