@@ -17,6 +17,11 @@ type ButtonsProps = {
   type: "button" | "submit" | "reset" | undefined;
 };
 
+async function goGoogle() {
+  console.log("%cGo to Google", "color: lightskyblue");
+  await signIn("google", { redirectTo: "/" });
+};
+
 export default function Buttons({ messageType, status, type }: ButtonsProps) {
   const urlFirstSegment = getUrlSegments(usePathname, 1);
 
@@ -31,9 +36,7 @@ export default function Buttons({ messageType, status, type }: ButtonsProps) {
             width={18}
           />
         }
-        onPress={() => {
-          () => signIn("google", { callbackUrl: "/home" });
-        }}
+        onPress={goGoogle}
       />
       <ButtonRoundedBlue type={type} />
       {(urlFirstSegment !== siteConfig.innerItems.auth.login.href_ui &&
