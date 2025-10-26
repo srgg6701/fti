@@ -4,7 +4,11 @@ import Google from "next-auth/providers/google";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: { signIn: "/login" },
-  providers: [Google],
+  providers: [
+    Google({
+      authorization: { params: { prompt: "select_account" } },
+    }),
+  ],
   // or all params together:
   //...authConfig,
   // session: { strategy: "jwt" },

@@ -4,24 +4,49 @@ import { useEffect } from "react";
 
 import { LogoFTI } from "@/components/icons";
 import { useUserStore } from "@/lib/store/userStore";
-import { routeAliases } from "@/config/site";
+import { siteConfig, routeAliases } from "@/config/site";
 
 export default function Default() {
   const router = useRouter();
-  const isAuthenticated = useUserStore((state) => state.isAuthenticated);
+  const { isAuthenticated, initializeUser } = useUserStore((state) => state);
 
   useEffect(() => {
     if (!isAuthenticated) {
+      let userInit = false;
       const tm = setTimeout(() => {
-        console.log("%cUser is not authenticated, let them go to home and check there", "color: green;");
+        console.log(
+          "%cUser is not authenticated, let them go to home and check there",
+          "color: green;"
+        );
         //console.log("Redirecting to /home after 4 seconds");
 
-        router.replace(routeAliases.home);
+        if (userInit) router.replace(routeAliases.home);
       }, 4000);
-      
+
+      initializeUser()
+        .then((userIsIn) => {
+          if (!userIsIn) {
+            console.log("%cCan't get user data (/me); redirect to login page", "color: orangered");
+            router.replace(siteConfig.innerItems.auth.login.href_ui);
+          }
+          userInit = userIsIn;
+          console.log(
+            "%cUser is initialized",
+            "color: green",
+            String(userInit),
+          );
+        })
+        .catch((error) => {
+          // обработка ошибки
+          console.log("%cError whitle initializing user", "color: orangered", error);
+        });
+
       return () => clearTimeout(tm); // Clear timeout on unmount
     } else {
-      console.log("%cUser authenticated, redirected them to home immidiately", "color: yellow;");  
+      console.log(
+        "%cUser authenticated, redirected them to home immidiately",
+        "color: yellow;"
+      );
       router.replace(routeAliases.home);
     }
   }, [isAuthenticated, router]); // Add isAuthenticated and router to the dependency array

@@ -51,7 +51,7 @@ export const useUserStore = create<UserState>((set) => {
           // FIXME: can we change this to use apiFetch?
           let res = await fetch(`/api${siteConfig.innerItems.auth.me.href}`, {
             credentials: "include",
-          });
+          }); console.log('%cMe request result', "color: lime", res);
 
           if (res.ok) {
             const data: { user?: ApiUser } = await res.json();
@@ -70,7 +70,7 @@ export const useUserStore = create<UserState>((set) => {
           // Попробуем обновить access-token через refresh endpoint
           if (res.status === 401 || res.status === 403) {
             // FIXME: can we change this to use apiFetch?
-            const r = await fetch(
+            const refreshResult = await fetch(
               `/api${siteConfig.innerItems.auth.refresh.href}`,
               {
                 method: "POST",
@@ -78,7 +78,7 @@ export const useUserStore = create<UserState>((set) => {
               },
             );
 
-            if (r.ok) {
+            if (refreshResult.ok) {
               // после refresh — повторный /me
               const me = await fetch(
                 `/api${siteConfig.innerItems.auth.me.href}`,
@@ -102,7 +102,7 @@ export const useUserStore = create<UserState>((set) => {
               }
               // fallback: если refresh вернул payload с user
               try {
-                const payload = await r.json();
+                const payload = await refreshResult.json();
 
                 if (payload.user) {
                   set({
