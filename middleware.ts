@@ -146,6 +146,7 @@ export default auth(async (req /* : NextRequest */) => {
       `[AUTH] Google session detected for ${session.user.email}`,
     );
 
+    //--CURRENT VERSION of dealing with Google: make own jwt--//
     // Генерируем единый app-JWT из Google-сессии (минимальные клеймы)
     const appJwt = await mintAppJwt({
       sub: session.user.email,
@@ -173,6 +174,35 @@ export default auth(async (req /* : NextRequest */) => {
     console.log("\x1b[36m%s\x1b[0m", `Go to ${pathname}`);
 
     return res;
+    //--END of CURRENT VERSION of dealing with Google: make own jwt--//
+
+    //--NEW VERSION of dealing with Google: using its token to send it to the server intentionally--//
+    const googleIdToken = (session as any)?.googleIdToken;
+
+    if (!googleIdToken) return NextResponse.redirect(loginUrl);
+
+    // 3) обмен на серверный JWT
+    const res = await fetch(`${process.env.API_URL}/auth/exchange`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      // важно: НЕ посылаем никакие секреты, только Google ID token
+      body: JSON.stringify({ id_token: googleIdToken }),
+    });
+
+    if (!res.ok) return NextResponse.redirect(loginUrl);
+    const { jwt } = await res.json(); // сервер вернул свой JWT
+
+    // 4) сохраняем серверный JWT
+    const next = NextResponse.next();
+
+    next.cookies.set("jwt", jwt, {
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+    });
+
+    return next;
+    //--END of THE NEW VERSION of dealing with Google--//
   }
 
   // 3) Ни JWT, ни Google — уходим на /login
