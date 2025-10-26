@@ -119,7 +119,7 @@ function makeButton(preset: PresetProps) {
 
 export const ButtonRoundedGrey = makeButton({
   bgColor: "bg-translusent-light",
-  btnText: "Register with Google",
+  btnText: "Sign in with Google",
   outline: "outline outline-color-15",
 });
 
