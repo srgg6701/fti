@@ -124,11 +124,11 @@ export default function HomeSections({
     })();
   }, []);
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.groupCollapsed(
       "%cChecking data for dataSections",
       "color: lightblue",
-    );
+    ); 
     console.log({
       homeData: {
         userSubscriptions,
@@ -141,7 +141,7 @@ export default function HomeSections({
         theBestOfTheWeekData,
         theBestOfTheMonthData,
       },
-    });
+    }); 
 
     console.groupEnd();
   }, [
@@ -152,7 +152,7 @@ export default function HomeSections({
     theBestOfTheDayData,
     theBestOfTheWeekData,
     theBestOfTheMonthData,
-  ]);
+  ]); */
 
   return (
     <>

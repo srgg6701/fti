@@ -35,10 +35,11 @@ const items = siteConfig.navItems;
 const innerItems = siteConfig.innerItems;
 
 export const Navbar = ({ isAuth }: { isAuth: boolean }) => {
-  const { initializeUser, isAuthenticated, email, user } = useUserStore((state) => state);
-  
-  //console.log("%cNavbar, data from userSotre", "color: violet", { initializeUser, isAuthenticated, email, user });
+  const { initializeUser, isAuthenticated, email, user } = useUserStore(
+    (state) => state,
+  );
 
+  //console.log("%cNavbar, data from userSotre", "color: violet", { initializeUser, isAuthenticated, email, user });
 
   useEffect(() => {
     if (!isAuthenticated && !isAuth) {

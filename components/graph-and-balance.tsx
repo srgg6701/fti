@@ -146,7 +146,6 @@ export default function GraphAndBalance({
   wrapper?: boolean;
   height?: string;
 }) {
-  
   // INFO: CONSOLE:GraphAndBalance
   // console.groupCollapsed("%cGraphAndBalance", "color: violet");
   // console.log(chart);

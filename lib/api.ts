@@ -13,7 +13,7 @@ export async function apiFetch<T = any>(
   input: RequestInfo,
   init: RequestInit = {},
 ): Promise<T> {
-  console.log("%capiFetch called for ", "color: lightskyblue", input);
+  // console.log("%capiFetch called for ", "color: lightskyblue", input);
   // INFO: look at .sources\dev-clarifications\request-headers.md
   // Build headers robustly by using the Headers *CONSTRUCTOR*.
   // This supports incoming headers as plain objects, arrays, or Headers instances.
@@ -94,7 +94,7 @@ export async function apiFetch<T = any>(
         email: null,
         user: null,
       });
-    } catch(е) {
+    } catch (е) {
       console.log("Error updating user store on auth error:", е);
     }
 

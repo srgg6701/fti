@@ -3,16 +3,18 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 //import { useRouter } from "next/navigation";
 
+import { routeAliases } from "@/config/site";
+import { Strategy, UserAccount, UserSubscription } from "@/types/apiData";
+import { apiFetch } from "@/lib/api";
+import { useDataStore } from "@/lib/store/dataStore";
 import HomeSections from "@/components/dataSections";
 import AddAccount from "@/components/pop-ups/add-account";
 import AccountAdded from "@/components/pop-ups/account-added";
 import AddSubscription from "@/components/pop-ups/add-subscription";
-import { apiFetch } from "@/lib/api";
-import { Strategy, UserAccount, UserSubscription } from "@/types/apiData";
 import { ButtonRoundedBlue } from "@/components/button-rounded";
-import { routeAliases } from "@/config/site";
 
 export default function Home() {
+  const { data: allStrategies } = useDataStore((store) => store);
   //console.log("Home component rendered");
   const [isAddAccountOpen, setAddAccount] = useState<boolean | null>(null);
   const [isAccountAddOpen, setAccountAddOpen] = useState<boolean | null>(null);
@@ -23,7 +25,7 @@ export default function Home() {
   } | null>(null);
 
   const [userAccounts, setUserAccounts] = useState<UserAccount[] | null>(null);
-  const [allStrategies, setAllStrategies] = useState<Strategy[]>([]);
+  //const [allStrategies, setAllStrategies] = useState<Strategy[]>([]);
   const [applicableStrategies, setApplicableStrategies] = useState<Strategy[]>(
     [],
   );
@@ -54,12 +56,14 @@ export default function Home() {
 
   useEffect(() => {
     (async () => {
-      const [userAccountsApiData, strategiesApiData, userSubscriptionsApiData] =
-        await Promise.all([
-          apiFetch<UserAccount[]>("/api/trading-accounts/user-accounts"),
-          apiFetch<Strategy[]>("/api/statistics/strategies"), // INFO: do we need this? ITS HUGE
-          apiFetch<UserSubscription[]>("/api/subscriptions/user-subscriptions"),
-        ]);
+      const [
+        userAccountsApiData,
+        /* strategiesApiData,  */ userSubscriptionsApiData,
+      ] = await Promise.all([
+        apiFetch<UserAccount[]>("/api/trading-accounts/user-accounts"),
+        //apiFetch<Strategy[]>("/api/statistics/strategies"), // INFO: do we need this? ITS HUGE
+        apiFetch<UserSubscription[]>("/api/subscriptions/user-subscriptions"),
+      ]);
 
       console.groupCollapsed("Fetched Home data");
       console.log({
@@ -68,18 +72,28 @@ export default function Home() {
       });
       console.groupEnd();
       setUserAccounts(userAccountsApiData);
-      setAllStrategies(strategiesApiData);
+      //setAllStrategies(strategiesApiData);
       setUserSubscription(userSubscriptionsApiData);
     })();
   }, []);
 
   useEffect(() => {
+    if (!allStrategies || !allStrategies.length) {
+      console.log("%cNo strategies so far...", "color: #ddd");
+
+      return;
+    }
     const sbKeys = userSubscriptions.map((s) => s.strategyId);
     const restStrategies = allStrategies.filter(
-      (s) => !sbKeys.includes(s.strategyId),
+      (s: Strategy) => !sbKeys.includes(s.strategyId),
     );
 
-    console.log({ sbKeys, restStrategies, userSubscriptions, allStrategies });
+    console.log("%cHome page data", "background-color:#ddd", {
+      sbKeys,
+      restStrategies,
+      userSubscriptions,
+      allStrategies,
+    });
 
     setApplicableStrategies(restStrategies);
   }, [allStrategies]);

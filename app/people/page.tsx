@@ -20,7 +20,6 @@ export default function People() {
       })();
     } catch (error) {}
   }, []);
-  
 
   return (
     <section className="mx-auto max-w-[550px] pt-20 pb-[56px]">
@@ -40,11 +39,12 @@ export default function People() {
         >
           <div className="flex justify-start items-center">
             <Image
-  alt={p.name}
-  className="mr-5"
-  height={55}
-  src={`/assets/images/exchange/${p.logoUrl.split('/').pop()?.replace('.jpg', '.png')}`}  width={55}
-/>
+              alt={p.name}
+              className="mr-5"
+              height={55}
+              src={`/assets/images/exchange/${p.logoUrl.split("/").pop()?.replace(".jpg", ".png")}`}
+              width={55}
+            />
             <span>{p.name}</span>
           </div>
           <Image

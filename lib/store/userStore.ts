@@ -51,7 +51,9 @@ export const useUserStore = create<UserState>((set) => {
           // FIXME: can we change this to use apiFetch?
           let res = await fetch(`/api${siteConfig.innerItems.auth.me.href}`, {
             credentials: "include",
-          }); console.log('%cMe request result', "color: lime", res);
+          });
+
+          console.log("%cMe request result", "color: lime", res);
 
           if (res.ok) {
             const data: { user?: ApiUser } = await res.json();
@@ -113,7 +115,7 @@ export const useUserStore = create<UserState>((set) => {
 
                   return true;
                 }
-              } catch(e) {
+              } catch (e) {
                 console.log("Error parsing refresh payload:", e);
               }
             }
@@ -122,9 +124,10 @@ export const useUserStore = create<UserState>((set) => {
           set({ isAuthenticated: false, email: null, user: null });
 
           return false;
-        } catch (e){
+        } catch (e) {
           console.log("Error in initializeUser:", e);
           set({ isAuthenticated: false, email: null, user: null });
+
           return false;
         } finally {
           // allow future attempts

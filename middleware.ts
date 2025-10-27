@@ -27,7 +27,7 @@ function getKey() {
     // Красный
     console.error(
       "\x1b[31m%s\x1b[0m",
-      "[AUTH] Missing SERVER_JWT_SECRET/AUTH_SECRET"
+      "[AUTH] Missing SERVER_JWT_SECRET/AUTH_SECRET",
     );
     throw new Error("Missing JWT secret");
   }
@@ -44,7 +44,7 @@ async function mintAppJwt(payload: Record<string, unknown>) {
   // Голубой
   console.log(
     "\x1b[36m%s\x1b[0m",
-    `[AUTH] Minting app JWT, exp=${new Date(exp * 1000).toISOString()}`
+    `[AUTH] Minting app JWT, exp=${new Date(exp * 1000).toISOString()}`,
   );
 
   return await new SignJWT({ ...payload })
@@ -68,7 +68,7 @@ async function verifyAppJwt(token: string) {
     // Жёлтый
     console.warn(
       "\x1b[33m%s\x1b[0m",
-      `[AUTH] App JWT invalid: ${(e as Error).message}`
+      `[AUTH] App JWT invalid: ${(e as Error).message}`,
     );
 
     return null;
@@ -83,7 +83,7 @@ export default auth(async (req /* : NextRequest */) => {
   if (isPassThrough(pathname)) {
     console.log(
       "\x1b[33m%s\x1b[0m",
-      `isPassThrough, идём дальше — на ${pathname}${search}`
+      `isPassThrough, идём дальше — на ${pathname}${search}`,
     );
 
     return NextResponse.next();
@@ -112,7 +112,7 @@ export default auth(async (req /* : NextRequest */) => {
         if (exp && Date.now() / 1000 > exp) {
           console.log(
             "\x1b[31m%s\x1b[0m",
-            `JWT просрочен, редирект на ${loginUrl}`
+            `JWT просрочен, редирект на ${loginUrl}`,
           );
           redirect.cookies.delete(COOKIE_NAME); // удаляем на том же ответе
 
@@ -124,7 +124,7 @@ export default auth(async (req /* : NextRequest */) => {
       } catch (e) {
         console.warn(
           "\x1b[33m%s\x1b[0m",
-          `[AUTH] JWT decode error: ${(e as Error).message}`
+          `[AUTH] JWT decode error: ${(e as Error).message}`,
         );
         redirect.cookies.delete(COOKIE_NAME); // удаляем на том же ответе
 
@@ -143,7 +143,7 @@ export default auth(async (req /* : NextRequest */) => {
     // Оранжевый
     console.log(
       "\x1b[33m%s\x1b[0m",
-      `[AUTH] Google session detected for ${session.user.email}`
+      `[AUTH] Google session detected for ${session.user.email}`,
     );
 
     // Генерируем единый app-JWT из Google-сессии (минимальные клеймы)
@@ -167,7 +167,7 @@ export default auth(async (req /* : NextRequest */) => {
     // Зелёный
     console.log(
       "\x1b[32m%s\x1b[0m",
-      "[AUTH] App JWT minted from Google session and set to cookie"
+      "[AUTH] App JWT minted from Google session and set to cookie",
     );
 
     console.log("\x1b[36m%s\x1b[0m", `Go to ${pathname}`);
@@ -185,7 +185,7 @@ export default auth(async (req /* : NextRequest */) => {
     // Красный
     console.warn(
       "\x1b[31m%s\x1b[0m",
-      `[AUTH] No auth. Redirect to ${loginUrl.pathname}`
+      `[AUTH] No auth. Redirect to ${loginUrl.pathname}`,
     );
 
     return NextResponse.redirect(loginUrl);

@@ -40,7 +40,13 @@ export const authOptions: NextAuthConfig = {
               email,
               name,
             }),
-          }); console.log("[jwt] exchange result:", resp.status, await resp.clone().text());
+          });
+
+          console.log(
+            "[jwt] exchange result:",
+            resp.status,
+            await resp.clone().text(),
+          );
 
           if (!resp.ok) {
             const text = await resp.text().catch(() => "");

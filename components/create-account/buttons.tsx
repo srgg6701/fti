@@ -20,7 +20,7 @@ type ButtonsProps = {
 async function goGoogle() {
   console.log("%cGo to Google", "color: lightskyblue");
   await signIn("google", { redirectTo: "/" });
-};
+}
 
 export default function Buttons({ messageType, status, type }: ButtonsProps) {
   const urlFirstSegment = getUrlSegments(usePathname, 1);

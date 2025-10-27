@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { decodeJwt } from "jose";
+
 import { Navbar } from "@/components/navbar";
 
 export default async function CheckAuthServer() {

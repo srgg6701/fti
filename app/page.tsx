@@ -4,11 +4,13 @@ import { useEffect } from "react";
 
 import { LogoFTI } from "@/components/icons";
 import { useUserStore } from "@/lib/store/userStore";
+import { useDataStore } from "@/lib/store/dataStore";
 import { siteConfig, routeAliases } from "@/config/site";
 
 export default function Default() {
   const router = useRouter();
   const { isAuthenticated, initializeUser } = useUserStore((state) => state);
+  const { load } = useDataStore((state) => state);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -16,9 +18,8 @@ export default function Default() {
       const tm = setTimeout(() => {
         console.log(
           "%cUser is not authenticated, let them go to home and check there",
-          "color: green;"
-        );
-        //console.log("Redirecting to /home after 4 seconds");
+          "color: green;",
+        ); //console.log("Redirecting to /home after 4 seconds");
 
         if (userInit) router.replace(routeAliases.home);
       }, 4000);
@@ -26,26 +27,35 @@ export default function Default() {
       initializeUser()
         .then((userIsIn) => {
           if (!userIsIn) {
-            console.log("%cCan't get user data (/me); redirect to login page", "color: orangered");
+            console.log(
+              "%cCan't get user data (/me); redirect to login page",
+              "color: orangered",
+            );
             router.replace(siteConfig.innerItems.auth.login.href_ui);
+          } else {
+            load.strategies();
           }
           userInit = userIsIn;
-          console.log(
+          /* console.log(
             "%cUser is initialized",
             "color: green",
             String(userInit),
-          );
+          ); */
         })
         .catch((error) => {
           // обработка ошибки
-          console.log("%cError whitle initializing user", "color: orangered", error);
+          console.log(
+            "%cError whitle initializing user",
+            "color: orangered",
+            error,
+          );
         });
 
       return () => clearTimeout(tm); // Clear timeout on unmount
     } else {
       console.log(
         "%cUser authenticated, redirected them to home immidiately",
-        "color: yellow;"
+        "color: yellow;",
       );
       router.replace(routeAliases.home);
     }

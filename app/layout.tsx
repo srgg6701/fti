@@ -55,8 +55,7 @@ export default async function RootLayout({
 
       isAuth = !!exp && exp * 1000 > Date.now();
 
-      console.log("%cUser is auth in layout:", "color: violet", isAuth);
-
+      //console.log("%cUser is auth in layout:", "color: violet", isAuth);
     } catch (e) {
       console.log("Error decoding JWT in layout:", e);
     }

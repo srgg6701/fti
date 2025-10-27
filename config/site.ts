@@ -155,6 +155,12 @@ export const siteConfig = {
       header: "Terminal",
       href: "/terminal",
     },
+    statistics: {
+      header: "Statistics",
+      strategies: {
+        href: "/statistics/strategies",
+      },
+    },
     trade_systems: {
       header: "Trade systems",
       href: "/trade-systems",
