@@ -252,7 +252,15 @@ export default function BalanceChart({
 
   return (
     <div className={containerClasses}>
-      <div style={{ width: "100%", height }}>
+      <div
+        className="
+    [&_*:focus]:outline-none
+    [&_*:focus-visible]:outline-none
+    [&_*:focus]:shadow-none
+    [&_*:focus-visible]:shadow-none
+  "
+        style={{ width: "100%", height }}
+      >
         <ResponsiveContainer>
           <AreaChart
             data={pointsWithY}

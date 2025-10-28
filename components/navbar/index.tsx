@@ -42,7 +42,7 @@ export const Navbar = ({ isAuth }: { isAuth: boolean }) => {
   //console.log("%cNavbar, data from userSotre", "color: violet", { initializeUser, isAuthenticated, email, user });
 
   useEffect(() => {
-    if (!isAuthenticated && !isAuth) {
+    if (!isAuthenticated) {
       console.log(
         "%cNavbar: User not authenticated, cancelling initializeUser",
         "color: orange;",
@@ -66,6 +66,7 @@ export const Navbar = ({ isAuth }: { isAuth: boolean }) => {
           "%cError fetching notifications:",
           "color: yellow",
           error,
+          { isAuthenticated, isAuth },
         );
       }
     };
