@@ -1,0 +1,98 @@
+import { Metadata, Viewport } from "next";
+// TODO: check if we really need this:
+import clsx from "clsx";
+import { cookies } from "next/headers";
+import { decodeJwt } from "jose";
+
+import "@/styles/globals.css";
+import "@/styles/xtra.css";
+import "@/styles/text-colors.css";
+import "@/styles/bg.css";
+import "@/styles/style-modals.css";
+import "@/styles/fonts.css";
+import "@/styles/circular-progress.css";
+import "@/styles/style-assets-list.css";
+
+import { siteConfig } from "@/config/site";
+//import { ThemeAutoSwitch } from '@/app/ThemeAutoSwitch';
+import { fontSans } from "@/config/fonts";
+import { Navbar } from "@/components/navbar";
+import Footer from "@/components/footer";
+import { Providers } from "@/app/providers";
+
+export const metadata: Metadata = {
+  title: {
+    default: siteConfig.name,
+    template: `%s - ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  icons: {
+    icon: "/favicon.ico",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+};
+
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const storedCookies = await cookies();
+  const jwt = storedCookies.get("jwt")?.value;
+  let isAuth = false;
+
+  if (jwt) {
+    try {
+      const decodedJwt = decodeJwt(jwt);
+      //console.log("Decoded JWT in layout", decodedJwt);
+      const { exp } = decodedJwt;
+
+      isAuth = !!exp && exp * 1000 > Date.now();
+
+<<<<<<< HEAD
+      //console.log("%cUser is auth in layout:", "color: violet", isAuth);
+=======
+      console.log("%cUser is auth in layout:", "color: violet", isAuth);
+
+>>>>>>> 98127e4150ac95c15d44eed211b514d87d8c5061
+    } catch (e) {
+      console.log("Error decoding JWT in layout:", e);
+    }
+  }
+
+  return (
+    <html suppressHydrationWarning lang="en">
+      <head />
+      <body
+        className={clsx(
+          "text-foreground bg-background min-h-screen font-sans antialiased",
+          fontSans.variable,
+        )} /*  */
+      >
+        <Providers
+          themeProps={{
+            attribute: "class",
+            defaultTheme: "dark",
+            enableSystem: false,
+          }}
+        >
+          <div
+            className="relative m-auto flex h-screen max-w-[1440px] flex-col px-10 md:px-[55.38px]"
+            id="main-wrapper"
+          >
+            <Navbar isAuth={isAuth} />
+            <main className="container mx-auto flex-grow py-6">{children}</main>
+            <Footer />
+            {/* <ThemeAutoSwitch /> */}
+          </div>
+        </Providers>
+      </body>
+    </html>
+  );
+}
