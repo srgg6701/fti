@@ -24,9 +24,8 @@ function getKey() {
   const secret = process.env.SERVER_JWT_SECRET || process.env.AUTH_SECRET;
 
   if (!secret) {
-    // Красный
     console.error(
-      "\x1b[31m%s\x1b[0m",
+      "\x1b[31m%s\x1b[0m", // Красный
       "[AUTH] Missing SERVER_JWT_SECRET/AUTH_SECRET",
     );
     throw new Error("Missing JWT secret");
@@ -41,9 +40,8 @@ async function mintAppJwt(payload: Record<string, unknown>) {
   const now = Math.floor(Date.now() / 1000);
   const exp = now + JWT_TTL_SEC;
 
-  // Голубой
   console.log(
-    "\x1b[36m%s\x1b[0m",
+    "\x1b[36m%s\x1b[0m", // Голубой
     `[AUTH] Minting app JWT, exp=${new Date(exp * 1000).toISOString()}`,
   );
 
@@ -60,14 +58,15 @@ async function verifyAppJwt(token: string) {
     const key = getKey();
     const { payload } = await jwtVerify(token, key, { algorithms: ["HS256"] });
 
-    // Зелёный
-    console.log("\x1b[32m%s\x1b[0m", "[AUTH] App JWT verified");
+    console.debug(
+      "\x1b[32m%s\x1b[0m", // Зелёный
+      "[AUTH] App JWT verified",
+    );
 
     return payload;
   } catch (e) {
-    // Жёлтый
     console.warn(
-      "\x1b[33m%s\x1b[0m",
+      "\x1b[33m%s\x1b[0m", // Жёлтый
       `[AUTH] App JWT invalid: ${(e as Error).message}`,
     );
 
@@ -82,8 +81,8 @@ export default auth(async (req /* : NextRequest */) => {
 
   if (isPassThrough(pathname)) {
     console.log(
-      "\x1b[33m%s\x1b[0m",
-      `isPassThrough, идём дальше — на ${pathname}${search}`,
+      "\x1b[34m%s\x1b[0m", // Синий
+      `[AUTH] isPassThrough, go next — to ${pathname}${search}`,
     );
 
     return NextResponse.next();
@@ -110,20 +109,23 @@ export default auth(async (req /* : NextRequest */) => {
 
       try {
         if (exp && Date.now() / 1000 > exp) {
-          console.log(
-            "\x1b[31m%s\x1b[0m",
-            `JWT просрочен, редирект на ${loginUrl}`,
+          console.warn(
+            "\x1b[33m%s\x1b[0m",
+            `[AUTH] JWT expired, redirect to ${loginUrl}`,
           );
           redirect.cookies.delete(COOKIE_NAME); // удаляем на том же ответе
 
           return redirect;
         }
-        console.log("\x1b[32m%s\x1b[0m", "JWT действителен, идём куда шли");
+        console.log(
+          "\x1b[34m%s\x1b[0m", // Синий
+          "[AUTH] JWT is OK, go further",
+        );
 
         return NextResponse.next();
       } catch (e) {
-        console.warn(
-          "\x1b[33m%s\x1b[0m",
+        console.error(
+          "\x1b[31m%s\x1b[0m", // Красный
           `[AUTH] JWT decode error: ${(e as Error).message}`,
         );
         redirect.cookies.delete(COOKIE_NAME); // удаляем на том же ответе
@@ -140,69 +142,82 @@ export default auth(async (req /* : NextRequest */) => {
   const session = (req as any).auth;
 
   if (session?.user?.email) {
-    // Оранжевый
     console.log(
-      "\x1b[33m%s\x1b[0m",
+      "\x1b[36m%s\x1b[0m", // Голубой
       `[AUTH] Google session detected for ${session.user.email}`,
     );
 
-    //--CURRENT VERSION of dealing with Google: make own jwt--//
-    // Генерируем единый app-JWT из Google-сессии (минимальные клеймы)
-    const appJwt = await mintAppJwt({
-      sub: session.user.email,
-      email: session.user.email,
-      name: session.user.name,
-      // Добавляй свои доменные клеймы тут
-    });
-
-    const res = NextResponse.next();
-
-    res.cookies.set(COOKIE_NAME, appJwt, {
-      httpOnly: true,
-      path: "/",
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-      maxAge: JWT_TTL_SEC,
-    });
-
-    // Зелёный
-    console.log(
-      "\x1b[32m%s\x1b[0m",
-      "[AUTH] App JWT minted from Google session and set to cookie",
-    );
-
-    console.log("\x1b[36m%s\x1b[0m", `Go to ${pathname}`);
-
-    return res;
-    //--END of CURRENT VERSION of dealing with Google: make own jwt--//
-
-    //--NEW VERSION of dealing with Google: using its token to send it to the server intentionally--//
+    // Using Google token to send it to the server intentionally--//
     const googleIdToken = (session as any)?.googleIdToken;
 
-    if (!googleIdToken) return NextResponse.redirect(loginUrl);
+    if (!googleIdToken) {
+      console.warn(
+        "\x1b[33m%s\x1b[0m", // Жёлтый
+        "[AUTH] We have not googleIdToken as we didn't get authenticated through Google and have to do that now...",
+      );
 
-    // 3) обмен на серверный JWT
-    const res = await fetch(`${process.env.API_URL}/auth/exchange`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      // важно: НЕ посылаем никакие секреты, только Google ID token
-      body: JSON.stringify({ id_token: googleIdToken }),
-    });
+      return NextResponse.redirect(loginUrl);
+    } else {
+      console.log(
+        "\x1b[32m%s\x1b[0m", // Зелёный
+        "[AUTH] Got googleIdToken:",
+        googleIdToken,
+        "will post it to server API",
+      );
+    }
+    const exchangeCallEndpoint = `${process.env?.API_URL}/auth/google`;
 
-    if (!res.ok) return NextResponse.redirect(loginUrl);
-    const { jwt } = await res.json(); // сервер вернул свой JWT
+    try {
+      // 3) обмен на серверный JWT
+      const res = await fetch(exchangeCallEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        // важно: НЕ посылаем никакие секреты, только Google ID token
+        body: JSON.stringify({ id_token: googleIdToken }),
+      });
 
-    // 4) сохраняем серверный JWT
-    const next = NextResponse.next();
+      if (!res.ok) {
+        console.warn(
+          "\x1b[33m%s\x1b[0m", // Жёлтый
+          `[AUTH] Getting jwt through googleIdToken failed, will go to login`,
+          res,
+        );
 
-    next.cookies.set("jwt", jwt, {
-      httpOnly: true,
-      sameSite: "lax",
-      path: "/",
-    });
+        return NextResponse.redirect(loginUrl);
+      } else {
+        console.log(
+          "\x1b[32m%s\x1b[0m", // Зелёный
+          "[AUTH] jwt is obtained as googleIdToken has been exchanged",
+        );
+      }
 
-    return next;
-    //--END of THE NEW VERSION of dealing with Google--//
+      const { jwt } = await res.json(); // сервер вернул свой JWT
+
+      // 4) сохраняем серверный JWT
+      const next = NextResponse.next();
+
+      console.log(
+        "\x1b[90m[TRACE]\x1b[0m", // Светлоголубой
+        "[AUTH] Storing jwt in cookies and go next",
+      );
+
+      next.cookies.set("jwt", jwt, {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+      });
+
+      return next;
+    } catch (e) {
+      console.log(
+        "\x1b[35m%s\x1b[0m", // Фиолетовый
+        "API_URL:",
+        process.env?.API_URL,
+        "API call endpoint: ",
+        exchangeCallEndpoint,
+      );
+      console.log(e);
+    }
   }
 
   // 3) Ни JWT, ни Google — уходим на /login
@@ -212,9 +227,8 @@ export default auth(async (req /* : NextRequest */) => {
     //const loginUrl = new URL("/login", url.origin);
     //loginUrl.searchParams.set("next", pathname); // чтобы вернуться назад после логина
 
-    // Красный
     console.warn(
-      "\x1b[31m%s\x1b[0m",
+      "\x1b[33m%s\x1b[0m", // Жёлтый
       `[AUTH] No auth. Redirect to ${loginUrl.pathname}`,
     );
 
