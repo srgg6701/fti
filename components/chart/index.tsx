@@ -83,7 +83,9 @@ export default function BalanceChart({
   /* console.group("%cBalance Chart", "color: violet"); */
   console.log(
     // data: payload.data?.chartData,
-    "%cchart", "color: goldenrod", { payload, period, points, yMin, yMax },
+    "%cchart",
+    "color: goldenrod",
+    { payload, period, points, yMin, yMax },
   );
   console.groupEnd();
 

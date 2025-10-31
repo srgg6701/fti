@@ -20,7 +20,7 @@ export default function Default() {
       const tm = setTimeout(() => {
         console.log(
           "%cUser is not authenticated, let them go to home and check there",
-          "color: green;"
+          "color: green;",
         ); //console.log("Redirecting to /home after 4 seconds");
 
         if (userInit) router.replace(routeAliases.home);
@@ -31,7 +31,7 @@ export default function Default() {
           if (!userIsIn) {
             console.log(
               "%cCan't get user data (/me); redirect to login page",
-              "color: orangered"
+              "color: orangered",
             );
             router.replace(siteConfig.innerItems.auth.login.href_ui);
           } else {
@@ -49,7 +49,7 @@ export default function Default() {
           console.log(
             "%cError whitle initializing user",
             "color: orangered",
-            error
+            error,
           );
         });
 
