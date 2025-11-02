@@ -1,10 +1,6 @@
 import type { Chart, CData, BalanceDynamics } from "@/types/apiData";
 
 import { useMemo, useState, useEffect, useRef } from "react";
-import Cookies from "js-cookie";
-
-import { siteConfig } from "@/config/site";
-import { apiFetch } from "@/lib/api";
 import ChartBlock, {
   GraphTopPanel,
   type PeriodKey,
@@ -35,20 +31,6 @@ const granStepMs: Record<Gran, number> = {
   weekly: 7 * MS_DAY,
   monthly: 30 * MS_DAY, // достаточно для визуализации
 };
-
-const balanceChartPath = `/api${siteConfig.innerItems.balance.equity.chart.href}`;
-
-function buildChartEndpoint(accountId?: number | string) {
-  if (accountId === undefined || accountId === null) {
-    return balanceChartPath;
-  }
-
-  const params = new URLSearchParams({
-    accountId: accountId.toString(),
-  });
-
-  return `${balanceChartPath}?${params.toString()}`;
-}
 
 
 // Приведение времени точки к миллисекундам (timestamp в сек → мс)
@@ -155,12 +137,10 @@ function makeSlice(all: CData[], period: PeriodKey, nowMs?: number): Chart {
 
 export default function GraphAndBalance({
   chart,
-  accountId,
   wrapper = false,
   height = "220px",
 }: {
   chart: Chart;
-  accountId?: number | string;
   wrapper?: boolean;
   height?: string;
 }) {
@@ -174,56 +154,36 @@ export default function GraphAndBalance({
   // Статусы загрузки
   const [status, setStatus] = useState<
     "idle" | "loading" | "success" | "error"
-  >(() => (chart?.data?.chartData?.length ? "success" : "idle"));
+  >(() => (chart?.data?.chartData?.length ? "success" : "loading"));
   const [errorMsg, setErrorMsg] = useState<string | boolean>();
 
   // Базовый ответ API и срезы по периодам
-  const [baseChart, setBaseChart] = useState<Chart | null>(null);
   const slicesRef = useRef<Partial<Record<PeriodKey, Chart>>>({});
 
-  // Подтягиваем реальные данные
   useEffect(() => {
-    if (!wrapper && accountId == null) {
+    if (chart?.data?.chartData?.length) {
+      setStatus("success");
+      setErrorMsg(false);
+
       return;
     }
 
-    let aborted = false;
+    if (chart?.success === false) {
+      setStatus("error");
+      setErrorMsg(chart?.message || "Failed to load chart data");
 
-    (async () => {
-      try {
-        setStatus("loading");
-        setErrorMsg(false);
-        const endpoint = buildChartEndpoint(accountId);
-        const token = Cookies.get("jwt");
-        const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
-        const response = await apiFetch<Chart>(endpoint, { headers });
+      return;
+    }
 
-        if (aborted) return;
+    setStatus("loading");
+    setErrorMsg(false);
+  }, [chart]);
 
-        if (!response?.data?.chartData?.length) {
-          throw new Error("Empty chart data from API");
-        }
-
-        setBaseChart(response);
-        setStatus("success");
-      } catch (e: any) {
-        if (aborted) return;
-        setStatus("error");
-        setErrorMsg(e?.message || "Failed to load chart data");
-      }
-    })();
-
-    return () => {
-      aborted = true;
-    };
-  }, [accountId, wrapper]);
-
+  // Подтягиваем реальные данные
   // Источник длинного ряда (приоритет у API; иначе стартовый проп)
   const longSeries: CData[] = useMemo(() => {
-    return baseChart?.data?.chartData?.length
-      ? baseChart.data.chartData
-      : (chart?.data?.chartData ?? []);
-  }, [baseChart, chart]);
+    return chart?.data?.chartData ?? [];
+  }, [chart]);
 
   // «now» фиксируем по данным, чтобы все периоды считались от одного опорного времени
   const nowMs = useMemo(() => inferNowMs(longSeries), [longSeries]);
