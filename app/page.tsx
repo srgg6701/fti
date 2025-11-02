@@ -14,12 +14,16 @@ export default function Default() {
 
   useEffect(() => {
     if (!isAuthenticated) {
+      console.log(
+        "%cUser is not authenticated, redirect to login page",
+        "color: orangered",
+      );
       router.replace(siteConfig.innerItems.auth.login.href_ui);
     } else {
       let userInit = false;
       const tm = setTimeout(() => {
         console.log(
-          "%cUser is not authenticated, let them go to home and check there",
+          "%cUser is authenticated, let them go to home and check there",
           "color: green;",
         ); //console.log("Redirecting to /home after 4 seconds");
 
