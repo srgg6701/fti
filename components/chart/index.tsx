@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import {
   ResponsiveContainer,
@@ -24,7 +24,7 @@ const toDayOfMonth = (ts: number) => new Date(ts).getDate().toString();
 const getYDomain = (vals: number[]) => {
   const min = Math.min(...vals);
   const max = Math.max(...vals);
-  const pad = Math.max(1, (max - min) * 0.06); // ~6% отступ
+  const pad = Math.max(1, (max - min) * 0.06); // ~6% Ð¾Ñ‚ÑÑ‚ÑƒÐ¿
 
   return [min - pad, max + pad] as const;
 };
@@ -85,7 +85,7 @@ export default function BalanceChart({
     // data: payload.data?.chartData,
     "%cchart",
     "color: goldenrod",
-    { payload, period, points, yMin, yMax },
+    { payload, period, points, yMin, yMax }
   );
   console.groupEnd();
 
@@ -181,33 +181,54 @@ export default function BalanceChart({
     return ticks;
   };
 
+  const limitTickCount = (ticks: number[], maxCount: number) => {
+    if (!maxCount || ticks.length <= maxCount) return ticks;
+
+    const step = Math.ceil(ticks.length / maxCount);
+    const limited: number[] = [];
+
+    for (let i = 0; i < ticks.length; i += step) {
+      limited.push(ticks[i]);
+    }
+
+    const last = ticks[ticks.length - 1];
+    if (limited[limited.length - 1] !== last) {
+      limited.push(last);
+    }
+
+    return Array.from(new Set(limited)).sort((a, b) => a - b);
+  };
+
   const setTick = () => {
-    // If parent provided tickStepMs, prefer step-based ticks spanning xDomain
+    let ticks: number[] = [];
+
     if (typeof tickStepMs === "number") {
-      return genStepTicks(minX, maxX, tickStepMs);
+      ticks = genStepTicks(minX, maxX, tickStepMs);
+    } else {
+      switch (period) {
+        case "1W":
+          ticks = genDailyTicks(minX, maxX);
+          break;
+        case "1M":
+          ticks = genFourWeekTicks(minX, maxX);
+          break;
+        case "6M":
+          ticks = genMonthStartTicks(minX, maxX);
+          break;
+        case "1Y":
+          // keep default (month starts or custom later)
+          ticks = genMonthStartTicks(minX, maxX);
+          break;
+        default:
+          break;
+      }
     }
 
-    let ticks4: number[] = [];
-
-    switch (period) {
-      case "1W":
-        ticks4 = genDailyTicks(minX, maxX);
-        break;
-      case "1M":
-        ticks4 = genFourWeekTicks(minX, maxX);
-        break;
-      case "6M":
-        ticks4 = genMonthStartTicks(minX, maxX);
-        break;
-      case "1Y":
-        // keep default (month starts or custom later)
-        ticks4 = genMonthStartTicks(minX, maxX);
-        break;
-      default:
-        break;
+    if (period === "1M") {
+      return limitTickCount(ticks, 6);
     }
 
-    return ticks4;
+    return ticks;
   };
 
   // ===== Диагностика: печатаем реальный диапазон и сгенерированные тики =====
@@ -266,7 +287,7 @@ export default function BalanceChart({
         <ResponsiveContainer>
           <AreaChart
             data={pointsWithY}
-            //data={payload?.data?.chartData || []} // fallback to raw data if mapping failed
+            // data={payload?.data?.chartData || []} // fallback to raw data if mapping failed
             margin={{ top: 8, right: 0, left: 0, bottom: 10 }}
           >
             <defs>
@@ -279,25 +300,42 @@ export default function BalanceChart({
             <XAxis
               axisLine={false}
               dataKey="x"
-              //dataKey="timestamp"
               domain={[minX, maxX]}
-              interval="preserveStartEnd"
-              minTickGap={20}
+              interval={0}
+              minTickGap={0}
               padding={{ left: 0, right: 0 }}
               scale="time"
               tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 12 }}
               tickFormatter={(v) => {
                 const ts = Number(v);
 
-                if (tickFormatter) return tickFormatter(ts);
-                if (period === "1W") return toWeekdayShort(ts);
-                if (period === "1M")
-                  return "W" + Math.ceil(new Date(ts).getDate() / 7);
+                let label: string | number;
 
-                return toMonthShort(ts);
+                if (tickFormatter) {
+                  label = tickFormatter(ts);
+                } else if (period === "1W") {
+                  label = toWeekdayShort(ts);
+                } else if (period === "1M") {
+                  label = "W" + Math.ceil(new Date(ts).getDate() / 7);
+                } else {
+                  label = toMonthShort(ts);
+                }
+
+                if (
+                  (period === "6M" || period === "1Y") &&
+                  typeof label === "string"
+                ) {
+                  return label.replace(/\s*\d+$/, "");
+                }
+
+                return label;
               }}
               tickLine={false}
-              ticks={setTick()}
+              ticks={
+                period === "6M" || period === "1Y"
+                  ? genMonthStartTicks(minX, maxX)
+                  : setTick()
+              }
               type="number"
             />
             <YAxis
@@ -310,10 +348,10 @@ export default function BalanceChart({
               orientation="right"
               padding={{ bottom: 12 }}
               tick={{ fill: "rgba(255,255,255,0.35)", fontSize: 12 }}
-              tickFormatter={(v: number) => (Number(v) / 1000).toFixed(2)}
+              tickFormatter={(v: number) => Number(v).toFixed(2)}
               tickLine={false}
               tickMargin={6}
-              width={36}
+              width={64}
             />
 
             <Tooltip
@@ -321,17 +359,15 @@ export default function BalanceChart({
                 background: "#11151d",
                 border: "1px solid #1c2330",
               }}
-              formatter={(y: number) => [y.toFixed(2), ""]}
               itemStyle={{ color: "#dbe7ff" }}
+              labelStyle={{ color: "#9fb3c8" }}
+              formatter={(y: number) => [y.toFixed(2), ""]}
               labelFormatter={(x) => {
                 const ts = Number(x);
-
                 if (period === "1W") return toWeekdayShort(ts);
                 if (period === "1M") return toDayOfMonth(ts);
-
-                return toMonthShort(ts);
+                return toMonthShort(ts); // 6M/1Y
               }}
-              labelStyle={{ color: "#9fb3c8" }}
             />
 
             <Area
@@ -339,7 +375,7 @@ export default function BalanceChart({
               //dataKey="equity"
               fill="url(#fill)"
               stroke="none"
-              type="monotone"
+              type="basis"
             />
             <Line
               activeDot={{ r: 4 }}
@@ -348,7 +384,7 @@ export default function BalanceChart({
               dot={false}
               stroke={STROKE}
               strokeWidth={2}
-              type="monotone"
+              type="basis"
             />
           </AreaChart>
         </ResponsiveContainer>
