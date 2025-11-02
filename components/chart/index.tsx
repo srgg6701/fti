@@ -24,7 +24,7 @@ const toDayOfMonth = (ts: number) => new Date(ts).getDate().toString();
 const getYDomain = (vals: number[]) => {
   const min = Math.min(...vals);
   const max = Math.max(...vals);
-  const pad = Math.max(1, (max - min) * 0.06); // ~6% Ð¾Ñ‚ÑÑ‚ÑƒÐ¿
+  const pad = Math.max(1, (max - min) * 0.06); // ~6% отступ
 
   return [min - pad, max + pad] as const;
 };
@@ -37,7 +37,7 @@ export default function BalanceChart({
   period,
   xDomain,
   tickStepMs,
-  tickFormatter,
+  tickFormatter: externalTickFormatter,
   height = "220px",
   containerClasses = "w-full",
 }: {
@@ -231,6 +231,63 @@ export default function BalanceChart({
     return ticks;
   };
 
+  const formatXAxisTick = (ts: number) => {
+    let label: string | number;
+
+    if (externalTickFormatter) {
+      label = externalTickFormatter(ts);
+    } else if (period === "1W") {
+      label = toWeekdayShort(ts);
+    } else if (period === "1M") {
+      label = "W" + Math.ceil(new Date(ts).getDate() / 7);
+    } else {
+      label = toMonthShort(ts);
+    }
+
+    if ((period === "6M" || period === "1Y") && typeof label === "string") {
+      return label.replace(/\s*\d+$/, "");
+    }
+
+    return label;
+  };
+
+  const xAxisTicks =
+    period === "6M" || period === "1Y"
+      ? genMonthStartTicks(minX, maxX)
+      : setTick();
+
+  const renderXAxisTick = (props: any) => {
+    const { x, y, payload } = props;
+    const value = Number(payload?.value);
+    const label = formatXAxisTick(value);
+
+    const safeValue = Number.isNaN(value) ? 0 : value;
+    const safeLabel =
+      value === undefined || Number.isNaN(value)
+        ? ""
+        : formatXAxisTick(safeValue);
+
+    const isFirstMonthTick =
+      period === "1M" && xAxisTicks.length > 0 && value === xAxisTicks[0];
+
+    const dx = isFirstMonthTick ? 8 : 0;
+    const anchor = isFirstMonthTick ? "start" : "middle";
+
+    return (
+      <text
+        x={x}
+        y={y ?? 0}
+        dy={16}
+        fill="rgba(255,255,255,0.45)"
+        fontSize={12}
+        textAnchor={anchor}
+        dx={dx}
+      >
+        {safeLabel}
+      </text>
+    );
+  };
+
   // ===== Диагностика: печатаем реальный диапазон и сгенерированные тики =====
   /* if (process.env.NODE_ENV === "development") {
     try {
@@ -305,37 +362,10 @@ export default function BalanceChart({
               minTickGap={0}
               padding={{ left: 0, right: 0 }}
               scale="time"
-              tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 12 }}
-              tickFormatter={(v) => {
-                const ts = Number(v);
-
-                let label: string | number;
-
-                if (tickFormatter) {
-                  label = tickFormatter(ts);
-                } else if (period === "1W") {
-                  label = toWeekdayShort(ts);
-                } else if (period === "1M") {
-                  label = "W" + Math.ceil(new Date(ts).getDate() / 7);
-                } else {
-                  label = toMonthShort(ts);
-                }
-
-                if (
-                  (period === "6M" || period === "1Y") &&
-                  typeof label === "string"
-                ) {
-                  return label.replace(/\s*\d+$/, "");
-                }
-
-                return label;
-              }}
+              tick={renderXAxisTick}
+              tickFormatter={(v) => formatXAxisTick(Number(v))}
               tickLine={false}
-              ticks={
-                period === "6M" || period === "1Y"
-                  ? genMonthStartTicks(minX, maxX)
-                  : setTick()
-              }
+              ticks={xAxisTicks}
               type="number"
             />
             <YAxis
