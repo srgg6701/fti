@@ -464,7 +464,7 @@ export default function BalanceChart({
           <AreaChart
             data={chartData}
             // data={payload?.data?.chartData || []} // fallback to raw data if mapping failed
-            margin={{ top: 8, right: 0, left: 0, bottom: 10 }}
+            margin={{ top: 8, right: 0, left: 16, bottom: 10 }}
           >
             <defs>
               <linearGradient id="fill" x1="0" x2="0" y1="0" y2="1">
@@ -479,7 +479,7 @@ export default function BalanceChart({
               domain={[minX, maxX]}
               interval={0}
               minTickGap={0}
-              padding={{ left: 0, right: 0 }}
+              padding={{ left: 16, right: 8 }}
               scale="time"
               tick={renderXAxisTick}
               tickFormatter={(v) => formatXAxisTick(Number(v))}
@@ -533,3 +533,4 @@ export default function BalanceChart({
     </div>
   );
 }
+

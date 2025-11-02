@@ -1,9 +1,10 @@
 import type { Chart, CData, BalanceDynamics } from "@/types/apiData";
 
 import { useMemo, useState, useEffect, useRef } from "react";
+import Cookies from "js-cookie";
 
-// FIXME: remove apiFetch as data is real
-import res from "@/mockData/graphs/charts-mock-massive.json";
+import { siteConfig } from "@/config/site";
+import { apiFetch } from "@/lib/api";
 import ChartBlock, {
   GraphTopPanel,
   type PeriodKey,
@@ -34,6 +35,21 @@ const granStepMs: Record<Gran, number> = {
   weekly: 7 * MS_DAY,
   monthly: 30 * MS_DAY, // достаточно для визуализации
 };
+
+const balanceChartPath = `/api${siteConfig.innerItems.balance.equity.chart.href}`;
+
+function buildChartEndpoint(accountId?: number | string) {
+  if (accountId === undefined || accountId === null) {
+    return balanceChartPath;
+  }
+
+  const params = new URLSearchParams({
+    accountId: accountId.toString(),
+  });
+
+  return `${balanceChartPath}?${params.toString()}`;
+}
+
 
 // Приведение времени точки к миллисекундам (timestamp в сек → мс)
 function toMs(p: CData): number {
@@ -139,10 +155,12 @@ function makeSlice(all: CData[], period: PeriodKey, nowMs?: number): Chart {
 
 export default function GraphAndBalance({
   chart,
+  accountId,
   wrapper = false,
   height = "220px",
 }: {
   chart: Chart;
+  accountId?: number | string;
   wrapper?: boolean;
   height?: string;
 }) {
@@ -156,7 +174,7 @@ export default function GraphAndBalance({
   // Статусы загрузки
   const [status, setStatus] = useState<
     "idle" | "loading" | "success" | "error"
-  >("idle");
+  >(() => (chart?.data?.chartData?.length ? "success" : "idle"));
   const [errorMsg, setErrorMsg] = useState<string | boolean>();
 
   // Базовый ответ API и срезы по периодам
@@ -165,23 +183,28 @@ export default function GraphAndBalance({
 
   // Подтягиваем реальные данные
   useEffect(() => {
+    if (!wrapper && accountId == null) {
+      return;
+    }
+
     let aborted = false;
 
     (async () => {
       try {
         setStatus("loading");
         setErrorMsg(false);
-        // INFO: используем мок из файла, чтобы не плодить ещё один API-роут
-        //const res = await apiFetch<Chart>(`/api${siteConfig.innerItems.balance.equity.chart.href}`);
+        const endpoint = buildChartEndpoint(accountId);
+        const token = Cookies.get("jwt");
+        const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
+        const response = await apiFetch<Chart>(endpoint, { headers });
 
         if (aborted) return;
 
-        // Ожидаем, что res.data.chartData — «толстый» ряд
-        if (!res?.data?.chartData?.length) {
+        if (!response?.data?.chartData?.length) {
           throw new Error("Empty chart data from API");
         }
 
-        setBaseChart(res);
+        setBaseChart(response);
         setStatus("success");
       } catch (e: any) {
         if (aborted) return;
@@ -193,7 +216,7 @@ export default function GraphAndBalance({
     return () => {
       aborted = true;
     };
-  }, []);
+  }, [accountId, wrapper]);
 
   // Источник длинного ряда (приоритет у API; иначе стартовый проп)
   const longSeries: CData[] = useMemo(() => {
