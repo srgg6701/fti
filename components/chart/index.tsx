@@ -1,5 +1,7 @@
 ﻿"use client";
 
+import { useEffect, useState } from "react";
+
 import {
   ResponsiveContainer,
   AreaChart,
@@ -89,10 +91,74 @@ export default function BalanceChart({
   );
   console.groupEnd();
 
+  const smoothedPoints = pointsWithY.map((p: any, idx: number, arr: any[]) => {
+    if (arr.length < 5 || idx === 0 || idx === arr.length - 1) {
+      return { ...p, actualY: p.y };
+    }
+
+    const weights = [1, 2, 3, 2, 1];
+    let weightedSum = 0;
+    let weightTotal = 0;
+
+    for (let offset = -2; offset <= 2; offset++) {
+      const neighbor = arr[idx + offset];
+      if (!neighbor) continue;
+
+      const weight = weights[offset + 2];
+      weightedSum += neighbor.y * weight;
+      weightTotal += weight;
+    }
+
+    const smoothY = weightTotal ? weightedSum / weightTotal : p.y;
+
+    return { ...p, y: smoothY, actualY: p.y };
+  });
+
+  const chartData = smoothedPoints;
+
   // effective domain: prefer external xDomain, else use points
   const [minX, maxX] =
     xDomain ??
     (points.length ? [points[0].x, points[points.length - 1].x] : [0, 0]);
+
+  const firstPoint = chartData[0];
+  const lastPoint = chartData[chartData.length - 1];
+  const animationSignature = [
+    period,
+    chartData.length,
+    minX,
+    maxX,
+    firstPoint?.y ?? "na",
+    lastPoint?.y ?? "na",
+  ].join("|");
+
+  const [seriesVisible, setSeriesVisible] = useState(false);
+
+  useEffect(() => {
+    let frame: number | null = null;
+
+    setSeriesVisible((prev) => (prev ? false : prev));
+
+    if (
+      typeof window === "undefined" ||
+      typeof window.requestAnimationFrame !== "function"
+    ) {
+      setSeriesVisible(true);
+      return;
+    }
+
+    frame = window.requestAnimationFrame(() => setSeriesVisible(true));
+
+    return () => {
+      if (
+        frame !== null &&
+        typeof window !== "undefined" &&
+        typeof window.cancelAnimationFrame === "function"
+      ) {
+        window.cancelAnimationFrame(frame);
+      }
+    };
+  }, [animationSignature]);
 
   const startOfDay = (ts: number) => {
     const d = new Date(ts);
@@ -288,6 +354,52 @@ export default function BalanceChart({
     );
   };
 
+  const formatTooltipLabel = (ts: number) => {
+    if (period === "1W") return toWeekdayShort(ts);
+    if (period === "1M") return `${toMonthShort(ts)} ${toDayOfMonth(ts)}`;
+    return toMonthShort(ts);
+  };
+
+  const renderTooltipContent = ({
+    active,
+    payload,
+    label,
+  }: {
+    active?: boolean;
+    payload?: any[];
+    label?: string | number;
+  }) => {
+    if (!active || !payload?.length) return null;
+
+    const item = payload[0];
+    const value = Number(item?.value ?? 0);
+    const actual = Number(item?.payload?.actualY ?? value);
+    const smooth = value.toFixed(2);
+    const raw = actual.toFixed(2);
+    const showRaw = Math.abs(actual - value) > 0.01;
+    const labelText =
+      typeof label === "number"
+        ? formatTooltipLabel(label)
+        : typeof label === "string"
+          ? label
+          : "";
+
+    return (
+      <div
+        style={{
+          background: "#11151d",
+          border: "1px solid #1c2330",
+          padding: "8px 12px",
+        }}
+      >
+        <div style={{ color: "#9fb3c8", marginBottom: 4 }}>{labelText}</div>
+        <div style={{ color: "#dbe7ff" }}>
+          {showRaw ? `${smooth} (raw ${raw})` : smooth}
+        </div>
+      </div>
+    );
+  };
+
   // ===== Диагностика: печатаем реальный диапазон и сгенерированные тики =====
   /* if (process.env.NODE_ENV === "development") {
     try {
@@ -341,9 +453,16 @@ export default function BalanceChart({
   "
         style={{ width: "100%", height }}
       >
-        <ResponsiveContainer>
+        <ResponsiveContainer
+          className="
+            [&_.recharts-surface]:outline-none
+            [&_.recharts-surface]:focus:outline-none
+            [&_.recharts-surface]:focus-visible:outline-none
+            [&_.recharts-surface]:border-none
+          "
+        >
           <AreaChart
-            data={pointsWithY}
+            data={chartData}
             // data={payload?.data?.chartData || []} // fallback to raw data if mapping failed
             margin={{ top: 8, right: 0, left: 0, bottom: 10 }}
           >
@@ -384,38 +503,30 @@ export default function BalanceChart({
               width={64}
             />
 
-            <Tooltip
-              contentStyle={{
-                background: "#11151d",
-                border: "1px solid #1c2330",
-              }}
-              itemStyle={{ color: "#dbe7ff" }}
-              labelStyle={{ color: "#9fb3c8" }}
-              formatter={(y: number) => [y.toFixed(2), ""]}
-              labelFormatter={(x) => {
-                const ts = Number(x);
-                if (period === "1W") return toWeekdayShort(ts);
-                if (period === "1M") return toDayOfMonth(ts);
-                return toMonthShort(ts); // 6M/1Y
-              }}
-            />
+            <Tooltip content={renderTooltipContent} />
 
-            <Area
-              dataKey="y"
-              //dataKey="equity"
-              fill="url(#fill)"
-              stroke="none"
-              type="basis"
-            />
-            <Line
-              activeDot={{ r: 4 }}
-              dataKey="y"
-              //dataKey="equity"
-              dot={false}
-              stroke={STROKE}
-              strokeWidth={2}
-              type="basis"
-            />
+            {seriesVisible && (
+              <>
+                <Area
+                  dataKey="y"
+                  //dataKey="equity"
+                  fill="url(#fill)"
+                  stroke="none"
+                  type="basis"
+                />
+                <Line
+                  activeDot={{ r: 4 }}
+                  dataKey="y"
+                  //dataKey="equity"
+                  dot={false}
+                  stroke={STROKE}
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  type="basis"
+                />
+              </>
+            )}
           </AreaChart>
         </ResponsiveContainer>
       </div>
