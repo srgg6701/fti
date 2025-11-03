@@ -9,16 +9,36 @@ import { Partner } from "@/types/apiData";
 import { Header4Left } from "@/components/pop-ups/styled-popup-header";
 
 export default function People() {
-  const [partners, setPartners] = useState<Partner[] | null>(null);
+  const [partners, setPartners] = useState<Partner[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    try {
-      (async () => {
+    let isCancelled = false;
+
+    const fetchPartners = async () => {
+      try {
         const prtnrs = await apiFetch<Partner[]>("/api/partners?isActive=true");
 
-        setPartners(prtnrs);
-      })();
-    } catch (error) {}
+        if (!isCancelled) {
+          setPartners(prtnrs ?? []);
+        }
+      } catch (error) {
+        if (!isCancelled) {
+          console.error("Failed to load partners list:", error);
+          setPartners([]);
+        }
+      } finally {
+        if (!isCancelled) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    void fetchPartners();
+
+    return () => {
+      isCancelled = true;
+    };
   }, []);
 
   return (
@@ -28,33 +48,41 @@ export default function People() {
       <Header4Left $h="[21px]" $mBottom="5" $mTop="5">
         Our partners
       </Header4Left>
-      {partners?.map((p) => (
-        <button
-          key={p.name}
-          className="flex justify-between cursor-pointer w-full items-center p-2.5 pl-0"
-          title="Visit our partner's site"
-          onClick={() => {
-            location.href = p.websiteUrl;
-          }}
-        >
-          <div className="flex justify-start items-center">
+      {isLoading ? (
+        <p className="py-6 text-sm opacity-70">Loading partners...</p>
+      ) : partners.length ? (
+        partners.map((p) => (
+          <a
+            key={p.id ?? p.name}
+            className="flex justify-between cursor-pointer w-full items-center p-2.5 pl-0"
+            href={p.websiteUrl}
+            rel="noopener noreferrer"
+            target="_blank"
+            title={`Visit ${p.name}`}
+          >
+            <div className="flex justify-start items-center">
+              <Image
+                alt={p.name}
+                className="mr-5 rounded-sm"
+                height={55}
+                src={p.logoUrl}
+                width={55}
+              />
+              <span>{p.name}</span>
+            </div>
             <Image
-              alt={p.name}
-              className="mr-5"
-              height={55}
-              src={`/assets/images/exchange/${p.logoUrl.split("/").pop()?.replace(".jpg", ".png")}`}
-              width={55}
+              alt="Go to partner's site"
+              height={7}
+              src="/assets/images/icons/arrows/pointer.png"
+              width={5}
             />
-            <span>{p.name}</span>
-          </div>
-          <Image
-            alt="Go to partner's site"
-            height={7}
-            src="/assets/images/icons/arrows/pointer.png"
-            width={5}
-          />
-        </button>
-      ))}
+          </a>
+        ))
+      ) : (
+        <p className="py-6 text-sm opacity-70">
+          Partner list is not available right now.
+        </p>
+      )}
     </section>
   );
 }
