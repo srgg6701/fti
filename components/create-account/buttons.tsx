@@ -22,9 +22,7 @@ export default function Buttons({ messageType, status, type }: ButtonsProps) {
   //const router = useRouter();
   const urlFirstSegment = getUrlSegments(usePathname, 1);
 
-  // 1. Обработка успешного получения ID Token (CredentialResponse)
   const handleSuccess = async (credentialResponse: CredentialResponse) => {
-    // ID Token находится в поле 'credential'
     const idToken = credentialResponse.credential;
 
     if (!idToken) {
@@ -37,26 +35,56 @@ export default function Buttons({ messageType, status, type }: ButtonsProps) {
 
     try {
       // GOOGLE_AUTH_ENDPOINT
-      // 2. Отправка ID Token на ваш API
-      const apiResponse = await fetch("https://api.fti-trade.com/auth/google", {
+      const apiResponse = await fetch("/api/auth/google", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        // Отправляем ID Token в формате, который ожидает Swagger
+        credentials: "include",
         body: JSON.stringify({ idToken: idToken }),
       });
 
+      const responseText = await apiResponse.text();
+
       if (apiResponse.ok) {
+        let jwt: string | null = null;
+
+        try {
+          const parsed = JSON.parse(responseText) as {
+            jwt?: string;
+            token?: string;
+            access_token?: string;
+            accessToken?: string;
+          };
+
+          jwt =
+            parsed.jwt ??
+            parsed.token ??
+            parsed.access_token ??
+            parsed.accessToken ??
+            null;
+        } catch (error) {
+          console.log("Auth response is not JSON:", error);
+        }
+
+        if (jwt) {
+          const maxAge = 60 * 60; // 1h
+
+          document.cookie = `jwt=${jwt}; Max-Age=${maxAge}; Path=/;${
+            window.location.protocol === "https:" ? " Secure;" : ""
+          } SameSite=Lax`;
+        } else {
+          console.warn("Auth success response does not include a JWT token.");
+        }
+
         console.log(
-          "Auth successful. Server should have set JWT cookie. idToken:",
-          idToken,
+          "Auth successful. Redirecting to /home. Raw response:",
+          responseText || "<empty>"
         );
 
-        // 3. Редирект для активации middleware
         window.location.href = "/home";
       } else {
-        console.error("API Error:", await apiResponse.text());
+        console.error("API Error:", responseText || "<empty>");
       }
     } catch (error) {
       console.error("Error during API call:", error);
@@ -72,14 +100,13 @@ export default function Buttons({ messageType, status, type }: ButtonsProps) {
         >
           <GoogleLogin
             locale="en_US"
-            text="signin_with" // Настраиваем текст кнопки
+            text="signin_with"
             width={"100%"}
             onError={() => {
               console.log("Login Failed");
             }}
             onSuccess={handleSuccess}
             theme="outline"
-            // Используйте 'client' или 'standard' для типа кнопки
             type="standard"
           />
         </div>

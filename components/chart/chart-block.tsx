@@ -72,16 +72,16 @@ export default function ChartBlock({
           ) : null}
         </div>
       ) : null}
-      {/* График — всегда рендерим, чтобы при успехе мгновенно перерисовать;
-            а при загрузке/ошибке выше покажется индикатор */}
-      <BalanceChart
-        height={height}
-        payload={payload}
-        period={sel}
-        tickFormatter={tickFormatter}
-        tickStepMs={tickStepMs}
-        xDomain={[currentFromMs, nowMs]}
-      />
+      {status === "success" ? (
+        <BalanceChart
+          height={height}
+          payload={payload}
+          period={sel}
+          tickFormatter={tickFormatter}
+          tickStepMs={tickStepMs}
+          xDomain={[currentFromMs, nowMs]}
+        />
+      ) : null}
     </>
   );
 }
