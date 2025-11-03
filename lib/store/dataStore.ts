@@ -20,6 +20,7 @@ export const useDataStore = create<{
       );
       dataIsLoading = fetch(
         `/api${siteConfig.innerItems.statistics.strategies.href}`,
+        { credentials: "include" },
       )
         .then((result) => result.json())
         .then((data) => {

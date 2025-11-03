@@ -1,9 +1,6 @@
 import type { Chart, CData, BalanceDynamics } from "@/types/apiData";
 
 import { useMemo, useState, useEffect, useRef } from "react";
-
-// FIXME: remove apiFetch as data is real
-import res from "@/mockData/graphs/charts-mock-massive.json";
 import ChartBlock, {
   GraphTopPanel,
   type PeriodKey,
@@ -34,6 +31,7 @@ const granStepMs: Record<Gran, number> = {
   weekly: 7 * MS_DAY,
   monthly: 30 * MS_DAY, // достаточно для визуализации
 };
+
 
 // Приведение времени точки к миллисекундам (timestamp в сек → мс)
 function toMs(p: CData): number {
@@ -156,51 +154,36 @@ export default function GraphAndBalance({
   // Статусы загрузки
   const [status, setStatus] = useState<
     "idle" | "loading" | "success" | "error"
-  >("idle");
+  >(() => (chart?.data?.chartData?.length ? "success" : "loading"));
   const [errorMsg, setErrorMsg] = useState<string | boolean>();
 
   // Базовый ответ API и срезы по периодам
-  const [baseChart, setBaseChart] = useState<Chart | null>(null);
   const slicesRef = useRef<Partial<Record<PeriodKey, Chart>>>({});
 
-  // Подтягиваем реальные данные
   useEffect(() => {
-    let aborted = false;
+    if (chart?.data?.chartData?.length) {
+      setStatus("success");
+      setErrorMsg(false);
 
-    (async () => {
-      try {
-        setStatus("loading");
-        setErrorMsg(false);
-        // INFO: используем мок из файла, чтобы не плодить ещё один API-роут
-        //const res = await apiFetch<Chart>(`/api${siteConfig.innerItems.balance.equity.chart.href}`);
+      return;
+    }
 
-        if (aborted) return;
+    if (chart?.success === false) {
+      setStatus("error");
+      setErrorMsg(chart?.message || "Failed to load chart data");
 
-        // Ожидаем, что res.data.chartData — «толстый» ряд
-        if (!res?.data?.chartData?.length) {
-          throw new Error("Empty chart data from API");
-        }
+      return;
+    }
 
-        setBaseChart(res);
-        setStatus("success");
-      } catch (e: any) {
-        if (aborted) return;
-        setStatus("error");
-        setErrorMsg(e?.message || "Failed to load chart data");
-      }
-    })();
+    setStatus("loading");
+    setErrorMsg(false);
+  }, [chart]);
 
-    return () => {
-      aborted = true;
-    };
-  }, []);
-
+  // Подтягиваем реальные данные
   // Источник длинного ряда (приоритет у API; иначе стартовый проп)
   const longSeries: CData[] = useMemo(() => {
-    return baseChart?.data?.chartData?.length
-      ? baseChart.data.chartData
-      : (chart?.data?.chartData ?? []);
-  }, [baseChart, chart]);
+    return chart?.data?.chartData ?? [];
+  }, [chart]);
 
   // «now» фиксируем по данным, чтобы все периоды считались от одного опорного времени
   const nowMs = useMemo(() => inferNowMs(longSeries), [longSeries]);
