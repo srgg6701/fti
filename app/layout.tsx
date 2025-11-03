@@ -71,6 +71,7 @@ export default async function RootLayout({
         )} /*  */
       >
         <Providers
+          initialIsAuth={isAuth}
           themeProps={{
             attribute: "class",
             defaultTheme: "dark",

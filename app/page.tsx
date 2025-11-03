@@ -9,57 +9,58 @@ import { siteConfig, routeAliases } from "@/config/site";
 
 export default function Default() {
   const router = useRouter();
-  const { isAuthenticated, initializeUser } = useUserStore((state) => state);
+  const { initializeUser } = useUserStore((state) => state);
   const { load } = useDataStore((state) => state);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      console.log(
-        "%cUser is not authenticated, redirect to login page",
-        "color: orangered",
-      );
-      router.replace(siteConfig.innerItems.auth.login.href_ui);
-    } else {
-      let userInit = false;
-      const tm = setTimeout(() => {
-        console.log(
-          "%cUser is authenticated, let them go to home and check there",
-          "color: green;",
-        ); //console.log("Redirecting to /home after 4 seconds");
+    let cancelled = false;
+    let userInit = false;
 
-        if (userInit) router.replace(routeAliases.home);
-      }, 4000);
+    const tm = setTimeout(() => {
+      if (!cancelled && userInit) {
+        router.replace(routeAliases.home);
+      }
+    }, 4000);
 
-      initializeUser()
-        .then((userIsIn) => {
-          if (!userIsIn) {
-            console.log(
-              "%cCan't get user data (/me); redirect to login page",
-              "color: orangered",
-            );
-            router.replace(siteConfig.innerItems.auth.login.href_ui);
-          } else {
-            load.strategies();
-          }
-          userInit = userIsIn;
-          /* console.log(
-            "%cUser is initialized",
-            "color: green",
-            String(userInit),
-          ); */
-        })
-        .catch((error) => {
-          // обработка ошибки
+    const hydrate = async () => {
+      try {
+        const userIsIn = await initializeUser();
+
+        if (cancelled) return;
+
+        userInit = userIsIn;
+
+        if (!userIsIn) {
           console.log(
-            "%cError whitle initializing user",
+            "%cCan't get user data (/me); redirect to login page",
+            "color: orangered",
+          );
+          router.replace(siteConfig.innerItems.auth.login.href_ui);
+
+          return;
+        }
+
+        load.strategies();
+        router.replace(routeAliases.home);
+      } catch (error) {
+        if (!cancelled) {
+          console.log(
+            "%cError while initializing user",
             "color: orangered",
             error,
           );
-        });
+          router.replace(siteConfig.innerItems.auth.login.href_ui);
+        }
+      }
+    };
 
-      return () => clearTimeout(tm); // Clear timeout on unmount
-    }
-  }, [isAuthenticated, router]); // Add isAuthenticated and router to the dependency array
+    hydrate();
+
+    return () => {
+      cancelled = true;
+      clearTimeout(tm); // Clear timeout on unmount
+    };
+  }, [initializeUser, load, router]);
 
   return (
     <div className="relative flex h-full w-full flex-col items-center justify-center">
