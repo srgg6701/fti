@@ -35,44 +35,56 @@ const items = siteConfig.navItems;
 const innerItems = siteConfig.innerItems;
 
 export const Navbar = ({ isAuth }: { isAuth: boolean }) => {
-  const { initializeUser, isAuthenticated, email, user } = useUserStore(
+  const { initializeUser, isAuthenticated } = useUserStore(
     (state) => state,
   );
 
-  //console.log("%cNavbar, data from userSotre", "color: violet", { initializeUser, isAuthenticated, email, user });
+  //console.log("%cNavbar, data from userSotre", "color: violet", { initializeUser, isAuthenticated });
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      console.log(
-        "%cNavbar: User not authenticated, cancelling initializeUser",
-        "color: orange;",
-      );
-
+    if (!isAuth && !isAuthenticated) {
       return;
     }
-    // единый вызов инициализации стора при монтировании (dedup внутри)
-    initializeUser()
-      .then((ok) => console.log("initializeUser (Navbar) result:", ok))
-      .catch((e) => console.error("initializeUser (Navbar) error:", e));
-    const fetchNotifications = async () => {
-      try {
-        const userNotifications = await apiFetch<Notifications>(
-          `/api${innerItems.notifications.get.all.href}`,
-        );
 
-        setNotificationsData(userNotifications?.data);
-      } catch (error) {
-        console.error(
-          "%cError fetching notifications:",
-          "color: yellow",
-          error,
-          { isAuthenticated, isAuth },
-        );
+    let isCancelled = false;
+
+    const hydrateAndFetch = async () => {
+      try {
+        const ok = await initializeUser();
+
+        if (isCancelled || !ok) return;
+
+        try {
+          const userNotifications = await apiFetch<Notifications>(
+            `/api${innerItems.notifications.get.all.href}`,
+          );
+
+          if (!isCancelled) {
+            setNotificationsData(userNotifications?.data);
+          }
+        } catch (error) {
+          if (!isCancelled) {
+            console.error(
+              "%cError fetching notifications:",
+              "color: yellow",
+              error,
+              { isAuthenticated, isAuth },
+            );
+          }
+        }
+      } catch (e) {
+        if (!isCancelled) {
+          console.error("initializeUser (Navbar) error:", e);
+        }
       }
     };
 
-    fetchNotifications();
-  }, []);
+    hydrateAndFetch();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [initializeUser, isAuthenticated, isAuth]);
 
   const navBarContainer = useRef<HTMLDivElement | null>(null);
 
