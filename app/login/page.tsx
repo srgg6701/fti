@@ -69,8 +69,8 @@ export default function LoginPage() {
         const next = // TODO: clarify this and the next code (sessionStorage)
           new URLSearchParams(window.location.search).get("next") ||
           sessionStorage.getItem("reauth_from") ||
-          "/home";
-
+          "/";
+        console.log("%cRedirecting after successful login to:", "color: lightskyblue", next);
         sessionStorage.removeItem("reauth_from");
         router.replace(next);
 
