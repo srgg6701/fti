@@ -2,6 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { SignJWT, decodeJwt, jwtVerify } from "jose";
 
 // ====== НАСТРОЙКИ ======
+
+// === Цвета для консоли ===
+// 31 -- красный
+// 32 -- зелёный
+// 33 -- жёлтый
+// 34 -- синий
+// 35 -- пурпурный
+// 36 -- голубой
+// 37 -- белый
+// 90 -- серый
+
 const COOKIE_NAME = "jwt";
 const JWT_TTL_SEC = 60 * 60; // 1h
 
@@ -98,6 +109,11 @@ export async function middleware(req: NextRequest) {
   const jwtCookie = req.cookies.get(COOKIE_NAME)?.value;
 
   if (jwtCookie) {
+    console.log(
+      "\x1b[36m%s\x1b[0m", // Голубой
+      `[AUTH] Has JWT`,
+      jwtCookie,
+    );
     //const payload = await verifyAppJwt(existing);
     const payload = decodeJwt(jwtCookie);
 
@@ -110,6 +126,7 @@ export async function middleware(req: NextRequest) {
         "[AUTH] got payload",
         payload,
       );
+
       try {
         if (exp && Date.now() / 1000 > exp) {
           console.warn(

@@ -41,7 +41,6 @@ bun.lockb
 .favorites.json
 .sources
 .eslint.js
-.prettierrc.js
 .vscode/settings.json
 
 .env.*
