@@ -12,8 +12,10 @@ export default function UserBlock({
   width = 55,
   marginRight = "mr-[10px]",
   padding = "p-5",
+  xClassName = "",
   mb = "mb-5",
   gap = "gap-3",
+  onClick,
 }: {
   userImg: string;
   imgAlt: string;
@@ -25,11 +27,13 @@ export default function UserBlock({
   width?: number;
   marginRight?: string;
   padding?: string;
+  xClassName?: string;
   mb?: string;
   gap?: string;
+  onClick?: () => void;
 }) {
   return (
-    <article className={`${h} ${w} ${marginRight} ${padding}`}>
+    <button className={`${h} ${w} ${marginRight} ${padding} ${xClassName}`} onClick={onClick}>
       <header className={`${headerDisplay} ${mb} ${gap} flex items-center`}>
         <UserImage
           height={height}
@@ -39,6 +43,6 @@ export default function UserBlock({
         />
         {children}
       </header>
-    </article>
+    </button>
   );
 }

@@ -82,7 +82,7 @@ export default function BalanceChart({
   const [yMin, yMax] = ys.length ? getYDomain(ys) : [0, 0];
 
   // INFO: CONSOLE: Balance Chart
-  /* console.group("%cBalance Chart", "color: violet"); */
+  console.groupCollapsed("%cBalance Chart", "color: violet");
   console.log(
     // data: payload.data?.chartData,
     "%cchart",

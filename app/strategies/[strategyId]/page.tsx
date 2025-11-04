@@ -12,6 +12,9 @@ import UserBlockSecondary from "@/components/user-block-secondary";
 import perfData from "@/mockData/performance";
 import FormElementWrapper from "@/components/pop-ups/form-elements/form-element-wrapper";
 import { selectStyle } from "@/styles/style-variables";
+import { apiFetch } from "@/lib/api";
+import { siteConfig } from "@/config/site";
+import { get } from "http";
 
 function Collapsible({
   open,
@@ -47,13 +50,13 @@ export default function StrategyId() {
   const searchParam = useSearchParams();
   const stopTrading = searchParam.get("stop-trading");
   const savedStrategyId =
-    typeof window !== "undefined" ? localStorage.getItem("mystrategyId") : null;
+    typeof window !== "undefined" ? localStorage.getItem("strategyId") : null;
 
   const [openIds, setOpenIds] = useState<string[]>([]);
 
   function handleTextBlock(id: string) {
     setOpenIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
   }
 
@@ -73,6 +76,24 @@ export default function StrategyId() {
     alert("On invest");
     console.log("Invest started");
   }
+
+  useEffect(() => {
+    if (savedStrategyId) {
+      console.log("Saved strategy ID:", savedStrategyId);
+      async function getStrategyData() {
+        const strategyData = await apiFetch(
+          `/api${siteConfig.innerItems.equity.href}/?systemId=${savedStrategyId}`
+        );
+
+        console.log(
+          "Fetched strategy data for strategyId",
+          savedStrategyId,
+          strategyData
+        );
+      }
+      getStrategyData();
+    }
+  }, [savedStrategyId]);
 
   return (
     <>

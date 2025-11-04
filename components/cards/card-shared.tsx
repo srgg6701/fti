@@ -1,11 +1,18 @@
+"use client";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useMemo } from "react";
 
 import UserImage from "@/components/userImage";
 import { Chart, UniversalEquity } from "@/types/apiData";
+import { goToStrategy } from "@/lib/utils";
 import GraphAndBalance from "@/components/graph-and-balance";
+import { siteConfig } from "@/config/site";
 const CardShared = ({
   username,
+  strategyStoredName = "test-strategy",
+  strategyName = "",
+  strategyId,
   userImg = "",
   timeFrame,
   chartImg,
@@ -21,6 +28,9 @@ const CardShared = ({
   padding = "p-5",
 }: {
   username?: string;
+  strategyStoredName?: string;
+  strategyName?: string;
+  strategyId: number | string;
   userImg?: string;
   timeFrame?: string;
   chartImg?: string;
@@ -35,6 +45,9 @@ const CardShared = ({
   marginRight?: string;
   padding?: string;
 }) => {
+  const router = useRouter();
+  const href =
+    siteConfig.navItems.find((obj) => obj.label === "Strategies")?.href || "#";
   // Process incoming `chart` prop (treated as UniversalEquity) -> Chart
   const processedChart = useMemo<Chart | undefined>(() => {
     if (!chart) return;
@@ -72,7 +85,10 @@ const CardShared = ({
   }, [chart]);
 
   return (
-    <article className={`md:h-[310px] md:w-[352px] ${marginRight} ${padding} `}>
+    <button
+      className={`md:h-[310px] md:w-[352px] ${marginRight} ${padding} cursor-pointer`}
+      onClick={() => goToStrategy(strategyId, router, href, strategyName)}
+    >
       <header className="mb-5 flex items-center gap-3">
         {username ? (
           <>
@@ -142,7 +158,7 @@ const CardShared = ({
         </footer>
       )) ||
         null}
-    </article>
+    </button>
   );
 };
 

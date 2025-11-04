@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { siteConfig } from "@/config/site";
 import ColoredIndicator from "@/components/coloredIndicator";
 import UserBlock from "@/components/cards/user-block";
-import { makeSlug } from "@/lib/utils";
+import { goToStrategy } from "@/lib/utils";
 
 export default function CardMyStrategy({
   strategyName,
@@ -18,7 +18,7 @@ export default function CardMyStrategy({
   padding = "p-5",
 }: {
   strategyName: string;
-  strategyId: number;
+  strategyId: number | string;
   userImg: string;
   invested: string;
   proRata: string;
@@ -28,13 +28,8 @@ export default function CardMyStrategy({
   padding?: string;
 }) {
   const router = useRouter();
-  const href = siteConfig.navItems.find(
-    (obj) => obj.label === "Strategies",
-  )?.href;
-  const goToStrategy = () => {
-    localStorage.setItem("mystrategyId", `/${strategyId}`);
-    router.push(`${href}/${makeSlug(strategyName)}`);
-  };
+  const href =
+    siteConfig.navItems.find((obj) => obj.label === "Strategies")?.href || "#";
 
   return (
     <UserBlock
@@ -42,15 +37,14 @@ export default function CardMyStrategy({
       marginRight={marginRight}
       padding={padding}
       userImg={userImg}
+      xClassName="cursor-pointer"
+      onClick={() => goToStrategy(strategyId, router, href, strategyName)}
     >
-      <button
-        className="flex flex-col text-left cursor-pointer"
-        onClick={goToStrategy}
-      >
+      <div className="flex flex-col text-left">
         <span className="text-sm font-medium">{strategyName}</span>
         <span className="text-xs text-white/60">Invested: {invested}</span>
         {/* <span className="text-xs text-white/60">Pro Rata: {proRata}</span> */}
-      </button>
+      </div>
       <div>
         <ColoredIndicator data={changeDynamics} direction={direction} />
       </div>

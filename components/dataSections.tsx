@@ -47,7 +47,7 @@ export default function HomeSections({
   //const [tradeSystems, setTradeSystems] = useState<News[]>([]);
   const [newsData, setNewsData] = useState<News[]>([]);
   const [worldLeadersData, setWorldLeadersData] = useState<UniversalEquity[]>(
-    [],
+    []
   );
   const [theBestOfTheDayData, setTheBestOfTheDayData] = useState<
     TDataTheBestOfTheDay[]
@@ -71,7 +71,7 @@ export default function HomeSections({
             await Promise.all([
               // TODO: Define API routes as constants
               apiFetch<ChartData>(
-                `/api${innerItems.balance.equity.chart.href}`,
+                `/api${innerItems.balance.equity.chart.href}`
               ),
               // MOCK DATA:// FIXME: use real data (apiFetch)
               apiFetch2<TDataTopPerforming[]>("dataTopPerforming"),
@@ -91,7 +91,7 @@ export default function HomeSections({
             // INFO: World leaders: universal-equity?systemId=[trade-systems.id]
             //apiFetch2<TDataWorldLeaders[]>("dataTopPerforming"),
             apiFetch<TradeSystems[]>(
-              `/api${siteConfig.innerItems.trade_systems.href}`,
+              `/api${siteConfig.innerItems.trade_systems.href}`
             ),
             apiFetch2<TDataTheBestOfTheDay[]>("dataTopPerforming"),
             apiFetch2<TDataTheBestOfTheWeek[]>("dataTopPerforming"),
@@ -101,8 +101,8 @@ export default function HomeSections({
           //if (!tradeSystems.length) {
           const promises = dataTradeSystems.map((ts) =>
             apiFetch<UniversalEquity>(
-              `/api${innerItems.equity.href}?systemId=${ts.id}&start_from_first_trade=true`,
-            ),
+              `/api${innerItems.equity.href}?systemId=${ts.id}&start_from_first_trade=true`
+            )
           );
           const results = await Promise.all(promises);
           const dwl: UniversalEquity[] = [];
@@ -199,6 +199,9 @@ export default function HomeSections({
                       chartImg={d.chartImg || ""}
                       risk={d.risk}
                       roi={d.roi}
+                      strategyId={d.strategyId}
+                      strategyName={d.strategy}
+                      strategyStoredName="top-performing" // Alex's Strategy
                       timeFrame={d.timeFrame}
                       userImg={d.userImg || userImages[i].img}
                       username={d.username || userImages[i].name}
@@ -244,14 +247,16 @@ export default function HomeSections({
                     height={310}
                     renderItem={(d, i) => (
                       <CardShared
-                        key={i}
-                        //chartImg={d.chartImg}
                         chart={d.daily_pnl_curve}
                         risk={d.performance.risk}
                         roi={d.performance.roi.percent}
+                        strategyStoredName="world-leaders"
                         timeFrame="6 Months"
                         userImg={d.userImg || userImages[i].img}
                         username={d.username || userImages[i].name}
+                        key={i}
+                        //strategyName={d.system_id}
+                        strategyId={d.system_id}
                       />
                     )}
                     seeAllHref="/top"
@@ -270,6 +275,9 @@ export default function HomeSections({
                       chartImg={d.chartImg || ""}
                       risk={d.risk}
                       roi={d.roi}
+                      strategyId={d.strategyId}
+                      strategyName={d.strategy}
+                      strategyStoredName="the-best-of-the-day"
                       timeFrame={d.timeFrame}
                       userImg={d.userImg || userImages[i].img}
                       username={d.username || userImages[i].name}
@@ -289,6 +297,9 @@ export default function HomeSections({
                       chartImg={d.chartImg || ""}
                       risk={d.risk}
                       roi={d.roi}
+                      strategyId={d.strategyId}
+                      strategyName={d.strategy}
+                      strategyStoredName="the-best-of-the-week"
                       timeFrame={d.timeFrame}
                       userImg={d.userImg || userImages[i].img}
                       username={d.username || userImages[i].name}
@@ -308,6 +319,9 @@ export default function HomeSections({
                       chartImg={d.chartImg || ""}
                       risk={d.risk}
                       roi={d.roi}
+                      strategyId={d.strategyId}
+                      strategyName={d.strategy}
+                      strategyStoredName="the-best-of-the-month"
                       timeFrame={d.timeFrame}
                       userImg={d.userImg || userImages[i].img}
                       username={d.username || userImages[i].name}

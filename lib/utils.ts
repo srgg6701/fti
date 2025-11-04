@@ -332,6 +332,16 @@ export function makeSlug(s: string) {
     .replace(/^-+|-+$/g, ""); // remove leading and trailing hyphens
 }
 
+export function goToStrategy(
+  strategyId: number | string,
+  router: any,
+  href: string,
+  strategyName?: string,
+) {
+  localStorage.setItem("strategyId", strategyId as string);
+  router.push(`${href}/${strategyName? makeSlug(strategyName) : strategyId}`);
+}
+
 export function isProtectedPath(pathname: string) {
   if (!pathname) return false;
 

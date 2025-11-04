@@ -51,6 +51,8 @@ export interface Strategy extends User, UserImg {
 }
 // FIXME: REMOVE this interface as soon as Strategy is ready.
 export interface TDataTopPerforming extends User, UserImg {
+  strategy: string;
+  strategyId: number;
   chartImg?: string;
   risk: number;
   roi: number;
@@ -117,7 +119,7 @@ export interface UserSubscription {
   amount: string;
   risk: number;
   strategyId: number;
-  strategyName: string;
+  strategyName: string; // Alex's Strategy
   strategyDescription: string;
   subscribedAt: string;
   userImage?: string;

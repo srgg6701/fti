@@ -12,6 +12,7 @@
 const DataTopPerforming = [
   {
     username: "Clarisse",
+    strategy: "stragegy-clarisse",
     chartImg: "home/top-performing/graph1.svg",
     risk: 5,
     roi: 51.25,
@@ -20,6 +21,7 @@ const DataTopPerforming = [
   },
   {
     username: "Naomi",
+    strategy: "strategy-naomi",
     chartImg: "home/top-performing/graph1.svg",
     risk: 5,
     roi: 51.25,
@@ -28,6 +30,7 @@ const DataTopPerforming = [
   },
   {
     username: "Joshua",
+    strategy: "strategy-joshua",
     chartImg: "home/top-performing/graph3.svg",
     risk: 5,
     roi: 51.25,
@@ -36,6 +39,7 @@ const DataTopPerforming = [
   },
   {
     username: "Janis",
+    strategy: "strategy-janis",
     chartImg: "home/top-performing/graph1.svg",
     risk: 5,
     roi: 51.25,
@@ -44,6 +48,7 @@ const DataTopPerforming = [
   },
   {
     username: "Elizabeth",
+    strategy: "strategy-elizabeth",
     chartImg: "home/top-performing/graph1.svg",
     risk: 5,
     roi: 51.25,
@@ -52,6 +57,7 @@ const DataTopPerforming = [
   },
   {
     username: "Margareth",
+    strategy: "strategy-margareth",
     chartImg: "home/top-performing/graph1.svg",
     risk: 5,
     roi: 51.25,
