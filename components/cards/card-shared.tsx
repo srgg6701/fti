@@ -30,7 +30,7 @@ const CardShared = ({
   username?: string;
   strategyStoredName?: string;
   strategyName?: string;
-  strategyId: number | string;
+  strategyId?: number | string;
   userImg?: string;
   timeFrame?: string;
   chartImg?: string;
@@ -87,7 +87,7 @@ const CardShared = ({
   return (
     <button
       className={`md:h-[310px] md:w-[352px] ${marginRight} ${padding} cursor-pointer`}
-      onClick={() => goToStrategy(strategyId, router, href, strategyName)}
+      onClick={() => strategyId ? goToStrategy(strategyId, router, href, strategyName) : null}
     >
       <header className="mb-5 flex items-center gap-3">
         {username ? (
