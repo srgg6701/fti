@@ -77,7 +77,7 @@ export const useUserStore = create<UserState>((set) => {
               {
                 method: "POST",
                 credentials: "include",
-              },
+              }
             );
 
             if (refreshResult.ok) {
@@ -86,7 +86,7 @@ export const useUserStore = create<UserState>((set) => {
                 `/api${siteConfig.innerItems.auth.me.href}`,
                 {
                   credentials: "include",
-                },
+                }
               );
 
               if (me.ok) {

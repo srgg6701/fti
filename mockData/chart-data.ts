@@ -48,7 +48,7 @@ export function makeMockChartDataForPeriod(
   period: PeriodKey,
   base = 1000,
   amp = 25,
-  nowMs = Date.now(),
+  nowMs = Date.now()
 ): ChartData {
   const def = periodDefs[period];
   const msStep = stepMs(def.gran);

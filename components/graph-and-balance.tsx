@@ -1,6 +1,7 @@
 import type { Chart, CData, BalanceDynamics } from "@/types/apiData";
 
 import { useMemo, useState, useEffect, useRef } from "react";
+
 import ChartBlock, {
   GraphTopPanel,
   type PeriodKey,
@@ -31,7 +32,6 @@ const granStepMs: Record<Gran, number> = {
   weekly: 7 * MS_DAY,
   monthly: 30 * MS_DAY, // достаточно для визуализации
 };
-
 
 // Приведение времени точки к миллисекундам (timestamp в сек → мс)
 function toMs(p: CData): number {

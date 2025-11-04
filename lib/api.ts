@@ -11,7 +11,7 @@ export class AuthError extends Error {
 
 export async function apiFetch<T = any>(
   input: RequestInfo,
-  init: RequestInit = {},
+  init: RequestInit = {}
 ): Promise<T> {
   // console.log("%capiFetch called for ", "color: lightskyblue", input);
   // INFO: look at .sources\dev-clarifications\request-headers.md
@@ -101,7 +101,7 @@ export async function apiFetch<T = any>(
     // Throw a specialized AuthError so callers can handle auth flows separately.
     throw new AuthError(
       (payload && payload.message) || "Unauthorized",
-      res.status,
+      res.status
     );
   }
 

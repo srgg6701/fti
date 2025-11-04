@@ -51,7 +51,7 @@ export default function LoginPage() {
         {
           method: "POST",
           body: JSON.stringify({ email, password }),
-        },
+        }
       );
 
       if (resp?.success) {
@@ -70,7 +70,12 @@ export default function LoginPage() {
           new URLSearchParams(window.location.search).get("next") ||
           sessionStorage.getItem("reauth_from") ||
           "/";
-        console.log("%cRedirecting after successful login to:", "color: lightskyblue", next);
+
+        console.log(
+          "%cRedirecting after successful login to:",
+          "color: lightskyblue",
+          next
+        );
         sessionStorage.removeItem("reauth_from");
         router.replace(next);
 

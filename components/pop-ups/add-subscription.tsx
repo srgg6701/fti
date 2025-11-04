@@ -48,7 +48,7 @@ export default function AddSubscription({
                 headerDisplay="flex justify-between"
                 imgAlt={`User asset`}
                 padding="unset"
-                userImg={strategy.userImg}
+                userImg={`/assets/images/users/${strategy.userImg}`}
               >
                 <div className="flex w-[90%] justify-between">
                   <div className="flex w-full justify-between">

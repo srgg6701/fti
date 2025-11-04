@@ -22,7 +22,7 @@ export default function AllStrategies() {
     try {
       (async () => {
         const accounts: UserAccount[] = await apiFetch(
-          `/api/${siteConfig.innerItems.trading_accounts.user_accounts.href}`,
+          `/api/${siteConfig.innerItems.trading_accounts.user_accounts.href}`
         );
 
         console.log("accounts", accounts);

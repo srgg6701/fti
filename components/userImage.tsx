@@ -1,12 +1,12 @@
 import Image from "next/image";
 export default function UserImage({
   title,
-  userImg,
+  userImg = "/assets/images/default-user.png",
   width,
   height,
 }: {
   title: string;
-  userImg: string;
+  userImg?: string;
   width: number;
   height?: number;
 }) {
@@ -14,7 +14,8 @@ export default function UserImage({
     <Image
       alt={title}
       height={height}
-      src={`/assets/images/users/${userImg}`}
+      //src={`/assets/images/users/${userImg}`}
+      src={userImg}
       title={title}
       width={width}
     />

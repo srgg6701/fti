@@ -28,7 +28,7 @@ export default function PhoneCountryPicker({
       (c) =>
         c.name.toLowerCase().includes(s) ||
         c.code.toLowerCase().includes(s) ||
-        c.dial.includes(s),
+        c.dial.includes(s)
     );
   }, [q]);
 

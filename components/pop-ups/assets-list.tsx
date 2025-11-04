@@ -78,7 +78,7 @@ export default function AssetsList({ isOpen, onClose }: CommonModal) {
                 headerDisplay="flex justify-between"
                 imgAlt={`User asset`}
                 padding="unset"
-                userImg={udata.userImg}
+                userImg={`/assets/images/users/${udata.userImg}`}
               >
                 <div className="flex w-[90%] justify-between">
                   <div className="flex w-full justify-between">

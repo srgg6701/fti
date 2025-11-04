@@ -33,7 +33,7 @@ export default function formatTextToParagraphs(text: string, opts: FOpts = {}) {
               <br />
               {line}
             </Fragment>
-          ),
+          )
         )}
       </p>
     );

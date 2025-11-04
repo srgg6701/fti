@@ -5,7 +5,7 @@ import { siteConfig } from "@/config/site";
 
 async function apiFetchTest<T>(
   endpoint: string,
-  options: RequestInit = {},
+  options: RequestInit = {}
 ): Promise<T> {
   const res = await fetch(`/api${endpoint}`, {
     credentials: "include",
@@ -31,7 +31,7 @@ export default function MultiFetch() {
       const [me, user_subs, user_accs] = await Promise.all([
         apiFetchTest(siteConfig.innerItems.auth.me.href),
         apiFetchTest(
-          siteConfig.innerItems.subscriptions.user_subscriptions.href,
+          siteConfig.innerItems.subscriptions.user_subscriptions.href
         ),
         apiFetchTest(siteConfig.innerItems.trading_accounts.user_accounts.href),
       ]);

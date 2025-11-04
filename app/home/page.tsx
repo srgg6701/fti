@@ -27,7 +27,7 @@ export default function Home() {
   const [userAccounts, setUserAccounts] = useState<UserAccount[] | null>(null);
   //const [allStrategies, setAllStrategies] = useState<Strategy[]>([]);
   const [applicableStrategies, setApplicableStrategies] = useState<Strategy[]>(
-    [],
+    []
   );
   const [userSubscriptions, setUserSubscription] = useState<
     UserSubscription[] | []
@@ -42,7 +42,7 @@ export default function Home() {
   function closeAddAccount(
     accountNumber?: string,
     broker?: string,
-    platform?: string,
+    platform?: string
   ) {
     setAddAccount(null);
     setAccountAddOpen(true);
@@ -85,7 +85,7 @@ export default function Home() {
     }
     const sbKeys = userSubscriptions.map((s) => s.strategyId);
     const restStrategies = allStrategies.filter(
-      (s: Strategy) => !sbKeys.includes(s.strategyId),
+      (s: Strategy) => !sbKeys.includes(s.strategyId)
     );
 
     console.log("%cHome page data", "background-color:#ddd", {

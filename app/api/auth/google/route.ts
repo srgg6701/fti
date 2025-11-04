@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL ?? "https://api.fti-trade.com";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "https://api.fti-trade.com";
 
 type CookieAttributes = {
   name: string;
@@ -89,6 +88,7 @@ function parseCookie(setCookie: string): CookieAttributes | null {
       case "samesite":
         if (attrValue) {
           const lower = attrValue.toLowerCase();
+
           if (lower === "lax" || lower === "strict" || lower === "none") {
             attributes.sameSite = lower;
           }
@@ -106,7 +106,7 @@ function parseCookie(setCookie: string): CookieAttributes | null {
 function setResponseCookies(
   response: NextResponse,
   rawSetCookie: string | null,
-  isHttps: boolean,
+  isHttps: boolean
 ) {
   if (!rawSetCookie) return;
 

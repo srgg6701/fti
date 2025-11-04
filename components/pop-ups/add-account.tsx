@@ -184,7 +184,7 @@ export default function AddAccountModal({
     const addedAccountData = { ...accountData.data };
 
     addedAccountData.broker = Brokers.find(
-      (obj) => obj.key === activeSection,
+      (obj) => obj.key === activeSection
     )!.label;
 
     console.log("New account data", {
@@ -199,7 +199,7 @@ export default function AddAccountModal({
         {
           method: "POST",
           body: JSON.stringify(addedAccountData),
-        },
+        }
       );
 
       console.log("response", resp);
@@ -207,7 +207,7 @@ export default function AddAccountModal({
       onClose(
         addedAccountData.accountNumber,
         addedAccountData.broker,
-        addedAccountData.platform,
+        addedAccountData.platform
       );
     } catch (error) {
       console.log(error);
@@ -273,7 +273,7 @@ export default function AddAccountModal({
                   </Select>
                   <ErrMess error={errors[field.title]} />
                 </div>
-              ) : null,
+              ) : null
             )}
           </div>
         )) ||

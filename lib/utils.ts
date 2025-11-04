@@ -87,7 +87,7 @@ type Opts = {
 
 export function validatePassword(
   pw: string,
-  opts: Opts = {},
+  opts: Opts = {}
 ): PasswordValidation {
   const {
     min = 8,
@@ -190,7 +190,7 @@ export function clampText(
     min = 50,
     suffix = "…", // what to append
     stripHtml = true, // cut out tags
-  }: { max?: number; min?: number; suffix?: string; stripHtml?: boolean } = {},
+  }: { max?: number; min?: number; suffix?: string; stripHtml?: boolean } = {}
 ): string {
   if (!raw) return "";
 
@@ -243,7 +243,7 @@ export function parseAmount(s: string) {
 export function validateMinNumberValue(
   value: string,
   MIN: number,
-  setError: Function,
+  setError: Function
 ) {
   const n = parseAmount(value);
 
@@ -336,10 +336,15 @@ export function goToStrategy(
   strategyId: number | string,
   router: any,
   href: string,
-  strategyName?: string,
+  strategyName?: string
 ) {
   localStorage.setItem("strategyId", strategyId as string);
-  router.push(`${href}/${strategyName? makeSlug(strategyName) : strategyId}`);
+  if (strategyName) {
+    localStorage.setItem("strategyName", strategyName);
+  } else {
+    localStorage.removeItem("strategyName");
+  }
+  router.push(`${href}/${strategyName ? makeSlug(strategyName) : strategyId}`);
 }
 
 export function isProtectedPath(pathname: string) {

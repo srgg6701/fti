@@ -67,7 +67,7 @@ export default async function RootLayout({
       <body
         className={clsx(
           "text-foreground bg-background min-h-screen font-sans antialiased",
-          fontSans.variable,
+          fontSans.variable
         )} /*  */
       >
         <Providers

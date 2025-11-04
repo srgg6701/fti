@@ -14,7 +14,7 @@ import FormElementWrapper from "@/components/pop-ups/form-elements/form-element-
 import { selectStyle } from "@/styles/style-variables";
 import { apiFetch } from "@/lib/api";
 import { siteConfig } from "@/config/site";
-import { get } from "http";
+import { UniversalEquity } from "@/types/apiData";
 
 function Collapsible({
   open,
@@ -49,9 +49,8 @@ function Collapsible({
 export default function StrategyId() {
   const searchParam = useSearchParams();
   const stopTrading = searchParam.get("stop-trading");
-  const savedStrategyId =
-    typeof window !== "undefined" ? localStorage.getItem("strategyId") : null;
-
+  const [strategyData, setStrategyData] = useState<UniversalEquity>();
+  const [strategyName, setStrategyName] = useState<string>("");
   const [openIds, setOpenIds] = useState<string[]>([]);
 
   function handleTextBlock(id: string) {
@@ -78,22 +77,40 @@ export default function StrategyId() {
   }
 
   useEffect(() => {
+    const savedStrategyId =
+      typeof window !== "undefined" ? localStorage.getItem("strategyId") : null;
+
     if (savedStrategyId) {
       console.log("Saved strategy ID:", savedStrategyId);
-      async function getStrategyData() {
-        const strategyData = await apiFetch(
-          `/api${siteConfig.innerItems.equity.href}/?systemId=${savedStrategyId}`
-        );
+      try {
+        async function getStrategyData() {
+          const strategyData = await apiFetch(
+            `/api${siteConfig.innerItems.equity.href}/?systemId=${savedStrategyId}`
+          );
 
-        console.log(
-          "Fetched strategy data for strategyId",
-          savedStrategyId,
-          strategyData
-        );
+          console.log(
+            "Fetched strategy data for strategyId",
+            savedStrategyId,
+            strategyData
+          );
+          const strName = localStorage.getItem("strategyName") || "";
+
+          if (strName) {
+            setStrategyName(strName);
+          }
+          setStrategyData(strategyData);
+        }
+        getStrategyData();
+      } catch (error) {
+        console.log("%cError fetching strategy data:", "color:red", error);
       }
-      getStrategyData();
+    } else {
+      console.log(
+        "%cNo saved strategy ID found in localStorage.",
+        "color: orangered;"
+      );
     }
-  }, [savedStrategyId]);
+  }, []);
 
   return (
     <>
@@ -102,13 +119,16 @@ export default function StrategyId() {
           <div className="max-w-[207px]">
             <UserBlock
               h="h-auto"
-              imgAlt="Strategy of Joshua"
+              imgAlt={`Strategy ${strategyData?.system_id}`}
               marginRight="mx-0"
               mb="0"
               padding="0"
-              userImg="joshua.svg"
+              userImg="/assets/images/icons/strategy.png"
             >
-              Joshua
+              Strategy{" "}
+              {strategyName ||
+                strategyData?.system_id ||
+                "...name is loading..."}
             </UserBlock>
             <p className="mt-2.5 text-sm">
               This strategy represents a set of the world&apos;s leading assets

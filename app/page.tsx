@@ -33,7 +33,7 @@ export default function Default() {
         if (!userIsIn) {
           console.log(
             "%cCan't get user data (/me); redirect to login page",
-            "color: orangered",
+            "color: orangered"
           );
           router.replace(siteConfig.innerItems.auth.login.href_ui);
 
@@ -47,7 +47,7 @@ export default function Default() {
           console.log(
             "%cError while initializing user",
             "color: orangered",
-            error,
+            error
           );
           router.replace(siteConfig.innerItems.auth.login.href_ui);
         }

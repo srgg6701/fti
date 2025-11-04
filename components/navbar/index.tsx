@@ -35,9 +35,7 @@ const items = siteConfig.navItems;
 const innerItems = siteConfig.innerItems;
 
 export const Navbar = ({ isAuth }: { isAuth: boolean }) => {
-  const { initializeUser, isAuthenticated } = useUserStore(
-    (state) => state,
-  );
+  const { initializeUser, isAuthenticated } = useUserStore((state) => state);
 
   //console.log("%cNavbar, data from userSotre", "color: violet", { initializeUser, isAuthenticated });
 
@@ -56,7 +54,7 @@ export const Navbar = ({ isAuth }: { isAuth: boolean }) => {
 
         try {
           const userNotifications = await apiFetch<Notifications>(
-            `/api${innerItems.notifications.get.all.href}`,
+            `/api${innerItems.notifications.get.all.href}`
           );
 
           if (!isCancelled) {
@@ -68,7 +66,7 @@ export const Navbar = ({ isAuth }: { isAuth: boolean }) => {
               "%cError fetching notifications:",
               "color: yellow",
               error,
-              { isAuthenticated, isAuth },
+              { isAuthenticated, isAuth }
             );
           }
         }
@@ -91,7 +89,7 @@ export const Navbar = ({ isAuth }: { isAuth: boolean }) => {
   // ЕДИНЫЙ источник правды для меню
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [notifications, setNotificationsData] = useState<NotificationsData[]>(
-    [],
+    []
   );
   const pathname = usePathname();
 
@@ -366,8 +364,8 @@ export const Navbar = ({ isAuth }: { isAuth: boolean }) => {
                   isRead: true,
                   readAt: new Date().toISOString(),
                 }
-              : notification,
-          ),
+              : notification
+          )
         );
       })
       .catch((error) => {

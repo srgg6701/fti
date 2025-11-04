@@ -24,7 +24,7 @@ type Section = {
 
 async function apiFetch<T>(
   endpoint: string,
-  options: RequestInit = {},
+  options: RequestInit = {}
 ): Promise<T> {
   //const res = await fetch(toApiPath(endpoint), {
   const res = await fetch(`/api${endpoint}`, {
@@ -1042,7 +1042,7 @@ export default function ApiTestPage() {
   const paramsInPath = useParamsInPath(selected?.path ?? "");
   const [pathParams, setPathParams] = useState<Record<string, string>>({});
   const [bodyText, setBodyText] = useState(
-    selected?.exampleBody ? JSON.stringify(selected.exampleBody, null, 2) : "",
+    selected?.exampleBody ? JSON.stringify(selected.exampleBody, null, 2) : ""
   );
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<string>("");
@@ -1072,9 +1072,7 @@ export default function ApiTestPage() {
     setResponse("");
     setError("");
     setBodyText(
-      selected?.exampleBody
-        ? JSON.stringify(selected.exampleBody, null, 2)
-        : "",
+      selected?.exampleBody ? JSON.stringify(selected.exampleBody, null, 2) : ""
     );
   }, [selected?.key]);
 
@@ -1147,7 +1145,7 @@ export default function ApiTestPage() {
         .map((section) => ({
           ...section,
           endpoints: section.endpoints.filter((ep) =>
-            selectedMethods.includes(ep.method),
+            selectedMethods.includes(ep.method)
           ),
         }))
         // 2) выбрасываем секции, где после фильтра не осталось endpoints
@@ -1329,8 +1327,8 @@ export default function ApiTestPage() {
                                   password: lg.password,
                                 },
                                 null,
-                                2,
-                              ),
+                                2
+                              )
                             )
                           )}
                         >
@@ -1355,8 +1353,8 @@ export default function ApiTestPage() {
                                     apiKey: "optional-api-key",
                                   },
                                   null,
-                                  2,
-                                ),
+                                  2
+                                )
                               )
                             }
                           >

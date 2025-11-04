@@ -16,11 +16,11 @@ export const useDataStore = create<{
       // /api/subscriptions/user-subscriptions
       console.log(
         "%cLoad strategies...",
-        "background-color: lightskyblue; color: blue",
+        "background-color: lightskyblue; color: blue"
       );
       dataIsLoading = fetch(
         `/api${siteConfig.innerItems.statistics.strategies.href}`,
-        { credentials: "include" },
+        { credentials: "include" }
       )
         .then((result) => result.json())
         .then((data) => {

@@ -1,7 +1,6 @@
 ﻿"use client";
 
 import { useEffect, useState } from "react";
-
 import {
   ResponsiveContainer,
   AreaChart,
@@ -102,9 +101,11 @@ export default function BalanceChart({
 
     for (let offset = -2; offset <= 2; offset++) {
       const neighbor = arr[idx + offset];
+
       if (!neighbor) continue;
 
       const weight = weights[offset + 2];
+
       weightedSum += neighbor.y * weight;
       weightTotal += weight;
     }
@@ -144,6 +145,7 @@ export default function BalanceChart({
       typeof window.requestAnimationFrame !== "function"
     ) {
       setSeriesVisible(true);
+
       return;
     }
 
@@ -258,6 +260,7 @@ export default function BalanceChart({
     }
 
     const last = ticks[ticks.length - 1];
+
     if (limited[limited.length - 1] !== last) {
       limited.push(last);
     }
@@ -341,13 +344,13 @@ export default function BalanceChart({
 
     return (
       <text
-        x={x}
-        y={y ?? 0}
+        dx={dx}
         dy={16}
         fill="rgba(255,255,255,0.45)"
         fontSize={12}
         textAnchor={anchor}
-        dx={dx}
+        x={x}
+        y={y ?? 0}
       >
         {safeLabel}
       </text>
@@ -357,6 +360,7 @@ export default function BalanceChart({
   const formatTooltipLabel = (ts: number) => {
     if (period === "1W") return toWeekdayShort(ts);
     if (period === "1M") return `${toMonthShort(ts)} ${toDayOfMonth(ts)}`;
+
     return toMonthShort(ts);
   };
 
@@ -516,14 +520,14 @@ export default function BalanceChart({
                 />
                 <Line
                   activeDot={{ r: 4 }}
+                  stroke={STROKE}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  type="basis"
                   dataKey="y"
                   //dataKey="equity"
                   dot={false}
-                  stroke={STROKE}
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  type="basis"
                 />
               </>
             )}
@@ -533,4 +537,3 @@ export default function BalanceChart({
     </div>
   );
 }
-

@@ -33,7 +33,7 @@ export function Providers({
 
   console.log(
     "NEXT_PUBLIC_GOOGLE_CLIENT_ID",
-    process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+    process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
   );
 
   useEffect(() => {
@@ -74,7 +74,7 @@ export function Providers({
             console.log(
               "%cFailed to initialize user from initial auth state",
               "color: orangered",
-              error,
+              error
             );
           });
       }

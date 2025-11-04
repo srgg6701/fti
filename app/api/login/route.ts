@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     await new Promise((resolve) => setTimeout(resolve, 800));
 
     const user = users.find(
-      (u) => u.email === email && u.password === password,
+      (u) => u.email === email && u.password === password
     );
 
     console.log({ user, users });
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     if (!user) {
       return NextResponse.json(
         { error: "Invalid email and/or password." },
-        { status: 401 },
+        { status: 401 }
       );
     }
 
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(
       { error: "Server error. Please try again later." },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

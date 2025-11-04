@@ -33,7 +33,10 @@ export default function UserBlock({
   onClick?: () => void;
 }) {
   return (
-    <button className={`${h} ${w} ${marginRight} ${padding} ${xClassName}`} onClick={onClick}>
+    <button
+      className={`${h} ${w} ${marginRight} ${padding} ${xClassName}`}
+      onClick={onClick}
+    >
       <header className={`${headerDisplay} ${mb} ${gap} flex items-center`}>
         <UserImage
           height={height}

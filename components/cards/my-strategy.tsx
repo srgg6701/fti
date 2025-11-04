@@ -36,7 +36,7 @@ export default function CardMyStrategy({
       imgAlt={`Card of ${strategyName}`}
       marginRight={marginRight}
       padding={padding}
-      userImg={userImg}
+      userImg={`/assets/images/users/${userImg}`}
       xClassName="cursor-pointer"
       onClick={() => goToStrategy(strategyId, router, href, strategyName)}
     >

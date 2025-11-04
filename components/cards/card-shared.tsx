@@ -92,7 +92,12 @@ const CardShared = ({
       <header className="mb-5 flex items-center gap-3">
         {username ? (
           <>
-            <UserImage height={55} title="User" userImg={userImg} width={55} />
+            <UserImage
+              height={55}
+              title="User"
+              userImg={`/assets/images/users/${userImg}`}
+              width={55}
+            />
             <div className="flex flex-col">
               <span className="text-sm font-medium">{username}</span>
               <span className="text-xs text-white/60">

@@ -101,13 +101,13 @@ export default function Buttons({ messageType, status, type }: ButtonsProps) {
           <GoogleLogin
             locale="en_US"
             text="signin_with"
+            theme="outline"
+            type="standard"
             width={"100%"}
             onError={() => {
               console.log("Login Failed");
             }}
             onSuccess={handleSuccess}
-            theme="outline"
-            type="standard"
           />
         </div>
         <ButtonRoundedGrey

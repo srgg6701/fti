@@ -18,6 +18,7 @@ const DataTopPerforming = [
     roi: 51.25,
     timeFrame: "6 Months",
     userImg: "clarisse.png",
+    strategyId: 1918254,
   },
   {
     username: "Naomi",
@@ -27,6 +28,7 @@ const DataTopPerforming = [
     roi: 51.25,
     timeFrame: "6 Months",
     userImg: "naomi.png",
+    strategyId: 1918255,
   },
   {
     username: "Joshua",
@@ -36,6 +38,7 @@ const DataTopPerforming = [
     roi: 51.25,
     timeFrame: "6 Months",
     userImg: "face-male.png",
+    strategyId: 1918256,
   },
   {
     username: "Janis",
@@ -45,6 +48,7 @@ const DataTopPerforming = [
     roi: 51.25,
     timeFrame: "6 Months",
     userImg: "face-male2.png",
+    strategyId: 1918257,
   },
   {
     username: "Elizabeth",
@@ -54,6 +58,7 @@ const DataTopPerforming = [
     roi: 51.25,
     timeFrame: "6 Months",
     userImg: "clarisse.png",
+    strategyId: 1918257,
   },
   {
     username: "Margareth",
@@ -63,6 +68,7 @@ const DataTopPerforming = [
     roi: 51.25,
     timeFrame: "6 Months",
     userImg: "naomi.png",
+    strategyId: 1918258,
   },
 ];
 
