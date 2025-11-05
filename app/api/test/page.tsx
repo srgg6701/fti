@@ -1245,18 +1245,24 @@ export default function ApiTestPage() {
       {/* Main panel */}
       <main
         className="space-y-6 relative"
-        style={{ left: "37vw", position: "fixed", width: "60vw" }}
+        style={{
+          left: "37vw",
+          position: "fixed",
+          top: 0,
+          bottom: "10px",
+          width: "60vw",
+        }}
       >
         <div
           className="fixed top-[101px] overflow-auto"
           style={{
             backgroundColor: "var(--background-default)",
-            height: "calc(100vh - 88px)",
-            zIndex: 2,
-            width: "100%",
+            bottom: 0,
             display: "flex",
             flexDirection: "column",
             position: "absolute",
+            width: "100%",
+            zIndex: 2,
           }}
         >
           <h1 className="text-xl font-bold flex justify-between">
