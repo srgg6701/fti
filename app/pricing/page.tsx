@@ -68,7 +68,9 @@ export default function Tariffplan() {
       setError(null);
 
       try {
-        const response = await apiFetch<unknown>("/api/saas-subscriptions/plans");
+        const response = await apiFetch<unknown>(
+          "/api/saas-subscriptions/plans"
+        );
         let activePayload: unknown = null;
 
         try {
@@ -77,10 +79,7 @@ export default function Tariffplan() {
           );
         } catch (activeError) {
           if (!cancelled) {
-            console.warn(
-              "Unable to fetch active subscription:",
-              activeError
-            );
+            console.warn("Unable to fetch active subscription:", activeError);
           }
         }
 
@@ -253,7 +252,9 @@ function normalizePlan(item: unknown, index: number): PlanCard | null {
 
   const badge =
     pickString(item.badge, item.label, item.tagline) ??
-    (pickBoolean(item.isPopular, item.popular, item.recommended) ? "Popular" : null);
+    (pickBoolean(item.isPopular, item.popular, item.recommended)
+      ? "Popular"
+      : null);
 
   const periodLabel =
     pickString(
@@ -289,7 +290,7 @@ function normalizePlan(item: unknown, index: number): PlanCard | null {
     "Contact sales";
 
   const description =
-      pickString(item.description, item.shortDescription, item.details) ??
+    pickString(item.description, item.shortDescription, item.details) ??
     DEFAULT_DESCRIPTION;
 
   const isPopular = pickBoolean(item.isPopular, item.popular, item.recommended);
@@ -385,7 +386,10 @@ function pickBoolean(...values: unknown[]): boolean {
   return false;
 }
 
-function formatCurrency(amount: number | null, currencyLike: string | null): string | null {
+function formatCurrency(
+  amount: number | null,
+  currencyLike: string | null
+): string | null {
   if (amount == null) return null;
 
   const currency =
@@ -466,9 +470,10 @@ function appendMatchValue(store: Set<string>, value: unknown): void {
   }
 }
 
-function extractActivePlanMetadata(
-  payload: unknown
-): { identifiers: string[]; label: string | null } {
+function extractActivePlanMetadata(payload: unknown): {
+  identifiers: string[];
+  label: string | null;
+} {
   const identifiers = new Set<string>();
   let label: string | null = null;
 
