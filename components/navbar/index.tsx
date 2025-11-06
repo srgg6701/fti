@@ -236,7 +236,7 @@ export const Navbar = ({ isAuth }: { isAuth: boolean }) => {
             alt="Show notifications"
             className="mr-5 inline-block"
             height={20}
-            src="/assets/images/icons/bell.png"
+            src="/assets/images/bell.svg"
             title="Show notifications"
             width={20}
             onClick={() => {
@@ -311,29 +311,33 @@ export const Navbar = ({ isAuth }: { isAuth: boolean }) => {
       <div className="row is-vertical h-full max-w-[460px] overflow-y-auto px-10">
         <h3 className="aside mb-[30px] pt-20 pb-5">Notifications</h3>
         {(notifications.length &&
-          notifications.map((note) => (
-            <button
-              key={note.id}
-              className={`[scroll-snap-align:start] py-2.5 hover:-mx-10 hover:px-10 ${note.isRead && "bg-light-middle cursor-pointer"} text-left`}
-              title={`${(note.isRead && "Click to mark it read") || ""}`}
-              onClick={() => markAsRead(note)}
-            >
-              <div className="flex gap-2.5 items-center">
-                <div>{note.title}</div>
-                {note.isRead && notificator()}
-                <div className="opacity-30">
-                  {calculateNotificationTimeAgo(note.createdAt)}
+          notifications.map((note) => {
+            const isUnread = !note;
+
+            return (
+              <button
+                key={note.id}
+                className={`[scroll-snap-align:start] py-2.5 hover:-mx-10 hover:px-10 ${isUnread ? "bg-light-middle cursor-pointer" : ""} text-left`}
+                title={isUnread ? "Click to mark it read" : ""}
+                onClick={() => markAsRead(note)}
+              >
+                <div className="flex gap-2.5 items-center">
+                  <div>{note.title}</div>
+                  {isUnread ? notificator() : null}
+                  <div className="opacity-30">
+                    {calculateNotificationTimeAgo(note.createdAt)}
+                  </div>
                 </div>
-              </div>
-              <div className="opacity-50">{note.content}</div>
-            </button>
-          ))) || (
+                <div className="opacity-50">{note.content}</div>
+              </button>
+            );
+          })) || (
           <div className="items-center flex flex-col pt-20">
             <Image
               alt="No notifications"
               className="mb-5"
               height={77}
-              src="/assets/images/bell.jpg"
+              src="/assets/images/bell.svg"
               width={64}
             />
             <p className="opacity-50">No notifications yet</p>

@@ -31,6 +31,7 @@ type ButtonProps = {
   style?: CSSProperties | undefined;
   onPress?: () => void;
   onClick?: () => void;
+  isDisabled?: boolean;
 };
 
 const baseDefaults: Required<
@@ -44,6 +45,7 @@ const baseDefaults: Required<
     | "onPress"
     | "onClick"
     | "style"
+    | "isDisabled"
   >
 > = {
   rounded: "btn-rounded",
