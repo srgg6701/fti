@@ -48,3 +48,6 @@ bun.lockb
 cert/
 curl
 #app/api/test
+
+AGENTS.md
+openapi.json

@@ -12,6 +12,17 @@ export interface BalanceDynamics {
   isPositive: boolean;
   percentageChange: number;
 }
+
+export interface TopTradeSystem {
+  id: number;
+  name: string;
+  pnlPercent: number;
+  sharpe: number;
+  maxDrawdown: number;
+  equity: number;
+  logo: string;
+}
+
 export interface Chart {
   data?: BalanceDynamics;
   message?: string;
