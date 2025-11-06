@@ -11,6 +11,7 @@ import { Switch } from "@heroui/react";
 import { Form } from "@heroui/form";
 
 import { siteConfig, routeAliases } from "@/config/site";
+import { apiFetch } from "@/lib/api";
 import { useUserStore } from "@/lib/store/userStore";
 import Billing from "@/components/billing";
 import BillingModal from "@/components/pop-ups/billing";
@@ -44,9 +45,11 @@ export default function Profile() {
 
   const [isUpdateOpen, setUpdateOpen] = useState(false);
   const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   // FIXME: use it or remove
   const [status, setStatus] = useState<status>("idle");
   const [errMess, setErrMess] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleTariffBtn = () => {
     setUpdateOpen(!isUpdateOpen);
@@ -68,6 +71,7 @@ export default function Profile() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setErrMess(null);
+    setSuccessMessage(null);
     if (!email) {
       setErrMess("Please enter your email");
 
@@ -82,17 +86,35 @@ export default function Profile() {
 
       return;
     }
+    if (!message.trim()) {
+      setErrMess("Please describe the problem");
+
+      return;
+    }
     try {
       setStatus("loading");
 
-      /****** send request to the endpoint to get the confirmation code ******/
+      await apiFetch("/api/email/support", {
+        method: "POST",
+        body: JSON.stringify({
+          email,
+          message,
+        }),
+      });
 
-      await new Promise((r) => setTimeout(r, 600));
       setStatus("success");
-      alert("Set page to go!");
-      //router.push(`/create-account/set-password?email=${email}`);
-    } catch {
+      setSuccessMessage(
+        "Message sent successfully. Our team will reach out shortly."
+      );
+      setEmail("");
+      setMessage("");
+    } catch (error) {
       setStatus("error");
+      if (error instanceof Error) {
+        setErrMess(error.message || "Failed to send message");
+      } else {
+        setErrMess("Failed to send message");
+      }
     }
   }
 
@@ -245,6 +267,9 @@ export default function Profile() {
                 onChange={(e) => setEmail(e.target.value)}
               />
               <ErrMess error={errMess} mx="mx-0" my="!my-[-10px]" />
+              {successMessage ? (
+                <p className="text-sm text-green-600">{successMessage}</p>
+              ) : null}
               <Textarea
                 className="w-full"
                 classNames={{
@@ -252,11 +277,14 @@ export default function Profile() {
                 }}
                 minRows={4}
                 placeholder="Describe the problem..."
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
               />
               <div className="pb-[56px]">
                 <ButtonRoundedBlue
                   btnText="Send"
                   height="h-[45px]"
+                  // isDisabled={status === "loading"}
                   type="submit"
                   width="w-full w-[300px]"
                 />
