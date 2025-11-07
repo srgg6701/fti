@@ -68,11 +68,13 @@ export default function Buttons({ messageType, status, type }: ButtonsProps) {
         }
 
         if (jwt) {
-          const maxAge = 60 * 60; // 1h
+          const parts = ["jwt=" + jwt, "Path=/", "SameSite=Lax"];
 
-          document.cookie = `jwt=${jwt}; Max-Age=${maxAge}; Path=/;${
-            window.location.protocol === "https:" ? " Secure;" : ""
-          } SameSite=Lax`;
+          if (window.location.protocol === "https:") {
+            parts.push("Secure");
+          }
+
+          document.cookie = parts.join("; ");
         } else {
           console.warn("Auth success response does not include a JWT token.");
         }

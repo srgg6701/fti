@@ -1,3 +1,4 @@
+import { handleUnauthorizedRedirect } from "@/lib/authClient";
 import { useUserStore } from "@/lib/store/userStore";
 
 export class AuthError extends Error {
@@ -94,9 +95,11 @@ export async function apiFetch<T = any>(
         email: null,
         user: null,
       });
-    } catch (е) {
-      console.log("Error updating user store on auth error:", е);
+    } catch (err) {
+      console.log("Error updating user store on auth error:", err);
     }
+
+    handleUnauthorizedRedirect();
 
     // Throw a specialized AuthError so callers can handle auth flows separately.
     throw new AuthError(
