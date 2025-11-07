@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 import { siteConfig } from "@/config/site";
+import { handleUnauthorizedRedirect } from "@/lib/authClient";
 
 export type ApiUser = {
   id: number;
@@ -37,10 +38,16 @@ export const useUserStore = create<UserState>((set) => {
     logout: async () => {
       set({ isAuthenticated: false, email: null, user: null });
       // FIXME: can we change this to use apiFetch?
-      await fetch(`/api${siteConfig.innerItems.auth.logout.href}`, {
-        method: "POST",
-        credentials: "include",
-      });
+      try {
+        await fetch(`/api${siteConfig.innerItems.auth.logout.href}`, {
+          method: "POST",
+          credentials: "include",
+        });
+      } catch (error) {
+        console.log("Logout request failed:", error);
+      } finally {
+        handleUnauthorizedRedirect();
+      }
     },
 
     initializeUser: async () => {
@@ -67,60 +74,9 @@ export const useUserStore = create<UserState>((set) => {
 
               return true;
             }
+          } else if (res.status === 401 || res.status === 403) {
+            handleUnauthorizedRedirect();
           }
-
-          // Попробуем обновить access-token через refresh endpoint
-          if (res.status === 401 || res.status === 403) {
-            // FIXME: can we change this to use apiFetch?
-            const refreshResult = await fetch(
-              `/api${siteConfig.innerItems.auth.refresh.href}`,
-              {
-                method: "POST",
-                credentials: "include",
-              }
-            );
-
-            if (refreshResult.ok) {
-              // после refresh — повторный /me
-              const me = await fetch(
-                `/api${siteConfig.innerItems.auth.me.href}`,
-                {
-                  credentials: "include",
-                }
-              );
-
-              if (me.ok) {
-                const data2: { user?: ApiUser } = await me.json();
-
-                if (data2.user) {
-                  set({
-                    isAuthenticated: true,
-                    email: data2.user.email,
-                    user: data2.user,
-                  });
-
-                  return true;
-                }
-              }
-              // fallback: если refresh вернул payload с user
-              try {
-                const payload = await refreshResult.json();
-
-                if (payload.user) {
-                  set({
-                    isAuthenticated: true,
-                    email: payload.user.email,
-                    user: payload.user,
-                  });
-
-                  return true;
-                }
-              } catch (e) {
-                console.log("Error parsing refresh payload:", e);
-              }
-            }
-          }
-
           set({ isAuthenticated: false, email: null, user: null });
 
           return false;
