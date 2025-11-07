@@ -1,8 +1,9 @@
 "use client";
 
+import type { status } from "@/types/ui";
+
 import { useEffect, useMemo, useState } from "react";
 
-import type { status } from "@/types/ui";
 import { apiFetch } from "@/lib/api";
 import {
   ButtonRoundedBlue,
@@ -106,6 +107,7 @@ export default function Tariffplan() {
 
         const message =
           err instanceof Error ? err.message : "Unable to load plans.";
+
         setError(message);
         setPlans(FALLBACK_PLANS);
         setActivePlanId(null);
@@ -186,10 +188,10 @@ export default function Tariffplan() {
               </div>
               {isActivePlan ? (
                 <ButtonRoundedBlue
+                  isDisabled
                   bgColor="bg-[#0F9D58]"
                   btnText="Active"
                   height={buttonHeight}
-                  isDisabled
                 />
               ) : (
                 <ButtonComponent
@@ -310,6 +312,7 @@ function normalizePlan(item: unknown, index: number): PlanCard | null {
 
   if (isPlainObject(item.plan)) {
     const nested = item.plan as Record<string, unknown>;
+
     matchKeys.push(
       ...buildMatchKeys(
         pickString(
@@ -359,6 +362,7 @@ function pickNumber(...values: unknown[]): number | null {
     }
     if (typeof value === "string") {
       const parsed = Number(value);
+
       if (!Number.isNaN(parsed)) {
         return parsed;
       }
@@ -450,6 +454,7 @@ function appendMatchValue(store: Set<string>, value: unknown): void {
 
   if (typeof value === "string") {
     const trimmed = value.trim();
+
     if (trimmed) {
       store.add(trimmed.toLowerCase());
     }
@@ -522,11 +527,13 @@ function extractActivePlanMetadata(payload: unknown): {
 
       if (identifierKeys.includes(key)) {
         const candidateString = pickString(value);
+
         if (candidateString) {
           identifiers.add(candidateString.toLowerCase());
         }
 
         const candidateNumber = pickNumber(value);
+
         if (candidateNumber != null) {
           identifiers.add(String(candidateNumber));
         }
@@ -534,6 +541,7 @@ function extractActivePlanMetadata(payload: unknown): {
 
       if (!label && labelKeys.includes(key)) {
         const labelCandidate = pickString(value);
+
         if (labelCandidate) {
           label = labelCandidate;
         }

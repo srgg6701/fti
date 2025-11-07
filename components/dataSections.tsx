@@ -76,7 +76,9 @@ export default function HomeSections({
               // MOCK DATA:// FIXME: use real data (apiFetch)
               apiFetch2<TDataTopPerforming[]>("dataTopPerforming"),
               apiFetch<News[]>(`/api/${routeAliases.news}`),
-            ]); console.log("%cchartsApiData", "color: violet", chartsApiData);
+            ]);
+
+          console.log("%cchartsApiData", "color: violet", chartsApiData);
 
           setChart(chartsApiData);
           setTopPerformingData(topPerformingApiData);
@@ -119,7 +121,7 @@ export default function HomeSections({
       } catch (e) {
         setStatus("error");
       }
-      console.log("%cSTATUS", "color: green", status );
+      console.log("%cSTATUS", "color: green", status);
     })();
   }, []);
 
@@ -155,7 +157,7 @@ export default function HomeSections({
 
   return (
     <>
-      {status === "success" ? (
+      {status === "loading" ? (
         <LoadingIndicator {...{ status }} />
       ) : (
         <div className="mt-[80px] mb-[56px] flex flex-col gap-[5rem]">

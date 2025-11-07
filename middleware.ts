@@ -41,6 +41,7 @@ export async function middleware(req: NextRequest) {
   }
 
   const loginUrl = new URL("/login", url.origin);
+
   loginUrl.searchParams.set("next", pathname + search);
 
   const jwtCookie = req.cookies.get(COOKIE_NAME)?.value;
@@ -50,6 +51,7 @@ export async function middleware(req: NextRequest) {
 
     try {
       decodeJwt(jwtCookie);
+
       return NextResponse.next();
     } catch (error) {
       console.warn(
@@ -57,6 +59,7 @@ export async function middleware(req: NextRequest) {
         `[AUTH] JWT decode error: ${(error as Error).message}`
       );
       const redirect = NextResponse.redirect(loginUrl);
+
       redirect.cookies.delete(COOKIE_NAME);
 
       return redirect;
